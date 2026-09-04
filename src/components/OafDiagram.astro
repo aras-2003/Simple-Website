@@ -1,13 +1,16 @@
 ---
-import { sharedContent } from '../i18n/content';
+import { editorial } from '../content/editorial';
 import type { Locale } from '../lib/site';
 
 interface Props { locale: Locale; id: string; compact?: boolean; }
 const { locale, id, compact = false } = Astro.props;
-const title = locale === 'pl' ? 'OAF — cykl decyzji' : 'OAF — decision cycle';
+const layers = editorial[locale].oaf.layerDetails;
+const title = locale === 'pl' ? 'OAF — pętla decyzji' : 'OAF — decision loop';
 const caption = locale === 'pl'
-  ? 'Kierunek prowadzi do wyborów, wybory do priorytetów, a wykonanie dostarcza dowodu do kolejnej decyzji.'
+  ? 'Kierunek prowadzi do wyborów, wybory do priorytetów, a wykonanie dostarcza dowodów do kolejnej decyzji.'
   : 'Direction leads to choices, choices to priorities, and execution returns evidence into the next decision.';
+const tagsPl = ['Strategia', 'Architektura', 'Portfel', 'Wykonanie'];
+const tagsEn = ['Strategy', 'Architecture', 'Portfolio', 'Execution'];
 ---
 <figure class:list={['oaf-diagram', { 'oaf-diagram-compact': compact }]} aria-labelledby={id}>
   <div class="oaf-diagram-head">
@@ -15,12 +18,15 @@ const caption = locale === 'pl'
     <span aria-hidden="true">01—04</span>
   </div>
   <ol class="oaf-diagram-grid">
-    {sharedContent.oafSteps.map((step, index) => (
-      <li class={`oaf-card oaf-card-${index + 1}`}>
-        <div class="diagram-node-meta"><span>{step.no}</span><span lang="en">{step.tag}</span></div>
-        <h3 lang="en">{step.title}</h3>
-        <p>{locale === 'pl' ? step.pl : step.en}</p>
-        <div class="oaf-card-graphic" aria-hidden="true"><span></span><span></span><span></span></div>
+    {layers.map((layer, index) => (
+      <li>
+        <div class="diagram-node-meta">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <span>{locale === 'pl' ? tagsPl[index] : tagsEn[index]}</span>
+        </div>
+        <h3>{layer.title}</h3>
+        <p class="oaf-question">{layer.question}</p>
+        {!compact && <p class="oaf-explanation">{layer.body}</p>}
       </li>
     ))}
   </ol>
