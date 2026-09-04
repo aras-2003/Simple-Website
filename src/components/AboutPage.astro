@@ -8,6 +8,9 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const ia = editorial[locale];
 const x = platform[locale].about;
+const trajectory = x.trajectory.map((item) => locale === 'pl' && item.stage === 'Dziś'
+  ? { ...item, body: 'Obecna odpowiedzialność łączy architekturę korporacyjną, strategię i PMO. Punkt ciężkości leży w projektowaniu jednego rytmu decyzji pomiędzy kierunkiem, architekturą, inwestycjami i wykonaniem.' }
+  : item);
 const pageTitle = locale === 'pl' ? 'O mnie — Arkadiusz Kamrowski' : 'About — Arkadiusz Kamrowski';
 const pageDescription = locale === 'pl'
   ? 'Arkadiusz Kamrowski — droga od technologii i wykonania przez architekturę korporacyjną i transformację do strategii, portfela i PMO.'
@@ -42,7 +45,7 @@ const pageDescription = locale === 'pl'
       <h2 id="trajectory-title">{locale === 'pl' ? 'Każdy etap dołożył nową warstwę do tego samego pytania: jak organizacja przekłada decyzję na działanie?' : 'Each stage added a new layer to the same question: how does an organization turn a decision into action?'}</h2>
     </div>
     <div class="career-river">
-      {x.trajectory.map((item) => (
+      {trajectory.map((item) => (
         <article>
           <div class="career-marker" aria-hidden="true"></div>
           <p class="micro-label">{item.stage}</p>
