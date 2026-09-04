@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM python:3.13-alpine AS build
+FROM --platform=$BUILDPLATFORM python:3.14-alpine AS build
 WORKDIR /app
 COPY site.config.json ./
 COPY src ./src
