@@ -9,28 +9,28 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const c = copy[locale];
 const content = locale === 'pl' ? {
-  title: 'Kontakt — Arkadiusz Kamrowski',
+  title: 'Kontakt – Arkadiusz Kamrowski',
   description: 'Kontakt w sprawie architektury organizacyjnej, strategii, transformacji, architektury korporacyjnej, portfolio i wystąpień.',
   eyebrow: 'Kontakt / zacznijmy od problemu',
   headline: 'Zacznijmy od problemu, nie od gotowego rozwiązania.',
   lead: 'Najbardziej użyteczna pierwsza wiadomość nie musi być długa. Wystarczy kontekst, decyzja albo napięcie, które warto wspólnie zrozumieć.',
   contextEyebrow: 'Dobry punkt startu',
   contextTitle: 'Wystarczą trzy rzeczy.',
-  fit: ['Kontekst — co dzieje się w organizacji i dlaczego temat jest ważny teraz.', 'Decyzja — co trzeba rozstrzygnąć, zmienić albo zaprojektować.', 'Ograniczenie — co utrudnia ruch: zależność, mandat, finansowanie, ryzyko lub czas.'],
+  fit: ['Kontekst – co dzieje się w organizacji i dlaczego temat jest ważny teraz.', 'Decyzja – co trzeba rozstrzygnąć, zmienić albo zaprojektować.', 'Ograniczenie – co utrudnia ruch: zależność, mandat, finansowanie, ryzyko lub czas.'],
   linkedin: 'Jeżeli wolisz krótszy kontakt, LinkedIn pozostaje najprostszą alternatywą.',
   formEyebrow: 'Wiadomość',
   formTitle: 'Opisz sytuację.',
   formBody: 'Nie potrzebuję pełnego briefu. Kilka zdań o problemie wystarczy, żeby ocenić, czy rozmowa ma sens.',
   privacy: 'Dane z formularza są używane wyłącznie do odpowiedzi na wiadomość.',
 } : {
-  title: 'Contact — Arkadiusz Kamrowski',
+  title: 'Contact – Arkadiusz Kamrowski',
   description: 'Contact about organizational architecture, strategy, transformation, enterprise architecture, portfolio and speaking.',
   eyebrow: 'Contact / start with the problem',
   headline: 'Start with the problem, not a pre-selected solution.',
   lead: 'A useful first message does not need to be long. Context, the decision at stake and the main constraint are enough to start.',
   contextEyebrow: 'A good starting point',
   contextTitle: 'Three things are enough.',
-  fit: ['Context — what is happening and why the topic matters now.', 'Decision — what needs to be resolved, changed or designed.', 'Constraint — what blocks movement: dependency, mandate, funding, risk or time.'],
+  fit: ['Context – what is happening and why the topic matters now.', 'Decision – what needs to be resolved, changed or designed.', 'Constraint – what blocks movement: dependency, mandate, funding, risk or time.'],
   linkedin: 'If you prefer a shorter first contact, LinkedIn remains the simplest alternative.',
   formEyebrow: 'Message',
   formTitle: 'Describe the situation.',
@@ -47,7 +47,7 @@ const content = locale === 'pl' ? {
       <h2>{content.contextTitle}</h2>
       <ul class="fit-list">{content.fit.map((item) => <li>{item}</li>)}</ul>
       <p class="contact-linkedin">{content.linkedin}</p>
-      <a class="text-link" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
+      <a class="text-link" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> – {c.externalNewTab}</span></a>
     </aside>
     <div class="contact-form-shell">
       <p class="eyebrow">{content.formEyebrow}</p>
