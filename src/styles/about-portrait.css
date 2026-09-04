@@ -1,22 +1,27 @@
-/* About portrait presentation: compact square image, no framing or caption. */
+/* About portrait presentation: compact square editorial accent, no framing or caption. */
 
 .about-hero-brand {
-  min-height: min(540px, calc(100svh - var(--header)));
-  grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
-  gap: clamp(28px, 4vw, 56px);
-  align-items: center;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: clamp(32px, 3.5vw, 52px);
+  align-items: end;
+}
+
+.about-hero-copy {
+  max-width: 930px;
 }
 
 .about-portrait-primary {
-  width: min(100%, 280px);
-  margin: 0;
+  width: 220px;
+  margin: 0 0 6px;
   padding: 0 !important;
   justify-self: start;
+  align-self: end;
   background: transparent !important;
   border: 0 !important;
   border-block: 0 !important;
   box-shadow: none !important;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .about-portrait-primary::before,
@@ -30,7 +35,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   border: 0;
   box-shadow: none;
@@ -42,25 +47,26 @@
 
 @media (max-width: 1080px) {
   .about-hero-brand {
-    grid-template-columns: minmax(0, 1fr) 240px;
-    gap: 30px;
+    grid-template-columns: minmax(0, 1fr) 196px;
+    gap: 28px;
   }
 
   .about-portrait-primary {
-    width: 240px;
-    justify-self: start;
+    width: 196px;
   }
 }
 
 @media (max-width: 760px) {
   .about-hero-brand {
     grid-template-columns: 1fr;
-    min-height: 0;
-    gap: 28px;
+    gap: 24px;
+    align-items: start;
   }
 
   .about-portrait-primary {
-    width: min(68vw, 230px);
+    width: min(56vw, 184px);
+    margin: 0;
     justify-self: start;
+    align-self: start;
   }
 }
