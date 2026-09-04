@@ -1,0 +1,4 @@
+dist/
+artifacts/
+rendered-k8s.yaml
+.DS_Store
