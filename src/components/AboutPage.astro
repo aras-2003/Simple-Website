@@ -29,10 +29,10 @@ const ia = editorial[locale].about;
       <h2 id="principles-title">{ia.introTitle}</h2>
       <p class="content-lead">{ia.introBody}</p>
     </div>
-    <div class="principle-detail-grid">
+    <div class="principle-detail-grid principle-detail-editorial">
       {ia.principles.map((item, index) => (
         <article class="principle-detail-card">
-          <div class="principle-card-top"><span>{String(index + 1).padStart(2, '0')}</span><h3 lang="en">{item.title}</h3></div>
+          <div class="principle-card-top"><span>{String(index + 1).padStart(2, '0')}</span><h3>{item.title}</h3></div>
           <p class="principle-statement">{item.statement}</p>
           <p class="principle-practice">{item.practice}</p>
         </article>
@@ -40,10 +40,15 @@ const ia = editorial[locale].about;
     </div>
   </section>
 
-  <section class="section bridge-section" aria-labelledby="bridge-title">
-    <div class="bridge-visual" aria-hidden="true"><span>Strategy</span><span>Architecture</span><span>Portfolio</span><span>Evidence</span></div>
+  <section class="section bridge-section bridge-editorial" aria-labelledby="bridge-title">
+    <div class="bridge-map" aria-hidden="true">
+      <span>01</span><strong>{locale === 'pl' ? 'Kierunek' : 'Direction'}</strong>
+      <span>02</span><strong>{locale === 'pl' ? 'Architektura' : 'Architecture'}</strong>
+      <span>03</span><strong>{locale === 'pl' ? 'Portfel' : 'Portfolio'}</strong>
+      <span>04</span><strong>{locale === 'pl' ? 'Dowody' : 'Evidence'}</strong>
+    </div>
     <div class="bridge-copy">
-      <p class="eyebrow">System view</p>
+      <p class="eyebrow">{locale === 'pl' ? 'Perspektywa systemowa' : 'System view'}</p>
       <h2 id="bridge-title">{ia.bridgeTitle}</h2>
       <p>{ia.bridgeBody}</p>
       <div class="inline-actions">
