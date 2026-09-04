@@ -1,40 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from './PageHero.astro';
-import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
-import { vnext } from '../content/vnext';
+import { platform } from '../content/platform';
 import { route, type Locale } from '../lib/site';
+
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
-const p = copy[locale].pages.about;
-const ia = editorial[locale].about;
-const vx = vnext[locale];
+const ia = editorial[locale];
+const x = platform[locale].about;
+const pageTitle = locale === 'pl' ? 'O mnie — Arkadiusz Kamrowski' : 'About — Arkadiusz Kamrowski';
+const pageDescription = locale === 'pl'
+  ? 'Arkadiusz Kamrowski — droga od technologii i wykonania przez architekturę korporacyjną i transformację do strategii, portfela i PMO.'
+  : 'Arkadiusz Kamrowski — a trajectory from technology and execution through enterprise architecture and transformation to strategy, portfolio and PMO.';
 ---
-<BaseLayout locale={locale} routeKey="about" title={p.title} description={p.description}>
-  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
-
-  <section class="section about-personal" aria-labelledby="about-personal-title">
-    <figure class="about-portrait">
-      <img src="/assets/arkadiusz-kamrowski.webp" alt="Arkadiusz Kamrowski" width="480" height="720" loading="lazy" decoding="async" />
+<BaseLayout locale={locale} routeKey="about" title={pageTitle} description={pageDescription}>
+  <section class="about-hero" aria-labelledby="about-title">
+    <div class="about-hero-copy">
+      <p class="eyebrow">{x.hero.eyebrow}</p>
+      <h1 id="about-title">{x.hero.title}</h1>
+      <p class="page-lead">{x.hero.lead}</p>
+    </div>
+    <figure class="about-portrait about-portrait-primary">
+      <img src="/assets/arkadiusz-kamrowski.webp" alt={locale === 'pl' ? 'Portret Arkadiusza Kamrowskiego' : 'Portrait of Arkadiusz Kamrowski'} width="480" height="720" loading="eager" fetchpriority="high" decoding="async" />
+      <figcaption>{locale === 'pl' ? 'Technologia → Architektura → Transformacja → Strategia i portfel' : 'Technology → Architecture → Transformation → Strategy and portfolio'}</figcaption>
     </figure>
-    <div class="about-personal-copy">
-      <p class="eyebrow">{locale === 'pl' ? 'O mnie / perspektywa osobista' : 'About / personal perspective'}</p>
-      <h2 id="about-personal-title">{locale === 'pl' ? 'Nie zaczynałem od modeli. Zaczynałem od dowożenia zmian.' : 'I did not start with frameworks. I started with delivering change.'}</h2>
-      <p>{locale === 'pl' ? 'To ukształtowało mój sposób patrzenia na strategię i architekturę. Jeśli decyzja nie przechodzi przez ograniczenia technologii, ludzi, finansowania, zależności i odpowiedzialności, pozostaje teorią. Dlatego z czasem mój punkt ciężkości przesuwał się od wykonania i rozwiązań technicznych, przez architekturę i transformację, do strategii, ładu decyzyjnego, portfela i projektowania całego systemu decyzji.' : 'That shaped how I think about strategy and architecture. If a decision cannot survive the constraints of technology, people, funding, dependencies and accountability, it remains theory. Over time my center of gravity moved from delivery and technology solutions, through architecture and transformation, into strategy, governance, portfolio and the design of the whole decision system.'}</p>
-      <p>{locale === 'pl' ? 'Dziś pracuję na styku zarządu, biznesu i technologii jako Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO. Interesuje mnie przede wszystkim spójność: czy kierunek, architektura, inwestycje i wykonanie faktycznie opisują tę samą organizację.' : 'Today I work across executive leadership, business and technology as Director of Enterprise Architecture, Strategy & PMO. My central question is coherence: do direction, architecture, investment and execution actually describe the same organization?'}</p>
+  </section>
+
+  <section class="section personal-story" aria-labelledby="personal-story-title">
+    <div>
+      <p class="eyebrow">{x.personal.eyebrow}</p>
+      <h2 id="personal-story-title">{x.personal.title}</h2>
+    </div>
+    <div class="personal-story-copy">
+      {x.personal.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     </div>
   </section>
 
-  <section class="section about-trajectory" aria-labelledby="about-trajectory-title">
+  <section class="section trajectory-section" aria-labelledby="trajectory-title">
     <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{locale === 'pl' ? 'Ścieżka / rozwój perspektywy' : 'Trajectory / evolution of perspective'}</p>
-      <h2 id="about-trajectory-title">{locale === 'pl' ? 'Od pracy blisko wykonania do odpowiedzialności za architekturę organizacyjną.' : 'From working close to execution to accountability for organizational architecture.'}</h2>
+      <p class="eyebrow">{locale === 'pl' ? 'Trajektoria / rosnący poziom problemu' : 'Trajectory / increasing level of problem'}</p>
+      <h2 id="trajectory-title">{locale === 'pl' ? 'Każdy etap dołożył nową warstwę do tego samego pytania: jak organizacja przekłada decyzję na działanie?' : 'Each stage added a new layer to the same question: how does an organization turn a decision into action?'}</h2>
     </div>
-    <div class="trajectory-vnext trajectory-vnext-about">
-      {vx.trajectory.map((item) => (
+    <div class="career-river">
+      {x.trajectory.map((item) => (
         <article>
-          <p class="trajectory-stage-label">{item.stage}</p>
+          <div class="career-marker" aria-hidden="true"></div>
+          <p class="micro-label">{item.stage}</p>
           <h3>{item.title}</h3>
           <p>{item.body}</p>
         </article>
@@ -42,43 +53,47 @@ const vx = vnext[locale];
     </div>
   </section>
 
-  <section class="section about-operating-view" aria-labelledby="about-view-title">
+  <section class="section current-role" aria-labelledby="current-role-title">
+    <div>
+      <p class="eyebrow">{x.role.eyebrow}</p>
+      <h2 id="current-role-title">{x.role.title}</h2>
+    </div>
+    <p class="content-lead">{x.role.body}</p>
+  </section>
+
+  <section class="section personal-principles" aria-labelledby="personal-principles-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Sposób pracy' : 'Operating approach'}</p>
-        <h2 id="about-view-title">{locale === 'pl' ? 'Najpierw kontekst i decyzja. Dopiero potem model, proces albo ład decyzyjny.' : 'Context and decision first. Model, process or governance second.'}</h2>
+        <p class="eyebrow">{locale === 'pl' ? 'Sposób pracy / zasady' : 'Operating approach / principles'}</p>
+        <h2 id="personal-principles-title">{locale === 'pl' ? 'Pięć filtrów, które pomagają oddzielić ruch od postępu.' : 'Five filters that help separate motion from progress.'}</h2>
       </div>
-      <div class="about-view-copy">
-        {p.sections.map((item) => (
-          <article>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </article>
-        ))}
+      <p class="content-lead">{locale === 'pl' ? 'Nie traktuję ich jako wartości na ścianę. Każda ma wpływać na sposób definiowania problemu, prowadzenia ładu decyzyjnego i oceny decyzji.' : 'I do not treat these as values on a wall. Each should influence how a problem is framed, governance is designed and a decision is judged.'}</p>
+    </div>
+    <div class="principle-editorial-list">
+      {x.principles.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
+    </div>
+  </section>
+
+  <section class="section credentials-section" aria-labelledby="credentials-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.credentials.eyebrow}</p>
+        <h2 id="credentials-title">{x.credentials.title}</h2>
+      </div>
+      <div class="credentials-list">
+        {x.credentials.items.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
       </div>
     </div>
   </section>
 
-  <section class="section principle-page principle-page-vnext" aria-labelledby="principles-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Pryncypia' : 'Principles'}</p>
-        <h2 id="principles-title">{ia.introTitle}</h2>
-      </div>
-      <p class="content-lead">{ia.introBody}</p>
+  <section class="section about-next" aria-labelledby="about-next-title">
+    <div>
+      <p class="eyebrow">{locale === 'pl' ? 'Dalej' : 'Next'}</p>
+      <h2 id="about-next-title">{locale === 'pl' ? 'Jeżeli interesuje Cię przede wszystkim sposób myślenia, wróć do Perspektywy. Jeżeli masz konkretny problem — napisz.' : 'If you are mainly interested in the thinking, return to Perspective. If you have a concrete problem, get in touch.'}</h2>
     </div>
-    <div class="principle-strips principle-strips-light">
-      {ia.principles.map((item) => (
-        <article>
-          <h3>{item.title}</h3>
-          <p class="principle-statement">{item.statement}</p>
-          <p>{item.practice}</p>
-        </article>
-      ))}
-    </div>
-    <div class="inline-actions">
-      <a class="button button-primary" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
-      <a class="button button-quiet" href={route(locale, 'contact')}>{editorial[locale].nav.contact}<span aria-hidden="true">→</span></a>
+    <div class="next-paths">
+      <a class="button button-primary" href={route(locale, 'writing')}>{ia.nav.writing}<span aria-hidden="true">→</span></a>
+      <a class="text-link" href={route(locale, 'contact')}>{ia.nav.contact}<span aria-hidden="true">→</span></a>
     </div>
   </section>
 </BaseLayout>
