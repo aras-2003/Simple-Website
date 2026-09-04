@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { editorial } from '../content/editorial';
+import { platformSources } from '../content/platform';
 import type { Note } from '../content/notes';
 import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; note: Note; }
@@ -8,15 +9,40 @@ const { locale, note } = Astro.props;
 const ia = editorial[locale];
 const title = `${note.title} — Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
+const sourceSets: Record<string, { label: string; href: string }[]> = {
+  'Enterprise Architecture': [
+    { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
+    { label: 'MIT CISR · Enterprise Architecture as Strategy', href: platformSources.mitCisrBook },
+    { label: 'McKinsey · 7-S Framework', href: platformSources.mckinsey7s },
+  ],
+  'Portfolio & PMO': [
+    { label: 'BCG · Corporate Transformation · 2024', href: platformSources.bcgTransformation },
+    { label: 'PMI · Pulse of the Profession · 2024', href: platformSources.pmiPulse },
+  ],
+  'AI & Governance': [
+    { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
+    { label: 'BCG · Agile Operating Model · 2024', href: platformSources.bcgAgile },
+  ],
+  'Transformation': [
+    { label: 'BCG · Corporate Transformation · 2024', href: platformSources.bcgTransformation },
+    { label: 'McKinsey · Transformations for long-term impact', href: platformSources.mckinseyTransformation },
+    { label: 'MIT CISR · Operating model & EA', href: platformSources.mitCisrBook },
+  ],
+};
+const sources = sourceSets[note.category] ?? [];
 ---
 <BaseLayout locale={locale} routeKey="writing" title={title} description={note.dek} paths={{ pl: `/perspektywa/${note.slug}`, en: `/en/perspective/${note.slug}` }}>
-  <article class="note-page note-page-vnext">
+  <article class="note-page note-page-editorial">
     <header class="note-hero">
       <p class="eyebrow">{note.category} · {note.readTime} {ia.writing.min}</p>
       <h1>{note.title}</h1>
       <p class="page-lead">{note.dek}</p>
-      <p class="article-method-note">{locale === 'pl' ? 'Perspektywa robocza: teza do konfrontowania z danymi, benchmarkami i realnym kontekstem organizacyjnym.' : 'Working perspective: a thesis to be tested against evidence, benchmarks and real organizational context.'}</p>
+      <div class="article-thesis-label">
+        <span>Status</span>
+        <strong>{locale === 'pl' ? 'teza robocza do konfrontowania z dowodami' : 'working thesis to be tested against evidence'}</strong>
+      </div>
     </header>
+
     <div class="note-body">
       {note.sections.map((section) => (
         <section>
@@ -25,9 +51,19 @@ const base = route(locale, 'writing');
         </section>
       ))}
     </div>
-    <footer class="note-footer">
+
+    {sources.length > 0 && (
+      <aside class="article-sources" aria-labelledby="article-sources-title">
+        <p class="eyebrow">{locale === 'pl' ? 'Kontekst źródłowy' : 'Research context'}</p>
+        <h2 id="article-sources-title">{locale === 'pl' ? 'Punkty odniesienia do dalszej weryfikacji' : 'Reference points for further verification'}</h2>
+        <p>{locale === 'pl' ? 'Poniższe źródła nie są przypisem do każdego zdania. Pokazują literaturę i benchmarki, z którymi teza powinna być konfrontowana.' : 'These sources are not citations for every sentence. They show the literature and benchmarks against which the thesis should be tested.'}</p>
+        <ul>{sources.map((source) => <li><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
+      </aside>
+    )}
+
+    <footer class="note-footer note-footer-editorial">
       <a class="text-link" href={base}>← {ia.nav.writing}</a>
-      <a class="button button-primary" href={route(locale, 'contact')}>{ia.nav.contact}<span aria-hidden="true">→</span></a>
+      <a class="button button-primary" href={route(locale, 'oaf')}>{locale === 'pl' ? 'Zobacz syntezę w OAF' : 'See the synthesis in OAF'}<span aria-hidden="true">→</span></a>
     </footer>
   </article>
 </BaseLayout>
