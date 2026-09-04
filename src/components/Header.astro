@@ -10,6 +10,7 @@ const ia = editorial[locale];
 const other = alternateLocale(locale);
 const navKeys = ['writing', 'oaf', 'work', 'about', 'contact'] as const;
 const langHref = alternateHref ?? route(other, current);
+const langLabel = other.toUpperCase();
 ---
 <header class="site-header">
   <a class="brand" href={route(locale, 'home')} aria-label={`Arkadiusz Kamrowski – ${c.nav.home}`}>
@@ -21,7 +22,7 @@ const langHref = alternateHref ?? route(other, current);
     {navKeys.map((key) => (
       <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{ia.nav[key]}</a>
     ))}
-    <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
+    <a class="language-link" href={langHref} lang={other} hreflang={other}>{langLabel}</a>
   </nav>
 
   <details class="mobile-nav">
@@ -30,7 +31,7 @@ const langHref = alternateHref ?? route(other, current);
       {navKeys.map((key) => (
         <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{ia.nav[key]}</a>
       ))}
-      <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
+      <a class="language-link" href={langHref} lang={other} hreflang={other}>{langLabel}</a>
     </nav>
   </details>
 </header>
