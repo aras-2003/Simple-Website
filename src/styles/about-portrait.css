@@ -2,8 +2,8 @@
 
 .about-hero-brand {
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: clamp(20px, 2.5vw, 40px);
+  grid-template-columns: minmax(0, 1fr) 370px;
+  gap: clamp(18px, 2.2vw, 36px);
   align-items: center;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .about-portrait-primary {
-  width: 320px;
+  width: 370px;
   margin: 0;
   padding: 0 !important;
   justify-self: start;
@@ -48,24 +48,24 @@
 
 @media (max-width: 1280px) {
   .about-hero-brand {
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) 345px;
+    gap: 22px;
   }
 
   .about-portrait-primary {
-    width: 300px;
+    width: 345px;
     transform: translate(-80px, -20px);
   }
 }
 
 @media (max-width: 1080px) {
   .about-hero-brand {
-    grid-template-columns: minmax(0, 1fr) 270px;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 22px;
   }
 
   .about-portrait-primary {
-    width: 270px;
+    width: 310px;
     transform: translate(-40px, -12px);
   }
 }
@@ -78,7 +78,7 @@
   }
 
   .about-portrait-primary {
-    width: min(64vw, 230px);
+    width: min(68vw, 250px);
     margin: 0;
     justify-self: start;
     align-self: start;
