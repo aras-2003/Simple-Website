@@ -4,24 +4,24 @@ import type { Locale } from '../lib/site';
 interface Props { locale: Locale; id: string; compact?: boolean; }
 const { locale, id, compact = false } = Astro.props;
 const labels = locale === 'pl'
-  ? [
-      { title: 'Kierunek', meta: 'strategia' },
-      { title: 'Architektura', meta: 'wybory' },
-      { title: 'Priorytety', meta: 'portfel' },
-      { title: 'Dowody', meta: 'wykonanie' },
-    ]
-  : [
-      { title: 'Direction', meta: 'strategy' },
-      { title: 'Architecture', meta: 'choices' },
-      { title: 'Priorities', meta: 'portfolio' },
-      { title: 'Evidence', meta: 'execution' },
-    ];
+  ? {
+      top: { title: 'Kierunek', meta: 'strategia' },
+      right: { title: 'Architektura', meta: 'wybory' },
+      bottom: { title: 'Priorytety', meta: 'portfel' },
+      left: { title: 'Dowody', meta: 'wykonanie' },
+    }
+  : {
+      top: { title: 'Direction', meta: 'strategy' },
+      right: { title: 'Architecture', meta: 'choices' },
+      bottom: { title: 'Priorities', meta: 'portfolio' },
+      left: { title: 'Evidence', meta: 'execution' },
+    };
 const centerTitle = locale === 'pl' ? 'Spójność decyzji' : 'Decision coherence';
 const centerBody = locale === 'pl'
   ? 'Punkt ciężkości nie leży w jednym obszarze. Leży w jakości połączeń i pętli informacji zwrotnej.'
   : 'The center of gravity is not one domain. It is the quality of the connections and the feedback loop.';
 const caption = locale === 'pl'
-  ? 'OAF utrzymuje zależność między kierunkiem, architekturą, priorytetami i dowodami z wykonania. Evidence wraca do kolejnej decyzji zamiast kończyć cykl.'
+  ? 'OAF utrzymuje zależność między kierunkiem, architekturą, priorytetami i dowodami z wykonania. Dowody wracają do kolejnej decyzji zamiast kończyć cykl.'
   : 'OAF keeps direction, architecture, priorities and execution evidence connected. Evidence feeds the next decision instead of closing the cycle.';
 ---
 <figure class:list={['oaf-orbit', { 'oaf-orbit-compact': compact }]} aria-labelledby={id}>
@@ -38,10 +38,10 @@ const caption = locale === 'pl'
     <line x1="168" y1="320" x2="256" y2="320" />
   </svg>
 
-  <div class="oaf-node oaf-node-top"><span>{labels[0].meta}</span><strong>{labels[0].title}</strong></div>
-  <div class="oaf-node oaf-node-right"><span>{labels[1].meta}</span><strong>{labels[1].title}</strong></div>
-  <div class="oaf-node oaf-node-bottom"><span>{labels[2].meta}</span><strong>{labels[2].title}</strong></div>
-  <div class="oaf-node oaf-node-left"><span>{labels[3].meta}</span><strong>{labels[3].title}</strong></div>
+  <div class="oaf-node oaf-node-top"><span>{labels.top.meta}</span><strong>{labels.top.title}</strong></div>
+  <div class="oaf-node oaf-node-right"><span>{labels.right.meta}</span><strong>{labels.right.title}</strong></div>
+  <div class="oaf-node oaf-node-bottom"><span>{labels.bottom.meta}</span><strong>{labels.bottom.title}</strong></div>
+  <div class="oaf-node oaf-node-left"><span>{labels.left.meta}</span><strong>{labels.left.title}</strong></div>
 
   <div class="oaf-center">
     <span>OAF</span>
