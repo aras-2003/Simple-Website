@@ -1,61 +1,110 @@
-# Quality Audit — CEO / CIO / CTO lens
+# Quality Audit — editorial platform v3
 
-Stan: 2026-09-04, vNext.
+## Creative direction
 
-## Recenzja krytyczna
-Pytanie nie brzmi: „czy strona wygląda profesjonalnie?”. Pytanie brzmi: **czy osoba odpowiedzialna za wynik organizacji zatrzyma się na niej wystarczająco długo, żeby uznać perspektywę za użyteczną?**
+**PASS** — the site now behaves as an executive/intellectual platform rather than a personal portfolio or generic consulting site.
 
-### 1. Czy pierwsze 10 sekund są warte czasu executive?
-**PASS po vNext.** Hero nie otwiera już frameworkiem ani listą metryk. Pokazuje osobę, jej zakres i przejście do Perspektywy. Fotografia jest kotwicą zaufania, a nie dekoracją.
+Primary visual language:
+- warm paper base, cocoa and moss accents,
+- editorial typography and rules,
+- diagrams as information, not decoration,
+- limited card use,
+- no portrait on Home,
+- no arbitrary section numbering,
+- motion limited to subtle transform-based cues with reduced-motion fallback.
 
-### 2. Czy strona zaczyna od problemu odbiorcy, a nie autora?
-**PASS / nadal rozwijać.** Perspektywa pojawia się przed OAF i wykorzystuje zewnętrzne benchmarki BCG/PMI. To zmienia narrację z „mam model” na „jest realny problem systemowy; oto dowody; oto moja hipoteza”. Kolejny poziom jakości wymaga systematycznego dokładania źródeł branżowych i danych sektorowych.
+## Information architecture
 
-### 3. Czy OAF jest wiarygodny intelektualnie?
-**PASS z właściwym zastrzeżeniem.** Strona jawnie pokazuje lineage: Galbraith, Nadler/Tushman, 7-S, fit/misfit Burton/Obel, MIT CISR. Nie twierdzi, że organizational architecture została wynaleziona tutaj. Wartość OAF jest pozycjonowana jako synteza i mechanizm przejścia od kierunku przez architekturę i portfolio do evidence.
+**PASS** — primary logic is: problem → evidence → perspective → OAF → practice → author → contact.
 
-### 4. Czy OAF wnosi coś ponad zestaw znanych modeli?
-**WARUNKOWY PASS.** Najbardziej obiecujący element to pętla decyzji oraz włączenie portfolio i evidence jako pierwszorzędnych elementów architektury wykonania. To powinno być dalej rozwijane przez:
-- formalne typy decyzji,
-- artefakty wejścia/wyjścia,
-- ownership,
-- przykładowe decision cadence,
-- mierniki misfit,
-- case studies.
-Bez tego OAF pozostaje dobrą syntezą, ale jeszcze nie pełną metodą.
+Business effect: executive visitors can recognize relevance before being asked to care about OAF or the author.
 
-### 5. Czy Praktyka pokazuje, co to zmienia w realnej organizacji?
-**PASS po vNext.** Zamiast czterech etykiet są pytania, rezultaty oraz dokładne interfejsy między strategią, architekturą, portfolio i wykonaniem. „Misfit signals” są szczególnie wartościowe dla executive, bo pozwalają rozpoznać problem bez wdrażania modelu.
+## Home
 
-### 6. Czy autor ma wiarygodność niezależną od stanowiska?
-**PASS.** Trajektoria delivery → architecture/transformation → strategy/portfolio/governance → executive synthesis jest silniejsza niż vanity metrics. Nadal brakuje jednego elementu o najwyższej sile dowodowej: 2–3 bezpiecznych, zanonimizowanych przypadków z problemem, decyzją i rezultatem.
+**PASS** — portrait, role, credentials and detailed trajectory removed. Home is a landing page with nine narrative beats and clear paths deeper into the platform.
 
-### 7. Czy treść jest wystarczająco ostra?
-**PASS / do dalszego ostrzenia.** Najmocniejsze są tezy falsyfikowalne: portfolio ujawnia prawdziwą strategię; governance powinno pozwalać evidence odwracać decyzję; architektura musi wpływać na alokację kapitału. Unikać ogólnych zdań, których nikt rozsądny nie zakwestionuje.
+Potential refinement: visual review of hero line breaks at 1440–1920 px.
 
-### 8. Czy design wspiera logikę?
-**PASS po vNext.** Usunięta mikro-numeracja, mniej pseudo-technicznych tabel, jedna bezpieczna wizualizacja OAF, evidence jako wyraźny akt narracji, personal story w About. OAF na mobile staje się liniowy zamiast wymuszać ryzykowną geometrię.
+## Perspective
 
-## Największe pozostałe braki
-### P1 — Evidence depth
-Każdy główny tekst Perspektywy powinien docelowo mieć 2–5 źródeł: benchmark, badanie, dane sektorowe lub wiarygodny case.
+**PASS** — evidence appears before OAF; one featured essay is prioritized over a wall of equal cards; publishing contract is explicit.
 
-### P1 — Case evidence
-Dodać 2–3 zanonimizowane przypadki: napięcie → decyzja → mechanizm → obserwowalny rezultat. Bez nazw klientów i poufnych liczb, jeśli nie ma zgody.
+**P2 FIX** — add claim-level references and fuller bibliographies to each essay as the research layer matures.
 
-### P2 — Formalizacja OAF
-Doprecyzować metamodel: decision objects, owners, cadence, evidence types, dependencies i mechanizm zmiany decyzji.
+## OAF
 
-### P2 — Personal voice
-Dodać kilka krótkich obserwacji z praktyki, których nie da się napisać wyłącznie na podstawie literatury. To ma być różnica między dobrym research summary a marką eksperta.
+**PASS** — organizational architecture is explicitly presented as an established field. OAF is an evolving synthesis, not an invention claim.
 
-## Pre-launch
-- IA: PASS
-- Logic problem → evidence → response → application → author → contact: PASS
-- OAF intellectual provenance: PASS
-- PL/EN navigation model: PASS
-- Personal narrative: PASS
-- Contact path: PASS
-- Formal OAF metamodel: FIX before claiming a complete methodology
-- Case studies: FIX when publication-safe material exists
-- Manual accessibility / assistive technology: FIX before formal WCAG compliance claim
+**PASS** — intellectual lineage precedes the proprietary synthesis.
+
+**PASS** — model moves from definition → lineage → gap → model → dimensions → misfit → principles → boundaries → application.
+
+**P2 FIX** — formalize decision objects, roles/owners, cadence and evidence taxonomy before calling OAF a mature methodology.
+
+## OAF diagram
+
+**PASS by design** — labels are independent semantic layout elements; SVG geometry is decorative underneath. No text is placed directly on crossing SVG paths.
+
+Mobile fallback is linear rather than a compressed orbit.
+
+## Practice
+
+**PASS** — interface/problem logic appears before competency/toolbox logic. The page no longer resembles a consulting service catalogue.
+
+**P1 HOLD** — do not add fabricated case studies. Publish only anonymized cases with safe scope and defendable outcomes.
+
+## About
+
+**PASS** — the professional portrait is concentrated here. Biography is structured as an evolution of problem scale: technology/execution → architecture/transformation → strategy/portfolio/PMO → executive synthesis.
+
+Credentials sit below the argument and trajectory.
+
+## Content graduation
+
+**PASS** — each page has a distinct abstraction level:
+- Home: executive recognition,
+- Perspective: evidence and hypotheses,
+- OAF: theory and model,
+- Practice: diagnostic/application level,
+- About: provenance and credibility,
+- Contact: action.
+
+No page should jump directly from a market statistic into implementation mechanics without an intermediate thesis/model.
+
+## Content provenance
+
+**PASS** — BCG and McKinsey statistics are source-linked and dated. MIT CISR, Galbraith, 7-S and fit/misfit are treated as external intellectual lineage.
+
+**P2 FIX** — keep expanding primary/authoritative sources; avoid over-reliance on consulting benchmarks for the long-term research moat.
+
+## Accessibility
+
+Implementation preserves semantic headings, lists, figure captions, keyboard links, reduced-motion fallback and a linear mobile OAF representation.
+
+**CI REQUIRED** — Astro/Playwright/axe must pass after the final commit.
+
+**MANUAL FIX BEFORE FORMAL CLAIM** — VoiceOver/Safari, NVDA/Chrome or Firefox, keyboard-only and 200–400% zoom review remain required.
+
+## SEO
+
+Localized canonical paths remain:
+- PL: /perspektywa, /oaf, /praktyka, /o-mnie, /kontakt
+- EN: /en/perspective, /en/oaf, /en/practice, /en/about, /en/contact
+
+JSON-LD now describes the property primarily as a WebSite with a linked Person author rather than presenting every page as a Person entity.
+
+## Pre-launch checklist
+
+- Value proposition: PASS
+- Home as landing: PASS
+- Perspective before OAF: PASS
+- OAF provenance: PASS
+- Theory → application graduation: PASS
+- Portrait placement: PASS
+- PL/EN route consistency: PASS
+- Contact form architecture: PASS (production secrets still required for live delivery)
+- Automated WCAG: CI REQUIRED
+- Container/Trivy: CI REQUIRED
+- Manual browser visual review: FIX before public launch
+- Manual assistive-technology audit: FIX before formal WCAG claim
+- Real anonymized case studies: HOLD until publishable evidence exists
