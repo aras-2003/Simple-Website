@@ -11,7 +11,7 @@ const requiredRoutes = [
   '/en', '/en/about', '/en/oaf', '/en/practice', '/en/perspective', '/en/contact', '/en/privacy',
   ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ];
-const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view'];
+const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -57,6 +57,29 @@ for (const route of requiredRoutes) {
   }
 }
 
+const home = await readFile(routeFile('/'), 'utf8');
+if (home.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/: portrait must not appear on Home');
+if (home.includes('Dyrektor Departamentu Architektury Korporacyjnej')) errors.push('/: current role must not appear on Home');
+if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
+for (const cls of ['problem-section', 'evidence-section', 'thesis-section', 'oaf-teaser', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
+  if (!home.includes(cls)) errors.push(`/: missing narrative section ${cls}`);
+}
+const homeOrder = ['problem-section', 'evidence-section', 'thesis-section', 'oaf-teaser', 'perspective-teaser', 'practice-teaser', 'author-teaser'].map((token) => home.indexOf(token));
+for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: narrative depth order is incorrect');
+
+const about = await readFile(routeFile('/o-mnie'), 'utf8');
+if (!about.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/o-mnie: portrait expected on About');
+if (!about.includes('career-river')) errors.push('/o-mnie: career trajectory expected');
+
+const perspective = await readFile(routeFile('/perspektywa'), 'utf8');
+if (!perspective.includes('evidence-ledger')) errors.push('/perspektywa: evidence ledger expected');
+if (!perspective.includes('publishing-standard')) errors.push('/perspektywa: publishing standard expected');
+
+const oaf = await readFile(routeFile('/oaf'), 'utf8');
+for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'boundary-list']) {
+  if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
+}
+
 const allFiles = await walk(dist);
 for (const file of allFiles.filter(f => f.endsWith('.html'))) {
   const html = await readFile(file, 'utf8');
@@ -68,4 +91,4 @@ if (errors.length) {
   errors.forEach(e => console.error(`- ${e}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical localized routes checked`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical localized routes checked + narrative architecture gates`);
