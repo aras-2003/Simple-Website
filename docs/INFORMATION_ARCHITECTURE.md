@@ -1,14 +1,30 @@
-# Information Architecture — editorial platform
+# Information Architecture – editorial platform
 
 ## Product thesis
 
-The site is not a personal CV with a framework attached. It is an executive/intellectual platform with a named author.
+The site is not a personal CV with a framework attached. It is an executive/intellectual platform with a named author and a clear professional brand.
 
 The primary narrative is:
 
 **problem → evidence → perspective → synthesis (OAF) → application → author → contact**
 
 This order is deliberate. A CEO/CIO/CTO should first recognize a problem worth thinking about, not be asked to care about the author's framework or biography.
+
+## One information architecture, two translations
+
+PL and EN use the same route keys and the same page structure. English differs only by the `/en` prefix and translated content.
+
+Canonical pairs:
+- `/` ↔ `/en`
+- `/about` ↔ `/en/about`
+- `/oaf` ↔ `/en/oaf`
+- `/work` ↔ `/en/work`
+- `/writing` ↔ `/en/writing`
+- `/contact` ↔ `/en/contact`
+- `/privacy` ↔ `/en/privacy`
+- `/writing/<slug>` ↔ `/en/writing/<slug>`
+
+The language switch preserves the current page and, for essays, the current article slug.
 
 ## Primary navigation
 
@@ -20,24 +36,23 @@ This order is deliberate. A CEO/CIO/CTO should first recognize a problem worth t
 
 The name/brand links to Home. Home is a landing hub and is not repeated in the primary nav.
 
-## Home — manifest / landing
+## Home – lightweight manifest / landing
 
-Purpose: create recognition and curiosity in 30–60 seconds.
+Purpose: create recognition and curiosity without reproducing the deep pages.
 
 Sequence:
-1. Hero: the systemic problem; no portrait, role, education or credentials.
-2. Problem: four places where locally rational choices create system-level incoherence.
-3. Evidence: three market/research signals proving material consequences.
-4. Thesis: the organization as an architecture of decisions.
-5. OAF teaser: OAF as a response, not a starting point.
-6. Perspective teaser: selected theses / essays.
-7. Practice teaser: four decision interfaces.
-8. Author teaser: one paragraph explaining the source of the perspective; no portrait or CV.
-9. Close: route into contact or deeper content.
+1. Hero: the systemic problem; no portrait, employment title, education or credentials.
+2. Problem: three representative places where locally rational choices create system-level incoherence.
+3. Evidence: two market/research signals, presented as a compact proof layer rather than a research section.
+4. OAF teaser: OAF as a response, not a starting point.
+5. Three deeper paths: Perspective, Practice and About.
+6. Close: route into contact.
 
-Visual grammar: large editorial type, decision field, horizontal tension rows, evidence ledger, decision chain, restrained OAF preview.
+Home deliberately does **not** contain the full decision-chain thesis, essay previews, full practice-interface map or author biography. Those belong one level deeper.
 
-## Perspective — research editorial
+Visual grammar: large editorial type, compact decision field, horizontal tension rows, two-signal evidence layer, restrained OAF preview and one compact path selector.
+
+## Perspective – research editorial
 
 Purpose: establish the problem space and evidence base before presenting OAF.
 
@@ -50,9 +65,11 @@ Sequence:
 6. Publishing standard: observation → evidence → implication.
 7. Bridge: OAF as a synthesis that follows from recurring evidence.
 
+Essay cards use category labels without reading-time estimates. Reading depth is communicated by structure and copy, not artificial precision such as “6 min”.
+
 Visual grammar: research notes, ledger, one featured article, compact editorial library. No generic blog-card wall.
 
-## OAF — intellectual product
+## OAF – intellectual product
 
 Purpose: explain the synthesis with intellectual honesty and increasing specificity.
 
@@ -60,18 +77,18 @@ Sequence:
 1. Hero: OAF as an integrating decision loop.
 2. Definition of organizational architecture; explicit statement that it predates OAF.
 3. Intellectual lineage: Galbraith, 7-S, fit/misfit, MIT CISR / operating model + EA.
-4. Gap: what organization design, EA, portfolio/governance and execution each solve — and what remains between them.
+4. Gap: what organization design, EA, portfolio/governance and execution each solve, and what remains between them.
 5. Full OAF visual: Direction / Architecture / Priorities / Evidence around Decision Coherence.
 6. Layer deep dive: one question and decision meaning per dimension.
 7. Fit/misfit examples: concrete contradictions in real operating models.
 8. Principles: quality standards for the decision system.
 9. Boundaries: what OAF does not replace.
-10. Applications: when a cross-system view earns its place.
+10. Applications: when a cross-system view earns its place, presented as a continuous editorial list.
 11. Next: Practice or Perspective, not an immediate sales push.
 
 Visual grammar: intellectual lineage river, convergence field, collision-safe circular diagram on desktop, linear semantic fallback on mobile.
 
-## Practice — executive problem solving
+## Practice – executive problem solving
 
 Purpose: answer “what does this look like in real work?” without becoming a consulting-services catalogue.
 
@@ -81,28 +98,32 @@ Sequence:
 3. Each interface: question → problem → signal → decision.
 4. Toolbox: EA, Strategy & Transformation, Portfolio & PMO, AI & Technology as tools, not offers.
 5. Operating method: locate misfit → criteria → choice → evidence → close loop.
-6. Contexts where this thinking is useful.
-7. Proof note: no fabricated case studies; publish only safe, useful anonymized cases.
+6. Six anonymized experience-based case studies: technology strategy, reference models, portfolio rationalization, euro-impact analysis, governance and PMO.
+7. Contexts where this thinking is useful.
 8. Next: OAF or About.
 
-Visual grammar: long-form interface rows, method rail, restrained toolbox matrix.
+Case studies use four layers: **context → challenge → approach → value**. They do not contain invented organizations, confidential details or unsupported KPIs.
 
-## About — editorial biography / credibility
+Visual grammar: long-form interface rows, method rail and a continuous case-study ledger rather than a wall of cards.
 
-Purpose: explain who the author is only after the reader has seen the ideas.
+## About – personal brand / credibility
+
+Purpose: explain the source of the perspective without tying the brand to one employer or employment title.
 
 Sequence:
-1. Hero with the professional portrait.
+1. Hero with a restrained professional portrait.
 2. Personal story: delivery/technology → EA → transformation → strategy/portfolio/PMO.
-3. Career river: evolution of problem scale, not a list of job titles.
-4. Current role and present scope.
+3. Brand profile: the professional role defined by the intersection of disciplines, not by an employer-specific title.
+4. Trajectory river: evolution of problem scale and perspective.
 5. Working principles.
-6. Credentials: 10+ years, Kozminski/MBA, certifications, public speaking — deliberately lower in hierarchy.
+6. Credentials: 10+ years, Kozminski/MBA, certifications, public speaking – deliberately lower in hierarchy.
 7. Next: Perspective or Contact.
 
-Visual grammar: portrait, long-form biography, trajectory river, dark current-role field, editorial credentials.
+The site must not describe the brand through a current employer or a director/executive title. Employment history may be discussed in future only when it serves the narrative and is factually current.
 
-## Contact — minimal conversion
+Visual grammar: smaller portrait, long-form biography, trajectory river, dark brand-profile field and editorial credentials.
+
+## Contact – minimal conversion
 
 Purpose: make a useful first contact easy.
 
@@ -124,7 +145,7 @@ Content should not jump from a market-level statement directly to implementation
 ## Linking rule
 
 Each page exposes at most two strong next paths:
-- Home → Perspective / OAF (plus lower-priority Practice/About/Contact later in the page)
+- Home → Perspective / OAF, with lower-priority Practice/About/Contact later in the page
 - Perspective → OAF / related essay
 - OAF → Practice / Perspective
 - Practice → OAF / About
