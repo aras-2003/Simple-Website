@@ -1,45 +1,54 @@
-/* About portrait presentation only. The source image is not retouched or regenerated. */
+/* About portrait presentation: compact square image, no framing or caption. */
 
 .about-hero-brand {
-  min-height: min(560px, calc(100svh - var(--header)));
-  grid-template-columns: minmax(0, 1.55fr) minmax(220px, .45fr);
-  gap: clamp(40px, 6vw, 96px);
+  min-height: min(540px, calc(100svh - var(--header)));
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
+  gap: clamp(28px, 4vw, 56px);
   align-items: center;
 }
 
 .about-portrait-primary {
-  width: min(100%, 260px);
+  width: min(100%, 280px);
   margin: 0;
-  justify-self: end;
+  padding: 0 !important;
+  justify-self: start;
+  background: transparent !important;
+  border: 0 !important;
+  border-block: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.about-portrait-primary::before,
+.about-portrait-primary::after {
+  display: none !important;
+  content: none !important;
 }
 
 .about-portrait-primary img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: none;
-  aspect-ratio: auto;
-  object-fit: contain;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   object-position: center;
+  border: 0;
+  box-shadow: none;
 }
 
 .about-portrait-primary figcaption {
-  max-width: 260px;
-  margin-top: 10px;
-  font-size: 10px;
-  line-height: 1.45;
-  opacity: .72;
+  display: none !important;
 }
 
 @media (max-width: 1080px) {
   .about-hero-brand {
-    grid-template-columns: minmax(0, 1fr) 220px;
-    gap: 36px;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 30px;
   }
 
   .about-portrait-primary {
-    width: 220px;
-    justify-self: end;
+    width: 240px;
+    justify-self: start;
   }
 }
 
@@ -47,14 +56,11 @@
   .about-hero-brand {
     grid-template-columns: 1fr;
     min-height: 0;
+    gap: 28px;
   }
 
   .about-portrait-primary {
-    width: min(58vw, 210px);
+    width: min(68vw, 230px);
     justify-self: start;
-  }
-
-  .about-portrait-primary figcaption {
-    max-width: 210px;
   }
 }
