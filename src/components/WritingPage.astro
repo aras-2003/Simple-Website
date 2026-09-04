@@ -16,40 +16,41 @@ const notes = getNotes(locale);
 const [featured, ...rest] = notes;
 const perspectiveBase = route(locale, 'writing');
 const noteHref = (slug: string) => `${perspectiveBase}/${slug}`;
-const pageTitle = locale === 'pl' ? 'Perspektywa — dane, benchmarki i tezy' : 'Perspective — evidence, benchmarks and theses';
+const td = (value: string) => value.replaceAll('—', '–');
+const pageTitle = locale === 'pl' ? 'Perspektywa – dane, benchmarki i tezy' : 'Perspective – evidence, benchmarks and theses';
 const pageDescription = locale === 'pl'
   ? 'Badania, benchmarki i tezy o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji, AI i ładzie decyzyjnym.'
   : 'Research, benchmarks and theses on organizational architecture, enterprise architecture, strategy, portfolio, transformation, AI and governance.';
 ---
 <BaseLayout locale={locale} routeKey="writing" title={pageTitle} description={pageDescription}>
-  <PageHero eyebrow={x.perspective.hero.eyebrow} headline={x.perspective.hero.title} lead={x.perspective.hero.lead} />
+  <PageHero eyebrow={td(x.perspective.hero.eyebrow)} headline={td(x.perspective.hero.title)} lead={td(x.perspective.hero.lead)} />
 
   <section class="section research-lens" aria-labelledby="research-lens-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{x.perspective.manifesto.eyebrow}</p>
-        <h2 id="research-lens-title">{x.perspective.manifesto.title}</h2>
+        <p class="eyebrow">{td(x.perspective.manifesto.eyebrow)}</p>
+        <h2 id="research-lens-title">{td(x.perspective.manifesto.title)}</h2>
       </div>
-      <p class="content-lead">{x.perspective.manifesto.body}</p>
+      <p class="content-lead">{td(x.perspective.manifesto.body)}</p>
     </div>
     <div class="question-ledger">
-      {x.perspective.manifesto.questions.map((question) => <p>{question}</p>)}
+      {x.perspective.manifesto.questions.map((question) => <p>{td(question)}</p>)}
     </div>
   </section>
 
   <section class="section evidence-section evidence-section-deep" aria-labelledby="perspective-evidence-title">
     <div class="section-intro section-intro-wide">
       <p class="eyebrow">{locale === 'pl' ? 'Dowody / benchmarki' : 'Evidence / benchmarks'}</p>
-      <h2 id="perspective-evidence-title">{x.perspective.evidenceTitle}</h2>
+      <h2 id="perspective-evidence-title">{td(x.perspective.evidenceTitle)}</h2>
     </div>
     <div class="evidence-ledger evidence-ledger-deep">
       {x.evidence.map((item) => (
         <article class="evidence-note">
           <p class="evidence-value">{item.value}</p>
           <div>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-            <a href={item.href} target="_blank" rel="noopener noreferrer">{item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
+            <h3>{td(item.title)}</h3>
+            <p>{td(item.body)}</p>
+            <a href={item.href} target="_blank" rel="noopener noreferrer">{item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> – {c.externalNewTab}</span></a>
           </div>
         </article>
       ))}
@@ -60,11 +61,11 @@ const pageDescription = locale === 'pl'
     <section class="section featured-essay" aria-labelledby="featured-essay-title">
       <div class="featured-essay-meta">
         <p class="eyebrow">{locale === 'pl' ? 'Tekst otwierający' : 'Featured essay'}</p>
-        <p class="micro-label">{featured.category} · {featured.readTime} {ia.writing.min}</p>
+        <p class="micro-label">{featured.category}</p>
       </div>
       <div class="featured-essay-copy">
-        <h2 id="featured-essay-title"><a href={noteHref(featured.slug)}>{featured.title}</a></h2>
-        <p>{featured.dek}</p>
+        <h2 id="featured-essay-title"><a href={noteHref(featured.slug)}>{td(featured.title)}</a></h2>
+        <p>{td(featured.dek)}</p>
         <a class="text-link" href={noteHref(featured.slug)}>{ia.writing.read}<span aria-hidden="true">→</span></a>
       </div>
     </section>
@@ -81,9 +82,9 @@ const pageDescription = locale === 'pl'
     <div class="editorial-library-list">
       {rest.map((note) => (
         <article>
-          <div class="note-meta"><span>{note.category}</span><span>{note.readTime} {ia.writing.min}</span></div>
-          <h3><a href={noteHref(note.slug)}>{note.title}</a></h3>
-          <p>{note.dek}</p>
+          <div class="note-meta"><span>{note.category}</span></div>
+          <h3><a href={noteHref(note.slug)}>{td(note.title)}</a></h3>
+          <p>{td(note.dek)}</p>
           <a class="text-link" href={noteHref(note.slug)}>{ia.writing.read}<span aria-hidden="true">→</span></a>
         </article>
       ))}
@@ -93,12 +94,12 @@ const pageDescription = locale === 'pl'
   <section class="section publishing-standard" aria-labelledby="publishing-standard-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{x.perspective.method.eyebrow}</p>
-        <h2 id="publishing-standard-title">{x.perspective.method.title}</h2>
+        <p class="eyebrow">{td(x.perspective.method.eyebrow)}</p>
+        <h2 id="publishing-standard-title">{td(x.perspective.method.title)}</h2>
       </div>
       <div class="standard-flow">
         {x.perspective.method.items.map((item) => (
-          <article><h3>{item.title}</h3><p>{item.body}</p></article>
+          <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>
         ))}
       </div>
     </div>
@@ -106,11 +107,11 @@ const pageDescription = locale === 'pl'
 
   <section class="section perspective-bridge" aria-labelledby="perspective-bridge-title">
     <div>
-      <p class="eyebrow">{x.perspective.bridge.eyebrow}</p>
-      <h2 id="perspective-bridge-title">{x.perspective.bridge.title}</h2>
+      <p class="eyebrow">{td(x.perspective.bridge.eyebrow)}</p>
+      <h2 id="perspective-bridge-title">{td(x.perspective.bridge.title)}</h2>
     </div>
     <div>
-      <p class="content-lead">{x.perspective.bridge.body}</p>
+      <p class="content-lead">{td(x.perspective.bridge.body)}</p>
       <a class="button button-primary" href={route(locale, 'oaf')}>{x.perspective.bridge.cta}<span aria-hidden="true">→</span></a>
     </div>
   </section>
