@@ -1,0 +1,8 @@
+{
+  "site_name": "Arkadiusz Kamrowski",
+  "base_url": "http://localhost:8080",
+  "linkedin_url": "https://pl.linkedin.com/in/arkadiusz-kamrowski",
+  "locale": "pl_PL",
+  "production_host": "arkadiuszkamrowski.pl",
+  "image_repository": "personal-site"
+}
