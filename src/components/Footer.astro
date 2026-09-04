@@ -1,0 +1,14 @@
+---
+import { copy } from '../i18n/content';
+import { site, type Locale } from '../lib/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const c = copy[locale];
+---
+<footer class="site-footer">
+  <span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span>
+  <span>{c.footer}</span>
+  <a href={site.linkedIn} target="_blank" rel="noopener noreferrer">
+    LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> — {c.externalNewTab}</span>
+  </a>
+</footer>

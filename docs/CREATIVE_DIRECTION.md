@@ -19,4 +19,4 @@ Strona działa jak schemat architektoniczny: siatka, rytm, numeracja, warstwy, m
 System font stack (Helvetica Neue / Helvetica / Arial), celowo bez zewnętrznych fontów: prywatność, wydajność, brak FOIT/FOUT. Duża, ciasna typografia nagłówkowa; tekst 13–18 px z ograniczoną szerokością.
 
 ## Motion language
-Reveal 700–800 ms, cubic-bezier(.22,1,.36,1), małe translacje, jedna animacja systemowa w hero. Bez custom cursora i scroll hijackingu. `prefers-reduced-motion` wyłącza ruch.
+Ruch jest celowo ograniczony: krótkie stany hover/focus i naturalny scroll. Nie ma reveal-on-scroll, custom cursora ani scroll hijackingu. Strona nie wymaga JavaScriptu do działania, a `prefers-reduced-motion` wyłącza smooth scrolling i przejścia.

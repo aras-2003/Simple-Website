@@ -37,6 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
@@ -47,8 +50,8 @@ jobs:
       - name: Pre-deploy validation
         run: |
           python3 scripts/predeploy_check.py --site-base-url "${{ inputs.site_base_url }}" --host "${{ inputs.host }}" --namespace "${{ inputs.namespace }}"
-          PRODUCTION=1 SITE_BASE_URL="${{ inputs.site_base_url }}" python3 scripts/build.py
-          python3 scripts/validate.py
+          npm install --no-audit --no-fund
+          SITE_BASE_URL="${{ inputs.site_base_url }}" npm run test:static
       - name: Azure login via OIDC
         uses: azure/login@v3
         with:
@@ -70,7 +73,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: |
             SITE_BASE_URL=${{ inputs.site_base_url }}
-            PRODUCTION=1
           tags: |
             ${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}
             ${{ vars.ACR_NAME }}.azurecr.io/personal-site:latest

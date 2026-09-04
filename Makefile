@@ -1,13 +1,22 @@
-.PHONY: build test chatgpt-test dev mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y audit dev mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+
+install:
+	npm install --no-audit --no-fund
 
 build:
-	python3 scripts/build.py
+	npm run build
+
+check:
+	npm run check
 
 test:
 	bash scripts/test.sh
 
-chatgpt-test:
-	bash scripts/chatgpt-test.sh
+test-a11y:
+	npx playwright install chromium
+	npm run test:a11y
+
+audit: test test-a11y
 
 dev:
 	bash scripts/dev.sh
@@ -18,8 +27,7 @@ mac-demo:
 mac-stop:
 	bash scripts/mac-stop.sh
 
-browser-test:
-	bash scripts/browser-test.sh
+browser-test: test-a11y
 
 docker-build:
 	docker build -t arkadiusz-kamrowski-site:local .
@@ -43,4 +51,4 @@ k8s-render:
 	python3 scripts/render-k8s.py --image "$${IMAGE:?set IMAGE}" --host "$${HOST:?set HOST}"
 
 clean:
-	rm -rf dist artifacts rendered-k8s.yaml rendered-k8s-local.yaml .local-server.pid .local-server.log .k8s-port-forward.pid .k8s-port-forward.log
+	rm -rf dist node_modules .astro artifacts rendered-k8s.yaml rendered-k8s-local.yaml .local-server.pid .local-server.log .k8s-port-forward.pid .k8s-port-forward.log

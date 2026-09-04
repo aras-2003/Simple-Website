@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+import '../styles/responsive.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { absoluteUrl, route, type Locale, type RouteKey } from '../lib/site';
+import { copy } from '../i18n/content';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+}
+
+const { locale, routeKey, title, description } = Astro.props;
+const c = copy[locale];
+const canonicalPath = route(locale, routeKey);
+const plPath = route('pl', routeKey);
+const enPath = route('en', routeKey);
+const canonical = absoluteUrl(canonicalPath, Astro.site);
+const plUrl = absoluteUrl(plPath, Astro.site);
+const enUrl = absoluteUrl(enPath, Astro.site);
+const ogLocale = locale === 'pl' ? 'pl_PL' : 'en_US';
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Arkadiusz Kamrowski',
+  url: absoluteUrl('/', Astro.site),
+  sameAs: ['https://pl.linkedin.com/in/arkadiusz-kamrowski'],
+  jobTitle: locale === 'pl' ? 'Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO' : 'Director of Enterprise Architecture, Strategy & PMO',
+  knowsAbout: ['Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Technology', 'AI Governance'],
+});
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d0f" />
+    <meta name="color-scheme" content="dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pl" href={plUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={plUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:image" content={absoluteUrl('/assets/og-card.svg', Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json" set:html={jsonLd}></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{c.skipMain}</a>
+    <div class="page-grid" aria-hidden="true"></div>
+    <Header locale={locale} current={routeKey} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

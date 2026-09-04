@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import { copy } from '../i18n/content';
+import { site, type Locale } from '../lib/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const c = copy[locale];
+const p = c.pages.writing;
+---
+<BaseLayout locale={locale} routeKey="writing" title={p.title} description={p.description}>
+  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+  <section class="section" aria-labelledby="themes-title">
+    <h2 id="themes-title" class="display-small">{p.themesTitle}</h2>
+    <div class="themes-list">
+      {p.themes.map((theme, index) => (
+        <article><span>{String(index + 1).padStart(2, '0')}</span><h3 lang="en">{theme.title}</h3><p>{theme.body}</p></article>
+      ))}
+    </div>
+  </section>
+  <section class="section empty-state" aria-label={locale === 'pl' ? 'Status publikacji' : 'Publication status'}>
+    <p>{p.empty}</p>
+    <a class="button button-primary" href={site.linkedIn} target="_blank" rel="noopener noreferrer">{p.cta}<span aria-hidden="true">↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
+  </section>
+</BaseLayout>

@@ -13,23 +13,24 @@ check() {
   fi
 }
 
-check python3 "required for build/test"
+check node "Node.js 22+ required for Astro"
+check npm "npm required for dependencies/build"
+check python3 "used by localhost server and Kubernetes render helpers"
 check curl "required for smoke tests"
+
+if command -v node >/dev/null 2>&1; then
+  major="$(node -p 'process.versions.node.split(`.`)[0]')"
+  if (( major < 22 )); then
+    echo "MISS  node-version Node.js 22+ required"
+    missing=1
+  fi
+fi
 
 if [[ "$mode" == "full" ]]; then
   check docker "required for container tests"
   check kubectl "required for Kubernetes deployment"
-  check az "required for Azure provisioning/deploy"
-  check helm "required by scripts/k8s-prereqs.sh"
-fi
-
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  if [[ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]] || command -v chromium >/dev/null 2>&1; then
-    echo "PASS  browser      Chrome/Chromium detected"
-  else
-    echo "MISS  browser      install Google Chrome or Chromium for browser smoke tests"
-    missing=1
-  fi
+  check az "required only for future Azure provisioning"
+  check helm "required only by future production Kubernetes prerequisites"
 fi
 
 exit "$missing"

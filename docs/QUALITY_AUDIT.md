@@ -1,24 +1,28 @@
-# Quality Audit
+# Quality + Pre-launch Audit
 
-## Creative director audit
-| Problem | Severity | Wpływ | Priorytet | Konkretna poprawka |
-|---|---|---|---|---|
-| Brak autorskiej fotografii / portretu | Medium | Mniej „human signal” i zaufania | P1 | Dodać 1 portret editorial, nie stock; hero może pozostać typograficzny |
-| OAF pozostaje working modelem v1 | Low | Zakres świadomie ograniczony względem przyszłego pełnego frameworka | P2 | Rozwinąć nazwę, metamodel i osobną stronę `/oaf` w v2, bez blokowania v1 |
-| Brak case studies | Medium | Mniej dowodów wykonawczych | P1 | Dodać 2–3 anonimizowane case studies: problem → decyzja → outcome |
-| Brak wersji EN | Low/Medium | Mniejszy zasięg międzynarodowy | P2 | Dodać /en po stabilizacji copy PL |
-| Brak analytics | Low na start | Brak danych o konwersji | P2 | Włączyć dopiero po decyzji privacy/consent; preferować privacy-first |
+## Current architecture audit
 
-## Pre-launch audit
-- Visual quality / storytelling: **PASS**
-- UX i CTA: **PASS**
-- Responsive desktop/mobile: **FIX przed deployem — statyczny layout zweryfikowany, ale wymagany real-browser pixel audit na macOS/CI; Chromium w sandboxie ChatGPT nie uruchomił się stabilnie**
-- Reduced motion: **PASS**
-- Accessibility baseline: **PASS**
-- SEO baseline: **PASS lokalnie; FIX domain/canonical przed deployem**
-- Security headers: **PASS w NGINX**
-- Container non-root: **PASS w konfiguracji**
-- Kubernetes probes/resources/PDB/HPA: **PASS w konfiguracji**
-- Production DNS/TLS: **FIX przed deployem**
-- Analytics/tracking: **PASS — celowo wyłączone**
-- OAF v1 copy: **PASS — zatwierdzony jako working model**
+| Area | Severity | Status | Impact / implementation |
+|---|---|---|---|
+| Astro SSG architecture | — | PASS | Static HTML, no client framework/runtime dependency. |
+| PL/EN route parity | — | PASS | Five routes mirrored 1:1, language switch preserves context. |
+| WCAG 2.2 AA engineering baseline | P0 | PASS by implementation | Semantic HTML, keyboard, focus, contrast tokens, reflow, reduced motion, target size. |
+| Automated accessibility | P0 | PASS when CI green | Axe + Playwright across all localized routes and mobile/desktop. |
+| Manual AT audit | P1 | FIX before public claim | VoiceOver + NVDA and zoom/reflow audit required before claiming formal conformance. |
+| Authentic portrait | P1 | OPEN | Add only if a strong editorial portrait improves trust without weakening performance. |
+| Case studies | P1 | OPEN | Publish 2–3 anonymized cases only after content approval. |
+| Analytics | P2 | INTENTIONALLY OFF | No tracker until privacy/measurement decision. |
+| Azure/public deployment | — | DISABLED | Future-ready blueprint remains outside active workflows. |
+
+## Pre-launch
+
+- Visual hierarchy/storytelling: PASS
+- Localized PL/EN IA: PASS
+- SEO/canonical/hreflang: PASS by configuration; final domain must be supplied at build
+- Keyboard/focus semantics: PASS by implementation
+- Reduced motion / responsive reflow: PASS by implementation
+- Automated WCAG gate: must be green in CI
+- Manual assistive technology audit: FIX before formal conformance claim
+- Docker/Kubernetes configuration: PASS by configuration
+- Production DNS/TLS: intentionally not configured
+- Analytics: intentionally off

@@ -1,56 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
 PORT="${PORT:-8080}"
 HOST="127.0.0.1"
+command -v node >/dev/null || { echo "Node.js 22+ is required. Install with: brew install node@22"; exit 1; }
+command -v npm >/dev/null || { echo "npm is required."; exit 1; }
+command -v python3 >/dev/null || { echo "python3 is required to serve dist locally."; exit 1; }
+if [[ ! -d node_modules ]]; then npm install --no-audit --no-fund; fi
+SITE_BASE_URL="http://${HOST}:${PORT}" npm run build
+bash scripts/mac-stop.sh >/dev/null 2>&1 || true
+python3 -m http.server "$PORT" --bind "$HOST" --directory dist >.local-server.log 2>&1 &
+echo $! > .local-server.pid
+for _ in {1..30}; do curl -fsS "http://${HOST}:${PORT}/" >/dev/null && break; sleep .2; done
+curl -fsS "http://${HOST}:${PORT}/en" >/dev/null
 URL="http://${HOST}:${PORT}"
-PID_FILE="$ROOT/.local-server.pid"
-LOG_FILE="$ROOT/.local-server.log"
-
-if [[ "$(uname -s)" != "Darwin" && "${ALLOW_NON_MAC:-0}" != "1" ]]; then
-  echo "mac-demo is intended for macOS. Set ALLOW_NON_MAC=1 only for CI/sandbox validation." >&2
-  exit 2
-fi
-command -v python3 >/dev/null || { echo "python3 is required" >&2; exit 2; }
-command -v curl >/dev/null || { echo "curl is required" >&2; exit 2; }
-
-cd "$ROOT"
-bash scripts/test.sh
-
-if [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
-  echo "Stopping previous local preview (PID $(cat "$PID_FILE"))"
-  kill "$(cat "$PID_FILE")" || true
-  rm -f "$PID_FILE"
-fi
-
-SITE_BASE_URL="$URL" python3 scripts/build.py >/dev/null
-(
-  cd dist
-  exec python3 -m http.server "$PORT" --bind "$HOST"
-) >"$LOG_FILE" 2>&1 &
-PID=$!
-echo "$PID" > "$PID_FILE"
-
-cleanup_on_error() {
-  kill "$PID" 2>/dev/null || true
-  rm -f "$PID_FILE"
-}
-trap cleanup_on_error ERR
-
-for _ in {1..40}; do
-  if curl --fail --silent "$URL/" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 0.1
-done
-curl --fail --silent "$URL/" >/dev/null
-trap - ERR
-
-echo ""
-echo "Local macOS preview is running: $URL"
-echo "Stop it with: make mac-stop"
-echo "Log: $LOG_FILE"
-
-if [[ "${NO_OPEN:-0}" != "1" ]]; then
-  open "$URL"
-fi
+echo "Local Astro site: $URL"
+if command -v open >/dev/null; then open "$URL"; fi

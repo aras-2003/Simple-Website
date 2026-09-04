@@ -1,8 +1,7 @@
 .git
 .github
-artifacts
+node_modules
 dist
-docs
-infra
-k8s
-README.md
+artifacts
+*.log
+.DS_Store

@@ -1,0 +1,28 @@
+{
+  "name": "arkadiusz-kamrowski-site",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4173",
+    "test:static": "npm run check && npm run build && node tests/static.mjs",
+    "test:a11y": "playwright test",
+    "test": "npm run test:static && npm run test:a11y"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1",
+    "typescript": "6.0.3"
+  }
+}

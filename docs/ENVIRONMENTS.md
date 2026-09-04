@@ -2,37 +2,53 @@
 
 ## Current deployment policy
 
-Public and Azure deployment are **disabled**. The project is maintained as future-ready for those targets, but local macOS is the current reference environment.
+Public and Azure deployment are **disabled**. macOS is the current reference environment; Docker and local Kubernetes validate deployment portability without publishing the site.
 
 | Environment | Entry point | Exposure | Status |
 |---|---|---|---|
 | macOS native | `make mac-demo` | `127.0.0.1` only | ACTIVE / recommended |
+| Astro dev | `make dev` | `127.0.0.1:4321` | ACTIVE |
 | macOS Docker Desktop | `make mac-docker` | localhost port mapping | ACTIVE |
 | macOS local Kubernetes | `make k8s-local` | localhost via `kubectl port-forward` | ACTIVE |
-| ChatGPT/sandbox static | `make chatgpt-test` | none | ACTIVE |
-| Generic Kubernetes | production template in `k8s/site.yaml.tpl` | requires explicit ingress/DNS | FUTURE-READY |
-| Azure AKS | workflow blueprint `.github/workflows-disabled/deploy-aks.yml` | public/private depending platform setup | DISABLED |
+| GitHub CI | push / PR | no deployment | ACTIVE |
+| Generic Kubernetes | `k8s/site.yaml.tpl` | requires explicit ingress/DNS | FUTURE-READY |
+| Azure AKS | `.github/workflows-disabled/deploy-aks.yml` | disabled | DISABLED |
 | Public Internet | DNS + TLS + ingress | public | DISABLED |
 
-## macOS native — recommended first view
+## macOS native
 
-Prerequisites: macOS, Python 3, curl. No Node.js and no Docker required.
+Prerequisites: Node.js 22+, npm, Python 3 and curl.
 
 ```bash
 make mac-demo
 ```
 
-This runs the static validation suite, builds the site for localhost, starts a loopback-only HTTP server and opens the browser. It stays running in the background.
+This installs dependencies when needed, runs `astro check`, builds all PL/EN routes, starts a loopback-only server and opens the browser at `http://127.0.0.1:8080`.
 
 ```bash
 make mac-stop
 ```
 
-Use a different port if needed:
+Use another port if needed:
 
 ```bash
 PORT=8088 make mac-demo
 ```
+
+For live development with Astro HMR:
+
+```bash
+make dev
+# http://127.0.0.1:4321
+```
+
+## Accessibility audit on macOS
+
+```bash
+make audit
+```
+
+The first accessibility run installs Playwright Chromium locally. The same axe gate runs in GitHub Actions.
 
 ## Docker Desktop
 
@@ -41,26 +57,19 @@ make mac-docker
 make docker-down
 ```
 
-The container uses the same hardened NGINX image and content build as CI.
+The build stage uses Node/Astro; the runtime remains unprivileged NGINX.
 
 ## Local Kubernetes
-
-Recommended options:
-
-1. Docker Desktop with Kubernetes enabled (`docker-desktop` context), or
-2. a `kind` cluster.
 
 ```bash
 make k8s-local
 make k8s-local-down
 ```
 
-The local manifest deliberately has **no Ingress, no TLS, no HPA and no public DNS**. Access is localhost-only through `kubectl port-forward`.
+The local manifest has no Ingress, TLS, HPA or public DNS. Access is localhost-only through `kubectl port-forward`.
 
 ## Promotion model
 
-The artifact path is intentionally consistent:
+`Astro source → dist → container → local Kubernetes → generic Kubernetes → Azure/public`
 
-`src → static build → container → local Kubernetes → generic Kubernetes → Azure/public`
-
-Promotion to a public environment requires a deliberate repository change that re-enables the Azure workflow, plus separate approval of DNS, TLS, identity and subscription configuration.
+Public promotion requires a deliberate repository change that re-enables the Azure workflow plus separate approval of DNS, TLS, identity and subscription configuration.

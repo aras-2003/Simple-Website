@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout locale="pl" routeKey="home" title="404 — Nie znaleziono strony" description="Nie znaleziono strony.">
+  <section class="page-hero error-page">
+    <p class="eyebrow">404</p>
+    <h1>Nie ma tu tej strony.</h1>
+    <p class="page-lead">Sprawdź adres albo wróć na <a class="text-link" href="/">stronę główną</a>.</p>
+    <div class="english-error" lang="en">
+      <h2>Page not found.</h2>
+      <p>Check the address or return to the <a class="text-link" href="/en">English home page</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

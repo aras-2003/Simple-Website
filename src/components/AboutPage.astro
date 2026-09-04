@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import { copy } from '../i18n/content';
+import { route, type Locale } from '../lib/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const p = copy[locale].pages.about;
+---
+<BaseLayout locale={locale} routeKey="about" title={p.title} description={p.description}>
+  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+  <section class="section detail-grid" aria-label={locale === 'pl' ? 'Profil' : 'Profile'}>
+    {p.sections.map((item, index) => (
+      <article class="detail-row"><span>{String(index + 1).padStart(2, '0')}</span><h2>{item.title}</h2><p>{item.body}</p></article>
+    ))}
+  </section>
+  <section class="section principle-page" aria-labelledby="principles-title">
+    <h2 id="principles-title">{p.principlesTitle}</h2>
+    <ul class="statement-list">{p.principles.map((item) => <li lang="en">{item}</li>)}</ul>
+    <a class="button button-primary" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
+  </section>
+</BaseLayout>

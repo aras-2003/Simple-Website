@@ -1,27 +1,28 @@
-# Technical Architecture
+# Architecture
 
-## Decyzja technologiczna
-**Static-first / zero-runtime-JS framework dependency.** Semantyczny HTML + CSS + mały vanilla JS. Build w Pythonie tylko do podstawienia URL-i i generacji artefaktów SEO. Runtime: NGINX unprivileged.
+## Runtime model
 
-## Dlaczego
-- minimalny bundle i bardzo niski TTFB,
-- brak zależności npm w ścieżce produkcyjnej,
-- prosty supply chain,
-- identyczny artefakt działa lokalnie, w Dockerze, Kubernetes i AKS,
-- łatwe testowanie z ChatGPT / shell / Chromium.
+The site is a static-generated website, not a client-side SPA.
 
-## Runtime
-Browser → Ingress/TLS → Service → NGINX (non-root) → static files.
+`Astro source → static build → dist/ → NGINX → browser`
 
-## Security baseline
-- non-root container,
-- read-only root filesystem,
-- dropped Linux capabilities,
-- CSP, X-Frame-Options, nosniff, strict referrer policy,
-- no forms, cookies, external scripts or trackers in v1,
-- NetworkPolicy blocks egress,
-- AKS: managed Microsoft Entra + Azure RBAC, local administrator accounts disabled,
-- GitHub Actions → Azure through OIDC/federated identity; no long-lived Azure client secret.
+Astro and Node.js exist only at build time. Production runtime serves immutable HTML/CSS/assets from an unprivileged NGINX container.
 
-## Observability
-Liveness/readiness at `/healthz`. In v2: Azure Monitor / Prometheus HTTP SLI, synthetic availability test, basic RUM only after privacy decision.
+## Application structure
+
+- `src/layouts/BaseLayout.astro` — document shell, SEO, hreflang and landmarks.
+- `src/components/*Page.astro` — reusable localized page compositions.
+- `src/i18n/content.ts` — typed PL/EN copy.
+- `src/lib/site.ts` — locale-safe routing helpers.
+- `src/pages/` — Polish default routes.
+- `src/pages/en/` — English routes.
+- `public/` — static public assets.
+- `tests/` — static and WCAG automation.
+
+## Route model
+
+Polish is the default locale without a prefix. English is fully mirrored under `/en`. Every page emits canonical, `hreflang=pl`, `hreflang=en`, and `x-default` metadata.
+
+## Deployment
+
+The same `dist/` output works on localhost, Docker, generic Kubernetes and the prepared Azure/AKS architecture. Azure/public promotion remains intentionally disabled.

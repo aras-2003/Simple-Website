@@ -1,20 +1,21 @@
 # Information Architecture
 
-## Narracja strony
-1. **Hero / pozycjonowanie** — kim jestem i jaką wartość wnoszę.
-2. **O mnie / point of view** — jak myślę o technologii i organizacji.
-3. **OAF** — własny model / IP, który scala narrację.
-4. **Manifest / quote** — pamiętliwy skrót poglądu.
-5. **Obszary** — konkretne domeny kompetencji.
-6. **Sygnały** — publiczne dowody trajektorii i wiarygodności.
-7. **Kontakt** — jeden główny CTA: LinkedIn.
+## Polish
 
-## Docelowa rozbudowa (v2)
-- `/oaf` — pełna strona frameworka, diagramy, artefakty, wersjonowanie.
-- `/writing` — artykuły / notes / wystąpienia.
-- `/work` — wybrane case studies bez ujawniania informacji poufnych.
-- `/about` — pełna biografia i media kit.
-- `/en` — wersja angielska.
+- `/` — positioning, OAF preview, focus areas, public signals, contact
+- `/about` — profile, role, operating principles
+- `/oaf` — OAF logic, four layers, operating rules
+- `/work` — enterprise architecture, strategy, PMO/portfolio, AI/technology
+- `/writing` — editorial themes and publication status
 
-## Primary CTA
-Kontakt / rozmowa przez LinkedIn. Brak formularza w v1 celowo: mniej danych osobowych, zero backendu, mniej spamu i niższa powierzchnia ataku.
+## English
+
+A complete route mirror exists under `/en`:
+
+- `/en`
+- `/en/about`
+- `/en/oaf`
+- `/en/work`
+- `/en/writing`
+
+Language switching preserves the current route rather than sending users back to the homepage.

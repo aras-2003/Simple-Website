@@ -1,0 +1,34 @@
+---
+import { copy } from '../i18n/content';
+import { alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
+
+interface Props { locale: Locale; current: RouteKey; }
+const { locale, current } = Astro.props;
+const c = copy[locale];
+const other = alternateLocale(locale);
+const navKeys: RouteKey[] = ['about', 'oaf', 'work', 'writing'];
+const langHref = route(other, current);
+---
+<header class="site-header">
+  <a class="brand" href={route(locale, 'home')} aria-label={`Arkadiusz Kamrowski — ${c.nav.home}`}>
+    <span class="brand-mark" aria-hidden="true">AK</span>
+    <span class="brand-wordmark">Arkadiusz Kamrowski</span>
+  </a>
+
+  <nav id="primary-navigation" class="site-nav desktop-nav" aria-label={c.navLabel}>
+    {navKeys.map((key) => (
+      <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{c.nav[key]}</a>
+    ))}
+    <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
+  </nav>
+
+  <details class="mobile-nav">
+    <summary><span>{c.menu}</span><span aria-hidden="true">＋</span></summary>
+    <nav aria-label={c.navLabel}>
+      {navKeys.map((key) => (
+        <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{c.nav[key]}</a>
+      ))}
+      <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
+    </nav>
+  </details>
+</header>
