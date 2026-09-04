@@ -47,8 +47,8 @@ jobs:
       - name: Pre-deploy validation
         run: |
           python3 scripts/predeploy_check.py --site-base-url "${{ inputs.site_base_url }}" --host "${{ inputs.host }}" --namespace "${{ inputs.namespace }}"
-          PRODUCTION=1 SITE_BASE_URL="${{ inputs.site_base_url }}" ./scripts/build.py
-          ./scripts/validate.py
+          PRODUCTION=1 SITE_BASE_URL="${{ inputs.site_base_url }}" python3 scripts/build.py
+          python3 scripts/validate.py
       - name: Azure login via OIDC
         uses: azure/login@v3
         with:
