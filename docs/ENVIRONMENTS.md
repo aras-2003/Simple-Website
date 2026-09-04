@@ -4,16 +4,16 @@
 
 Public and Azure deployment are **disabled**. macOS is the current reference environment; Docker and local Kubernetes validate deployment portability without publishing the site.
 
-| Environment | Entry point | Exposure | Status |
-|---|---|---|---|
-| macOS native | `make mac-demo` | `127.0.0.1` only | ACTIVE / recommended |
-| Astro dev | `make dev` | `127.0.0.1:4321` | ACTIVE |
-| macOS Docker Desktop | `make mac-docker` | localhost port mapping | ACTIVE |
-| macOS local Kubernetes | `make k8s-local` | localhost via `kubectl port-forward` | ACTIVE |
-| GitHub CI | push / PR | no deployment | ACTIVE |
-| Generic Kubernetes | `k8s/site.yaml.tpl` | requires explicit ingress/DNS | FUTURE-READY |
-| Azure AKS | `.github/workflows-disabled/deploy-aks.yml` | disabled | DISABLED |
-| Public Internet | DNS + TLS + ingress | public | DISABLED |
+| Environment | Entry point | Exposure | Contact mode | Status |
+|---|---|---|---|---|
+| macOS native | `make mac-demo` | loopback only | dry-run by default | ACTIVE / recommended |
+| Astro dev | `make dev` | `127.0.0.1:4321` | dry-run by default | ACTIVE |
+| macOS Docker Desktop | `make mac-docker` | localhost mapping | dry-run by default | ACTIVE |
+| macOS local Kubernetes | `make k8s-local` | localhost port-forward | dry-run | ACTIVE |
+| GitHub CI | push / PR | no deployment | integration dry-run | ACTIVE |
+| Generic Kubernetes | `k8s/site.yaml.tpl` | explicit ingress/DNS | live secrets required | FUTURE-READY |
+| Azure AKS | `.github/workflows-disabled/deploy-aks.yml` | disabled | secret required | DISABLED |
+| Public Internet | DNS + TLS + ingress | public | live | DISABLED |
 
 ## macOS native
 
@@ -23,32 +23,26 @@ Prerequisites: Node.js 22+, npm, Python 3 and curl.
 make mac-demo
 ```
 
-This installs dependencies when needed, runs `astro check`, builds all PL/EN routes, starts a loopback-only server and opens the browser at `http://127.0.0.1:8080`.
+This builds all PL/EN routes, starts the static site on `127.0.0.1:8080`, starts a loopback contact API and opens the browser. Contact delivery is dry-run unless real server-side email environment variables are supplied.
 
 ```bash
 make mac-stop
 ```
 
-Use another port if needed:
-
-```bash
-PORT=8088 make mac-demo
-```
-
-For live development with Astro HMR:
+For live development with Astro HMR and the Vite `/api/contact` proxy:
 
 ```bash
 make dev
 # http://127.0.0.1:4321
 ```
 
-## Accessibility audit on macOS
+## Quality audit
 
 ```bash
 make audit
 ```
 
-The first accessibility run installs Playwright Chromium locally. The same axe gate runs in GitHub Actions.
+This combines static/type/build/contact validation with the Playwright + axe accessibility gate.
 
 ## Docker Desktop
 
@@ -57,7 +51,7 @@ make mac-docker
 make docker-down
 ```
 
-The build stage uses Node/Astro; the runtime remains unprivileged NGINX.
+Compose runs two hardened containers: NGINX/static site and the contact API. They share the network namespace so NGINX can proxy to the sidecar on loopback.
 
 ## Local Kubernetes
 
@@ -66,10 +60,10 @@ make k8s-local
 make k8s-local-down
 ```
 
-The local manifest has no Ingress, TLS, HPA or public DNS. Access is localhost-only through `kubectl port-forward`.
+The local Deployment contains the web and contact containers in one Pod. There is no Ingress, TLS, HPA or public DNS; access remains localhost-only through `kubectl port-forward`.
 
 ## Promotion model
 
-`Astro source → dist → container → local Kubernetes → generic Kubernetes → Azure/public`
+`Astro source → static site + contact image → local Docker/Kubernetes → generic Kubernetes → Azure/public`
 
-Public promotion requires a deliberate repository change that re-enables the Azure workflow plus separate approval of DNS, TLS, identity and subscription configuration.
+Public promotion requires deliberate re-enablement plus DNS/TLS, contact email provider configuration, runtime secrets and manual accessibility/privacy review.

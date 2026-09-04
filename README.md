@@ -1,15 +1,19 @@
 # Arkadiusz Kamrowski · Personal Site
 
-Static-first personal site built with **Astro SSG + TypeScript**, with complete Polish and English routes and a WCAG 2.2 AA accessibility target.
+Personal executive / thought-leadership site built with **Astro SSG + TypeScript**, complete Polish and English routes, a small isolated contact API, and a WCAG 2.2 AA accessibility target.
 
 ## Architecture
 
-- Astro 7 static generation — no application server at runtime.
-- Polish is the default locale: `/`, `/about`, `/oaf`, `/work`, `/writing`.
-- English uses `/en`: `/en`, `/en/about`, `/en/oaf`, `/en/work`, `/en/writing`.
-- Zero client-side framework and zero required runtime JavaScript.
-- Hardened non-root NGINX runtime in Docker/Kubernetes.
-- Azure/public deployment remains disabled; the future AKS workflow is stored under `.github/workflows-disabled/`.
+- **Frontend:** Astro 7 static generation. Content and navigation are pre-rendered to HTML.
+- **Runtime web:** hardened non-root NGINX serving `dist/`.
+- **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
+- **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
+- **Primary IA:** OAF → Practice → Perspective → About → Contact. Privacy is a footer-level utility route.
+- **Writing:** four real editorial notes in PL and EN, generated as static article routes.
+- **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
+- Azure/public deployment remains disabled; the future AKS workflow stays under `.github/workflows-disabled/`.
+
+See `docs/INFORMATION_ARCHITECTURE.md` and `docs/CONTACT_SERVICE.md`.
 
 ## macOS — fastest preview
 
@@ -21,7 +25,7 @@ cd Simple-Website
 make mac-demo
 ```
 
-Open `http://127.0.0.1:8080`. English is available at `http://127.0.0.1:8080/en`.
+Open `http://127.0.0.1:8080`. The contact API starts in **dry-run** mode by default, so the UX can be tested without sending mail.
 
 Stop with:
 
@@ -29,29 +33,26 @@ Stop with:
 make mac-stop
 ```
 
-If Node.js is missing:
-
-```bash
-brew install node@22
-```
-
 ## Development
 
 ```bash
 make install
 make dev
-# Astro dev server: http://127.0.0.1:4321
+# Astro: http://127.0.0.1:4321
+# /api/contact is proxied to the local contact sidecar
 ```
+
+To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
 
 ## Quality gates
 
 ```bash
-make test          # astro check + build + static localized-route validation
-make test-a11y     # Playwright + axe, desktop and mobile Chromium
+make test          # astro check + build + static IA validation + contact API tests
+make test-a11y     # Playwright + axe across core and article routes
 make audit         # both
 ```
 
-The accessibility gate scans all 10 PL/EN routes against axe rules tagged for WCAG 2 A/AA, WCAG 2.1 A/AA and WCAG 2.2 AA. Automated testing is a gate, not a substitute for manual assistive-technology testing. See `docs/ACCESSIBILITY.md`.
+Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
 
 ## Docker / Kubernetes
 
@@ -60,13 +61,13 @@ make mac-docker
 make k8s-local
 ```
 
-The output remains plain static files in `dist/`; Docker only changes the serving layer.
+Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic production template expects email secrets to be created separately.
 
 ## Environment status
 
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: Astro + accessibility + container security
+- GitHub CI: Astro + contact API + accessibility + two container security scans
 - Azure AKS: future-ready, disabled
 - public DNS/TLS: not deployed

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IMAGE="${IMAGE:-arkadiusz-kamrowski-site:local}"
-PORT="${PORT:-8080}"
-docker build -t "$IMAGE" .
-docker run --rm -p "$PORT:8080" "$IMAGE"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+PORT="${PORT:-8080}" docker compose up --build

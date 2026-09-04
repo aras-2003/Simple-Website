@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import ContactForm from './ContactForm.astro';
+import { copy } from '../i18n/content';
+import { editorial } from '../content/editorial';
+import { route, site, type Locale } from '../lib/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const c = copy[locale];
+const p = editorial[locale].contact;
+---
+<BaseLayout locale={locale} routeKey="contact" title={p.title} description={p.description}>
+  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+
+  <section class="section contact-layout" aria-labelledby="contact-form-title">
+    <aside class="contact-context">
+      <p class="eyebrow">Context first</p>
+      <h2>{p.fitTitle}</h2>
+      <ul class="fit-list">{p.fit.map((item) => <li>{item}</li>)}</ul>
+      <p class="contact-linkedin">{p.linkedin}</p>
+      <a class="text-link" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
+    </aside>
+    <div class="contact-form-shell">
+      <p class="eyebrow">Direct message</p>
+      <h2 id="contact-form-title">{p.formTitle}</h2>
+      <p>{p.formBody}</p>
+      <ContactForm locale={locale} />
+      <p class="privacy-inline">{p.privacy} <a href={route(locale, 'privacy')}>{editorial[locale].nav.privacy}</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

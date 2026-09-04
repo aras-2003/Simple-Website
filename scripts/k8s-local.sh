@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ACTION="${1:-up}"
 IMAGE="${IMAGE:-arkadiusz-kamrowski-site:local}"
+CONTACT_IMAGE="${CONTACT_IMAGE:-arkadiusz-kamrowski-contact:local}"
 NAMESPACE="${NAMESPACE:-personal-site-local}"
 PORT="${PORT:-8080}"
 PID_FILE="$ROOT/.k8s-port-forward.pid"
@@ -42,17 +43,18 @@ fi
 
 echo "Using Kubernetes context: $CONTEXT"
 docker build -t "$IMAGE" .
+docker build -f server/Dockerfile -t "$CONTACT_IMAGE" .
 
 if [[ "$CONTEXT" == kind-* ]]; then
   command -v kind >/dev/null || { echo "kind CLI is required for context $CONTEXT" >&2; exit 2; }
   CLUSTER="${CONTEXT#kind-}"
-  kind load docker-image "$IMAGE" --name "$CLUSTER"
+  kind load docker-image "$IMAGE" "$CONTACT_IMAGE" --name "$CLUSTER"
 elif [[ "$CONTEXT" != "docker-desktop" && "$CONTEXT" != "rancher-desktop" ]]; then
-  echo "Warning: context '$CONTEXT' may not see local Docker image '$IMAGE'." >&2
+  echo "Warning: context '$CONTEXT' may not see local Docker images '$IMAGE' and '$CONTACT_IMAGE'." >&2
   echo "For the frictionless local path use Docker Desktop Kubernetes or kind." >&2
 fi
 
-python3 scripts/render-k8s-local.py --image "$IMAGE" --namespace "$NAMESPACE" --output "$MANIFEST"
+python3 scripts/render-k8s-local.py --image "$IMAGE" --contact-image "$CONTACT_IMAGE" --namespace "$NAMESPACE" --output "$MANIFEST"
 kubectl apply -f "$MANIFEST"
 kubectl -n "$NAMESPACE" rollout status deployment/personal-site --timeout=120s
 

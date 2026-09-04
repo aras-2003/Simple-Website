@@ -1,33 +1,56 @@
 # Design System
 
-## Tokens
-- **Ink** `#0B0D0F` — primary background.
-- **Paper** `#F2EEE6` — warm light surface.
-- **Text on dark** `#F2EEE6`; muted `#B4BBC2` / strong muted `#C9CFD5`.
-- **Text on paper** `#111417`; muted `#4B535B`.
-- **Signal** `#7F9CFF` — selection/accent.
-- **Focus** `#C8FF8E` — dedicated high-contrast focus indicator.
-- **Spacing** — fluid `--pad` and `--section` with a restrained token set.
+## Visual direction
 
-All primary text token pairs exceed WCAG AA contrast for normal text; focus is intentionally much stronger than the minimum.
+**Quiet authority with strategic energy.** The system combines warm editorial minimalism with richer contemporary diagrams and motion. It should feel like a thoughtful executive publication rather than a SaaS dashboard or architecture repository.
 
-## Grid
-Maximum width 1440px, four-column blueprint background and two-column narrative compositions. At 960px the information architecture reflows; at 620px the page becomes a mobile-first single-column composition. The target includes 320 CSS px without horizontal page scrolling.
+## Core tokens
+
+- **Paper** `#F4EEE5` — primary warm canvas.
+- **Paper strong** `#FCF7EF` — elevated content surface.
+- **Ink** `#1B1612` — deepest text / structural dark.
+- **Chocolate** `#5C4437`, deep `#3F2F27` — warm depth and premium contrast.
+- **Sage / forest** `#5F7255`, deep `#46543F` — strategic accent and diagram language.
+- **Muted** `#655A52`, strong `#4C433D` — secondary text selected with AA margin.
+- **Inverse text** `#F6F0E7` — text on chocolate/forest surfaces.
+- **Focus** `#97B05B` — dedicated high-visibility keyboard focus.
+
+Avoid decorative gradients without a compositional purpose. Current gradients combine chocolate/forest primarily to create depth in hero, OAF and CTA visual systems.
+
+## Layout
+
+Maximum content width: 1440px with fluid horizontal padding. Section spacing is deliberately tighter than the first design iteration; visual density comes from composed grids, diagrams and editorial cards rather than empty vertical space.
+
+Breakpoints are content-driven. Tablet and mobile rebuild multi-column compositions instead of simply scaling desktop down. 320 CSS px is an explicit reflow test target.
 
 ## Type hierarchy
-- H1: `clamp(46px, 6.2vw, 100px)`.
-- H2: `clamp(38px, 5vw, 74px)`.
-- Lead: 18–23px.
-- Body: 14–18px.
-- Labels: minimum 11–12px where used as supporting text.
 
-## Components
-Sticky header, desktop navigation, native `details/summary` mobile navigation, primary/quiet buttons, page hero, section label, OAF step, principle, timeline row, focus row and footer. Cards are not the default content container.
+- H1: fluid editorial display, approximately 42–92px depending on viewport.
+- H2: approximately 34–70px.
+- Lead: 16–21px.
+- Body: 14–19px depending on reading context.
+- Labels / metadata: 10–12px, high enough contrast and used only as supporting hierarchy.
+- Long-form notes use narrower reading measure and increased line-height.
 
-## Interaction and accessibility states
-- Interactive targets: practical minimum 44px height.
-- Focus: 3px `--focus` with 4px offset.
-- Hover: subtle and never the only indication of interactivity.
-- Reduced motion: smooth scrolling and transitions are disabled with `prefers-reduced-motion`.
-- Increased contrast: stronger muted/line tokens and removal of decorative background grid with `prefers-contrast: more`.
-- Mobile navigation uses native semantics and requires no client JavaScript.
+The palette and spacing carry more brand character than font proliferation; the type system stays restrained.
+
+## Component language
+
+Primary components: sticky header, rounded primary/quiet buttons, hero OAF visualization, proof cards, editorial principle cards, OAF diagram, practice cards, note cards, article body, contact form, privacy cards and footer utility navigation.
+
+Cards are used when they create a meaningful visual grouping or comparison. Long-form content remains editorial rather than being fragmented into cards.
+
+## Motion
+
+- Purposeful transforms and orbital/diagram motion only.
+- No opacity animation on readable text; contrast must remain stable throughout transitions.
+- No scroll hijacking, custom cursor or essential parallax.
+- `prefers-reduced-motion` disables animation and smooth scrolling.
+
+## Accessibility states
+
+- Practical interactive target: at least 44px in normal layouts.
+- Focus: 3px visible outline with offset.
+- Hover never carries information unavailable to keyboard/touch users.
+- `prefers-contrast: more` strengthens muted text and rules and removes decorative grid where appropriate.
+- Form controls use native semantics, explicit labels, visible focus and non-color-only status feedback.

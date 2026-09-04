@@ -2,7 +2,7 @@ export const pl = {
     langName: 'Polski', switchLabel: 'English',
     skipMain: 'Przejdź do głównej treści', skipNav: 'Przejdź do nawigacji',
     navLabel: 'Główna nawigacja', menu: 'Menu',
-    nav: { home: 'Start', about: 'O mnie', oaf: 'OAF', work: 'Obszary', writing: 'Piszę' },
+    nav: { home: 'Start', about: 'O mnie', oaf: 'OAF', work: 'Praktyka', writing: 'Perspektywa' },
     footer: 'Enterprise Architecture × Strategy × Execution',
     externalNewTab: 'otwiera w nowej karcie',
     pages: {
@@ -30,7 +30,7 @@ export const pl = {
         oafLabel: 'OAF', oafTitleA: 'OAF porządkuje rozmowę między', oafTitleEm: 'kierunkiem a wykonaniem.',
         oafBody: 'Autorski working model łączący strategię, enterprise architecture, portfolio i delivery w jeden cykl decyzyjny. Nie jest kolejnym frameworkiem do wdrożenia — ma poprawiać jakość i spójność decyzji.',
         quote: 'Architektura bez decyzji to dokumentacja. Strategia bez mechanizmu wykonania to prezentacja. PMO bez odpowiedzialności za outcome staje się administracją.',
-        focusLabel: 'Obszary', focusTitle: 'Pracuję nad systemem, nie nad pojedynczym pudełkiem.',
+        focusLabel: 'Praktyka', focusTitle: 'Pracuję nad systemem, nie nad pojedynczym pudełkiem.',
         focusBody: 'Największa dźwignia pojawia się tam, gdzie architektura, strategia, finansowanie i sposób pracy zespołów przestają być osobnymi dyscyplinami.',
         signalsLabel: 'Sygnały', signalsTitle: 'Kilka punktów, które dobrze pokazują trajektorię.',
         signals: [
@@ -40,7 +40,7 @@ export const pl = {
           { time: 'Wcześniej', title: 'Strategic DevSecOps', body: 'Praca nad łączeniem strategii technologicznej, architektury i zdolności delivery.' },
         ],
         contactTitle: 'Jeśli problem jest złożony, tym bardziej potrzebuje prostego systemu decyzji.',
-        contactBody: 'Najłatwiej złapać mnie przez LinkedIn. Nie ma tu formularza, trackera ani automatycznego lejka — tylko bezpośredni kontakt.',
+        contactBody: 'Możesz opisać kontekst i decyzję przez formularz kontaktowy albo napisać bezpośrednio na LinkedIn. Bez newslettera i automatycznego lejka sprzedażowego.',
         contactCta: 'Porozmawiajmy na LinkedIn',
       },
       about: {
@@ -74,9 +74,9 @@ export const pl = {
         cta: 'Porozmawiajmy o zastosowaniu',
       },
       work: {
-        title: 'Obszary pracy — Arkadiusz Kamrowski',
-        description: 'Enterprise architecture, strategy & transformation, PMO & portfolio oraz AI & technology — obszary pracy Arkadiusza Kamrowskiego.',
-        eyebrow: 'Obszary', headline: 'Największe problemy nie mieszczą się w jednym silosie.',
+        title: 'Praktyka — Arkadiusz Kamrowski',
+        description: 'Praktyka Arkadiusza Kamrowskiego: enterprise architecture, strategia i transformacja, PMO i portfolio oraz AI i technologia.',
+        eyebrow: 'Praktyka', headline: 'Największe problemy nie mieszczą się w jednym silosie.',
         lead: 'W praktyce pracuję nad zależnościami między strategią, architekturą, inwestycjami i wykonaniem. Poniższe obszary są osobnymi kompetencjami, ale wartość powstaje głównie na ich styku.',
         items: [
           { title: 'Enterprise Architecture', body: 'Capability maps, target architecture, principles, governance, standards i roadmaps — zawsze powiązane z decyzjami biznesowymi.' },
@@ -90,7 +90,7 @@ export const pl = {
       writing: {
         title: 'Piszę — Arkadiusz Kamrowski',
         description: 'Tematy i notatki Arkadiusza Kamrowskiego o enterprise architecture, strategii, transformacji, PMO, AI i technologii.',
-        eyebrow: 'Writing / Notes', headline: 'Piszę o mechanizmach, które łączą decyzję z wykonaniem.',
+        eyebrow: 'Perspektywa / Notes', headline: 'Piszę o mechanizmach, które łączą decyzję z wykonaniem.',
         lead: 'Ta sekcja jest przygotowana jako miejsce na krótkie notatki, eseje i materiały o architekturze, strategii, portfolio, AI i transformacji. Publikacja zacznie się od treści, które faktycznie wnoszą własną tezę — nie od wypełniania kalendarza.',
         themesTitle: 'Tematy',
         themes: [

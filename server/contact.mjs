@@ -1,0 +1,130 @@
+import http from 'node:http';
+import { createHash } from 'node:crypto';
+
+const port = Number(process.env.CONTACT_API_PORT || 8787);
+const dryRun = process.env.CONTACT_DRY_RUN === '1';
+const requireOrigin = process.env.CONTACT_REQUIRE_ORIGIN === '1';
+const resendKey = process.env.RESEND_API_KEY || '';
+const toEmail = process.env.CONTACT_TO_EMAIL || '';
+const fromEmail = process.env.CONTACT_FROM_EMAIL || '';
+const configured = dryRun || Boolean(resendKey && toEmail && fromEmail);
+const maxBody = 32 * 1024;
+const windowMs = 10 * 60 * 1000;
+const maxRequests = Number(process.env.CONTACT_RATE_LIMIT || 5);
+const buckets = new Map();
+const topicLabels = {
+  architecture: 'Enterprise Architecture', strategy: 'Strategy & Transformation', portfolio: 'PMO & Portfolio',
+  ai: 'AI & Technology', speaking: 'Speaking / Panel', other: 'Other',
+};
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin)) return true;
+  const configuredOrigins = (process.env.CONTACT_ALLOWED_ORIGINS || '').split(',').map(v => v.trim()).filter(Boolean);
+  return configuredOrigins.includes(origin);
+}
+
+function json(res, status, body, origin = '') {
+  const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' };
+  if (origin && isAllowedOrigin(origin)) { headers['Access-Control-Allow-Origin'] = origin; headers['Vary'] = 'Origin'; }
+  res.writeHead(status, headers);
+  res.end(JSON.stringify(body));
+}
+
+function clientIp(req) {
+  const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return forwarded || req.socket.remoteAddress || 'unknown';
+}
+function rateLimited(ip) {
+  const now = Date.now();
+  const current = buckets.get(ip);
+  if (!current || current.resetAt <= now) { buckets.set(ip, { count: 1, resetAt: now + windowMs }); return false; }
+  current.count += 1;
+  return current.count > maxRequests;
+}
+function clean(value) { return typeof value === 'string' ? value.trim() : ''; }
+function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254; }
+function escapeHtml(value) { return value.replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char])); }
+
+function idempotencyKey(data) {
+  const digest = createHash('sha256')
+    .update([data.email.toLowerCase(), data.topic, data.message, String(data.startedAt)].join('\n'))
+    .digest('hex');
+  return `contact-${digest}`;
+}
+
+async function sendEmail(data) {
+  if (dryRun) return { id: 'dry-run' };
+  if (!resendKey || !toEmail || !fromEmail) throw new Error('contact_not_configured');
+  const subject = `[arkadiuszkamrowski.com] ${topicLabels[data.topic] || 'Contact'} — ${data.name}`;
+  const text = [`Name: ${data.name}`, `Email: ${data.email}`, `Organization: ${data.organization || '—'}`, `Topic: ${topicLabels[data.topic] || data.topic}`, '', data.message].join('\n');
+  const html = `<h2>New website message</h2><p><strong>Name:</strong> ${escapeHtml(data.name)}</p><p><strong>Email:</strong> ${escapeHtml(data.email)}</p><p><strong>Organization:</strong> ${escapeHtml(data.organization || '—')}</p><p><strong>Topic:</strong> ${escapeHtml(topicLabels[data.topic] || data.topic)}</p><hr><p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`;
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey(data) },
+    body: JSON.stringify({ from: fromEmail, to: [toEmail], reply_to: data.email, subject, text, html }),
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    console.error('contact_delivery_failed', response.status, detail.slice(0, 300));
+    throw new Error('delivery_failed');
+  }
+  return response.json();
+}
+
+const server = http.createServer(async (req, res) => {
+  const origin = String(req.headers.origin || '');
+  if (req.method === 'OPTIONS' && req.url === '/api/contact') {
+    if (!isAllowedOrigin(origin)) return json(res, 403, { error: 'origin_not_allowed' });
+    res.writeHead(204, { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Accept', 'Access-Control-Max-Age': '600', 'Vary': 'Origin' });
+    return res.end();
+  }
+  if (req.url === '/healthz') return json(res, configured ? 200 : 503, { ok: configured, dryRun });
+  if (req.url !== '/api/contact' || req.method !== 'POST') return json(res, 404, { error: 'not_found' }, origin);
+  if (requireOrigin && !origin) return json(res, 403, { error: 'origin_required' });
+  if (!isAllowedOrigin(origin)) return json(res, 403, { error: 'origin_not_allowed' });
+  if (!String(req.headers['content-type'] || '').startsWith('application/json')) return json(res, 415, { error: 'json_required' }, origin);
+  const ip = clientIp(req);
+  if (rateLimited(ip)) return json(res, 429, { error: 'rate_limited' }, origin);
+
+  let size = 0;
+  const chunks = [];
+  for await (const chunk of req) {
+    size += chunk.length;
+    if (size > maxBody) return json(res, 413, { error: 'payload_too_large' }, origin);
+    chunks.push(chunk);
+  }
+  let body;
+  try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); }
+  catch { return json(res, 400, { error: 'invalid_json' }, origin); }
+
+  const data = {
+    name: clean(body.name), email: clean(body.email), organization: clean(body.organization), topic: clean(body.topic),
+    message: clean(body.message), website: clean(body.website), consent: body.consent === true,
+    locale: body.locale === 'en' ? 'en' : 'pl', startedAt: Number(body.startedAt || 0),
+  };
+  const elapsed = Date.now() - data.startedAt;
+  if (data.website) return json(res, 202, { ok: true }, origin);
+  if (!data.consent) return json(res, 400, { error: 'consent_required' }, origin);
+  if (data.name.length < 2 || data.name.length > 120) return json(res, 400, { error: 'invalid_name' }, origin);
+  if (!validEmail(data.email)) return json(res, 400, { error: 'invalid_email' }, origin);
+  if (data.organization.length > 140) return json(res, 400, { error: 'invalid_organization' }, origin);
+  if (!(data.topic in topicLabels)) return json(res, 400, { error: 'invalid_topic' }, origin);
+  if (data.message.length < 20 || data.message.length > 4000) return json(res, 400, { error: 'invalid_message' }, origin);
+  if (!Number.isFinite(elapsed) || elapsed < 1200 || elapsed > 24 * 60 * 60 * 1000) return json(res, 400, { error: 'invalid_timing' }, origin);
+
+  try {
+    const result = await sendEmail(data);
+    console.log(JSON.stringify({ event: 'contact_sent', topic: data.topic, dryRun, id: result?.id || null, at: new Date().toISOString() }));
+    return json(res, 202, { ok: true }, origin);
+  } catch (error) {
+    console.error('contact_error', error?.message || error);
+    return json(res, error?.message === 'contact_not_configured' ? 503 : 502, { error: 'delivery_unavailable' }, origin);
+  }
+});
+
+server.listen(port, '0.0.0.0', () => {
+  console.log(`contact-api listening on :${port}${dryRun ? ' (dry-run)' : ''}`);
+  if (!configured) console.error('contact-api is not ready: production delivery secrets are missing');
+});

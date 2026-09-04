@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import { editorial } from '../content/editorial';
+import { route, type Locale } from '../lib/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const p = editorial[locale].privacy;
+---
+<BaseLayout locale={locale} routeKey="privacy" title={p.title} description={p.description}>
+  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+  <section class="section privacy-grid" aria-label={locale === 'pl' ? 'Informacje o prywatności' : 'Privacy information'}>
+    {p.sections.map((item, index) => (
+      <article><span>{String(index + 1).padStart(2, '0')}</span><h2>{item.title}</h2><p>{item.body}</p></article>
+    ))}
+  </section>
+  <section class="section privacy-cta">
+    <a class="button button-primary" href={route(locale, 'contact')}>{editorial[locale].nav.contact}<span aria-hidden="true">→</span></a>
+  </section>
+</BaseLayout>

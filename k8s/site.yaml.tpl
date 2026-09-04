@@ -15,9 +15,7 @@ spec:
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
   selector:
     matchLabels:
       app.kubernetes.io/name: personal-site
@@ -28,47 +26,66 @@ spec:
     spec:
       automountServiceAccountToken: false
       securityContext:
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: { type: RuntimeDefault }
       containers:
         - name: web
           image: {{IMAGE}}
           imagePullPolicy: IfNotPresent
           ports:
-            - name: http
-              containerPort: 8080
+            - { name: http, containerPort: 8080 }
           readinessProbe:
-            httpGet:
-              path: /healthz
-              port: http
+            httpGet: { path: /healthz, port: http }
             initialDelaySeconds: 3
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /healthz
-              port: http
+            httpGet: { path: /healthz, port: http }
             initialDelaySeconds: 10
             periodSeconds: 20
           resources:
-            requests:
-              cpu: 20m
-              memory: 24Mi
-            limits:
-              cpu: 200m
-              memory: 96Mi
+            requests: { cpu: 20m, memory: 24Mi }
+            limits: { cpu: 200m, memory: 96Mi }
           volumeMounts:
-            - name: tmp
-              mountPath: /tmp
+            - { name: tmp, mountPath: /tmp }
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: { drop: ["ALL"] }
+        - name: contact-api
+          image: {{CONTACT_IMAGE}}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: contact, containerPort: 8787 }
+          env:
+            - { name: CONTACT_DRY_RUN, value: "0" }
+            - { name: CONTACT_REQUIRE_ORIGIN, value: "1" }
+            - name: RESEND_API_KEY
+              valueFrom: { secretKeyRef: { name: personal-site-contact, key: RESEND_API_KEY } }
+            - name: CONTACT_TO_EMAIL
+              valueFrom: { secretKeyRef: { name: personal-site-contact, key: CONTACT_TO_EMAIL } }
+            - name: CONTACT_FROM_EMAIL
+              valueFrom: { secretKeyRef: { name: personal-site-contact, key: CONTACT_FROM_EMAIL } }
+            - name: CONTACT_ALLOWED_ORIGINS
+              value: "https://{{HOST}}"
+          readinessProbe:
+            httpGet: { path: /healthz, port: contact }
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /healthz, port: contact }
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 10m, memory: 24Mi }
+            limits: { cpu: 150m, memory: 80Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities: { drop: ["ALL"] }
       volumes:
         - name: tmp
-          emptyDir:
-            sizeLimit: 16Mi
+          emptyDir: { sizeLimit: 16Mi }
 ---
 apiVersion: v1
 kind: Service
@@ -79,9 +96,7 @@ spec:
   selector:
     app.kubernetes.io/name: personal-site
   ports:
-    - name: http
-      port: 80
-      targetPort: http
+    - { name: http, port: 80, targetPort: http }
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
@@ -106,8 +121,7 @@ spec:
             backend:
               service:
                 name: personal-site
-                port:
-                  name: http
+                port: { name: http }
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -115,22 +129,16 @@ metadata:
   name: personal-site
   namespace: {{NAMESPACE}}
 spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: personal-site
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: personal-site }
   minReplicas: 2
   maxReplicas: 6
   behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 300
+    scaleDown: { stabilizationWindowSeconds: 300 }
   metrics:
     - type: Resource
       resource:
         name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
+        target: { type: Utilization, averageUtilization: 70 }
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -155,6 +163,10 @@ spec:
   policyTypes: ["Ingress", "Egress"]
   ingress:
     - ports:
-        - protocol: TCP
-          port: 8080
-  egress: []
+        - { protocol: TCP, port: 8080 }
+  egress:
+    - ports:
+        - { protocol: UDP, port: 53 }
+        - { protocol: TCP, port: 53 }
+    - ports:
+        - { protocol: TCP, port: 443 }

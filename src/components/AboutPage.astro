@@ -1,22 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
+import SectionLabel from './SectionLabel.astro';
 import { copy } from '../i18n/content';
+import { editorial } from '../content/editorial';
 import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const p = copy[locale].pages.about;
+const ia = editorial[locale].about;
 ---
 <BaseLayout locale={locale} routeKey="about" title={p.title} description={p.description}>
   <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+
   <section class="section detail-grid" aria-label={locale === 'pl' ? 'Profil' : 'Profile'}>
     {p.sections.map((item, index) => (
-      <article class="detail-row"><span>{String(index + 1).padStart(2, '0')}</span><h2>{item.title}</h2><p>{item.body}</p></article>
+      <article class="detail-row">
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <h2>{item.title}</h2>
+        <p>{item.body}</p>
+      </article>
     ))}
   </section>
+
   <section class="section principle-page" aria-labelledby="principles-title">
-    <h2 id="principles-title">{p.principlesTitle}</h2>
-    <ul class="statement-list">{p.principles.map((item) => <li lang="en">{item}</li>)}</ul>
-    <a class="button button-primary" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
+    <SectionLabel no="04" label={ia.introEyebrow} />
+    <div class="content-split">
+      <h2 id="principles-title">{ia.introTitle}</h2>
+      <p class="content-lead">{ia.introBody}</p>
+    </div>
+    <div class="principle-detail-grid">
+      {ia.principles.map((item, index) => (
+        <article class="principle-detail-card">
+          <div class="principle-card-top"><span>{String(index + 1).padStart(2, '0')}</span><h3 lang="en">{item.title}</h3></div>
+          <p class="principle-statement">{item.statement}</p>
+          <p class="principle-practice">{item.practice}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section bridge-section" aria-labelledby="bridge-title">
+    <div class="bridge-visual" aria-hidden="true"><span>Strategy</span><span>Architecture</span><span>Portfolio</span><span>Evidence</span></div>
+    <div class="bridge-copy">
+      <p class="eyebrow">System view</p>
+      <h2 id="bridge-title">{ia.bridgeTitle}</h2>
+      <p>{ia.bridgeBody}</p>
+      <div class="inline-actions">
+        <a class="button button-primary" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
+        <a class="button button-quiet" href={route(locale, 'contact')}>{editorial[locale].nav.contact}<span aria-hidden="true">→</span></a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

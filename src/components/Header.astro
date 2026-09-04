@@ -1,12 +1,14 @@
 ---
 import { copy } from '../i18n/content';
+import { editorial } from '../content/editorial';
 import { alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 
 interface Props { locale: Locale; current: RouteKey; }
 const { locale, current } = Astro.props;
 const c = copy[locale];
+const ia = editorial[locale];
 const other = alternateLocale(locale);
-const navKeys: RouteKey[] = ['about', 'oaf', 'work', 'writing'];
+const navKeys = ['oaf', 'work', 'writing', 'about', 'contact'] as const;
 const langHref = route(other, current);
 ---
 <header class="site-header">
@@ -17,7 +19,7 @@ const langHref = route(other, current);
 
   <nav id="primary-navigation" class="site-nav desktop-nav" aria-label={c.navLabel}>
     {navKeys.map((key) => (
-      <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{c.nav[key]}</a>
+      <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{ia.nav[key]}</a>
     ))}
     <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
   </nav>
@@ -26,7 +28,7 @@ const langHref = route(other, current);
     <summary><span>{c.menu}</span><span aria-hidden="true">＋</span></summary>
     <nav aria-label={c.navLabel}>
       {navKeys.map((key) => (
-        <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{c.nav[key]}</a>
+        <a href={route(locale, key)} aria-current={current === key ? 'page' : undefined}>{ia.nav[key]}</a>
       ))}
       <a class="language-link" href={langHref} lang={other} hreflang={other}>{c.switchLabel}</a>
     </nav>

@@ -11,11 +11,14 @@ export default defineConfig({
   i18n: {
     locales: ['pl', 'en'],
     defaultLocale: 'pl',
-    routing: {
-      prefixDefaultLocale: false,
-    },
+    routing: { prefixDefaultLocale: false },
   },
-  build: {
-    format: 'directory',
+  build: { format: 'directory' },
+  vite: {
+    server: {
+      proxy: {
+        '/api/contact': { target: 'http://127.0.0.1:8787', changeOrigin: false },
+      },
+    },
   },
 });

@@ -18,7 +18,7 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Astro type, build and static validation
+      - name: Astro type, build, static and contact API validation
         run: npm run test:static
       - name: Upload static artifact
         uses: actions/upload-artifact@v7
@@ -55,25 +55,50 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: docker/setup-buildx-action@v4
-      - name: Build image for CI
+      - name: Build site image for CI
         uses: docker/build-push-action@v7
         with:
           context: .
           load: true
           push: false
           tags: personal-site:ci
-      - name: Trivy vulnerability scan
+      - name: Build contact API image for CI
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: server/Dockerfile
+          load: true
+          push: false
+          tags: personal-contact:ci
+      - name: Trivy site image scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: personal-site:ci
           format: sarif
-          output: trivy-results.sarif
+          output: trivy-site.sarif
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: '1'
-      - name: Upload scan to GitHub Security
+      - name: Trivy contact API image scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: personal-contact:ci
+          format: sarif
+          output: trivy-contact.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '1'
+      - name: Upload site scan to GitHub Security
         if: always()
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: trivy-results.sarif
+          sarif_file: trivy-site.sarif
+          category: site-container
+      - name: Upload contact scan to GitHub Security
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-contact.sarif
+          category: contact-container

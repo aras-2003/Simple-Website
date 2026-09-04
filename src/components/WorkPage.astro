@@ -1,23 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
+import SectionLabel from './SectionLabel.astro';
 import { copy } from '../i18n/content';
+import { editorial } from '../content/editorial';
 import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const p = copy[locale].pages.work;
+const ia = editorial[locale].work;
 ---
 <BaseLayout locale={locale} routeKey="work" title={p.title} description={p.description}>
   <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
-  <section class="section work-page-list" aria-label={locale === 'pl' ? 'Obszary pracy' : 'Focus areas'}>
-    {p.items.map((item, index) => (
-      <article><span>{String(index + 1).padStart(2, '0')}</span><h2 lang="en">{item.title}</h2><p>{item.body}</p></article>
+
+  <section class="section practice-intro" aria-labelledby="practice-intro-title">
+    <SectionLabel no="01" label={editorial[locale].nav.work} />
+    <div class="content-split">
+      <h2 id="practice-intro-title">{ia.introTitle}</h2>
+      <p class="content-lead">{ia.introBody}</p>
+    </div>
+  </section>
+
+  <section class="section practice-grid" aria-label={locale === 'pl' ? 'Obszary praktyki' : 'Practice areas'}>
+    {ia.areas.map((item, index) => (
+      <article class="practice-card">
+        <div class="practice-card-head">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <div><h2 lang="en">{item.title}</h2><p class="practice-promise">{item.promise}</p></div>
+        </div>
+        <p>{item.body}</p>
+        <div class="practice-questions">
+          <p class="micro-label">{locale === 'pl' ? 'Pytania' : 'Questions'}</p>
+          <ul>{item.questions.map((q) => <li>{q}</li>)}</ul>
+        </div>
+        <p class="practice-output">{item.outputs}</p>
+      </article>
     ))}
   </section>
-  <section class="section evidence-section" aria-labelledby="evidence-title">
-    <p class="eyebrow">Evidence</p>
-    <h2 id="evidence-title">{p.evidenceTitle}</h2>
-    <p>{p.evidenceBody}</p>
-    <a class="button button-primary" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
+
+  <section class="section intersection-section" aria-labelledby="intersections-title">
+    <p class="eyebrow">Cross-system leverage</p>
+    <h2 id="intersections-title">{ia.intersectionsTitle}</h2>
+    <ul class="intersection-list">{ia.intersections.map((item) => <li>{item}</li>)}</ul>
+    <div class="inline-actions">
+      <a class="button button-primary" href={route(locale, 'contact')}>{editorial[locale].nav.contact}<span aria-hidden="true">→</span></a>
+      <a class="text-link" href={route(locale, 'oaf')}>{p.cta}<span aria-hidden="true">→</span></a>
+    </div>
   </section>
 </BaseLayout>

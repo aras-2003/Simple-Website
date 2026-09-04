@@ -2,7 +2,7 @@ export const en = {
     langName: 'English', switchLabel: 'Polski',
     skipMain: 'Skip to main content', skipNav: 'Skip to navigation',
     navLabel: 'Main navigation', menu: 'Menu',
-    nav: { home: 'Home', about: 'About', oaf: 'OAF', work: 'Focus', writing: 'Writing' },
+    nav: { home: 'Home', about: 'About', oaf: 'OAF', work: 'Practice', writing: 'Perspective' },
     footer: 'Enterprise Architecture × Strategy × Execution',
     externalNewTab: 'opens in a new tab',
     pages: {
@@ -30,7 +30,7 @@ export const en = {
         oafLabel: 'OAF', oafTitleA: 'OAF structures the conversation between', oafTitleEm: 'direction and execution.',
         oafBody: 'A working model connecting strategy, enterprise architecture, portfolio and delivery into one decision cycle. It is not another framework to “implement” — its purpose is to improve the quality and consistency of decisions.',
         quote: 'Architecture without decisions is documentation. Strategy without an execution mechanism is a presentation. A PMO without accountability for outcomes becomes administration.',
-        focusLabel: 'Focus', focusTitle: 'I work on the system, not one isolated box.',
+        focusLabel: 'Practice', focusTitle: 'I work on the system, not one isolated box.',
         focusBody: 'The biggest leverage appears when architecture, strategy, funding and the way teams operate stop behaving like separate disciplines.',
         signalsLabel: 'Signals', signalsTitle: 'A few points that describe the trajectory.',
         signals: [
@@ -40,7 +40,7 @@ export const en = {
           { time: 'Earlier', title: 'Strategic DevSecOps', body: 'Work connecting technology strategy, architecture and delivery capabilities.' },
         ],
         contactTitle: 'The more complex the problem, the more it needs a simple decision system.',
-        contactBody: 'LinkedIn is the easiest way to reach me. There is no contact form, tracker or automated funnel here — just a direct conversation.',
+        contactBody: 'Use the contact form to describe the context and decision, or message me directly on LinkedIn. No newsletter and no automated sales funnel.',
         contactCta: 'Connect on LinkedIn',
       },
       about: {
@@ -74,9 +74,9 @@ export const en = {
         cta: 'Discuss an application',
       },
       work: {
-        title: 'Focus areas — Arkadiusz Kamrowski',
-        description: 'Enterprise architecture, strategy & transformation, PMO & portfolio and AI & technology — focus areas of Arkadiusz Kamrowski.',
-        eyebrow: 'Focus', headline: 'The hardest problems do not fit inside one silo.',
+        title: 'Practice — Arkadiusz Kamrowski',
+        description: 'Arkadiusz Kamrowski’s practice across enterprise architecture, strategy and transformation, PMO and portfolio, AI and technology.',
+        eyebrow: 'Practice', headline: 'The hardest problems do not fit inside one silo.',
         lead: 'In practice I work on the dependencies between strategy, architecture, investment and execution. The areas below are distinct capabilities, but most value appears at their intersections.',
         items: [
           { title: 'Enterprise Architecture', body: 'Capability maps, target architecture, principles, governance, standards and roadmaps — always connected to business decisions.' },
@@ -90,7 +90,7 @@ export const en = {
       writing: {
         title: 'Writing — Arkadiusz Kamrowski',
         description: 'Notes and themes by Arkadiusz Kamrowski on enterprise architecture, strategy, transformation, PMO, AI and technology.',
-        eyebrow: 'Writing / Notes', headline: 'I write about mechanisms that connect a decision to execution.',
+        eyebrow: 'Perspective / Notes', headline: 'I write about mechanisms that connect a decision to execution.',
         lead: 'This section is designed for short notes, essays and material on architecture, strategy, portfolio, AI and transformation. Publishing starts with ideas that have a real point of view — not with filling a content calendar.',
         themesTitle: 'Themes',
         themes: [

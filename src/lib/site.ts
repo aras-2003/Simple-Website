@@ -1,5 +1,5 @@
 export type Locale = 'pl' | 'en';
-export type RouteKey = 'home' | 'about' | 'oaf' | 'work' | 'writing';
+export type RouteKey = 'home' | 'about' | 'oaf' | 'work' | 'writing' | 'contact' | 'privacy';
 
 export const site = {
   name: 'Arkadiusz Kamrowski',
@@ -12,6 +12,8 @@ export const routeSlugs: Record<RouteKey, string> = {
   oaf: 'oaf',
   work: 'work',
   writing: 'writing',
+  contact: 'contact',
+  privacy: 'privacy',
 };
 
 export function route(locale: Locale, key: RouteKey): string {

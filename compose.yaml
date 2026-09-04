@@ -14,3 +14,24 @@ services:
     cap_drop:
       - ALL
     restart: unless-stopped
+
+  contact-api:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    network_mode: "service:site"
+    environment:
+      CONTACT_API_PORT: 8787
+      CONTACT_DRY_RUN: ${CONTACT_DRY_RUN:-1}
+      CONTACT_RATE_LIMIT: ${CONTACT_RATE_LIMIT:-5}
+      CONTACT_REQUIRE_ORIGIN: ${CONTACT_REQUIRE_ORIGIN:-0}
+      CONTACT_ALLOWED_ORIGINS: ${CONTACT_ALLOWED_ORIGINS:-http://127.0.0.1:8080,http://localhost:8080}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      CONTACT_TO_EMAIL: ${CONTACT_TO_EMAIL:-}
+      CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL:-}
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped

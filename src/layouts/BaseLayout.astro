@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import '../styles/responsive.css';
 import '../styles/visual-refresh.css';
+import '../styles/content-ia.css';
 import '../styles/quality-hardening.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -13,13 +14,14 @@ interface Props {
   routeKey: RouteKey;
   title: string;
   description: string;
+  paths?: { pl: string; en: string };
 }
 
-const { locale, routeKey, title, description } = Astro.props;
+const { locale, routeKey, title, description, paths } = Astro.props;
 const c = copy[locale];
-const canonicalPath = route(locale, routeKey);
-const plPath = route('pl', routeKey);
-const enPath = route('en', routeKey);
+const canonicalPath = paths?.[locale] ?? route(locale, routeKey);
+const plPath = paths?.pl ?? route('pl', routeKey);
+const enPath = paths?.en ?? route('en', routeKey);
 const canonical = absoluteUrl(canonicalPath, Astro.site);
 const plUrl = absoluteUrl(plPath, Astro.site);
 const enUrl = absoluteUrl(enPath, Astro.site);
