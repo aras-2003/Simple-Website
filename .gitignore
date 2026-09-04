@@ -1,4 +1,12 @@
 dist/
 artifacts/
 rendered-k8s.yaml
+rendered-k8s-local.yaml
+__pycache__/
+*.pyc
+.local-server.pid
+.local-server.log
+.k8s-port-forward.pid
+.k8s-port-forward.log
+.env
 .DS_Store
