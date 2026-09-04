@@ -184,6 +184,10 @@
   object-position: 50% 24%;
 }
 
+.about-portrait-primary figcaption {
+  color: var(--paper-strong);
+}
+
 .brand-profile {
   max-width: none;
   display: grid;
