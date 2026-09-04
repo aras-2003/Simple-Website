@@ -4,94 +4,158 @@ import OafDiagram from './OafDiagram.astro';
 import PageHero from './PageHero.astro';
 import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
-import { vnext } from '../content/vnext';
+import { platform, platformSources } from '../content/platform';
 import { route, type Locale } from '../lib/site';
+
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
-const p = copy[locale].pages.oaf;
+const c = copy[locale];
 const ia = editorial[locale].oaf;
-const vx = vnext[locale];
-const heroEyebrow = locale === 'pl' ? 'OAF / rama architektury organizacyjnej' : 'OAF / Organizational Architecture Framework';
-const modelNote = locale === 'pl'
-  ? 'OAF jest rozwijanym modelem roboczym i syntezą istniejących nurtów projektowania organizacji, architektury korporacyjnej oraz zarządzania portfelem i wykonaniem. Strona pokazuje jego obecną logikę — nie deklaruje ukończonego standardu ani pełnego metamodelu.'
-  : 'OAF is an evolving working model and synthesis of established organization design, enterprise architecture, portfolio and execution thinking. This site presents its current logic — it does not claim a finished standard or complete metamodel.';
+const x = platform[locale].oaf;
+const lineage = locale === 'pl' ? [
+  { author: 'Jay Galbraith', concept: 'Star Model', body: 'Strategia, struktura, procesy, systemy motywacyjne i ludzie jako współzależne dźwignie projektu organizacji. Punkt wyjścia: organizacja to znacznie więcej niż schemat organizacyjny.', href: platformSources.galbraith },
+  { author: 'Peters, Waterman, Phillips / McKinsey', concept: '7-S', body: 'Struktura nie jest organizacją. Strategia, systemy, umiejętności, ludzie, styl zarządzania i wspólne wartości wzajemnie się wzmacniają albo blokują.', href: platformSources.mckinsey7s },
+  { author: 'Richard Burton & Børge Obel', concept: 'Fit / misfit', body: 'Projekt organizacji jest problemem dopasowania między strategią, kontekstem, strukturą i mechanizmami koordynacji. Rozjazd jest sygnałem do przeprojektowania systemu.', href: platformSources.burtonObel },
+  { author: 'Jeanne Ross, Peter Weill & David Robertson', concept: 'Operating model + enterprise architecture', body: 'MIT CISR opisuje enterprise architecture jako organizującą logikę procesów i zdolności IT wynikającą z operating modelu — ważny most między strategią a fundamentem wykonania.', href: platformSources.mitCisrBook },
+] : [
+  { author: 'Jay Galbraith', concept: 'Star Model', body: 'Strategy, structure, processes, rewards and people as interdependent organization-design levers. The starting point: an organization is much more than an org chart.', href: platformSources.galbraith },
+  { author: 'Peters, Waterman, Phillips / McKinsey', concept: '7-S', body: 'Structure is not organization. Strategy, systems, skills, staff, style and shared values can reinforce or constrain one another.', href: platformSources.mckinsey7s },
+  { author: 'Richard Burton & Børge Obel', concept: 'Fit / misfit', body: 'Organization design is a problem of fit across strategy, context, structure and coordination mechanisms. Misfit is a signal to redesign the system.', href: platformSources.burtonObel },
+  { author: 'Jeanne Ross, Peter Weill & David Robertson', concept: 'Operating model + enterprise architecture', body: 'MIT CISR frames enterprise architecture as the organizing logic of processes and IT capabilities derived from the operating model — a bridge between strategy and execution foundations.', href: platformSources.mitCisrBook },
+];
+const pageTitle = 'OAF — Organizational Architecture Framework';
+const pageDescription = locale === 'pl'
+  ? 'OAF jako rozwijana synteza projektowania organizacji, architektury korporacyjnej, portfela, ładu decyzyjnego i dowodów w jednej pętli decyzji.'
+  : 'OAF as an evolving synthesis of organization design, enterprise architecture, portfolio, governance and evidence in one decision loop.';
 ---
-<BaseLayout locale={locale} routeKey="oaf" title={p.title} description={p.description}>
-  <PageHero eyebrow={heroEyebrow} headline={p.headline} lead={p.lead} />
+<BaseLayout locale={locale} routeKey="oaf" title={pageTitle} description={pageDescription}>
+  <PageHero eyebrow={x.hero.eyebrow} headline={x.hero.title} lead={x.hero.lead} />
 
-  <section class="section oaf-definition-section" aria-labelledby="oa-definition-title">
+  <section class="section oaf-definition" aria-labelledby="oaf-definition-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{vx.orgArchitecture.eyebrow}</p>
-        <h2 id="oa-definition-title">{vx.orgArchitecture.title}</h2>
+        <p class="eyebrow">{x.definition.eyebrow}</p>
+        <h2 id="oaf-definition-title">{x.definition.title}</h2>
       </div>
       <div class="definition-copy">
-        <p>{vx.orgArchitecture.definition}</p>
-        <p class="definition-emphasis">{vx.orgArchitecture.oafDefinition}</p>
+        <p>{x.definition.body}</p>
+        <p class="definition-emphasis">{x.definition.oaf}</p>
       </div>
     </div>
+  </section>
 
-    <div class="lineage-grid" aria-label={locale === 'pl' ? 'Punkty odniesienia dla OAF' : 'OAF reference lineage'}>
-      {vx.lineage.map((item) => (
+  <section class="section lineage-section" aria-labelledby="lineage-title">
+    <div class="section-intro section-intro-wide">
+      <p class="eyebrow">{locale === 'pl' ? 'Punkty odniesienia / skąd bierze się systemowe myślenie' : 'Reference points / where systems thinking comes from'}</p>
+      <h2 id="lineage-title">{x.lineageTitle}</h2>
+      <p class="content-lead">{x.lineageLead}</p>
+    </div>
+    <div class="lineage-river">
+      {lineage.map((item) => (
         <article>
-          <p class="lineage-concept">{item.concept}</p>
+          <div class="lineage-marker" aria-hidden="true"></div>
+          <p class="micro-label">{item.concept}</p>
           <h3>{item.author}</h3>
-          <p>{item.contribution}</p>
-          <a href={item.href} target="_blank" rel="noopener noreferrer">{locale === 'pl' ? 'Źródło' : 'Source'}<span aria-hidden="true"> ↗</span></a>
+          <p>{item.body}</p>
+          <a href={item.href} target="_blank" rel="noopener noreferrer">{locale === 'pl' ? 'Źródło' : 'Source'}<span aria-hidden="true"> ↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="section section-oaf oaf-model-section" aria-labelledby="oaf-model-title">
-    <div class="oaf-model-intro">
-      <p class="eyebrow">{locale === 'pl' ? 'Model / od ogółu do decyzji' : 'Model / from system to decision'}</p>
-      <h2 id="oaf-model-title">{ia.layersTitle}</h2>
-      <p>{ia.layersBody}</p>
+  <section class="section convergence-section" aria-labelledby="gap-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.gap.eyebrow}</p>
+        <h2 id="gap-title">{x.gap.title}</h2>
+      </div>
+      <p class="content-lead">{x.gap.conclusion}</p>
+    </div>
+    <div class="convergence-map" aria-label={locale === 'pl' ? 'Cztery nurty zbieżne w jednej pętli decyzji' : 'Four streams converging into one decision loop'}>
+      {x.gap.streams.map((item) => (
+        <article><h3>{item.title}</h3><p>{item.body}</p></article>
+      ))}
+      <div class="convergence-core"><span>OAF</span><strong>{locale === 'pl' ? 'interfejsy decyzji' : 'decision interfaces'}</strong></div>
+    </div>
+  </section>
+
+  <section class="section oaf-model-section" aria-labelledby="model-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.model.eyebrow}</p>
+        <h2 id="model-title">{x.model.title}</h2>
+      </div>
+      <p class="content-lead">{x.model.body}</p>
     </div>
     <OafDiagram locale={locale} id="oaf-page-diagram" />
+  </section>
 
-    <div class="oaf-layer-flow">
-      {ia.layerDetails.map((layer) => (
+  <section class="section layer-deep-dive" aria-labelledby="layers-title">
+    <div class="section-intro section-intro-wide">
+      <p class="eyebrow">{locale === 'pl' ? 'Od modelu do decyzji' : 'From model to decision'}</p>
+      <h2 id="layers-title">{locale === 'pl' ? 'Każdy wymiar odpowiada na inne pytanie — razem tworzą jedną pętlę.' : 'Each dimension answers a different question — together they form one loop.'}</h2>
+    </div>
+    <div class="layer-editorial-list">
+      {x.layers.map((layer) => (
         <article>
-          <p class="layer-domain">{layer.title}</p>
+          <p class="layer-name">{layer.title}</p>
           <h3>{layer.question}</h3>
           <p>{layer.body}</p>
         </article>
       ))}
     </div>
-    <p class="oaf-note">{modelNote}</p>
   </section>
 
-  <section class="section rules-section rules-section-vnext" aria-labelledby="rules-title">
+  <section class="section misfit-section" aria-labelledby="misfit-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Pryncypia / jakość decyzji' : 'Principles / decision quality'}</p>
-        <h2 id="rules-title">{ia.principlesTitle}</h2>
+        <p class="eyebrow">{x.misfit.eyebrow}</p>
+        <h2 id="misfit-title">{x.misfit.title}</h2>
+      </div>
+      <p class="content-lead">{locale === 'pl' ? 'To właśnie rozjazd — nie brak diagramu — jest sygnałem, że architektura organizacyjna wymaga interwencji.' : 'Misfit — not a missing diagram — is the signal that organizational architecture needs intervention.'}</p>
+    </div>
+    <div class="misfit-grid">
+      {x.misfit.examples.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
+    </div>
+  </section>
+
+  <section class="section principles-section" aria-labelledby="principles-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{locale === 'pl' ? 'Pryncypia / standard jakości' : 'Principles / quality standard'}</p>
+        <h2 id="principles-title">{ia.principlesTitle}</h2>
       </div>
       <p class="content-lead">{ia.principlesLead}</p>
     </div>
     <div class="principle-strips">
-      {ia.principles.map((rule) => (
-        <article>
-          <h3>{rule.title}</h3>
-          <p>{rule.body}</p>
-        </article>
-      ))}
+      {ia.principles.map((rule) => <article><h3>{rule.title}</h3><p>{rule.body}</p></article>)}
     </div>
   </section>
 
-  <section class="section oaf-use-section oaf-use-vnext" aria-labelledby="uses-title">
+  <section class="section boundaries-section" aria-labelledby="boundaries-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.nonGoals.eyebrow}</p>
+        <h2 id="boundaries-title">{x.nonGoals.title}</h2>
+      </div>
+      <div>
+        <p class="content-lead">{x.nonGoals.body}</p>
+        <ul class="boundary-list">{x.nonGoals.items.map((item) => <li>{item}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section oaf-use-section" aria-labelledby="uses-title">
     <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{locale === 'pl' ? 'Zastosowanie / kiedy model ma sens' : 'Application / when the model earns its place'}</p>
-      <h2 id="uses-title">{ia.usesTitle}</h2>
+      <p class="eyebrow">{locale === 'pl' ? 'Zastosowanie / kiedy model zarabia na swoje miejsce' : 'Application / when the model earns its place'}</p>
+      <h2 id="uses-title">{locale === 'pl' ? 'Nie każdy problem potrzebuje OAF. Te sytuacje zwykle potrzebują perspektywy przekrojowej.' : 'Not every problem needs OAF. These situations usually need a cross-system view.'}</h2>
     </div>
-    <div class="use-case-grid use-case-editorial">
-      {ia.uses.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
+    <div class="use-case-editorial">
+      {x.uses.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
     </div>
-    <div class="inline-actions">
-      <a class="button button-primary" href={route(locale, 'contact')}>{p.cta}<span aria-hidden="true">→</span></a>
-      <a class="text-link" href={route(locale, 'work')}>{editorial[locale].nav.work}<span aria-hidden="true">→</span></a>
+    <div class="next-paths">
+      <a class="button button-primary" href={route(locale, 'work')}>{locale === 'pl' ? 'Zobacz praktykę' : 'See practice'}<span aria-hidden="true">→</span></a>
+      <a class="text-link" href={route(locale, 'writing')}>{locale === 'pl' ? 'Wróć do danych i tez' : 'Back to evidence and theses'}<span aria-hidden="true">→</span></a>
     </div>
   </section>
 </BaseLayout>
