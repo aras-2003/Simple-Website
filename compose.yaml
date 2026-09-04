@@ -1,0 +1,15 @@
+services:
+  site:
+    build:
+      context: .
+      args:
+        SITE_BASE_URL: http://localhost:8080
+    ports:
+      - "8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
