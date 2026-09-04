@@ -3,7 +3,7 @@ import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
 import { alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 
-interface Props { locale: Locale; current: RouteKey; alternateHref?: string; }
+interface Props { locale: Locale; current: RouteKey; alternateHref?: string | undefined; }
 const { locale, current, alternateHref } = Astro.props;
 const c = copy[locale];
 const ia = editorial[locale];
