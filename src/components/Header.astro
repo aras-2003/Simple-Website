@@ -8,7 +8,7 @@ const { locale, current } = Astro.props;
 const c = copy[locale];
 const ia = editorial[locale];
 const other = alternateLocale(locale);
-const navKeys = ['oaf', 'work', 'writing', 'about', 'contact'] as const;
+const navKeys = ['writing', 'oaf', 'work', 'about', 'contact'] as const;
 const langHref = route(other, current);
 ---
 <header class="site-header">

@@ -1,34 +1,52 @@
 ---
-import { editorial } from '../content/editorial';
 import type { Locale } from '../lib/site';
 
 interface Props { locale: Locale; id: string; compact?: boolean; }
 const { locale, id, compact = false } = Astro.props;
-const layers = editorial[locale].oaf.layerDetails;
-const title = locale === 'pl' ? 'OAF — pętla decyzji' : 'OAF — decision loop';
+const labels = locale === 'pl'
+  ? [
+      { title: 'Kierunek', meta: 'strategia' },
+      { title: 'Architektura', meta: 'wybory' },
+      { title: 'Priorytety', meta: 'portfel' },
+      { title: 'Dowody', meta: 'wykonanie' },
+    ]
+  : [
+      { title: 'Direction', meta: 'strategy' },
+      { title: 'Architecture', meta: 'choices' },
+      { title: 'Priorities', meta: 'portfolio' },
+      { title: 'Evidence', meta: 'execution' },
+    ];
+const centerTitle = locale === 'pl' ? 'Spójność decyzji' : 'Decision coherence';
+const centerBody = locale === 'pl'
+  ? 'Punkt ciężkości nie leży w jednym obszarze. Leży w jakości połączeń i pętli informacji zwrotnej.'
+  : 'The center of gravity is not one domain. It is the quality of the connections and the feedback loop.';
 const caption = locale === 'pl'
-  ? 'Kierunek prowadzi do wyborów, wybory do priorytetów, a wykonanie dostarcza dowodów do kolejnej decyzji.'
-  : 'Direction leads to choices, choices to priorities, and execution returns evidence into the next decision.';
-const tagsPl = ['Strategia', 'Architektura', 'Portfel', 'Wykonanie'];
-const tagsEn = ['Strategy', 'Architecture', 'Portfolio', 'Execution'];
+  ? 'OAF utrzymuje zależność między kierunkiem, architekturą, priorytetami i dowodami z wykonania. Evidence wraca do kolejnej decyzji zamiast kończyć cykl.'
+  : 'OAF keeps direction, architecture, priorities and execution evidence connected. Evidence feeds the next decision instead of closing the cycle.';
 ---
-<figure class:list={['oaf-diagram', { 'oaf-diagram-compact': compact }]} aria-labelledby={id}>
-  <div class="oaf-diagram-head">
-    <p class="diagram-kicker" id={id}>{title}</p>
-    <span aria-hidden="true">01—04</span>
+<figure class:list={['oaf-orbit', { 'oaf-orbit-compact': compact }]} aria-labelledby={id}>
+  <p class="sr-only" id={id}>{locale === 'pl' ? 'OAF — cztery współzależne obszary architektury organizacyjnej' : 'OAF — four interdependent domains of organizational architecture'}</p>
+  <svg class="oaf-orbit-lines" viewBox="0 0 640 640" aria-hidden="true" focusable="false">
+    <circle cx="320" cy="320" r="214" pathLength="1" />
+    <path d="M320 106 A214 214 0 0 1 534 320" />
+    <path d="M534 320 A214 214 0 0 1 320 534" />
+    <path d="M320 534 A214 214 0 0 1 106 320" />
+    <path d="M106 320 A214 214 0 0 1 320 106" />
+    <line x1="320" y1="168" x2="320" y2="256" />
+    <line x1="472" y1="320" x2="384" y2="320" />
+    <line x1="320" y1="472" x2="320" y2="384" />
+    <line x1="168" y1="320" x2="256" y2="320" />
+  </svg>
+
+  <div class="oaf-node oaf-node-top"><span>{labels[0].meta}</span><strong>{labels[0].title}</strong></div>
+  <div class="oaf-node oaf-node-right"><span>{labels[1].meta}</span><strong>{labels[1].title}</strong></div>
+  <div class="oaf-node oaf-node-bottom"><span>{labels[2].meta}</span><strong>{labels[2].title}</strong></div>
+  <div class="oaf-node oaf-node-left"><span>{labels[3].meta}</span><strong>{labels[3].title}</strong></div>
+
+  <div class="oaf-center">
+    <span>OAF</span>
+    <strong>{centerTitle}</strong>
+    {!compact && <p>{centerBody}</p>}
   </div>
-  <ol class="oaf-diagram-grid">
-    {layers.map((layer, index) => (
-      <li>
-        <div class="diagram-node-meta">
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <span>{locale === 'pl' ? tagsPl[index] : tagsEn[index]}</span>
-        </div>
-        <h3>{layer.title}</h3>
-        <p class="oaf-question">{layer.question}</p>
-        {!compact && <p class="oaf-explanation">{layer.body}</p>}
-      </li>
-    ))}
-  </ol>
   <figcaption>{caption}</figcaption>
 </figure>

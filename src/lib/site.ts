@@ -6,18 +6,29 @@ export const site = {
   linkedIn: 'https://pl.linkedin.com/in/arkadiusz-kamrowski',
 } as const;
 
-export const routeSlugs: Record<RouteKey, string> = {
-  home: '',
-  about: 'about',
-  oaf: 'oaf',
-  work: 'work',
-  writing: 'writing',
-  contact: 'contact',
-  privacy: 'privacy',
+const routeSlugs: Record<Locale, Record<RouteKey, string>> = {
+  pl: {
+    home: '',
+    about: 'o-mnie',
+    oaf: 'oaf',
+    work: 'praktyka',
+    writing: 'perspektywa',
+    contact: 'kontakt',
+    privacy: 'prywatnosc',
+  },
+  en: {
+    home: '',
+    about: 'about',
+    oaf: 'oaf',
+    work: 'practice',
+    writing: 'perspective',
+    contact: 'contact',
+    privacy: 'privacy',
+  },
 };
 
 export function route(locale: Locale, key: RouteKey): string {
-  const slug = routeSlugs[key];
+  const slug = routeSlugs[locale][key];
   if (locale === 'en') return slug ? `/en/${slug}` : '/en';
   return slug ? `/${slug}` : '/';
 }

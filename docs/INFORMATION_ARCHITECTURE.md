@@ -1,42 +1,61 @@
-# Information Architecture v3
+# Information Architecture — vNext
 
-## Primary audience
-CIO/CTO, executive transformation leaders, enterprise architects, strategy and portfolio leaders, and organizers looking for an expert point of view on technology-led change.
+## Executive premise
+Strona ma działać jak rozmowa z CEO/CIO/CTO, a nie katalog kompetencji ani ekspozycja frameworku. Odbiorca powinien najpierw zobaczyć **problem i dowód**, potem interpretację, następnie model odpowiedzi, zastosowanie, wiarygodność autora i kontakt.
 
-## Primary user questions
-1. Who is Arkadiusz and what is his point of view?
-2. What is OAF and why is it different?
-3. Where can this way of thinking be applied?
-4. Is there enough evidence and depth to trust the perspective?
-5. What can I read before I contact him?
-6. How do I start a useful conversation?
+## Główna sekwencja narracyjna
+1. **Start / value proposition** — kim jest Arkadiusz i jaki rodzaj problemu porządkuje.
+2. **Perspektywa** — dane rynkowe, benchmarki, napięcia i tezy. Problem ma istnieć niezależnie od OAF.
+3. **OAF** — synteza wcześniejszych nurtów organization design / enterprise architecture i sposób spięcia kierunku, architektury, portfolio oraz evidence.
+4. **Praktyka** — zastosowanie w czterech perspektywach oraz interfejsy między nimi.
+5. **O mnie** — osobista i zawodowa trajektoria od delivery do strategii, governance i odpowiedzialności za cały system.
+6. **Kontakt** — konkretny problem i decyzja jako punkt wejścia.
 
-## Navigation
-- **OAF** — signature decision model and its principles.
-- **Practice / Praktyka** — where the model meets enterprise architecture, strategy, portfolio and AI.
-- **Perspective / Perspektywa** — original notes and essays.
-- **About / O mnie** — role, operating philosophy and principles.
-- **Contact / Kontakt** — direct message form and LinkedIn fallback.
+## Nawigacja
+PL:
+- `/perspektywa`
+- `/oaf`
+- `/praktyka`
+- `/o-mnie`
+- `/kontakt`
+- `/prywatnosc`
 
-Privacy is intentionally a footer-level utility route, not a primary navigation item.
+EN:
+- `/en/perspective`
+- `/en/oaf`
+- `/en/practice`
+- `/en/about`
+- `/en/contact`
+- `/en/privacy`
 
-## Home narrative
-Positioning → proof → point of view → OAF → practice → writing → public signals → contact.
+Historyczne ścieżki (`/writing`, `/work`, `/about`, `/contact`, `/privacy` i angielskie odpowiedniki) mogą pozostać technicznie dostępne jako aliasy, ale są wyłączone z sitemap i wskazują canonical na docelowe ścieżki.
 
-The home page is an orientation layer. Deep explanation belongs on dedicated routes instead of repeating full content in every section.
+## Rola sekcji
+### Perspektywa
+**Problem → evidence → thesis.** Nie jest blogiem. Jej wartością ma być łączenie danych, benchmarków i realnych napięć organizacyjnych z hipotezą do sprawdzenia.
 
-## Route map
-PL: `/`, `/oaf`, `/work`, `/writing`, `/writing/[slug]`, `/about`, `/contact`, `/privacy`.
-EN mirrors the same hierarchy under `/en`.
+### OAF
+**Synthesis → model → details → principles → application.** OAF nie jest początkiem historii. Jest odpowiedzią po tym, jak problem został pokazany. Jedna wizualna reprezentacja czterech wymiarów; szczegóły rozwijane tylko raz.
 
-## Conversion hierarchy
-Primary: meaningful expert conversation through `/contact`.
-Secondary: understand OAF, read perspective, view practice areas.
-Fallback: LinkedIn.
+### Praktyka
+**Problem solving.** Cztery perspektywy nie są katalogiem usług. Najważniejsze są interfejsy między nimi: Strategy ↔ Architecture ↔ Portfolio ↔ Execution/Evidence.
 
-## Content rules
-- Prefer a thesis + explanation + practical consequence over a slogan.
-- Every principle needs a "what it means in practice" layer.
-- Do not claim outcomes that cannot be publicly substantiated.
-- Use examples as mechanisms, not confidential case stories.
-- Keep OAF labelled as an original working model until the complete metamodel is ready for publication.
+### O mnie
+**Credibility through trajectory.** Delivery/technology → architecture/transformation → strategy/portfolio/governance → executive synthesis. Bez vanity metrics jako głównego dowodu.
+
+## Zasady prezentacji
+- brak arbitralnej mikro-numeracji 01/02/A/B/C, jeśli nie reprezentuje realnego procesu;
+- małe etykiety wyłącznie jako semantyczne overline, nie dekoracja;
+- OAF: diagram kołowy z etykietami w oddzielnych komórkach layoutu, więc geometria nie przecina tekstu;
+- evidence i źródła są klikalne i jawne;
+- PL używa polskich etykiet UI; angielskie nazwy własne i uznane terminy pozostają tylko tam, gdzie są merytorycznie potrzebne;
+- każdy poziom strony prowadzi od ogółu do szczegółu i dalej do działania.
+
+## Kryterium sukcesu
+Po 60–90 sekundach CEO/CIO/CTO powinien potrafić odpowiedzieć:
+1. Jaki problem ta osoba uważa za ważny?
+2. Jakie dane potwierdzają, że problem jest realny?
+3. Co OAF wnosi ponad znane modele?
+4. Gdzie można użyć tego podejścia praktycznie?
+5. Dlaczego autor ma wiarygodność, żeby o tym mówić?
+6. Jak rozpocząć rozmowę?

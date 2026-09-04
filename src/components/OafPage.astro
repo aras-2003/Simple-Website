@@ -2,40 +2,78 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OafDiagram from './OafDiagram.astro';
 import PageHero from './PageHero.astro';
-import SectionLabel from './SectionLabel.astro';
 import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
+import { vnext } from '../content/vnext';
 import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const p = copy[locale].pages.oaf;
 const ia = editorial[locale].oaf;
+const vx = vnext[locale];
+const heroEyebrow = locale === 'pl' ? 'OAF / rama architektury organizacyjnej' : 'OAF / Organizational Architecture Framework';
+const modelNote = locale === 'pl'
+  ? 'OAF jest rozwijanym modelem roboczym i syntezą istniejących nurtów projektowania organizacji, architektury korporacyjnej oraz zarządzania portfelem i wykonaniem. Strona pokazuje jego obecną logikę — nie deklaruje ukończonego standardu ani pełnego metamodelu.'
+  : 'OAF is an evolving working model and synthesis of established organization design, enterprise architecture, portfolio and execution thinking. This site presents its current logic — it does not claim a finished standard or complete metamodel.';
 ---
 <BaseLayout locale={locale} routeKey="oaf" title={p.title} description={p.description}>
-  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+  <PageHero eyebrow={heroEyebrow} headline={p.headline} lead={p.lead} />
 
-  <section class="section section-oaf oaf-page" aria-labelledby="layers-title">
-    <div class="oaf-page-intro">
+  <section class="section oaf-definition-section" aria-labelledby="oa-definition-title">
+    <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Pętla decyzyjna' : 'Decision loop'}</p>
-        <h2 id="layers-title">{ia.layersTitle}</h2>
+        <p class="eyebrow">{vx.orgArchitecture.eyebrow}</p>
+        <h2 id="oa-definition-title">{vx.orgArchitecture.title}</h2>
       </div>
+      <div class="definition-copy">
+        <p>{vx.orgArchitecture.definition}</p>
+        <p class="definition-emphasis">{vx.orgArchitecture.oafDefinition}</p>
+      </div>
+    </div>
+
+    <div class="lineage-grid" aria-label={locale === 'pl' ? 'Punkty odniesienia dla OAF' : 'OAF reference lineage'}>
+      {vx.lineage.map((item) => (
+        <article>
+          <p class="lineage-concept">{item.concept}</p>
+          <h3>{item.author}</h3>
+          <p>{item.contribution}</p>
+          <a href={item.href} target="_blank" rel="noopener noreferrer">{locale === 'pl' ? 'Źródło' : 'Source'}<span aria-hidden="true"> ↗</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-oaf oaf-model-section" aria-labelledby="oaf-model-title">
+    <div class="oaf-model-intro">
+      <p class="eyebrow">{locale === 'pl' ? 'Model / od ogółu do decyzji' : 'Model / from system to decision'}</p>
+      <h2 id="oaf-model-title">{ia.layersTitle}</h2>
       <p>{ia.layersBody}</p>
     </div>
     <OafDiagram locale={locale} id="oaf-page-diagram" />
-    <p class="oaf-note">{p.note}</p>
+
+    <div class="oaf-layer-flow">
+      {ia.layerDetails.map((layer) => (
+        <article>
+          <p class="layer-domain">{layer.title}</p>
+          <h3>{layer.question}</h3>
+          <p>{layer.body}</p>
+        </article>
+      ))}
+    </div>
+    <p class="oaf-note">{modelNote}</p>
   </section>
 
-  <section class="section rules-section" aria-labelledby="rules-title">
-    <SectionLabel no="05" label={locale === 'pl' ? 'OAF / pryncypia' : 'OAF / principles'} />
-    <div class="content-split">
-      <h2 id="rules-title">{ia.principlesTitle}</h2>
+  <section class="section rules-section rules-section-vnext" aria-labelledby="rules-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{locale === 'pl' ? 'Pryncypia / jakość decyzji' : 'Principles / decision quality'}</p>
+        <h2 id="rules-title">{ia.principlesTitle}</h2>
+      </div>
       <p class="content-lead">{ia.principlesLead}</p>
     </div>
-    <div class="rule-card-grid rule-grid-editorial">
-      {ia.principles.map((rule, index) => (
+    <div class="principle-strips">
+      {ia.principles.map((rule) => (
         <article>
-          <span>{String(index + 1).padStart(2, '0')}</span>
           <h3>{rule.title}</h3>
           <p>{rule.body}</p>
         </article>
@@ -43,9 +81,11 @@ const ia = editorial[locale].oaf;
     </div>
   </section>
 
-  <section class="section oaf-use-section" aria-labelledby="uses-title">
-    <p class="eyebrow">{locale === 'pl' ? 'Zastosowanie' : 'Application'}</p>
-    <h2 id="uses-title">{ia.usesTitle}</h2>
+  <section class="section oaf-use-section oaf-use-vnext" aria-labelledby="uses-title">
+    <div class="section-intro section-intro-wide">
+      <p class="eyebrow">{locale === 'pl' ? 'Zastosowanie / kiedy model ma sens' : 'Application / when the model earns its place'}</p>
+      <h2 id="uses-title">{ia.usesTitle}</h2>
+    </div>
     <div class="use-case-grid use-case-editorial">
       {ia.uses.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
     </div>

@@ -7,25 +7,26 @@ interface Props { locale: Locale; note: Note; }
 const { locale, note } = Astro.props;
 const ia = editorial[locale];
 const title = `${note.title} — Arkadiusz Kamrowski`;
+const base = route(locale, 'writing');
 ---
-<BaseLayout locale={locale} routeKey="writing" title={title} description={note.dek} paths={{ pl: `/writing/${note.slug}`, en: `/en/writing/${note.slug}` }}>
-  <article class="note-page">
+<BaseLayout locale={locale} routeKey="writing" title={title} description={note.dek} paths={{ pl: `/perspektywa/${note.slug}`, en: `/en/perspective/${note.slug}` }}>
+  <article class="note-page note-page-vnext">
     <header class="note-hero">
       <p class="eyebrow">{note.category} · {note.readTime} {ia.writing.min}</p>
       <h1>{note.title}</h1>
       <p class="page-lead">{note.dek}</p>
+      <p class="article-method-note">{locale === 'pl' ? 'Perspektywa robocza: teza do konfrontowania z danymi, benchmarkami i realnym kontekstem organizacyjnym.' : 'Working perspective: a thesis to be tested against evidence, benchmarks and real organizational context.'}</p>
     </header>
     <div class="note-body">
-      {note.sections.map((section, index) => (
-        <section aria-labelledby={`note-section-${index}`}>
-          <p class="note-section-no" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
-          <h2 id={`note-section-${index}`}>{section.heading}</h2>
+      {note.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
           {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
         </section>
       ))}
     </div>
     <footer class="note-footer">
-      <a class="text-link" href={route(locale, 'writing')}>← {ia.nav.writing}</a>
+      <a class="text-link" href={base}>← {ia.nav.writing}</a>
       <a class="button button-primary" href={route(locale, 'contact')}>{ia.nav.contact}<span aria-hidden="true">→</span></a>
     </footer>
   </article>

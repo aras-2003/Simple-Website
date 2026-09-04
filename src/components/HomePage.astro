@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OafDiagram from './OafDiagram.astro';
-import SectionLabel from './SectionLabel.astro';
 import { copy, sharedContent } from '../i18n/content';
 import { editorial } from '../content/editorial';
 import { getNotes } from '../content/notes';
+import { vnext } from '../content/vnext';
 import { route, site, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; }
@@ -12,125 +12,126 @@ const { locale } = Astro.props;
 const c = copy[locale];
 const p = c.pages.home;
 const ia = editorial[locale];
-const proofLabel = locale === 'pl' ? 'Doświadczenie i perspektywa' : 'Experience and perspective';
+const vx = vnext[locale];
 const notes = getNotes(locale).slice(0, 3);
-const noteHref = (slug: string) => locale === 'pl' ? `/writing/${slug}` : `/en/writing/${slug}`;
+const perspectiveBase = route(locale, 'writing');
+const noteHref = (slug: string) => `${perspectiveBase}/${slug}`;
 const focusTitle = (item: typeof sharedContent.focus[number]) => locale === 'pl' ? item.titlePl : item.titleEn;
 const focusBody = (item: typeof sharedContent.focus[number]) => locale === 'pl' ? item.bodyPl : item.bodyEn;
+const heroLead = locale === 'pl'
+  ? 'Pracuję od strony technologii i wykonania aż po strategię, architekturę korporacyjną i portfel. Dzięki temu patrzę na zmianę nie jak na zbiór projektów, ale jak na jeden system decyzji.'
+  : p.lead;
 ---
 <BaseLayout locale={locale} routeKey="home" title={p.title} description={p.description}>
-  <section class="hero hero-with-portrait" aria-labelledby="hero-title">
+  <section class="hero hero-vnext" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="eyebrow">{p.eyebrow}</p>
+      <p class="hero-name">Arkadiusz Kamrowski</p>
+      <p class="hero-domain">{vx.home.domain}</p>
       <h1 id="hero-title">{p.headlineA} <em>{p.headlineEm}</em></h1>
-      <p class="hero-lead">{p.lead}</p>
+      <p class="hero-lead">{heroLead}</p>
       <div class="hero-actions">
-        <a class="button button-primary" href={route(locale, 'oaf')}>{p.primary}<span aria-hidden="true">→</span></a>
+        <a class="button button-primary" href={route(locale, 'writing')}>{locale === 'pl' ? 'Zobacz perspektywę' : 'See the perspective'}<span aria-hidden="true">→</span></a>
         <a class="button button-quiet" href={route(locale, 'contact')}>{ia.nav.contact}<span aria-hidden="true">→</span></a>
       </div>
     </div>
 
-    <figure class="hero-portrait">
-      <div class="portrait-frame">
-        <img src="/assets/arkadiusz-kamrowski.svg" alt="Arkadiusz Kamrowski" width="480" height="600" loading="eager" fetchpriority="high" decoding="async" />
-      </div>
+    <figure class="hero-portrait hero-portrait-wide">
+      <img src="/assets/arkadiusz-kamrowski.webp" alt="Arkadiusz Kamrowski" width="480" height="720" loading="eager" fetchpriority="high" decoding="async" />
       <figcaption>
-        <span>Arkadiusz Kamrowski</span>
-        <span>{locale === 'pl' ? 'Strategia · Architektura · Wykonanie' : 'Strategy · Architecture · Execution'}</span>
+        <span>{locale === 'pl' ? 'Od wykonania do architektury organizacyjnej' : 'From delivery to organizational architecture'}</span>
+        <span>{locale === 'pl' ? 'Strategia · ład decyzyjny · wykonanie' : 'Strategy · governance · execution'}</span>
       </figcaption>
     </figure>
-
-    <div class="proof-strip" aria-label={proofLabel}>
-      <p class="proof-kicker">{proofLabel}</p>
-      <dl class="hero-metrics">
-        {p.metrics.map((metric) => <div><dt>{metric.value}</dt><dd>{metric.label}</dd></div>)}
-      </dl>
-    </div>
   </section>
 
-  <section class="section section-about" aria-labelledby="about-title">
-    <SectionLabel no="01" label={p.aboutLabel} />
-    <div class="manifesto">
-      <h2 id="about-title">{p.aboutTitleA} <em>{p.aboutTitleEm}</em></h2>
-      <div>
-        <p>{p.aboutBody}</p>
-        <p class="section-more"><a class="text-link" href={route(locale, 'about')}>{ia.nav.about}<span aria-hidden="true">→</span></a></p>
+  <section class="section section-perspective-home" aria-labelledby="perspective-home-title">
+    <div class="section-intro section-intro-wide">
+      <p class="eyebrow">{vx.home.perspectiveEyebrow}</p>
+      <h2 id="perspective-home-title">{vx.home.perspectiveTitle}</h2>
+      <p class="content-lead">{vx.home.perspectiveBody}</p>
+    </div>
+
+    <div class="evidence-grid" aria-label={locale === 'pl' ? 'Wybrane dane i benchmarki' : 'Selected evidence and benchmarks'}>
+      {vx.evidence.map((item) => (
+        <article class="evidence-card">
+          <p class="evidence-value">{item.value}</p>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+          <a href={item.href} target="_blank" rel="noopener noreferrer">{item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
+        </article>
+      ))}
+    </div>
+
+    <div class="perspective-theses">
+      <div class="perspective-theses-head">
+        <h3>{locale === 'pl' ? 'Tezy do sprawdzenia w praktyce' : 'Theses to test in practice'}</h3>
+        <a class="text-link" href={route(locale, 'writing')}>{ia.home.writingCta}<span aria-hidden="true">→</span></a>
+      </div>
+      <div class="note-preview-grid note-preview-editorial">
+        {notes.map((note) => (
+          <article>
+            <p class="micro-label">{note.category} · {note.readTime} {ia.writing.min}</p>
+            <h3><a href={noteHref(note.slug)}>{note.title}</a></h3>
+            <p>{note.dek}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="section section-oaf" aria-labelledby="oaf-title">
-    <SectionLabel no="02" label={p.oafLabel} />
-    <div class="oaf-layout">
-      <div class="oaf-intro">
-        <p class="eyebrow">{locale === 'pl' ? 'Model roboczy' : 'Working model'}</p>
-        <h2 id="oaf-title">{p.oafTitleA} <em>{p.oafTitleEm}</em></h2>
-        <p>{p.oafBody}</p>
-        <p class="section-more"><a class="text-link" href={route(locale, 'oaf')}>{p.primary}<span aria-hidden="true">→</span></a></p>
-      </div>
-      <OafDiagram locale={locale} id="home-oaf-diagram" compact />
-    </div>
-  </section>
-
-  <section class="section section-quote" aria-label={locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}>
-    <p class="quote-kicker">{locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}</p>
+  <section class="section section-quote quote-vnext" aria-label={locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}>
     <blockquote>{p.quote}</blockquote>
   </section>
 
-  <section class="section section-focus" aria-labelledby="focus-title">
-    <SectionLabel no="03" label={p.focusLabel} />
-    <div class="focus-header">
-      <h2 id="focus-title">{p.focusTitle}</h2>
-      <p>{p.focusBody}</p>
+  <section class="section section-oaf section-oaf-vnext" aria-labelledby="oaf-title">
+    <div class="oaf-home-copy">
+      <p class="eyebrow">{locale === 'pl' ? 'OAF / rama architektury organizacyjnej' : 'OAF / Organizational Architecture Framework'}</p>
+      <h2 id="oaf-title">{p.oafTitleA} <em>{p.oafTitleEm}</em></h2>
+      <p>{vx.orgArchitecture.oafDefinition}</p>
+      <p class="oaf-bridge-copy">{vx.home.oafBridge}</p>
+      <a class="text-link" href={route(locale, 'oaf')}>{p.primary}<span aria-hidden="true">→</span></a>
     </div>
-    <div class="focus-list">
-      {sharedContent.focus.map((item, index) => (
+    <OafDiagram locale={locale} id="home-oaf-diagram" compact />
+  </section>
+
+  <section class="section section-practice-home" aria-labelledby="practice-home-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{ia.nav.work}</p>
+        <h2 id="practice-home-title">{p.focusTitle}</h2>
+      </div>
+      <p class="content-lead">{p.focusBody}</p>
+    </div>
+    <div class="focus-list focus-list-vnext">
+      {sharedContent.focus.map((item) => (
         <article>
-          <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
           <h3>{focusTitle(item)}</h3>
           <p>{focusBody(item)}</p>
         </article>
       ))}
     </div>
-    <p class="section-more"><a class="text-link" href={route(locale, 'work')}>{ia.nav.work}<span aria-hidden="true">→</span></a></p>
+    <a class="text-link" href={route(locale, 'work')}>{locale === 'pl' ? 'Zobacz praktykę i punkty styku' : 'Explore the practice and intersections'}<span aria-hidden="true">→</span></a>
   </section>
 
-  <section class="section home-writing" aria-labelledby="home-writing-title">
-    <SectionLabel no="04" label={ia.home.writingEyebrow} />
-    <div class="content-split">
-      <h2 id="home-writing-title">{ia.home.writingTitle}</h2>
-      <p class="content-lead">{ia.home.writingBody}</p>
+  <section class="section section-about-home" aria-labelledby="about-home-title">
+    <div class="section-intro section-intro-wide">
+      <p class="eyebrow">{vx.home.aboutEyebrow}</p>
+      <h2 id="about-home-title">{vx.home.aboutTitle}</h2>
+      <p class="content-lead">{vx.home.aboutBody}</p>
     </div>
-    <div class="note-preview-grid note-preview-editorial">
-      {notes.map((note) => (
+    <div class="trajectory-vnext">
+      {vx.trajectory.map((item) => (
         <article>
-          <p class="micro-label">{note.category} · {note.readTime} {ia.writing.min}</p>
-          <h3><a href={noteHref(note.slug)}>{note.title}</a></h3>
-          <p>{note.dek}</p>
+          <p class="trajectory-stage-label">{item.stage}</p>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
         </article>
       ))}
     </div>
-    <p class="section-more"><a class="text-link" href={route(locale, 'writing')}>{ia.home.writingCta}<span aria-hidden="true">→</span></a></p>
+    <a class="text-link" href={route(locale, 'about')}>{ia.nav.about}<span aria-hidden="true">→</span></a>
   </section>
 
-  <section class="section section-signals" aria-labelledby="signals-title">
-    <SectionLabel no="05" label={p.signalsLabel} />
-    <div class="trajectory-head">
-      <h2 id="signals-title">{p.signalsTitle}</h2>
-      <p>{locale === 'pl' ? 'Nie jest to lista stanowisk. To rozwój perspektywy — od pracy blisko technologii i wykonania do projektowania systemów decyzji na poziomie organizacji.' : 'This is not a list of job titles. It is the evolution of a point of view — from working close to technology and delivery to designing organization-wide decision systems.'}</p>
-    </div>
-    <ol class="trajectory">
-      {p.signals.map((signal, index) => (
-        <li>
-          <span class="trajectory-index">{String(index + 1).padStart(2, '0')}</span>
-          <div class="trajectory-stage"><p>{signal.time}</p><h3>{signal.title}</h3></div>
-          <p class="trajectory-body">{signal.body}</p>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <section class="section section-contact" aria-labelledby="contact-title">
+  <section class="section section-contact section-contact-vnext" aria-labelledby="contact-title">
     <div class="contact-copy">
       <p class="eyebrow">{ia.home.contactEyebrow}</p>
       <h2 id="contact-title">{ia.home.contactTitle}</h2>
