@@ -17,36 +17,26 @@ const ia = editorial[locale].oaf;
   <section class="section section-oaf oaf-page" aria-labelledby="layers-title">
     <div class="oaf-page-intro">
       <div>
-        <p class="eyebrow">Decision loop</p>
+        <p class="eyebrow">{locale === 'pl' ? 'Pętla decyzyjna' : 'Decision loop'}</p>
         <h2 id="layers-title">{ia.layersTitle}</h2>
       </div>
       <p>{ia.layersBody}</p>
     </div>
     <OafDiagram locale={locale} id="oaf-page-diagram" />
-    <div class="oaf-layer-details">
-      {ia.layerDetails.map((layer, index) => (
-        <article>
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <h3 lang="en">{layer.title}</h3>
-          <p class="layer-question">{layer.question}</p>
-          <p>{layer.body}</p>
-        </article>
-      ))}
-    </div>
     <p class="oaf-note">{p.note}</p>
   </section>
 
   <section class="section rules-section" aria-labelledby="rules-title">
-    <SectionLabel no="05" label="OAF / principles" />
+    <SectionLabel no="05" label={locale === 'pl' ? 'OAF / pryncypia' : 'OAF / principles'} />
     <div class="content-split">
       <h2 id="rules-title">{ia.principlesTitle}</h2>
       <p class="content-lead">{ia.principlesLead}</p>
     </div>
-    <div class="rule-card-grid">
+    <div class="rule-card-grid rule-grid-editorial">
       {ia.principles.map((rule, index) => (
         <article>
           <span>{String(index + 1).padStart(2, '0')}</span>
-          <h3 lang="en">{rule.title}</h3>
+          <h3>{rule.title}</h3>
           <p>{rule.body}</p>
         </article>
       ))}
@@ -54,9 +44,9 @@ const ia = editorial[locale].oaf;
   </section>
 
   <section class="section oaf-use-section" aria-labelledby="uses-title">
-    <p class="eyebrow">Application</p>
+    <p class="eyebrow">{locale === 'pl' ? 'Zastosowanie' : 'Application'}</p>
     <h2 id="uses-title">{ia.usesTitle}</h2>
-    <div class="use-case-grid">
+    <div class="use-case-grid use-case-editorial">
       {ia.uses.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
     </div>
     <div class="inline-actions">
