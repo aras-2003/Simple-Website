@@ -2,28 +2,40 @@
 
 Stan sprawdzony: **2026-09-04**.
 
-## Profil właściciela
-- LinkedIn — Arkadiusz Kamrowski: https://pl.linkedin.com/in/arkadiusz-kamrowski
-- Aktualny zakres roli przekazany właścicielsko: **Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO**.
-- Publiczne materiały eksperckie: ITwiz oraz debaty dotyczące architektury, AI Act, Data Act i ładu decyzyjnego.
+## Profil marki
+- LinkedIn – Arkadiusz Kamrowski: https://pl.linkedin.com/in/arkadiusz-kamrowski
+- Strona pozycjonuje Arkadiusza Kamrowskiego jako markę ekspercką na styku **architektury organizacyjnej i korporacyjnej, strategii, transformacji, portfela, PMO i technologii**.
+- Bieżące zatrudnienie i nazwy funkcji w konkretnych organizacjach nie są elementem pozycjonowania marki i nie powinny pojawiać się jako opis aktualnej tożsamości zawodowej.
+- Publiczne materiały eksperckie obejmują m.in. debaty i publikacje dotyczące architektury, AI Act, Data Act, transformacji i ładu decyzyjnego.
 
-## OAF i architektura organizacyjna — punkty odniesienia
+## Studia przypadku
+Sekcja Praktyka wykorzystuje sześć anonimizowanych wzorców przypadków wskazanych właścicielsko jako obszary realnego doświadczenia:
+- strategia technologiczna,
+- modele referencyjne,
+- racjonalizacja portfela,
+- analiza wpływu przyjęcia euro,
+- governance / ład decyzyjny,
+- PMO.
+
+Przypadki są opisywane na poziomie **kontekstu, problemu, podejścia i wartości**. Nie dopisujemy nazw organizacji, danych poufnych ani mierzalnych rezultatów, których nie można publicznie zweryfikować.
+
+## OAF i architektura organizacyjna – punkty odniesienia
 Strona nie przedstawia architektury organizacyjnej jako autorskiego wynalazku Arkadiusza Kamrowskiego. OAF jest pozycjonowany jako **praktyczna synteza istniejących nurtów**, rozszerzona o logikę portfela, wykonania i sprzężenia zwrotnego opartego na dowodach.
 
-- Jay Galbraith — Star Model / Organization Design
+- Jay Galbraith – Star Model / Organization Design
   - https://jaygalbraith.com/services/star-model/
   - https://jaygalbraith.com/services/organization-design/
   - strategia, struktura, procesy, systemy motywacyjne i ludzie jako współzależne dźwignie projektu organizacji.
-- David A. Nadler & Michael L. Tushman — organization design / information processing / congruence
+- David A. Nadler & Michael L. Tushman – organization design / information processing / congruence
   - https://journals.aom.org/doi/10.5465/amr.1978.4305791
   - dopasowanie organizacji do zadania, strategii i niepewności oraz znaczenie przepływu informacji i koordynacji.
-- McKinsey / Peters, Waterman, Phillips — 7-S
+- McKinsey / Peters, Waterman, Phillips – 7-S
   - https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/enduring-ideas-the-7-s-framework
   - organizacja jako układ współzależnych czynników; sama struktura nie jest organizacją.
-- Richard M. Burton & Børge Obel — fit / misfit in organization design
+- Richard M. Burton & Børge Obel – fit / misfit in organization design
   - https://link.springer.com/article/10.1186/s41469-018-0029-2
   - dopasowanie między strategią, kontekstem, strukturą i mechanizmami koordynacji.
-- Jeanne W. Ross, Peter Weill, David C. Robertson / MIT CISR — operating model + enterprise architecture
+- Jeanne W. Ross, Peter Weill, David C. Robertson / MIT CISR – operating model + enterprise architecture
   - https://cisr.mit.edu/publication/enterprise-architecture-as-strategy
   - https://cisr.mit.edu/content/classic-topics-enterprise-architecture
   - enterprise architecture jako organizująca logika procesów biznesowych i zdolności IT wynikających z modelu operacyjnego.
@@ -38,7 +50,7 @@ Strona nie przedstawia architektury organizacyjnej jako autorskiego wynalazku Ar
 - McKinsey, *How to implement transformations for long-term impact* (2022/2023)
   - https://www.mckinsey.com/capabilities/implementation/our-insights/how-to-implement-transformations-for-long-term-impact
   - respondenci szacowali, że średnio 42% potencjalnej korzyści finansowej transformacji jest tracone w fazach wykonania i utrwalania zmiany; tylko 12% deklarowało utrzymanie większości lub wszystkich celów przez ponad trzy lata.
-- Project Management Institute, *Pulse of the Profession 2024 — The Future of Project Work*
+- Project Management Institute, *Pulse of the Profession 2024 – The Future of Project Work*
   - https://www.pmi.org/learning/thought-leadership/future-of-project-work
   - średni wskaźnik wykonania projektów 73,8%; podejścia predykcyjne, hybrydowe i zwinne mogą osiągać porównywalne wyniki, a istotne są dopasowanie, kompetencje i upodmiotowienie zespołów.
 
@@ -50,10 +62,10 @@ Strona nie przedstawia architektury organizacyjnej jako autorskiego wynalazku Ar
 
 ## Hierarchia twierdzeń
 Każde ważne twierdzenie powinno być jawnie interpretowalne jako jeden z poziomów:
-1. **obserwacja** — powtarzalny problem organizacyjny,
-2. **zewnętrzny dowód** — badanie, benchmark lub literatura,
-3. **teza autora** — interpretacja do zakwestionowania,
-4. **implikacja OAF** — proponowany sposób uporządkowania decyzji.
+1. **obserwacja** – powtarzalny problem organizacyjny,
+2. **zewnętrzny dowód** – badanie, benchmark lub literatura,
+3. **teza autora** – interpretacja do zakwestionowania,
+4. **implikacja OAF** – proponowany sposób uporządkowania decyzji.
 
 Poziom 3 i 4 nie mogą być prezentowane tak, jakby były bezpośrednim wynikiem zewnętrznego badania.
 
@@ -61,4 +73,4 @@ Poziom 3 i 4 nie mogą być prezentowane tak, jakby były bezpośrednim wynikiem
 W polskiej wersji preferowane są: **architektura organizacyjna, architektura korporacyjna, portfel, wykonanie/dostarczanie zmiany, ład decyzyjny, model operacyjny, zdolności organizacyjne, stan docelowy, dowody/dane z wykonania**. Angielski pozostaje przy nazwach własnych modeli, certyfikacjach i terminach, których tłumaczenie obniża precyzję.
 
 ## Zasada publikacyjna
-Strona nie publikuje danych prywatnych, poufnych studiów przypadków ani niezweryfikowanych rezultatów. Dane zewnętrzne mają jawne źródło, a tezy w Perspektywie są prezentowane jako interpretacja / hipoteza do sprawdzania w praktyce, nie jako wynik badań własnych.
+Strona nie publikuje danych prywatnych, poufnych szczegółów studiów przypadków ani niezweryfikowanych rezultatów. Dane zewnętrzne mają jawne źródło, a tezy w Perspektywie są prezentowane jako interpretacja / hipoteza do sprawdzania w praktyce, nie jako wynik badań własnych.
