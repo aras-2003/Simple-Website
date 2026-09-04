@@ -13,6 +13,7 @@ const requiredRoutes = [
   ...noteSlugs.map((slug) => `/en/writing/${slug}`),
 ];
 const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
+const portraitAsset = /\/assets\/arkadiusz-kamrowski[^"'<> ]*\.(?:webp|png|jpe?g)/;
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -59,7 +60,7 @@ for (const route of requiredRoutes) {
 }
 
 const home = await readFile(routeFile('/'), 'utf8');
-if (home.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/: portrait must not appear on Home');
+if (portraitAsset.test(home)) errors.push('/: portrait must not appear on Home');
 if (home.includes('Dyrektor Departamentu')) errors.push('/: employment title must not appear on Home');
 if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
 for (const cls of ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths']) {
@@ -72,7 +73,7 @@ const homeOrder = ['problem-section', 'evidence-section-home', 'oaf-teaser-home'
 for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: lightweight narrative order is incorrect');
 
 const about = await readFile(routeFile('/about'), 'utf8');
-if (!about.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/about: portrait expected on About');
+if (!portraitAsset.test(about)) errors.push('/about: portrait expected on About');
 if (!about.includes('career-river')) errors.push('/about: career trajectory expected');
 if (!about.includes('brand-profile')) errors.push('/about: brand profile expected');
 if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
