@@ -1,0 +1,60 @@
+/* About portrait presentation only. The source image is not retouched or regenerated. */
+
+.about-hero-brand {
+  min-height: min(560px, calc(100svh - var(--header)));
+  grid-template-columns: minmax(0, 1.55fr) minmax(220px, .45fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+
+.about-portrait-primary {
+  width: min(100%, 260px);
+  margin: 0;
+  justify-self: end;
+}
+
+.about-portrait-primary img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.about-portrait-primary figcaption {
+  max-width: 260px;
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 1.45;
+  opacity: .72;
+}
+
+@media (max-width: 1080px) {
+  .about-hero-brand {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 36px;
+  }
+
+  .about-portrait-primary {
+    width: 220px;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 760px) {
+  .about-hero-brand {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .about-portrait-primary {
+    width: min(58vw, 210px);
+    justify-self: start;
+  }
+
+  .about-portrait-primary figcaption {
+    max-width: 210px;
+  }
+}
