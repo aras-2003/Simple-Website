@@ -23,12 +23,53 @@ if DIST.exists():
     shutil.rmtree(DIST)
 shutil.copytree(SRC, DIST)
 
-# Keep the repository text-only for connector-friendly transport while serving a real PNG for social previews.
-og_b64 = DIST / "assets" / "og-card.png.b64"
-if og_b64.exists():
-    import base64
-    (DIST / "assets" / "og-card.png").write_bytes(base64.b64decode(og_b64.read_text(encoding="ascii").strip()))
-    og_b64.unlink()
+# Generate a real PNG social card using only Python stdlib. This keeps the repository text-only
+# while avoiding a binary asset or a runtime image dependency.
+def write_og_png(path: Path, width: int = 1200, height: int = 630) -> None:
+    import struct
+    import zlib
+
+    ink = (11, 13, 15)
+    paper = (242, 238, 230)
+    muted = (157, 164, 171)
+    signal = (182, 255, 106)
+    rows = [bytearray(ink * width) for _ in range(height)]
+
+    def hline(y: int, x1: int, x2: int, color: tuple[int, int, int]) -> None:
+        if 0 <= y < height:
+            for x in range(max(0, x1), min(width, x2)):
+                rows[y][x * 3:x * 3 + 3] = bytes(color)
+
+    def vline(x: int, y1: int, y2: int, color: tuple[int, int, int]) -> None:
+        if 0 <= x < width:
+            for y in range(max(0, y1), min(height, y2)):
+                rows[y][x * 3:x * 3 + 3] = bytes(color)
+
+    # Architectural grid + AK mark. The SVG source remains the richer human-readable artwork.
+    grid = (26, 29, 32)
+    for x in (64, 300, 600, 900, 1135):
+        vline(x, 0, height, grid)
+    for y in (64, 430, 566):
+        hline(y, 64, 1136, grid)
+    for x in range(65, 116):
+        rows[65][x * 3:x * 3 + 3] = bytes(paper)
+        rows[115][x * 3:x * 3 + 3] = bytes(paper)
+    for y in range(65, 116):
+        rows[y][65 * 3:65 * 3 + 3] = bytes(paper)
+        rows[y][115 * 3:115 * 3 + 3] = bytes(paper)
+    hline(492, 64, 330, signal)
+    hline(494, 64, 220, muted)
+
+    raw = b''.join(b'\x00' + bytes(row) for row in rows)
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data) & 0xffffffff)
+    png = b'\x89PNG\r\n\x1a\n'
+    png += chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+    png += chunk(b'IDAT', zlib.compress(raw, 9))
+    png += chunk(b'IEND', b'')
+    path.write_bytes(png)
+
+write_og_png(DIST / "assets" / "og-card.png")
 
 index = (DIST / "index.html").read_text(encoding="utf-8")
 index = index.replace("{{BASE_URL}}", base_url).replace("{{LINKEDIN_URL}}", linkedin_url)
