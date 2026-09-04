@@ -1,0 +1,27 @@
+---
+import { sharedContent } from '../i18n/content';
+import type { Locale } from '../lib/site';
+
+interface Props { locale: Locale; id: string; compact?: boolean; }
+const { locale, id, compact = false } = Astro.props;
+const title = locale === 'pl' ? 'OAF — cykl decyzji' : 'OAF — decision cycle';
+const caption = locale === 'pl'
+  ? 'Kierunek prowadzi do wyborów, wybory do priorytetów, a wykonanie dostarcza dowodu do kolejnej decyzji.'
+  : 'Direction leads to choices, choices to priorities, and execution returns evidence into the next decision.';
+---
+<figure class:list={['oaf-diagram', { 'oaf-diagram-compact': compact }]} aria-labelledby={id}>
+  <div class="oaf-diagram-head">
+    <p class="diagram-kicker" id={id}>{title}</p>
+    <span aria-hidden="true">01—04</span>
+  </div>
+  <ol class="oaf-diagram-grid">
+    {sharedContent.oafSteps.map((step) => (
+      <li>
+        <div class="diagram-node-meta"><span>{step.no}</span><span lang="en">{step.tag}</span></div>
+        <h3 lang="en">{step.title}</h3>
+        <p>{locale === 'pl' ? step.pl : step.en}</p>
+      </li>
+    ))}
+  </ol>
+  <figcaption>{caption}</figcaption>
+</figure>

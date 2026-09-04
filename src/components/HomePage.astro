@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import OafDiagram from './OafDiagram.astro';
 import SectionLabel from './SectionLabel.astro';
 import { copy, sharedContent } from '../i18n/content';
 import { route, site, type Locale } from '../lib/site';
@@ -9,6 +10,7 @@ const { locale } = Astro.props;
 const c = copy[locale];
 const p = c.pages.home;
 const localDetail = (item: typeof sharedContent.system[number]) => locale === 'pl' ? item.detailPl : item.detailEn;
+const proofLabel = locale === 'pl' ? 'Wybrane sygnały wiarygodności' : 'Selected credibility signals';
 ---
 <BaseLayout locale={locale} routeKey="home" title={p.title} description={p.description}>
   <section class="hero" aria-labelledby="hero-title">
@@ -23,8 +25,12 @@ const localDetail = (item: typeof sharedContent.system[number]) => locale === 'p
         </a>
       </div>
     </div>
-    <div class="hero-system" aria-labelledby="system-title">
-      <p class="system-kicker" id="system-title">{p.systemKicker}</p>
+
+    <aside class="hero-system" aria-labelledby="system-title">
+      <div class="system-head">
+        <p class="system-kicker" id="system-title">{p.systemKicker}</p>
+        <span class="system-status" aria-hidden="true">●</span>
+      </div>
       <ol class="system-nodes">
         {sharedContent.system.map((item) => (
           <li>
@@ -35,15 +41,19 @@ const localDetail = (item: typeof sharedContent.system[number]) => locale === 'p
         ))}
       </ol>
       <p class="system-note">{p.systemNote}</p>
+    </aside>
+
+    <div class="proof-strip" aria-label={proofLabel}>
+      <p class="proof-kicker">{proofLabel}</p>
+      <dl class="hero-metrics">
+        {p.metrics.map((metric) => (
+          <div><dt>{metric.value}</dt><dd>{metric.label}</dd></div>
+        ))}
+      </dl>
     </div>
-    <dl class="hero-metrics">
-      {p.metrics.map((metric) => (
-        <div><dt>{metric.value}</dt><dd>{metric.label}</dd></div>
-      ))}
-    </dl>
   </section>
 
-  <section class="section" aria-labelledby="about-title">
+  <section class="section section-about" aria-labelledby="about-title">
     <SectionLabel no="01" label={p.aboutLabel} />
     <div class="manifesto">
       <h2 id="about-title">{p.aboutTitleA} <em>{p.aboutTitleEm}</em></h2>
@@ -70,23 +80,16 @@ const localDetail = (item: typeof sharedContent.system[number]) => locale === 'p
         <p>{p.oafBody}</p>
         <p class="section-more"><a class="text-link" href={route(locale, 'oaf')}>{p.primary}<span aria-hidden="true">→</span></a></p>
       </div>
-      <ol class="oaf-steps">
-        {sharedContent.oafSteps.map((step) => (
-          <li>
-            <span class="step-no">{step.no}</span>
-            <div><h3 lang="en">{step.title}</h3><p>{locale === 'pl' ? step.pl : step.en}</p></div>
-            <span class="step-tag" lang="en">{step.tag}</span>
-          </li>
-        ))}
-      </ol>
+      <OafDiagram locale={locale} id="home-oaf-diagram" compact />
     </div>
   </section>
 
   <section class="section section-quote" aria-label={locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}>
+    <p class="quote-kicker">{locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}</p>
     <blockquote>{p.quote}</blockquote>
   </section>
 
-  <section class="section" aria-labelledby="focus-title">
+  <section class="section section-focus" aria-labelledby="focus-title">
     <SectionLabel no="03" label={p.focusLabel} />
     <div class="focus-header">
       <h2 id="focus-title">{p.focusTitle}</h2>

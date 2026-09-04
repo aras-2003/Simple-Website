@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import OafDiagram from './OafDiagram.astro';
 import PageHero from './PageHero.astro';
-import { copy, sharedContent } from '../i18n/content';
+import { copy } from '../i18n/content';
 import { site, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
@@ -11,19 +12,14 @@ const p = c.pages.oaf;
 <BaseLayout locale={locale} routeKey="oaf" title={p.title} description={p.description}>
   <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
   <section class="section section-oaf oaf-page" aria-labelledby="layers-title">
-    <div class="oaf-layout">
-      <div class="oaf-intro">
-        <h2 id="layers-title">{p.designTitle}</h2>
-        <p>{p.note}</p>
-      </div>
-      <ol class="oaf-steps">
-        {sharedContent.oafSteps.map((step) => (
-          <li><span class="step-no">{step.no}</span><div><h3 lang="en">{step.title}</h3><p>{locale === 'pl' ? step.pl : step.en}</p></div><span class="step-tag" lang="en">{step.tag}</span></li>
-        ))}
-      </ol>
+    <div class="oaf-page-intro">
+      <h2 id="layers-title">{p.designTitle}</h2>
+      <p>{p.note}</p>
     </div>
+    <OafDiagram locale={locale} id="oaf-page-diagram" />
   </section>
   <section class="section rules-section" aria-labelledby="rules-title">
+    <p class="eyebrow">OAF / principles</p>
     <h2 id="rules-title">{p.rulesTitle}</h2>
     <ol class="rules-list">{p.rules.map((rule, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{rule}</p></li>)}</ol>
     <a class="button button-primary" href={site.linkedIn} target="_blank" rel="noopener noreferrer">{p.cta}<span aria-hidden="true">↗</span><span class="sr-only"> — {c.externalNewTab}</span></a>
