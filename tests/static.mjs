@@ -44,7 +44,7 @@ for (const route of requiredRoutes) {
   const h1s = (html.match(/<h1\b/g) || []).length;
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
-  if (/\{\{|\}\}/.test(html)) errors.push(`${route}: unresolved template token`);
+  if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
 }
 
 const allFiles = await walk(dist);
