@@ -6,12 +6,13 @@ import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const p = editorial[locale].privacy;
+const td = (value: string) => value.replaceAll('—', '–');
 ---
-<BaseLayout locale={locale} routeKey="privacy" title={p.title} description={p.description}>
-  <PageHero eyebrow={p.eyebrow} headline={p.headline} lead={p.lead} />
+<BaseLayout locale={locale} routeKey="privacy" title={td(p.title)} description={td(p.description)}>
+  <PageHero eyebrow={td(p.eyebrow)} headline={td(p.headline)} lead={td(p.lead)} />
   <section class="section privacy-grid" aria-label={locale === 'pl' ? 'Informacje o prywatności' : 'Privacy information'}>
     {p.sections.map((item, index) => (
-      <article><span>{String(index + 1).padStart(2, '0')}</span><h2>{item.title}</h2><p>{item.body}</p></article>
+      <article><span>{String(index + 1).padStart(2, '0')}</span><h2>{td(item.title)}</h2><p>{td(item.body)}</p></article>
     ))}
   </section>
   <section class="section privacy-cta">

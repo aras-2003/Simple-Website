@@ -3,16 +3,16 @@ import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
 import { alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 
-interface Props { locale: Locale; current: RouteKey; }
-const { locale, current } = Astro.props;
+interface Props { locale: Locale; current: RouteKey; alternateHref?: string | undefined; }
+const { locale, current, alternateHref } = Astro.props;
 const c = copy[locale];
 const ia = editorial[locale];
 const other = alternateLocale(locale);
 const navKeys = ['writing', 'oaf', 'work', 'about', 'contact'] as const;
-const langHref = route(other, current);
+const langHref = alternateHref ?? route(other, current);
 ---
 <header class="site-header">
-  <a class="brand" href={route(locale, 'home')} aria-label={`Arkadiusz Kamrowski — ${c.nav.home}`}>
+  <a class="brand" href={route(locale, 'home')} aria-label={`Arkadiusz Kamrowski – ${c.nav.home}`}>
     <span class="brand-signature" aria-hidden="true">AK.</span>
     <span class="brand-wordmark"><span class="brand-first">Arkadiusz </span>Kamrowski</span>
   </a>

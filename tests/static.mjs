@@ -5,11 +5,12 @@ import { fileURLToPath } from 'node:url';
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
+const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
 const requiredRoutes = [
-  '/', '/o-mnie', '/oaf', '/praktyka', '/perspektywa', '/kontakt', '/prywatnosc',
-  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
-  '/en', '/en/about', '/en/oaf', '/en/practice', '/en/perspective', '/en/contact', '/en/privacy',
-  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
+  ...sharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
+  ...noteSlugs.map((slug) => `/writing/${slug}`),
+  ...sharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
+  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
 ];
 const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
 
@@ -59,24 +60,35 @@ for (const route of requiredRoutes) {
 
 const home = await readFile(routeFile('/'), 'utf8');
 if (home.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/: portrait must not appear on Home');
-if (home.includes('Dyrektor Departamentu Architektury Korporacyjnej')) errors.push('/: current role must not appear on Home');
+if (home.includes('Dyrektor Departamentu')) errors.push('/: employment title must not appear on Home');
 if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
-for (const cls of ['problem-section', 'evidence-section', 'thesis-section', 'oaf-teaser', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
-  if (!home.includes(cls)) errors.push(`/: missing narrative section ${cls}`);
+for (const cls of ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths']) {
+  if (!home.includes(cls)) errors.push(`/: missing lightweight narrative section ${cls}`);
 }
-const homeOrder = ['problem-section', 'evidence-section', 'thesis-section', 'oaf-teaser', 'perspective-teaser', 'practice-teaser', 'author-teaser'].map((token) => home.indexOf(token));
-for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: narrative depth order is incorrect');
+for (const removed of ['thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
+  if (home.includes(removed)) errors.push(`/: legacy heavy section ${removed} must stay off Home`);
+}
+const homeOrder = ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths'].map((token) => home.indexOf(token));
+for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: lightweight narrative order is incorrect');
 
-const about = await readFile(routeFile('/o-mnie'), 'utf8');
-if (!about.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/o-mnie: portrait expected on About');
-if (!about.includes('career-river')) errors.push('/o-mnie: career trajectory expected');
+const about = await readFile(routeFile('/about'), 'utf8');
+if (!about.includes('/assets/arkadiusz-kamrowski.webp')) errors.push('/about: portrait expected on About');
+if (!about.includes('career-river')) errors.push('/about: career trajectory expected');
+if (!about.includes('brand-profile')) errors.push('/about: brand profile expected');
+if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
 
-const perspective = await readFile(routeFile('/perspektywa'), 'utf8');
-if (!perspective.includes('evidence-ledger')) errors.push('/perspektywa: evidence ledger expected');
-if (!perspective.includes('publishing-standard')) errors.push('/perspektywa: publishing standard expected');
+const perspective = await readFile(routeFile('/writing'), 'utf8');
+if (!perspective.includes('evidence-ledger')) errors.push('/writing: evidence ledger expected');
+if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
+if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
+
+const practice = await readFile(routeFile('/work'), 'utf8');
+if (!practice.includes('case-study-list')) errors.push('/work: case studies expected');
+const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
+if (caseCount !== 6) errors.push(`/work: expected 6 case studies, found ${caseCount}`);
 
 const oaf = await readFile(routeFile('/oaf'), 'utf8');
-for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'boundary-list']) {
+for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'boundary-list', 'oaf-use-section-polished']) {
   if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
 }
 
@@ -84,6 +96,8 @@ const allFiles = await walk(dist);
 for (const file of allFiles.filter(f => f.endsWith('.html'))) {
   const html = await readFile(file, 'utf8');
   if (html.includes('javascript:void')) errors.push(`${relative(dist, file)}: javascript:void link`);
+  if (html.includes('Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO')) errors.push(`${relative(dist, file)}: stale employment title exposed`);
+  if (html.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push(`${relative(dist, file)}: stale employment title exposed`);
 }
 
 if (errors.length) {
@@ -91,4 +105,4 @@ if (errors.length) {
   errors.forEach(e => console.error(`- ${e}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical localized routes checked + narrative architecture gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical translated routes checked + brand/content architecture gates`);

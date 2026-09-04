@@ -6,9 +6,10 @@ import '../styles/quality-hardening.css';
 import '../styles/studio-polish.css';
 import '../styles/vnext.css';
 import '../styles/editorial-platform.css';
+import '../styles/polish-pass.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { absoluteUrl, route, type Locale, type RouteKey } from '../lib/site';
+import { absoluteUrl, alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 import { copy } from '../i18n/content';
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
 
 const { locale, routeKey, title, description, paths } = Astro.props;
 const c = copy[locale];
+const other = alternateLocale(locale);
 const canonicalPath = paths?.[locale] ?? route(locale, routeKey);
 const plPath = paths?.pl ?? route('pl', routeKey);
 const enPath = paths?.en ?? route('en', routeKey);
@@ -28,7 +30,7 @@ const canonical = absoluteUrl(canonicalPath, Astro.site);
 const plUrl = absoluteUrl(plPath, Astro.site);
 const enUrl = absoluteUrl(enPath, Astro.site);
 const ogLocale = locale === 'pl' ? 'pl_PL' : 'en_US';
-const personId = `${absoluteUrl('/o-mnie', Astro.site)}#person`;
+const personId = `${absoluteUrl(route('pl', 'about'), Astro.site)}#person`;
 const websiteId = `${absoluteUrl('/', Astro.site)}#website`;
 const person = {
   '@type': 'Person',
@@ -36,10 +38,10 @@ const person = {
   name: 'Arkadiusz Kamrowski',
   url: absoluteUrl(route('pl', 'about'), Astro.site),
   sameAs: ['https://pl.linkedin.com/in/arkadiusz-kamrowski'],
+  description: locale === 'pl'
+    ? 'Profil ekspercki łączący architekturę organizacyjną i korporacyjną, strategię, transformację, portfel, PMO i technologię.'
+    : 'An expert profile connecting organizational and enterprise architecture, strategy, transformation, portfolio, PMO and technology.',
   knowsAbout: ['Organizational Architecture', 'Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Portfolio Management', 'Technology', 'AI Governance'],
-  ...(routeKey === 'about' ? {
-    jobTitle: locale === 'pl' ? 'Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO' : 'Director of Enterprise Architecture, Strategy & PMO',
-  } : {}),
 };
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -86,7 +88,7 @@ const jsonLd = JSON.stringify({
   <body>
     <a class="skip-link" href="#main">{c.skipMain}</a>
     <div class="page-grid" aria-hidden="true"></div>
-    <Header locale={locale} current={routeKey} />
+    <Header locale={locale} current={routeKey} alternateHref={paths?.[other]} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

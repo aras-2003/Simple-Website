@@ -7,8 +7,11 @@ import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; note: Note; }
 const { locale, note } = Astro.props;
 const ia = editorial[locale];
-const title = `${note.title} — Arkadiusz Kamrowski`;
+const td = (value: string) => value.replaceAll('—', '–');
+const title = `${td(note.title)} – Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
+const plPath = `${route('pl', 'writing')}/${note.slug}`;
+const enPath = `${route('en', 'writing')}/${note.slug}`;
 const sourceSets: Record<string, { label: string; href: string }[]> = {
   'Enterprise Architecture': [
     { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
@@ -31,12 +34,12 @@ const sourceSets: Record<string, { label: string; href: string }[]> = {
 };
 const sources = sourceSets[note.category] ?? [];
 ---
-<BaseLayout locale={locale} routeKey="writing" title={title} description={note.dek} paths={{ pl: `/perspektywa/${note.slug}`, en: `/en/perspective/${note.slug}` }}>
+<BaseLayout locale={locale} routeKey="writing" title={title} description={td(note.dek)} paths={{ pl: plPath, en: enPath }}>
   <article class="note-page note-page-editorial">
     <header class="note-hero">
-      <p class="eyebrow">{note.category} · {note.readTime} {ia.writing.min}</p>
-      <h1>{note.title}</h1>
-      <p class="page-lead">{note.dek}</p>
+      <p class="eyebrow">{note.category}</p>
+      <h1>{td(note.title)}</h1>
+      <p class="page-lead">{td(note.dek)}</p>
       <div class="article-thesis-label">
         <span>Status</span>
         <strong>{locale === 'pl' ? 'teza robocza do konfrontowania z dowodami' : 'working thesis to be tested against evidence'}</strong>
@@ -46,8 +49,8 @@ const sources = sourceSets[note.category] ?? [];
     <div class="note-body">
       {note.sections.map((section) => (
         <section>
-          <h2>{section.heading}</h2>
-          {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          <h2>{td(section.heading)}</h2>
+          {section.paragraphs.map((paragraph) => <p>{td(paragraph)}</p>)}
         </section>
       ))}
     </div>
