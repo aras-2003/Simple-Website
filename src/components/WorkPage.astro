@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
 import { editorial } from '../content/editorial';
+import { caseStudies } from '../content/case-studies';
 import { platform } from '../content/platform';
 import { route, type Locale } from '../lib/site';
 
@@ -9,24 +10,26 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const ia = editorial[locale];
 const x = platform[locale].practice;
-const pageTitle = locale === 'pl' ? 'Praktyka — interfejsy decyzji i zastosowanie' : 'Practice — decision interfaces and application';
+const cases = caseStudies[locale];
+const td = (value: string) => value.replaceAll('—', '–');
+const pageTitle = locale === 'pl' ? 'Praktyka – interfejsy decyzji i zastosowanie' : 'Practice – decision interfaces and application';
 const pageDescription = locale === 'pl'
-  ? 'Praktyka na styku strategii, architektury, portfela, PMO, AI i wykonania — przez konkretne miejsca rozjazdu w organizacji.'
-  : 'Practice across strategy, architecture, portfolio, PMO, AI and execution — framed through concrete points of organizational misfit.';
+  ? 'Praktyka na styku strategii, architektury, portfela, PMO, AI i wykonania – przez konkretne miejsca rozjazdu w organizacji.'
+  : 'Practice across strategy, architecture, portfolio, PMO, AI and execution – framed through concrete points of organizational misfit.';
 ---
 <BaseLayout locale={locale} routeKey="work" title={pageTitle} description={pageDescription}>
-  <PageHero eyebrow={x.hero.eyebrow} headline={x.hero.title} lead={x.hero.lead} />
+  <PageHero eyebrow={td(x.hero.eyebrow)} headline={td(x.hero.title)} lead={td(x.hero.lead)} />
 
   <section class="section practice-interface-section" aria-labelledby="interfaces-title">
     <div class="section-intro section-intro-wide">
       <p class="eyebrow">{locale === 'pl' ? 'Punkty styku / gdzie znika spójność' : 'Interfaces / where coherence is lost'}</p>
-      <h2 id="interfaces-title">{x.intersectionsTitle}</h2>
+      <h2 id="interfaces-title">{td(x.intersectionsTitle)}</h2>
     </div>
     <div class="interface-deep-list">
       {x.intersections.map((item) => (
         <article>
-          <div class="interface-title"><p class="micro-label">{item.title}</p><h3>{item.question}</h3></div>
-          <div class="interface-detail"><p>{item.problem}</p><p class="interface-signal">{item.signal}</p><p class="interface-decision">{item.decision}</p></div>
+          <div class="interface-title"><p class="micro-label">{td(item.title)}</p><h3>{td(item.question)}</h3></div>
+          <div class="interface-detail"><p>{td(item.problem)}</p><p class="interface-signal">{td(item.signal)}</p><p class="interface-decision">{td(item.decision)}</p></div>
         </article>
       ))}
     </div>
@@ -35,44 +38,63 @@ const pageDescription = locale === 'pl'
   <section class="section toolbox-section" aria-labelledby="toolbox-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{x.toolbox.eyebrow}</p>
-        <h2 id="toolbox-title">{x.toolbox.title}</h2>
+        <p class="eyebrow">{td(x.toolbox.eyebrow)}</p>
+        <h2 id="toolbox-title">{td(x.toolbox.title)}</h2>
       </div>
       <p class="content-lead">{locale === 'pl' ? 'Dopiero po zlokalizowaniu problemu ma sens wybór dyscypliny i artefaktu. Ten porządek chroni przed projektowaniem rozwiązania pod ulubione narzędzie.' : 'Only after locating the problem does it make sense to choose a discipline and artifact. This sequence protects against designing the problem around a preferred tool.'}</p>
     </div>
     <div class="toolbox-grid">
-      {x.toolbox.items.map((item) => <article><h3>{item.title}</h3><p>{item.body}</p></article>)}
+      {x.toolbox.items.map((item) => <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>)}
     </div>
   </section>
 
   <section class="section operating-method-section" aria-labelledby="method-title">
     <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{x.method.eyebrow}</p>
-      <h2 id="method-title">{x.method.title}</h2>
+      <p class="eyebrow">{td(x.method.eyebrow)}</p>
+      <h2 id="method-title">{td(x.method.title)}</h2>
     </div>
     <ol class="operating-method">
       {x.method.steps.map((step) => (
-        <li><div class="method-marker" aria-hidden="true"></div><div><h3>{step.title}</h3><p>{step.body}</p></div></li>
+        <li><div class="method-marker" aria-hidden="true"></div><div><h3>{td(step.title)}</h3><p>{td(step.body)}</p></div></li>
       ))}
     </ol>
+  </section>
+
+  <section class="section case-study-section" aria-labelledby="case-studies-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{locale === 'pl' ? 'Studia przypadku / doświadczenie' : 'Case studies / experience'}</p>
+        <h2 id="case-studies-title">{locale === 'pl' ? 'Sześć wzorców problemów, które przerabiałem w praktyce.' : 'Six problem patterns I have worked through in practice.'}</h2>
+      </div>
+      <p class="content-lead">{locale === 'pl' ? 'Przypadki są anonimizowane i opisane na poziomie problemu, decyzji i wartości. Nie dopisuję organizacji, poufnych szczegółów ani efektownych KPI, których nie da się publicznie obronić.' : 'The cases are anonymized and described at the level of problem, decision and value. I do not add organizations, confidential details or impressive KPIs that cannot be defended publicly.'}</p>
+    </div>
+    <div class="case-study-list">
+      {cases.map((item, index) => (
+        <article class="case-study-item">
+          <div class="case-study-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
+          <div class="case-study-title">
+            <p class="micro-label">{item.tag}</p>
+            <h3>{item.title}</h3>
+          </div>
+          <div class="case-study-detail">
+            <p><strong>{locale === 'pl' ? 'Kontekst' : 'Context'}</strong><span>{item.context}</span></p>
+            <p><strong>{locale === 'pl' ? 'Problem' : 'Challenge'}</strong><span>{item.challenge}</span></p>
+            <p><strong>{locale === 'pl' ? 'Podejście' : 'Approach'}</strong><span>{item.approach}</span></p>
+            <p class="case-study-value"><strong>{locale === 'pl' ? 'Wartość' : 'Value'}</strong><span>{item.value.replace(/^Wartość: |^Value: /, '')}</span></p>
+          </div>
+        </article>
+      ))}
+    </div>
   </section>
 
   <section class="section context-section" aria-labelledby="contexts-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{x.contexts.eyebrow}</p>
-        <h2 id="contexts-title">{x.contexts.title}</h2>
+        <p class="eyebrow">{td(x.contexts.eyebrow)}</p>
+        <h2 id="contexts-title">{td(x.contexts.title)}</h2>
       </div>
-      <ul class="context-list">{x.contexts.items.map((item) => <li>{item}</li>)}</ul>
+      <ul class="context-list">{x.contexts.items.map((item) => <li>{td(item)}</li>)}</ul>
     </div>
-  </section>
-
-  <section class="section practice-proof-note" aria-labelledby="proof-note-title">
-    <div>
-      <p class="eyebrow">{locale === 'pl' ? 'Dowody / bez marketingowej fikcji' : 'Evidence / no marketing fiction'}</p>
-      <h2 id="proof-note-title">{locale === 'pl' ? 'Studia przypadków mają sens dopiero wtedy, gdy można uczciwie pokazać kontekst, decyzję i rezultat.' : 'Case studies matter only when context, decision and outcome can be shown honestly.'}</h2>
-    </div>
-    <p class="content-lead">{locale === 'pl' ? 'Nie publikuję fikcyjnych historii ani pozornych KPI. Anonimizowane przypadki pojawią się wtedy, gdy zakres publikacji będzie bezpieczny i merytorycznie użyteczny.' : 'I do not publish invented stories or cosmetic KPIs. Anonymized cases will appear when the publication scope is both safe and substantively useful.'}</p>
   </section>
 
   <section class="section next-path-section" aria-labelledby="practice-next-title">
