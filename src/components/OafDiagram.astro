@@ -15,11 +15,12 @@ const caption = locale === 'pl'
     <span aria-hidden="true">01—04</span>
   </div>
   <ol class="oaf-diagram-grid">
-    {sharedContent.oafSteps.map((step) => (
-      <li>
+    {sharedContent.oafSteps.map((step, index) => (
+      <li class={`oaf-card oaf-card-${index + 1}`}>
         <div class="diagram-node-meta"><span>{step.no}</span><span lang="en">{step.tag}</span></div>
         <h3 lang="en">{step.title}</h3>
         <p>{locale === 'pl' ? step.pl : step.en}</p>
+        <div class="oaf-card-graphic" aria-hidden="true"><span></span><span></span><span></span></div>
       </li>
     ))}
   </ol>

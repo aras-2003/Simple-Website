@@ -1,9 +1,9 @@
 :root {
-  /* Keep small editorial labels comfortably above AA rather than sitting on the threshold. */
-  --muted: #4b5048;
+  /* Keep small editorial labels comfortably above AA while matching the warmer visual system. */
+  --muted: #655a52;
 }
 
-/* Motion must not temporarily reduce text contrast while automated or assistive tooling reads the page. */
+/* Motion must never reduce text opacity or temporary contrast. */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes reveal-up {
     from { transform: translateY(14px); }
@@ -11,7 +11,6 @@
   }
 }
 
-/* Compact OAF uses the same heading rhythm without relying on a descendant selector that cannot match. */
 .oaf-diagram-compact h3 {
-  margin-top: 44px;
+  margin-top: 34px;
 }

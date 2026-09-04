@@ -27,20 +27,32 @@ const proofLabel = locale === 'pl' ? 'Wybrane sygnały wiarygodności' : 'Select
     </div>
 
     <aside class="hero-system" aria-labelledby="system-title">
-      <div class="system-head">
-        <p class="system-kicker" id="system-title">{p.systemKicker}</p>
-        <span class="system-status" aria-hidden="true">●</span>
-      </div>
-      <ol class="system-nodes">
-        {sharedContent.system.map((item) => (
-          <li>
-            <span class="node-index">{item.index}</span>
-            <strong lang="en">{item.title}</strong>
-            <small>{localDetail(item)}</small>
-          </li>
+      <div class="hero-system-stage" aria-hidden="true">
+        <div class="hero-grid-glow"></div>
+        <div class="hero-orbit orbit-a"></div>
+        <div class="hero-orbit orbit-b"></div>
+        <div class="hero-orbit orbit-c"></div>
+        <div class="hero-line line-a"></div>
+        <div class="hero-line line-b"></div>
+        <div class="hero-line line-c"></div>
+        <span class="hero-core">OAF</span>
+        {sharedContent.system.map((item, index) => (
+          <span class={`hero-chip hero-chip-${index + 1}`} lang="en">{item.title}</span>
         ))}
-      </ol>
-      <p class="system-note">{p.systemNote}</p>
+      </div>
+      <div class="hero-system-copy">
+        <p class="system-kicker" id="system-title">{p.systemKicker}</p>
+        <ol class="system-nodes">
+          {sharedContent.system.map((item) => (
+            <li>
+              <span class="node-index">{item.index}</span>
+              <strong lang="en">{item.title}</strong>
+              <small>{localDetail(item)}</small>
+            </li>
+          ))}
+        </ol>
+        <p class="system-note">{p.systemNote}</p>
+      </div>
     </aside>
 
     <div class="proof-strip" aria-label={proofLabel}>
@@ -85,8 +97,11 @@ const proofLabel = locale === 'pl' ? 'Wybrane sygnały wiarygodności' : 'Select
   </section>
 
   <section class="section section-quote" aria-label={locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}>
-    <p class="quote-kicker">{locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}</p>
-    <blockquote>{p.quote}</blockquote>
+    <div class="quote-shell">
+      <span class="quote-mark" aria-hidden="true">—</span>
+      <p class="quote-kicker">{locale === 'pl' ? 'Punkt widzenia' : 'Point of view'}</p>
+      <blockquote>{p.quote}</blockquote>
+    </div>
   </section>
 
   <section class="section section-focus" aria-labelledby="focus-title">
