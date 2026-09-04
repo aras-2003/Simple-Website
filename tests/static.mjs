@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url';
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
 const requiredRoutes = ['/', '/about', '/oaf', '/work', '/writing', '/contact', '/privacy', '/writing/architecture-as-decision-system', '/writing/portfolio-as-strategy-in-motion', '/writing/ai-governance-without-theatre', '/writing/transformation-operating-model', '/en', '/en/about', '/en/oaf', '/en/work', '/en/writing', '/en/contact', '/en/privacy', '/en/writing/architecture-as-decision-system', '/en/writing/portfolio-as-strategy-in-motion', '/en/writing/ai-governance-without-theatre', '/en/writing/transformation-operating-model'];
+const corePolishRoutes = ['/', '/about', '/oaf', '/work', '/contact'];
+const bannedPolishUiPhrases = ['Cross-system leverage', 'Context first', 'Working model', 'Decision loop', 'System view'];
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -45,6 +47,11 @@ for (const route of requiredRoutes) {
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
   if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
+  if (expectedLang === 'pl' && corePolishRoutes.includes(route)) {
+    for (const phrase of bannedPolishUiPhrases) {
+      if (html.includes(phrase)) errors.push(`${route}: untranslated UI phrase: ${phrase}`);
+    }
+  }
 }
 
 const allFiles = await walk(dist);
