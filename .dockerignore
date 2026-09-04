@@ -1,0 +1,8 @@
+.git
+.github
+artifacts
+dist
+docs
+infra
+k8s
+README.md
