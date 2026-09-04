@@ -1,0 +1,94 @@
+name: Deploy · Azure AKS
+on:
+  workflow_dispatch:
+    inputs:
+      site_base_url:
+        description: 'Production URL'
+        required: true
+        default: 'https://arkadiuszkamrowski.pl'
+        type: string
+      host:
+        description: 'Ingress DNS host'
+        required: true
+        default: 'arkadiuszkamrowski.pl'
+        type: string
+      namespace:
+        description: 'Kubernetes namespace'
+        required: true
+        default: personal-site
+        type: string
+      assumptions_approved:
+        description: 'I confirm docs/DEPLOY_APPROVAL.md is accepted'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Guard production branch and approval
+        run: |
+          test "${GITHUB_REF}" = "refs/heads/main" || { echo "Production deploys must run from main"; exit 1; }
+          test "${{ inputs.assumptions_approved }}" = "true" || { echo "Deployment assumptions are not approved"; exit 1; }
+      - name: Pre-deploy validation
+        run: |
+          python3 scripts/predeploy_check.py --site-base-url "${{ inputs.site_base_url }}" --host "${{ inputs.host }}" --namespace "${{ inputs.namespace }}"
+          PRODUCTION=1 SITE_BASE_URL="${{ inputs.site_base_url }}" ./scripts/build.py
+          ./scripts/validate.py
+      - name: Azure login via OIDC
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Install kubelogin
+        uses: azure/use-kubelogin@v1.3
+        with:
+          kubelogin-version: 'v0.2.19'
+      - name: Login to ACR
+        run: az acr login --name "${{ vars.ACR_NAME }}"
+      - uses: docker/setup-buildx-action@v4
+      - name: Build and push immutable image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            SITE_BASE_URL=${{ inputs.site_base_url }}
+            PRODUCTION=1
+          tags: |
+            ${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}
+            ${{ vars.ACR_NAME }}.azurecr.io/personal-site:latest
+      - name: Connect to AKS with Microsoft Entra
+        run: |
+          az aks get-credentials --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --name "${{ vars.AKS_NAME }}" --overwrite-existing
+          kubelogin convert-kubeconfig -l azurecli
+      - name: Render Kubernetes manifest
+        run: >-
+          python3 scripts/render-k8s.py
+          --image "${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}"
+          --host "${{ inputs.host }}"
+          --namespace "${{ inputs.namespace }}"
+      - name: Deploy
+        run: kubectl apply -f rendered-k8s.yaml
+      - name: Wait for rollout
+        run: kubectl -n "${{ inputs.namespace }}" rollout status deployment/personal-site --timeout=180s
+      - name: External smoke test
+        run: curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 10 "${{ inputs.site_base_url }}/healthz"
+      - name: Record deployed image
+        run: kubectl -n "${{ inputs.namespace }}" get deploy personal-site -o jsonpath='{.spec.template.spec.containers[0].image}'
