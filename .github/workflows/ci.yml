@@ -19,7 +19,7 @@ jobs:
       - name: Static build and validation
         run: bash scripts/test.sh
       - name: Upload static artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: site-dist
           path: dist
