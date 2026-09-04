@@ -5,6 +5,7 @@ import '../styles/content-ia.css';
 import '../styles/quality-hardening.css';
 import '../styles/studio-polish.css';
 import '../styles/vnext.css';
+import '../styles/editorial-platform.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { absoluteUrl, route, type Locale, type RouteKey } from '../lib/site';
@@ -27,14 +28,35 @@ const canonical = absoluteUrl(canonicalPath, Astro.site);
 const plUrl = absoluteUrl(plPath, Astro.site);
 const enUrl = absoluteUrl(enPath, Astro.site);
 const ogLocale = locale === 'pl' ? 'pl_PL' : 'en_US';
+const personId = `${absoluteUrl('/o-mnie', Astro.site)}#person`;
+const websiteId = `${absoluteUrl('/', Astro.site)}#website`;
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: 'Arkadiusz Kamrowski',
+  url: absoluteUrl(route('pl', 'about'), Astro.site),
+  sameAs: ['https://pl.linkedin.com/in/arkadiusz-kamrowski'],
+  knowsAbout: ['Organizational Architecture', 'Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Portfolio Management', 'Technology', 'AI Governance'],
+  ...(routeKey === 'about' ? {
+    jobTitle: locale === 'pl' ? 'Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO' : 'Director of Enterprise Architecture, Strategy & PMO',
+  } : {}),
+};
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Arkadiusz Kamrowski',
-  url: absoluteUrl('/', Astro.site),
-  sameAs: ['https://pl.linkedin.com/in/arkadiusz-kamrowski'],
-  jobTitle: locale === 'pl' ? 'Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO' : 'Director of Enterprise Architecture, Strategy & PMO',
-  knowsAbout: ['Organizational Architecture', 'Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Portfolio Management', 'Technology', 'AI Governance'],
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: 'Arkadiusz Kamrowski',
+      url: absoluteUrl('/', Astro.site),
+      inLanguage: ['pl', 'en'],
+      author: { '@id': personId },
+      description: locale === 'pl'
+        ? 'Platforma o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji i systemach decyzji.'
+        : 'A platform on organizational architecture, enterprise architecture, strategy, portfolio, transformation and decision systems.',
+    },
+    person,
+  ],
 });
 ---
 <!doctype html>
@@ -42,7 +64,7 @@ const jsonLd = JSON.stringify({
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f2ece2" />
+    <meta name="theme-color" content="#eee9df" />
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -59,7 +81,7 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="application/ld+json" set:html={jsonLd}></script>
+    <script is:inline type="application/ld+json" set:html={jsonLd}></script>
   </head>
   <body>
     <a class="skip-link" href="#main">{c.skipMain}</a>
