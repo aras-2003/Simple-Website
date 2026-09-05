@@ -1,80 +1,71 @@
 # Contact service
 
-The public website remains **Astro SSG + NGINX** behind Cloudflare. A small dependency-free Node.js sidecar exposes only `POST /api/contact` and `/healthz`; NGINX is the only web-facing application container and proxies the same-origin contact route to the sidecar over loopback.
+The production contact endpoint is a **Cloudflare Worker** at same-origin `POST /api/contact`.
+
+The previous Node sidecar remains only as a local/portability adapter. It is not part of the production request path.
 
 ## Production request path
 
 ```text
 browser
-  → Cloudflare (DNS/TLS/WAF/DDoS/Turnstile)
-  → NGINX :8080
+  → Cloudflare Workers Custom Domain
   → POST /api/contact
-  → contact-api :8787
-  → Cloudflare Turnstile Siteverify
+  → worker/index.mjs
+  → Turnstile Siteverify
   → Resend HTTPS Email API
+  → mailbox
 ```
 
-The contact sidecar must not have independent public ingress. The origin must also be protected against trivial direct access that would bypass Cloudflare; see `docs/CLOUDFLARE.md` and `docs/HOSTING_DECISION.md`.
+No public application server or contact sidecar exists behind Cloudflare in the v1 target.
 
 ## Delivery
 
-Production delivery uses the Resend HTTPS Email API. The API key and destination address are server-side environment variables and never reach browser code.
+Production delivery uses the Resend HTTPS Email API.
 
 Required production values:
 
-- `RESEND_API_KEY` — secret
-- `CONTACT_TO_EMAIL` — private configuration
-- `CONTACT_FROM_EMAIL` — verified sender on the public domain or subdomain
+- `RESEND_API_KEY` — Worker secret
+- `CONTACT_TO_EMAIL` — Worker secret/private value
+- `CONTACT_FROM_EMAIL` — verified sender on the public domain/subdomain; non-secret runtime variable
 
-The delivery request includes a deterministic idempotency key so an identical browser submission cannot accidentally produce duplicate transactional emails if a request is retried.
+The delivery request uses a deterministic idempotency key derived from the submission identity so a browser retry does not accidentally create duplicate transactional email.
 
 ## Cloudflare Turnstile
 
-The Cloudflare dashboard widget is named `arkadiuszkamrowski-contact` and uses **Managed** mode. Production requires server-side Siteverify validation before an email can be sent.
+Dashboard widget: `arkadiuszkamrowski-contact`, Managed mode.
 
-Configuration:
+Production configuration:
 
-- `PUBLIC_TURNSTILE_SITE_KEY` — public browser sitekey; safe to include in the frontend build
-- `TURNSTILE_REQUIRED=1` — mandatory in production
+- `PUBLIC_TURNSTILE_SITE_KEY` — browser-visible sitekey injected at Astro build time
+- `TURNSTILE_REQUIRED=1`
 - `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`
-- `TURNSTILE_SECRET_KEY` — secret; hosting-platform secret store only
+- `TURNSTILE_SECRET_KEY` — Worker secret
 
-The browser obtains a short-lived token from Turnstile and submits it with the contact payload. The sidecar sends that token to Cloudflare Siteverify and rejects missing, invalid, failed or wrong-hostname responses. The token and secret are never written to application logs.
-
-Local/CI dry-run keeps `TURNSTILE_REQUIRED=0` unless a dedicated test widget or mocked Siteverify endpoint is being exercised.
+Server-side Siteverify validation is mandatory before Resend is called. Missing, invalid, expired, already-used or wrong-hostname tokens are rejected. Turnstile tokens and secrets are never logged.
 
 ## Abuse and privacy controls
 
-- Cloudflare edge security / DDoS / managed rules
-- Cloudflare Turnstile with mandatory server-side verification in production
-- 32 KB request body limit
-- field length and topic allow-list validation
+- Cloudflare WAF / DDoS / bot posture
+- mandatory server-side Turnstile validation
+- Workers Rate Limiting binding on the contact route
+- 32 KiB request body ceiling
+- strict field length and topic allow-list validation
 - explicit contact-purpose acknowledgement
-- honeypot field
+- honeypot
 - minimum form-completion time
-- per-IP in-memory rate limiting
-- bounded rate-limit bucket storage
-- origin allow-list validation; Origin required in production
-- no message body, visitor email address, Turnstile token or secret in application logs
-- no contact database and no newsletter/CRM enrollment
+- exact production Origin allow-list
+- `Cache-Control: no-store`
+- no message body, visitor email, Turnstile token or secrets in Worker logs
+- no contact database
+- no automatic CRM/newsletter enrollment
 
-NGINX supplies the application's `X-Real-IP` from Cloudflare's `CF-Connecting-IP` header. That trust boundary is safe only when direct-origin bypass is prevented at the hosting/network layer. The sidecar never trusts a browser-controlled `X-Forwarded-For` chain as its rate-limit identity.
+The rate limiter is a coarse abuse safety layer; Turnstile and Cloudflare edge controls are the primary anti-automation controls. Do not treat the rate limiter as an accounting system.
 
-The application limiter is deliberately lightweight and replica-local. Cloudflare edge rate limiting/WAF should be the first scaling step if measured abuse justifies additional controls.
+## Production configuration
 
-## Runtime controls
+`wrangler.production.jsonc` contains non-secret runtime bindings/variables and the production Custom Domain. `.env.production.example` documents the complete build/runtime contract without real private values.
 
-- `CONTACT_ALLOWED_ORIGINS` — comma-separated explicit origins
-- `CONTACT_REQUIRE_ORIGIN=1` — required in production
-- `CONTACT_RATE_LIMIT` — default 5 requests per 10 minutes per process
-- `CONTACT_RATE_BUCKETS` — default 5000 bounded identities
-- `CONTACT_DRY_RUN=1` — local/CI mode; production requires `0`
-
-## Production contract
-
-Use `.env.production.example` as the public configuration contract. Real secret values belong only in the selected platform's secret/config store.
-
-Before promotion:
+Before production promotion:
 
 ```bash
 set -a
@@ -83,28 +74,44 @@ set +a
 make predeploy
 ```
 
-The predeploy check verifies:
+`make predeploy` validates canonical HTTPS, exact Origin locking, Turnstile build/runtime configuration, sender-domain alignment and required delivery secrets without printing them.
 
-- canonical HTTPS origin and host,
-- immutable web/contact image references,
-- live contact mode,
-- exact production Origin allow-list,
-- Turnstile enabled with sitekey, secret and canonical expected hostname,
-- valid sender/recipient configuration,
-- sane rate-limit/runtime values.
+## Worker secrets
 
-It reports only configuration state and never prints email or Turnstile secrets.
+Provision private values directly in Cloudflare before the first production deployment, for example with Wrangler from a trusted local environment:
+
+```bash
+npx --yes wrangler@4.129.0 secret put TURNSTILE_SECRET_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put RESEND_API_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put CONTACT_TO_EMAIL --config wrangler.production.jsonc
+```
+
+Do not place those values in `wrangler*.jsonc`, GitHub source, build logs or frontend variables.
 
 ## Email DNS
 
-Use provider-generated DKIM records exactly. Inspect existing SPF before editing it; do not create two independent SPF TXT policies. Review DMARC and MX before changing either. Provider verification records remain DNS-only in Cloudflare unless the provider explicitly documents otherwise.
+Use the exact DNS records generated by Resend.
 
-The complete operational sequence is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+- DKIM: publish exactly as generated.
+- SPF: inspect the existing policy first; do not create a second independent SPF record.
+- DMARC: review existing policy before changing enforcement.
+- MX: do not change inbound-mail routing merely to enable transactional sending unless explicitly required.
+- Provider verification records are DNS-only in Cloudflare unless the provider documents otherwise.
 
-## Local development
+## Automated tests
 
-`make dev` starts the contact API in dry-run mode and Astro. Astro's dev proxy keeps `/api/contact` same-origin.
+Primary production runtime test:
 
-`make mac-demo` builds the static site, starts a loopback-only preview and a loopback contact API. Real Cloudflare/Resend secrets are not required for this flow.
+```bash
+make test-worker
+```
 
-Never commit production secrets. Azure Container Apps, if selected, should use its native secret store/injection mechanism rather than Kubernetes Secrets or repository variables.
+It covers Origin policy, JSON/body validation, timing, Turnstile success/failure, rate limiting, Resend call behavior, 308 canonicalization and asset fallback.
+
+CI also performs Wrangler dry-runs against both preview and production configs.
+
+## Local development and portability
+
+`make dev` currently keeps the small Node contact adapter for fast Astro local development and dry-run behavior. This is deliberately separate from the production Worker contract.
+
+Docker/NGINX/Kubernetes remain reference/portability paths only. New production features must be implemented and tested in `worker/index.mjs` first; the portability adapter may mirror them only when maintaining that reference path is worthwhile.
