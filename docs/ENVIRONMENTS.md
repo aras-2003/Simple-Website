@@ -98,7 +98,7 @@ The production Turnstile widget remains restricted to `arkadiuszkamrowski.com`.
 
 ## Preview config
 
-`wrangler.jsonc` is intentionally named `arkadiuszkamrowski-preview` and is not a release environment. It exists for explicit/manual Worker previews and CI dry-run validation. It must not be used by the `main` branch as an automatic staging deployment.
+`wrangler.preview.jsonc` is intentionally named `arkadiuszkamrowski-preview` and is not a release environment. It exists for explicit/manual Worker previews and CI dry-run validation. The repository intentionally has no default `wrangler.jsonc`, preventing Cloudflare Workers Builds from trying to auto-reconcile staging/production dashboard settings into the unrelated manual preview contract. It must not be used by the `main` branch as an automatic staging deployment.
 
 ## Local and portability environments
 
