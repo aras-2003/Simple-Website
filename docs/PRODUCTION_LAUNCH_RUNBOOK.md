@@ -15,8 +15,9 @@ Unless there is an explicit decision to change them before launch, production us
 - analytics/advertising: disabled at launch
 - public database / CRM / newsletter capture: none
 - production secrets: hosting-platform secret store only, never repository variables committed to source
+- release images: immutable digest or commit-addressable hexadecimal tag; never `latest`/`production`
 
-The preferred runtime shape is one public HTTPS origin with the web container and contact container co-located in one service/pod/replica or an equivalent setup where NGINX can reach the API over loopback. Do not expose the contact sidecar directly to the Internet.
+The preferred runtime shape is one public HTTPS origin with the web container and contact container co-located in one service/pod/replica or an equivalent setup where NGINX can reach the API over loopback. Do not expose the contact sidecar directly to the Internet. See `docs/HOSTING_DECISION.md` for the platform recommendation.
 
 ## 2. Inputs required from the owner/platform
 
@@ -41,7 +42,7 @@ For a local preflight only:
 ```bash
 umask 077
 cp .env.production.example .env.production
-# populate the private values locally
+# populate IMAGE, CONTACT_IMAGE and the private values locally
 set -a
 source .env.production
 set +a
@@ -51,8 +52,10 @@ rm .env.production
 
 `make predeploy` fails before deployment when any of the following is true:
 
-- the public origin is not HTTPS or does not match the host,
+- the public origin is not HTTPS, contains an explicit non-default port or does not match the host,
 - a placeholder/localhost host is used,
+- `IMAGE` or `CONTACT_IMAGE` is missing or uses a mutable/non-commit tag,
+- both release image variables accidentally point to the same image,
 - contact dry-run is still enabled,
 - request Origin is not required,
 - the canonical HTTPS origin is missing from the allow-list,
@@ -63,6 +66,14 @@ rm .env.production
 - rate-limit/bucket/port values are invalid.
 
 The preflight never prints the email API key.
+
+After PASS, production images can be built with the guarded target:
+
+```bash
+make docker-build-production
+```
+
+The frontend build receives the canonical production origin/host and `REQUIRE_PRODUCTION_SITE=1`; both image names remain explicit caller inputs.
 
 ## 4. Email-domain setup
 
@@ -107,7 +118,7 @@ The chosen production platform must provide:
 - a rollback to the previous revision/image,
 - basic uptime monitoring.
 
-Do not add Kubernetes/AKS solely for this site. The existing Kubernetes material is portability/reference architecture; use it only if the surrounding platform makes it operationally cheaper or strategically justified.
+Do not add Kubernetes/AKS solely for this site. The existing Kubernetes material is portability/reference architecture; use it only if the surrounding platform makes it operationally cheaper or strategically justified. When Azure is selected, the documented default is Azure Container Apps rather than a dedicated AKS cluster.
 
 ## 6. DNS and TLS
 
@@ -117,11 +128,13 @@ Target public behavior:
 |---|---|
 | `http://arkadiuszkamrowski.com/*` | HTTPS redirect |
 | `https://arkadiuszkamrowski.com/` | `200` |
-| `https://arkadiuszkamrowski.com/o-mnie` | `200` |
+| `https://arkadiuszkamrowski.com/about` | `200` |
 | `https://arkadiuszkamrowski.com/en/about` | `200` |
 | `https://arkadiuszkamrowski.com/path/` | `308` to the no-trailing-slash canonical path |
-| `https://www.arkadiuszkamrowski.com/*` | permanent redirect to apex preserving path/query |
+| `https://www.arkadiuszkamrowski.com/*` | `308` to apex preserving path/query |
 | unknown path | `404`, not a fake SPA `200` |
+
+The NGINX runtime now owns the deterministic `www` → apex redirect; the hosting platform still needs DNS and a valid TLS certificate/binding for `www` so the HTTPS request can reach that redirect safely.
 
 Before switching DNS, lower TTL if operationally useful. After launch, confirm both IPv4/IPv6 behavior if both record families are published.
 
@@ -203,16 +216,18 @@ After DNS points to the final origin, verify from the public Internet:
 - title/description on Home and one PL/EN inner page,
 - canonical URLs resolve to the final HTTPS apex,
 - PL/EN hreflang pairs and `x-default`,
-- sitemap loads and contains canonical routes,
-- `robots.txt` is intentionally configured,
+- `sitemap-index.xml` loads and contains canonical URLs,
+- `robots.txt` points to the canonical production sitemap,
 - Open Graph image renders at the expected 1200×630 ratio,
 - LinkedIn/social debugger preview has the correct title/image/description,
 - Perspective Article structured data is valid and includes source citations where authored,
 - no staging/localhost URLs exist in rendered HTML.
 
+The production build has an explicit `robots.txt`/sitemap regression gate; the public check confirms DNS/CDN/runtime behavior rather than source output alone.
+
 ## 10. Production contact smoke test
 
-Run from the public page, not by bypassing the browser UI.
+Run the valid-delivery part from the public page, not by bypassing the browser UI.
 
 1. Submit an intentionally invalid form and verify useful inline/native feedback.
 2. Submit one valid message using an address you control.
@@ -221,23 +236,32 @@ Run from the public page, not by bypassing the browser UI.
 5. Reply to it and confirm the reply targets the submitted visitor address.
 6. Confirm logs show only operational event metadata, not the message/email body.
 7. Confirm repeated rapid submissions reach the rate-limit behavior without breaking normal later submissions.
-8. Confirm a request from a non-allowed Origin is rejected.
+
+The automated public smoke below safely checks the disallowed-Origin and CORS policies without sending a real email.
 
 Do not perform abuse/load testing against the live email provider unless limits and costs are understood.
 
 ## 11. Public smoke test
 
-Immediately after launch:
+Immediately after DNS/TLS and the production revision are live:
 
 ```bash
-curl -fsS https://arkadiuszkamrowski.com/ >/dev/null
-curl -fsSI https://arkadiuszkamrowski.com/o-mnie
-curl -fsSI https://arkadiuszkamrowski.com/en/about
-curl -fsSI https://arkadiuszkamrowski.com/robots.txt
-curl -fsSI https://arkadiuszkamrowski.com/sitemap-index.xml
+SITE_BASE_URL=https://arkadiuszkamrowski.com make smoke-production
 ```
 
-Inspect response headers on HTML and static assets for CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, framing protection and the expected cache semantics.
+This non-destructive script checks:
+
+- all core PL/EN routes return real HTML with the canonical apex URLs,
+- no `localhost` URL leaks into rendered HTML,
+- security headers are present,
+- trailing-slash canonicalization,
+- real 404 behavior,
+- `robots.txt` and `sitemap-index.xml`,
+- public `www` → apex redirect with path/query preservation,
+- contact API rejection of a disallowed Origin,
+- allowed same-origin contact preflight/CORS behavior.
+
+It intentionally does **not** submit a valid contact message. Complete the real-delivery test from section 10 separately.
 
 Then manually visit the complete primary journey:
 
@@ -279,9 +303,10 @@ Rollback should restore the previous immutable revision; do not hot-edit product
 | PR CI: build/static/performance/references | repository | PASS |
 | Browser matrix + automated WCAG | repository | PASS |
 | Container runtime E2E + Trivy | repository | PASS |
-| Production predeploy configuration | platform owner | PASS |
+| Production predeploy configuration + immutable images | platform owner | PASS |
 | Hosting/revision/rollback configured | platform owner | PASS |
-| DNS + TLS + canonical redirects | domain/platform owner | PASS |
+| DNS + TLS + apex/`www` canonical redirects | domain/platform owner | PASS |
+| Public non-destructive smoke (`make smoke-production`) | owner/QA | PASS |
 | Sender domain SPF/DKIM/DMARC reviewed | domain/email owner | PASS |
 | Real contact delivery | owner | PASS |
 | VoiceOver + Safari | manual QA | PASS |
