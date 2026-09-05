@@ -10,7 +10,7 @@ command -v node >/dev/null || { echo "Node.js 22+ is required. Install with: bre
 command -v npm >/dev/null || { echo "npm is required."; exit 1; }
 command -v python3 >/dev/null || { echo "python3 is required to serve dist locally."; exit 1; }
 command -v curl >/dev/null || { echo "curl is required."; exit 1; }
-if [[ ! -d node_modules ]]; then npm install --no-audit --no-fund; fi
+if [[ ! -d node_modules ]]; then npm ci --no-audit --no-fund; fi
 
 bash scripts/mac-stop.sh >/dev/null 2>&1 || true
 
@@ -24,6 +24,7 @@ for _ in {1..40}; do curl -fsS "http://${HOST}:${CONTACT_PORT}/healthz" >/dev/nu
 curl -fsS "http://${HOST}:${CONTACT_PORT}/healthz" >/dev/null
 
 SITE_BASE_URL="http://${HOST}:${PORT}" \
+ALLOW_LOCAL_SITE_BASE=1 \
 PUBLIC_CONTACT_ENDPOINT="http://${HOST}:${CONTACT_PORT}/api/contact" \
 npm run build
 

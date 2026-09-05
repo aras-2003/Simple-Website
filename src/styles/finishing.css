@@ -1,4 +1,4 @@
-/* Final visual polish: lighter home, tighter alignment, brand-first about, case studies */
+/* Final visual finishing. This file owns last-mile page corrections only. */
 
 .section-intro-split {
   align-items: end;
@@ -113,13 +113,11 @@
   white-space: nowrap;
 }
 
-/* Shared text alignment: right-hand explanatory copy starts from the visual baseline */
 .section-intro-split > .content-lead,
 .section-intro-split > div:last-child {
   align-self: end;
 }
 
-/* Practice: align problem detail with the question, not with the tiny label above it */
 .interface-deep-list article {
   align-items: start;
 }
@@ -128,7 +126,6 @@
   padding-top: 30px;
 }
 
-/* OAF application: turn the closing matrix into a calm editorial list */
 .oaf-use-section-polished {
   background: var(--stone-soft);
 }
@@ -164,30 +161,6 @@
   border-top: 1px solid var(--line);
 }
 
-/* About: portrait supports the story rather than dominating it */
-.about-hero-brand {
-  min-height: min(650px, calc(100svh - var(--header)));
-  grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
-  align-items: center;
-}
-
-.about-portrait-primary {
-  width: min(100%, 360px);
-  justify-self: end;
-}
-
-.about-portrait-primary img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  max-height: 500px;
-  object-fit: cover;
-  object-position: 50% 24%;
-}
-
-.about-portrait-primary figcaption {
-  color: var(--paper-strong);
-}
-
 .brand-profile {
   max-width: none;
   display: grid;
@@ -207,7 +180,6 @@
   max-width: 760px;
 }
 
-/* Case studies: one continuous evidence ledger, not six cards */
 .case-study-section {
   background: var(--paper-strong);
   border-top: 1px solid var(--line);
@@ -267,13 +239,79 @@
   color: var(--text);
 }
 
-/* Perspective metadata: category only, no fake precision from reading-time labels */
 .featured-essay-meta .micro-label,
 .editorial-library-list .note-meta {
   color: var(--muted);
   font-size: 10px;
   letter-spacing: .07em;
   text-transform: uppercase;
+}
+
+/* About portrait presentation: square editorial portrait, balanced against the hero copy. */
+.about-hero-brand {
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) 370px;
+  gap: clamp(18px, 2.2vw, 36px);
+  align-items: center;
+}
+
+.about-hero-copy {
+  max-width: 930px;
+}
+
+.about-portrait-primary {
+  width: 370px;
+  margin: 0;
+  padding: 0 !important;
+  justify-self: start;
+  align-self: center;
+  transform: translate(-120px, -24px);
+  background: transparent !important;
+  border: 0 !important;
+  border-block: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.about-portrait-primary::before,
+.about-portrait-primary::after {
+  display: none !important;
+  content: none !important;
+}
+
+.about-portrait-primary img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  box-shadow: none;
+}
+
+.about-portrait-primary figcaption {
+  display: none !important;
+}
+
+.privacy-updated {
+  grid-column: 1 / -1;
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+
+@media (max-width: 1280px) {
+  .about-hero-brand {
+    grid-template-columns: minmax(0, 1fr) 345px;
+    gap: 22px;
+  }
+
+  .about-portrait-primary {
+    width: 345px;
+    transform: translate(-80px, -20px);
+  }
 }
 
 @media (max-width: 1080px) {
@@ -287,10 +325,6 @@
     justify-self: start;
   }
 
-  .about-portrait-primary {
-    justify-self: start;
-  }
-
   .deeper-paths-list article {
     grid-template-columns: .32fr .9fr 1fr;
   }
@@ -298,6 +332,16 @@
   .deeper-paths-list .text-link {
     grid-column: 2 / -1;
     justify-self: start;
+  }
+
+  .about-hero-brand {
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 22px;
+  }
+
+  .about-portrait-primary {
+    width: 310px;
+    transform: translate(-40px, -12px);
   }
 }
 
@@ -338,13 +382,18 @@
     padding-top: 0;
   }
 
-  .about-portrait-primary {
-    width: min(82vw, 310px);
-    justify-self: start;
+  .about-hero-brand {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
   }
 
-  .about-portrait-primary img {
-    max-height: 430px;
+  .about-portrait-primary {
+    width: min(68vw, 250px);
+    margin: 0;
+    justify-self: start;
+    align-self: start;
+    transform: none;
   }
 
   .case-study-index {

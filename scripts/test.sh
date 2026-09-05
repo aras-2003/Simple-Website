@@ -2,6 +2,6 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 if [[ ! -d node_modules ]]; then
-  npm install --no-audit --no-fund
+  npm ci --no-audit --no-fund
 fi
 npm run test:static

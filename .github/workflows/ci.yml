@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  SITE_BASE_URL: https://arkadiuszkamrowski.com
+
 permissions:
   contents: read
   security-events: write
@@ -12,16 +15,17 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Astro type, build, static and contact API validation
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Astro type, build, static, link and contact API validation
         run: npm run test:static
       - name: Upload static artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: site-dist
           path: dist
@@ -30,21 +34,22 @@ jobs:
   accessibility:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
       - name: Build site
         run: npm run build
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install browser matrix
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: WCAG 2.2 A/AA automated audit
         run: npm run test:a11y
       - name: Upload accessibility report on failure
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: accessibility-report
           path: artifacts
@@ -53,25 +58,34 @@ jobs:
   container:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: docker/setup-buildx-action@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
       - name: Build site image for CI
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           load: true
           push: false
           tags: personal-site:ci
+          build-args: |
+            SITE_BASE_URL=https://arkadiuszkamrowski.com
       - name: Build contact API image for CI
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           file: server/Dockerfile
           load: true
           push: false
           tags: personal-contact:ci
+      - name: Runtime reverse-proxy, canonicalization, headers and contact smoke test
+        id: runtime_smoke
+        continue-on-error: true
+        run: bash -x tests/runtime-smoke.sh
       - name: Trivy site image scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        id: scan_site
+        if: always()
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-site:ci
           format: sarif
@@ -79,8 +93,12 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: '1'
+          version: v0.74.0
       - name: Trivy contact API image scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        id: scan_contact
+        if: always()
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-contact:ci
           format: sarif
@@ -88,17 +106,25 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: '1'
+          version: v0.74.0
       - name: Upload site scan to GitHub Security
-        if: always()
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-site.sarif
           category: site-container
       - name: Upload contact scan to GitHub Security
-        if: always()
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-contact.sarif
           category: contact-container
+      - name: Enforce runtime and HIGH/CRITICAL container gates
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.runtime_smoke.outcome }}" = "success" || { echo "Runtime smoke gate failed"; exit 1; }
+          test "${{ steps.scan_site.outcome }}" = "success" || { echo "Site image has HIGH/CRITICAL findings"; exit 1; }
+          test "${{ steps.scan_contact.outcome }}" = "success" || { echo "Contact image has HIGH/CRITICAL findings"; exit 1; }

@@ -1,9 +1,10 @@
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, access } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
+const siteBase = new URL(process.env.SITE_BASE_URL).origin;
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
 const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
 const requiredRoutes = [
@@ -38,6 +39,7 @@ for (const route of requiredRoutes) {
   try { html = await readFile(file, 'utf8'); }
   catch { errors.push(`${route}: missing generated HTML`); continue; }
   const expectedLang = route.startsWith('/en') ? 'en' : 'pl';
+  const expectedSwitch = expectedLang === 'pl' ? 'EN' : 'PL';
   const checks = [
     [new RegExp(`<html[^>]+lang=["']${expectedLang}["']`), 'correct html lang'],
     [/<title>[^<]+<\/title>/, 'title'],
@@ -45,17 +47,35 @@ for (const route of requiredRoutes) {
     [/<link rel="canonical" href="[^"]+"/, 'canonical'],
     [/<link rel="alternate" hreflang="pl"/, 'PL hreflang'],
     [/<link rel="alternate" hreflang="en"/, 'EN hreflang'],
+    [/<meta http-equiv="Content-Security-Policy" content="[^"]+"/, 'CSP meta'],
+    [/<meta property="og:image" content="[^"]+\/assets\/og-card\.png"/, 'raster OG image'],
+    [/<meta property="og:image:width" content="1200"/, 'OG image width'],
+    [/<meta property="og:image:height" content="630"/, 'OG image height'],
     [/<main id="main"/, 'main landmark'],
     [/class="skip-link"/, 'skip link'],
     [/<nav[^>]+aria-label=/, 'labelled navigation'],
+    [new RegExp(`class="language-link"[^>]*>${expectedSwitch}<\/a>`), 'compact language switch'],
   ];
   for (const [regex, name] of checks) if (!regex.test(html)) errors.push(`${route}: missing ${name}`);
+
+  const canonicalMatch = html.match(/<link rel="canonical" href="([^"]+)"/);
+  if (!canonicalMatch?.[1]?.startsWith(siteBase)) errors.push(`${route}: canonical is not based on SITE_BASE_URL`);
+  if (html.includes('127.0.0.1:8080') || html.includes('localhost:8080')) errors.push(`${route}: local origin leaked into production metadata`);
+  if (/Content-Security-Policy"[^>]+unsafe-inline/.test(html)) errors.push(`${route}: CSP must not allow unsafe-inline scripts`);
+  if (/<script(?![^>]*(?:src=|type="application\/ld\+json"))[^>]*>/.test(html)) errors.push(`${route}: unexpected inline executable script`);
+
   const h1s = (html.match(/<h1\b/g) || []).length;
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
   if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
   if (expectedLang === 'pl') {
     for (const token of forbiddenPlUi) if (html.includes(`>${token}<`)) errors.push(`${route}: untranslated UI token ${token}`);
+  }
+
+  if (/\/writing\//.test(route)) {
+    if (!/<meta property="og:type" content="article"/.test(html)) errors.push(`${route}: article OG type expected`);
+    if (!/<meta property="article:published_time" content="2026-09-04"/.test(html)) errors.push(`${route}: publication metadata expected`);
+    if (!html.includes('"@type":"Article"')) errors.push(`${route}: Article JSON-LD expected`);
   }
 }
 
@@ -93,6 +113,25 @@ for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid
   if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
 }
 
+const privacy = await readFile(routeFile('/privacy'), 'utf8');
+for (const token of ['Administrator danych', 'Cele i podstawy prawne', 'Transfer poza EOG', 'Twoje prawa']) {
+  if (!privacy.includes(token)) errors.push(`/privacy: missing privacy disclosure ${token}`);
+}
+const privacyEn = await readFile(routeFile('/en/privacy'), 'utf8');
+for (const token of ['Data controller', 'Purposes and legal bases', 'Transfers outside the EEA', 'Your rights']) {
+  if (!privacyEn.includes(token)) errors.push(`/en/privacy: missing privacy disclosure ${token}`);
+}
+
+try { await access(join(dist, 'scripts/contact-form.js')); }
+catch { errors.push('/scripts/contact-form.js: external contact client missing from build'); }
+try { await access(join(dist, 'assets/og-card.png')); }
+catch { errors.push('/assets/og-card.png: raster social card missing from build'); }
+
+const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
+if (!robots.includes(`Sitemap: ${siteBase}/sitemap-index.xml`)) errors.push('/robots.txt: production sitemap origin mismatch');
+const sitemap = await readFile(join(dist, 'sitemap-index.xml'), 'utf8');
+if (!sitemap.includes(siteBase) || sitemap.includes('127.0.0.1') || sitemap.includes('localhost')) errors.push('/sitemap-index.xml: invalid production origin');
+
 const allFiles = await walk(dist);
 for (const file of allFiles.filter(f => f.endsWith('.html'))) {
   const html = await readFile(file, 'utf8');
@@ -106,4 +145,4 @@ if (errors.length) {
   errors.forEach(e => console.error(`- ${e}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical translated routes checked + brand/content architecture gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical translated routes checked + security/SEO/brand gates`);

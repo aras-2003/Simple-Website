@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 if [[ ! -d node_modules ]]; then
-  npm install --no-audit --no-fund
+  npm ci --no-audit --no-fund
 fi
 
 CONTACT_PORT="${CONTACT_API_PORT:-8787}"

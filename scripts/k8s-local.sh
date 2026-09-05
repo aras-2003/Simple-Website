@@ -42,7 +42,7 @@ if [[ -z "$CONTEXT" ]]; then
 fi
 
 echo "Using Kubernetes context: $CONTEXT"
-docker build -t "$IMAGE" .
+docker build --build-arg SITE_BASE_URL="http://127.0.0.1:${PORT}" --build-arg ALLOW_LOCAL_SITE_BASE=1 -t "$IMAGE" .
 docker build -f server/Dockerfile -t "$CONTACT_IMAGE" .
 
 if [[ "$CONTEXT" == kind-* ]]; then
