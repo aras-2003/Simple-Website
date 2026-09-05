@@ -2,7 +2,7 @@
 
 **Status: RELEASE CANDIDATE — public deployment disabled**
 
-Ten dokument opisuje aktualny baseline produktu i warunki promocji do produkcji. Nie zatwierdza konkretnej platformy hostingowej przed zakończeniem hardeningu, audytu doświadczenia i decyzji operacyjnej.
+Ten dokument opisuje aktualny baseline produktu i warunki promocji do produkcji. Nie zatwierdza konkretnej platformy hostingowej przed zakończeniem hardeningu, audytu doświadczenia i decyzji operacyjnej. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Aktualny baseline produktu
 
@@ -15,6 +15,7 @@ Ten dokument opisuje aktualny baseline produktu i warunki promocji do produkcji.
 7. **Runtime** — hardened non-root NGINX dla statycznego frontu oraz mały, odseparowany contact API.
 8. **Canonical release origin** — automatyczne buildy release-candidate używają `https://arkadiuszkamrowski.com`. Zmiana domeny wymaga aktualizacji konfiguracji produkcyjnej, canonicali, hreflang, social metadata, DNS/TLS i testów release.
 9. **Repo / branch produkcyjny** — `aras-2003/Simple-Website`, `main`. Zmiany release-candidate trafiają przez PR i obowiązujące quality gates.
+10. **Production config contract** — `.env.production.example` definiuje wymagane wartości bez sekretów. `make predeploy` sprawdza konfigurację publicznego originu i live contact delivery przed promocją.
 
 ## Decyzja hostingowa
 
@@ -22,7 +23,7 @@ Publiczny deployment pozostaje wyłączony do czasu świadomego wyboru modelu op
 
 Dopuszczone kierunki do decyzji:
 
-- **preferowany dla tego workloadu:** edge/CDN lub static hosting dla frontu + mały serverless/container runtime dla contact API + zarządzane sekrety,
+- **preferowany dla tego workloadu:** managed edge/container hosting z zarządzanym TLS i secret store, z jednym publicznym originem oraz web + contact sidecar/equivalent private runtime,
 - **reference / future-ready:** Kubernetes / AKS, jeżeli istnieje uzasadnienie platformowe, demonstracyjne lub wspólna infrastruktura, która redukuje koszt operacyjny.
 
 Dedykowany klaster AKS nie jest wymaganiem produktu. Manifesty Kubernetes i wyłączony workflow Azure pozostają reference architecture i testem przenośności, a nie domyślnym celem produkcyjnym.
@@ -37,6 +38,7 @@ Przed merge'em release-candidate do `main` wymagane są:
 - statyczne testy IA, SEO, social metadata, privacy i linków wewnętrznych,
 - kontrola zewnętrznych referencji,
 - testy contact API, w tym validation, origin, rate limiting, timing i failure paths,
+- test kontraktu `scripts/predeploy_check.py` obejmujący production contact mode, origin lock, sender domain i sekrety bez ich logowania,
 - automatyczny WCAG 2.2 A/AA audit,
 - smoke tests Chromium, Firefox i WebKit,
 - runtime E2E przez realny NGINX → contact API,
@@ -58,12 +60,16 @@ Automatyczne CI nie zastępuje następujących kontroli:
 - konfiguracja i weryfikacja domeny wysyłkowej: SPF, DKIM i DMARC,
 - DNS, TLS, redirect/canonical policy i monitoring po uruchomieniu.
 
+Dokładna procedura, kryteria PASS/FIX i rollback są w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+
 ## Sekrety i dane operacyjne
 
 W repo nie przechowujemy sekretów produkcyjnych. Realna wysyłka wymaga konfiguracji providera poczty oraz odpowiednich sekretów po stronie platformy docelowej. Publiczny deployment nie może opierać się na długowiecznych poświadczeniach zapisanych w kodzie lub workflow.
 
+`.gitignore` blokuje również warianty `.env.*` z wyjątkami wyłącznie dla publicznych plików przykładowych.
+
 ## Reguła promocji
 
-`feature/hardening branch → PR → wszystkie automatyczne gates zielone → final experience audit → manual pre-launch checks → decyzja hostingowa → main → production promotion`
+`feature/hardening branch → PR → wszystkie automatyczne gates zielone → final experience audit → production config preflight → manual pre-launch checks → decyzja hostingowa → main → production promotion`
 
 Nie promujemy zmian do produkcji tylko dlatego, że build się kompiluje. Release wymaga jednocześnie jakości doświadczenia, bezpieczeństwa, accessibility, compliance i operacyjnej proporcjonalności rozwiązania.
