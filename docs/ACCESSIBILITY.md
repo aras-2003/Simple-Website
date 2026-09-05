@@ -27,13 +27,20 @@ A formal public conformance claim should be made only after final production con
 
 Playwright + axe scans the full route inventory, including the four PL/EN article pairs, contact and privacy routes. Each route is checked for WCAG A/AA rules, keyboard-first entry and 320px horizontal overflow. Static validation separately checks language, metadata, H1 count, landmarks and alternate-language links. The contact API has its own integration test for valid, invalid, bot and missing-origin requests.
 
+The browser gate also exercises Chromium, Firefox and WebKit and uploads final visual captures. These checks reduce regression risk but do not simulate how a real screen-reader user experiences the final production environment.
+
 ## Manual release audit still required
 
-1. Keyboard-only navigation at 200% and 400% zoom.
-2. VoiceOver + Safari on macOS/iOS.
-3. NVDA + Firefox or Chrome on Windows.
+Record PASS/FIX against the final production build for:
+
+1. Keyboard-only navigation at 200% and 400% zoom: skip link, focus visibility, reading/focus order, no traps and full contact completion.
+2. VoiceOver + Safari on macOS/iOS: landmarks, heading outline, links, images, PL/EN language, contact labels/errors/live status.
+3. NVDA + Firefox or Chrome on Windows: landmark/heading navigation, link purpose, form descriptions/errors and live-region submission feedback.
 4. Contact form completion, native errors, success/failure recovery and screen-reader announcements.
-5. Contrast verification against final assets and any future embeds.
-6. Reflow at 320 CSS px and large-text settings.
-7. Link purpose, language-of-parts and reading order review of final copy.
-8. Privacy wording and any future analytics/consent layer need separate release review.
+5. Contrast and focus verification against the final deployed assets, including high-contrast/forced-color behavior where available.
+6. Reflow at 320 CSS px, 200–400% zoom and large-text settings with no loss of content or functionality.
+7. Reduced-motion mode with no non-essential movement required for comprehension or interaction.
+8. Link purpose, language-of-parts and reading order review of final copy.
+9. Privacy wording and any future analytics/consent layer require separate release review.
+
+The step-by-step route coverage and launch acceptance table are maintained in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
