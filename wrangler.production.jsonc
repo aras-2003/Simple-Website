@@ -21,6 +21,7 @@
     "enabled": true
   },
   "vars": {
+    "DEPLOYMENT_ENV": "production",
     "CONTACT_REQUIRE_ORIGIN": "1",
     "CONTACT_ALLOWED_ORIGINS": "https://arkadiuszkamrowski.com",
     "TURNSTILE_REQUIRED": "1",
