@@ -95,6 +95,7 @@ jobs:
       - name: Runtime E2E through NGINX and contact API
         run: node tests/container-e2e.mjs
       - name: Trivy site image scan
+        id: trivy_site
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-site:ci
@@ -104,6 +105,7 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
       - name: Trivy contact API image scan
+        id: trivy_contact
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-contact:ci
@@ -113,14 +115,14 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
       - name: Upload site scan to GitHub Security
-        if: always()
+        if: ${{ always() && steps.trivy_site.outcome != 'skipped' }}
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-site.sarif
           category: site-container
       - name: Upload contact scan to GitHub Security
-        if: always()
+        if: ${{ always() && steps.trivy_contact.outcome != 'skipped' }}
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
