@@ -1,4 +1,4 @@
-.PHONY: install build check test test-a11y test-contact test-predeploy audit predeploy dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-build-production docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y test-contact test-predeploy audit predeploy smoke-production dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-build-production docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
 	npm install --no-audit --no-fund
@@ -28,6 +28,9 @@ predeploy:
 		--host "$${HOST:?set HOST}" \
 		--namespace "$${NAMESPACE:-personal-site}" \
 		--require-contact-production
+
+smoke-production:
+	SITE_BASE_URL="$${SITE_BASE_URL:-https://arkadiuszkamrowski.com}" node scripts/production-smoke.mjs
 
 contact-api:
 	CONTACT_DRY_RUN=$${CONTACT_DRY_RUN:-1} node server/contact.mjs
