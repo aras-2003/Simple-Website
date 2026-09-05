@@ -1,84 +1,61 @@
 ---
+import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { editorial } from '../content/editorial';
-import { platformSources } from '../content/platform';
-import type { Note } from '../content/notes';
 import { route, type Locale } from '../lib/site';
-interface Props { locale: Locale; note: Note; }
+
+interface Props { locale: Locale; note: CollectionEntry<'writing'>; }
 const { locale, note } = Astro.props;
 const ia = editorial[locale];
+const data = note.data;
 const td = (value: string) => value.replaceAll('—', '–');
-const title = `${td(note.title)} – Arkadiusz Kamrowski`;
+const title = `${td(data.title)} – Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
-const plPath = `${route('pl', 'writing')}/${note.slug}`;
-const enPath = `${route('en', 'writing')}/${note.slug}`;
-const publishedAt = '2026-09-04T00:00:00+02:00';
-const sourceSets: Record<string, { label: string; href: string }[]> = {
-  'Enterprise Architecture': [
-    { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
-    { label: 'MIT CISR · Enterprise Architecture as Strategy', href: platformSources.mitCisrBook },
-    { label: 'McKinsey · 7-S Framework', href: platformSources.mckinsey7s },
-  ],
-  'Portfolio & PMO': [
-    { label: 'BCG · Corporate Transformation · 2024', href: platformSources.bcgTransformation },
-    { label: 'PMI · Pulse of the Profession · 2024', href: platformSources.pmiPulse },
-  ],
-  'AI & Governance': [
-    { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
-    { label: 'BCG · Agile Operating Model · 2024', href: platformSources.bcgAgile },
-  ],
-  'Transformation': [
-    { label: 'BCG · Corporate Transformation · 2024', href: platformSources.bcgTransformation },
-    { label: 'McKinsey · Transformations for long-term impact', href: platformSources.mckinseyTransformation },
-    { label: 'MIT CISR · Operating model & EA', href: platformSources.mitCisrBook },
-  ],
-};
-const sources = sourceSets[note.category] ?? [];
+const plPath = `${route('pl', 'writing')}/${data.slug}`;
+const enPath = `${route('en', 'writing')}/${data.slug}`;
+const publishedAt = data.publishedAt.toISOString();
+const modifiedAt = (data.modifiedAt ?? data.publishedAt).toISOString();
+const { Content } = await render(note);
 ---
 <BaseLayout
   locale={locale}
   routeKey="writing"
   title={title}
-  description={td(note.dek)}
+  description={td(data.dek)}
   paths={{ pl: plPath, en: enPath }}
   contentType="article"
   publishedTime={publishedAt}
-  modifiedTime={publishedAt}
-  articleSection={note.category}
+  modifiedTime={modifiedAt}
+  articleSection={data.category}
 >
   <article class="note-page note-page-editorial" itemscope itemtype="https://schema.org/Article">
     <meta itemprop="datePublished" content={publishedAt} />
-    <meta itemprop="dateModified" content={publishedAt} />
-    <meta itemprop="articleSection" content={note.category} />
+    <meta itemprop="dateModified" content={modifiedAt} />
+    <meta itemprop="articleSection" content={data.category} />
     <span itemprop="author" itemscope itemtype="https://schema.org/Person">
       <meta itemprop="name" content="Arkadiusz Kamrowski" />
     </span>
 
     <header class="note-hero">
-      <p class="eyebrow">{note.category}</p>
-      <h1 itemprop="headline">{td(note.title)}</h1>
-      <p class="page-lead" itemprop="description">{td(note.dek)}</p>
+      <p class="eyebrow">{data.category}</p>
+      <h1 itemprop="headline">{td(data.title)}</h1>
+      <p class="page-lead" itemprop="description">{td(data.dek)}</p>
       <div class="article-thesis-label">
         <span>Status</span>
         <strong>{locale === 'pl' ? 'teza robocza do konfrontowania z dowodami' : 'working thesis to be tested against evidence'}</strong>
       </div>
     </header>
 
-    <div class="note-body" itemprop="articleBody">
-      {note.sections.map((section) => (
-        <section>
-          <h2>{td(section.heading)}</h2>
-          {section.paragraphs.map((paragraph) => <p>{td(paragraph)}</p>)}
-        </section>
-      ))}
+    <div class="note-body note-body-markdown" itemprop="articleBody">
+      <Content />
     </div>
 
-    {sources.length > 0 && (
+    {data.sources.length > 0 && (
       <aside class="article-sources" aria-labelledby="article-sources-title">
         <p class="eyebrow">{locale === 'pl' ? 'Kontekst źródłowy' : 'Research context'}</p>
         <h2 id="article-sources-title">{locale === 'pl' ? 'Punkty odniesienia do dalszej weryfikacji' : 'Reference points for further verification'}</h2>
         <p>{locale === 'pl' ? 'Poniższe źródła nie są przypisem do każdego zdania. Pokazują literaturę i benchmarki, z którymi teza powinna być konfrontowana.' : 'These sources are not citations for every sentence. They show the literature and benchmarks against which the thesis should be tested.'}</p>
-        <ul>{sources.map((source) => <li><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
+        <ul>{data.sources.map((source) => <li><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
       </aside>
     )}
 
