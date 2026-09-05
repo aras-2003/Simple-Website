@@ -28,6 +28,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Astro type, build, static and contact API validation
         run: npm run test:static
+      - name: Performance budget
+        run: npm run test:performance
       - name: External reference check
         run: node tests/external-links.mjs
       - name: Upload static artifact
@@ -101,32 +103,7 @@ jobs:
       - name: Runtime E2E through NGINX and contact API
         run: node tests/container-e2e.mjs
 
-      - name: Trivy site image gate
-        id: trivy_site
-        continue-on-error: true
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          image-ref: personal-site:ci
-          format: table
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '1'
-
-      - name: Trivy contact API image gate
-        id: trivy_contact
-        continue-on-error: true
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          image-ref: personal-contact:ci
-          format: table
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '1'
-
       - name: Write site vulnerability report
-        if: always()
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-site:ci
@@ -138,7 +115,6 @@ jobs:
           exit-code: '0'
 
       - name: Write contact vulnerability report
-        if: always()
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-contact:ci
@@ -160,9 +136,4 @@ jobs:
           if-no-files-found: error
 
       - name: Enforce container vulnerability gate
-        if: always()
-        run: |
-          echo "site scan outcome: ${{ steps.trivy_site.outcome }}"
-          echo "contact scan outcome: ${{ steps.trivy_contact.outcome }}"
-          test "${{ steps.trivy_site.outcome }}" = "success"
-          test "${{ steps.trivy_contact.outcome }}" = "success"
+        run: node tests/container-vulnerability-gate.mjs trivy-site.json trivy-contact.json
