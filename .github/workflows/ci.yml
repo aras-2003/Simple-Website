@@ -1,4 +1,5 @@
 name: CI
+
 on:
   pull_request:
   push:
@@ -8,70 +9,91 @@ permissions:
   contents: read
   security-events: write
 
+env:
+  SITE_BASE_URL: https://arkadiuszkamrowski.com
+  SITE_PRODUCTION_HOST: arkadiuszkamrowski.com
+  REQUIRE_PRODUCTION_SITE: '1'
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
       - name: Astro type, build, static and contact API validation
         run: npm run test:static
       - name: Upload static artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: site-dist
           path: dist
           if-no-files-found: error
 
-  accessibility:
+  accessibility-and-browsers:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
       - name: Build site
         run: npm run build
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install release browsers
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: WCAG 2.2 A/AA automated audit
         run: npm run test:a11y
-      - name: Upload accessibility report on failure
+      - name: Chromium Firefox WebKit smoke matrix
+        run: npm run test:browsers
+      - name: Upload browser reports on failure
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: accessibility-report
+          name: browser-report
           path: artifacts
           if-no-files-found: ignore
 
   container:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: docker/setup-buildx-action@v4
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
       - name: Build site image for CI
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           load: true
           push: false
           tags: personal-site:ci
+          build-args: |
+            SITE_BASE_URL=https://arkadiuszkamrowski.com
+            SITE_PRODUCTION_HOST=arkadiuszkamrowski.com
+            REQUIRE_PRODUCTION_SITE=1
       - name: Build contact API image for CI
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           file: server/Dockerfile
           load: true
           push: false
           tags: personal-contact:ci
+      - name: Runtime E2E through NGINX and contact API
+        run: node tests/container-e2e.mjs
       - name: Trivy site image scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-site:ci
           format: sarif
@@ -80,7 +102,7 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
       - name: Trivy contact API image scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-contact:ci
           format: sarif
@@ -91,14 +113,14 @@ jobs:
       - name: Upload site scan to GitHub Security
         if: always()
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-site.sarif
           category: site-container
       - name: Upload contact scan to GitHub Security
         if: always()
         continue-on-error: true
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-contact.sarif
           category: contact-container
