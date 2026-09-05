@@ -20,6 +20,8 @@ BASE_ARGS = [
     "--require-contact-production",
 ]
 FAKE_SECRET = "re_123456789012345678901234567890"
+FAKE_TURNSTILE_SECRET = "0x4AAA-test-secret-123456789012345"
+FAKE_TURNSTILE_SITEKEY = "0x4AAAA-test-sitekey-1234567890123"
 GIT_SHA = "0123456789abcdef0123456789abcdef01234567"
 GOOD_ENV = {
     **os.environ,
@@ -31,6 +33,10 @@ GOOD_ENV = {
     "CONTACT_RATE_LIMIT": "5",
     "CONTACT_RATE_BUCKETS": "5000",
     "CONTACT_API_PORT": "8787",
+    "TURNSTILE_REQUIRED": "1",
+    "PUBLIC_TURNSTILE_SITE_KEY": FAKE_TURNSTILE_SITEKEY,
+    "TURNSTILE_SECRET_KEY": FAKE_TURNSTILE_SECRET,
+    "TURNSTILE_EXPECTED_HOSTNAME": "arkadiuszkamrowski.com",
     "RESEND_API_KEY": FAKE_SECRET,
     "CONTACT_TO_EMAIL": "owner@example.net",
     "CONTACT_FROM_EMAIL": "Website <contact@arkadiuszkamrowski.com>",
@@ -56,8 +62,10 @@ def expect_success() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     assert "PREDEPLOY CHECK PASS" in result.stdout
     assert "immutable release references present" in result.stdout
-    assert FAKE_SECRET not in result.stdout
-    assert FAKE_SECRET not in result.stderr
+    assert "Turnstile enforcement configuration present" in result.stdout
+    for secret in (FAKE_SECRET, FAKE_TURNSTILE_SECRET):
+        assert secret not in result.stdout
+        assert secret not in result.stderr
 
 
 def expect_failure(overrides: dict[str, str], expected: str) -> None:
@@ -66,7 +74,8 @@ def expect_failure(overrides: dict[str, str], expected: str) -> None:
     output = result.stdout + result.stderr
     assert "PREDEPLOY CHECK FAILED" in output
     assert expected in output, output
-    assert FAKE_SECRET not in output
+    for secret in (FAKE_SECRET, FAKE_TURNSTILE_SECRET):
+        assert secret not in output
 
 
 def main() -> None:
@@ -80,6 +89,10 @@ def main() -> None:
         {"CONTACT_ALLOWED_ORIGINS": "http://localhost:8080"},
         "contact origin must be an explicit https origin",
     )
+    expect_failure({"TURNSTILE_REQUIRED": "0"}, "TURNSTILE_REQUIRED must be 1")
+    expect_failure({"PUBLIC_TURNSTILE_SITE_KEY": "short"}, "PUBLIC_TURNSTILE_SITE_KEY is missing")
+    expect_failure({"TURNSTILE_SECRET_KEY": "short"}, "TURNSTILE_SECRET_KEY is missing")
+    expect_failure({"TURNSTILE_EXPECTED_HOSTNAME": "www.arkadiuszkamrowski.com"}, "TURNSTILE_EXPECTED_HOSTNAME must equal")
     expect_failure({"RESEND_API_KEY": "short"}, "RESEND_API_KEY is missing")
     expect_failure(
         {"CONTACT_FROM_EMAIL": "Website <contact@other-domain.example>"},
