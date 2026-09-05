@@ -1,6 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 const routes = ['/', '/writing', '/oaf', '/work', '/about', '/contact', '/en/about'];
+const visualRoutes = [
+  ['perspective', '/writing'],
+  ['oaf', '/oaf'],
+  ['practice', '/work'],
+  ['about', '/about'],
+  ['contact', '/contact'],
+] as const;
 
 for (const path of routes) {
   test(`${path} renders core experience without browser-specific breakage`, async ({ page }) => {
@@ -63,6 +70,18 @@ test('home five-second clarity layout remains intact', async ({ page }, testInfo
     fullPage: true,
   });
 });
+
+for (const [name, path] of visualRoutes) {
+  test(`${name} critical surface can be visually audited`, async ({ page }, testInfo) => {
+    test.skip(!['desktop-chromium', 'mobile-chromium'].includes(testInfo.project.name), 'visual audit capture is limited to canonical desktop/mobile Chromium');
+    await page.goto(path, { waitUntil: 'networkidle' });
+    await expect(page.locator('h1')).toBeVisible();
+    await page.screenshot({
+      path: `artifacts/visual/${name}-${testInfo.project.name}.png`,
+      fullPage: true,
+    });
+  });
+}
 
 test('mobile navigation can be opened and contains the primary routes', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'mobile navigation smoke is only relevant on the mobile project');
