@@ -1,0 +1,13 @@
+/*
+ * Single stylesheet entrypoint.
+ * Cascade order is intentional: foundations → responsive primitives → layout →
+ * accessibility hardening → components → page systems → editorial patterns → finishing.
+ */
+@import './global.css';
+@import './responsive.css';
+@import './layout.css';
+@import './accessibility.css';
+@import './components.css';
+@import './pages.css';
+@import './editorial.css';
+@import './finishing.css';
