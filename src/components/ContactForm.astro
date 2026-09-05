@@ -28,6 +28,10 @@ const topics = pl
   data-endpoint={endpoint}
   data-success={pl ? 'Dziękuję. Wiadomość została wysłana.' : 'Thank you. Your message has been sent.'}
   data-error={pl ? 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz przez LinkedIn.' : 'The message could not be sent. Try again or use LinkedIn.'}
+  data-rate-error={pl ? 'Zbyt wiele prób w krótkim czasie. Spróbuj ponownie za kilka minut.' : 'Too many attempts in a short period. Try again in a few minutes.'}
+  data-delivery-error={pl ? 'Usługa wysyłki jest chwilowo niedostępna. Spróbuj ponownie później lub użyj LinkedIn.' : 'Message delivery is temporarily unavailable. Try again later or use LinkedIn.'}
+  data-validation-error={pl ? 'Sprawdź pola formularza i spróbuj ponownie.' : 'Check the form fields and try again.'}
+  data-timing-error={pl ? 'Odczekaj chwilę i spróbuj wysłać wiadomość ponownie.' : 'Wait a moment and try sending the message again.'}
   data-sending={pl ? 'Wysyłanie…' : 'Sending…'}
   novalidate
 >
@@ -66,7 +70,7 @@ const topics = pl
 
   <label class="consent-row">
     <input name="consent" type="checkbox" required />
-    <span>{pl ? 'Zgadzam się na przetworzenie danych w celu obsługi tej wiadomości.' : 'I agree to the processing of my data for the purpose of handling this message.'} <a href={route(locale, 'privacy')}>{pl ? 'Prywatność' : 'Privacy'}</a>.</span>
+    <span>{pl ? 'Potwierdzam, że zapoznałem(-am) się z informacją o przetwarzaniu danych w celu obsługi tej wiadomości.' : 'I confirm that I have read the information about processing my data to handle this message.'} <a href={route(locale, 'privacy')}>{pl ? 'Prywatność' : 'Privacy'}</a>.</span>
   </label>
 
   <div class="form-footer">
@@ -77,58 +81,4 @@ const topics = pl
   </div>
 </form>
 
-<script>
-  const forms = document.querySelectorAll('[data-contact-form]');
-  for (const form of forms) {
-    if (!(form instanceof HTMLFormElement)) continue;
-    form.dataset.startedAt = String(Date.now());
-    const status = form.querySelector('[data-form-status]');
-    const submit = form.querySelector('button[type="submit"]');
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!form.reportValidity()) return;
-      if (!(submit instanceof HTMLButtonElement) || !(status instanceof HTMLElement)) return;
-
-      const original = submit.innerHTML;
-      submit.disabled = true;
-      submit.setAttribute('aria-busy', 'true');
-      submit.textContent = form.dataset.sending || 'Sending…';
-      status.textContent = '';
-
-      const data = new FormData(form);
-      const payload = {
-        name: String(data.get('name') || ''),
-        email: String(data.get('email') || ''),
-        organization: String(data.get('organization') || ''),
-        topic: String(data.get('topic') || ''),
-        message: String(data.get('message') || ''),
-        website: String(data.get('website') || ''),
-        consent: data.get('consent') === 'on',
-        locale: document.documentElement.lang === 'en' ? 'en' : 'pl',
-        startedAt: Number(form.dataset.startedAt || Date.now()),
-      };
-
-      const endpoint = form.dataset.endpoint || '/api/contact';
-
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(body?.error || 'request_failed');
-        form.reset();
-        form.dataset.startedAt = String(Date.now());
-        status.textContent = form.dataset.success || 'Sent.';
-      } catch {
-        status.textContent = form.dataset.error || 'Could not send.';
-      } finally {
-        submit.disabled = false;
-        submit.removeAttribute('aria-busy');
-        submit.innerHTML = original;
-      }
-    });
-  }
-</script>
+<script is:inline src="/scripts/contact-form.js" defer></script>
