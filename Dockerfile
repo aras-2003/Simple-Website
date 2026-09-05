@@ -6,11 +6,13 @@ RUN npm install --no-audit --no-fund
 COPY public ./public
 COPY src ./src
 ARG SITE_BASE_URL
+ARG ALLOW_LOCAL_SITE_BASE=0
 RUN test -n "$SITE_BASE_URL" || (echo "SITE_BASE_URL build arg is required" >&2 && exit 1)
 ENV SITE_BASE_URL=$SITE_BASE_URL
+ENV ALLOW_LOCAL_SITE_BASE=$ALLOW_LOCAL_SITE_BASE
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24
+FROM nginxinc/nginx-unprivileged:1.29.8-alpine
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 USER 101
