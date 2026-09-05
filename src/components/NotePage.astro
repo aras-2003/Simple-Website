@@ -57,7 +57,7 @@ const { Content } = await render(note);
         <p class="eyebrow">{locale === 'pl' ? 'Kontekst źródłowy' : 'Research context'}</p>
         <h2 id="article-sources-title">{locale === 'pl' ? 'Punkty odniesienia do dalszej weryfikacji' : 'Reference points for further verification'}</h2>
         <p>{locale === 'pl' ? 'Poniższe źródła nie są przypisem do każdego zdania. Pokazują literaturę i benchmarki, z którymi teza powinna być konfrontowana.' : 'These sources are not citations for every sentence. They show the literature and benchmarks against which the thesis should be tested.'}</p>
-        <ul>{data.sources.map((source) => <li><a href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
+        <ul>{data.sources.map((source) => <li><a itemprop="citation" href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
       </aside>
     )}
 
