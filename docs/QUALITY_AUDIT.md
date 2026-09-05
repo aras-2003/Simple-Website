@@ -37,9 +37,11 @@ Potential refinement: visual review of hero line breaks at 1440–1920 px.
 
 **PASS** — intellectual lineage precedes the proprietary synthesis.
 
-**PASS** — model moves from definition → lineage → gap → model → dimensions → misfit → principles → boundaries → application.
+**PASS** — model moves from definition → lineage → gap → model → dimensions → misfit → decision contract → principles → boundaries → application.
 
-**P2 FIX** — formalize decision objects, roles/owners, cadence and evidence taxonomy before calling OAF a mature methodology.
+**PASS / maturity step** — the decision contract now formalizes five operational elements for high-impact decisions: decision object, accountable owner, cadence, evidence and revisit trigger. This closes the conceptual gap between a dependency model and an executable management loop.
+
+**P2 FIX** — validate the decision contract against real anonymized cases and evolve a stable taxonomy of decision types, evidence thresholds and escalation patterns before calling OAF a mature methodology.
 
 ## OAF diagram
 
@@ -64,7 +66,7 @@ Credentials sit below the argument and trajectory.
 **PASS** — each page has a distinct abstraction level:
 - Home: executive recognition,
 - Perspective: evidence and hypotheses,
-- OAF: theory and model,
+- OAF: theory, model and decision mechanics,
 - Practice: diagnostic/application level,
 - About: provenance and credibility,
 - Contact: action.
@@ -99,6 +101,7 @@ JSON-LD now describes the property primarily as a WebSite with a linked Person a
 - Home as landing: PASS
 - Perspective before OAF: PASS
 - OAF provenance: PASS
+- OAF decision contract: PASS as model; real-case validation pending
 - Theory → application graduation: PASS
 - Portrait placement: PASS
 - PL/EN route consistency: PASS
