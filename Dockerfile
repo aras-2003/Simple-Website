@@ -13,7 +13,9 @@ ENV SITE_PRODUCTION_HOST=$SITE_PRODUCTION_HOST
 ENV REQUIRE_PRODUCTION_SITE=$REQUIRE_PRODUCTION_SITE
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24
+# Pinned to the refreshed multi-platform 1.30.4 / Alpine 3.24 index.
+# The previous image carried util-linux/libuuid 2.42.1-r0, flagged by Trivy.
+FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24@sha256:45ce1e2e699234253d1def7baa96218a5d00b498d1ba0cbb1a17b6bdf73d1351
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 USER 101
