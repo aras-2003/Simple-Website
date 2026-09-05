@@ -1,220 +1,194 @@
-# Cloudflare edge contract
+# Cloudflare production contract
 
-This document is the repository-side source of truth for the Cloudflare configuration protecting `arkadiuszkamrowski.com`. It records the configuration established in the Cloudflare dashboard and defines the deployment contract that the hosting platform must satisfy.
+This is the repository-side source of truth for the Cloudflare configuration and production runtime of `arkadiuszkamrowski.com`.
 
-Last aligned with the dashboard: **2026-09-05**.
+Last aligned: **2026-09-06**.
 
-## 1. Role in the production architecture
+## 1. Target architecture
 
-Cloudflare is the only intended public edge for the production site.
-
-```text
-Internet
-  │
-  ▼
-Cloudflare
-  ├── authoritative DNS
-  ├── Universal SSL / TLS edge
-  ├── HTTP DDoS protection
-  ├── WAF / security rules / Browser Integrity Check
-  ├── AI crawler controls
-  ├── redirect and response-header transforms
-  ├── URL normalization
-  └── Turnstile for the contact form
-  │
-  ▼
-managed origin (Azure Container Apps preferred if Azure is selected)
-  └── NGINX :8080 → contact sidecar :8787
-```
-
-The origin must not become an alternative public entry point. When the production origin is created, restrict direct access to the extent supported by the selected platform and document the control before switching DNS to proxied mode.
-
-## 2. Current DNS state
-
-The Cloudflare zone is active with **DNS Setup: Full**, but intentionally has **0 public DNS records** while no production origin exists.
-
-Do not create placeholder `A`, `AAAA` or `CNAME` records merely to silence dashboard recommendations. DNS is added only after the final origin exists.
-
-### Launch target
-
-The canonical host is the apex:
-
-- `https://arkadiuszkamrowski.com` — canonical site
-- `https://www.arkadiuszkamrowski.com` — redirect-only alias
-
-For an Azure Container Apps origin, use the exact records produced by the final ACA custom-domain workflow. The expected pattern is:
-
-1. ownership/verification TXT records such as `asuid` remain **DNS only**;
-2. validate the ACA custom domain and managed certificate before enabling the proxy if the platform requires direct DNS visibility during validation;
-3. the canonical apex web record becomes **Proxied (orange cloud)** after validation;
-4. create a proxied `www` record so Cloudflare can receive the HTTPS request and apply the edge redirect; `www` must not host an independently canonicalized copy of the site;
-5. email/provider verification records (MX, SPF, DKIM, DMARC) remain **DNS only** unless their provider explicitly documents otherwise.
-
-Never invent an origin IP or hostname in this repository. Record the final values in deployment metadata, not source code.
-
-## 3. Canonical redirects
-
-Configured Cloudflare Redirect Rule:
-
-- name: `Redirect from WWW to apex`
-- match: `https://www.*`
-- target: `https://${1}`
-- status: **308 Permanent Redirect**
-- preserve query string: **enabled**
-
-Expected behavior:
+Cloudflare is both the public edge and the application origin.
 
 ```text
-https://www.arkadiuszkamrowski.com/path?a=1
-  → 308
-https://arkadiuszkamrowski.com/path?a=1
+GitHub
+  │ build / deploy
+  ▼
+Cloudflare Workers
+  ├── Static Assets → pre-rendered Astro HTML/CSS/JS
+  ├── Worker /api/contact
+  │      ├── Turnstile Siteverify
+  │      └── Resend HTTPS API → mailbox
+  ├── DNS + certificates
+  ├── WAF / DDoS / bot controls
+  ├── redirects / URL normalization
+  └── observability / notifications
 ```
 
-NGINX keeps the same redirect as a defensive fallback, but Cloudflare is the production edge owner of the public `www` redirect.
+There is **no production VM, NGINX, container registry, Container App, Kubernetes cluster or public application server** in the v1 target. Docker/Kubernetes material in the repository is portability/reference-only.
 
-HTTP → HTTPS is a launch requirement. Keep the canonical redirect chain to one hop wherever possible.
+This removes origin-bypass as an architectural class of risk: the Worker Custom Domain is the origin.
 
-## 4. TLS and protocol posture
+## 2. Deployments
 
-Configured/approved protocol posture:
+Two Wrangler contracts are committed:
 
-- HTTP/2: enabled
-- HTTP/2 to Origin: enabled
-- HTTP/3 (QUIC): enabled
-- 0-RTT Connection Resumption: disabled
-- Minimum TLS version target: **TLS 1.2 or newer**
-- Universal SSL notifications: enabled
+- `wrangler.jsonc` — preview deployment with `workers.dev` and Preview URLs enabled.
+- `wrangler.production.jsonc` — production deployment, `workers.dev` disabled, apex attached as a Workers **Custom Domain**.
 
-Production launch target:
+Pinned CLI for repository procedures: `wrangler 4.129.0`.
 
-- Cloudflare SSL/TLS encryption mode: **Full (strict)** once the origin certificate is bound;
-- valid origin certificate for the canonical origin;
-- no mixed content;
-- HSTS only after every hostname covered by the policy is intentionally HTTPS-capable.
+Preview:
 
-Do not weaken origin TLS to make a deployment pass.
+```bash
+npm run build
+make worker-preview
+```
 
-## 5. Security controls
+Production:
 
-Dashboard posture established during hardening:
+```bash
+set -a
+source .env.production
+set +a
+make worker-deploy-production
+```
 
-- Cloudflare managed security ruleset: active
-- Browser Integrity Check: enabled
-- Security Level: Cloudflare automated / always protected posture
-- Challenge Passage: 30 minutes
-- custom AI crawler blocking rule: active
-- HTTP DDoS protection alerting: active
-- Managed Transform `Remove "X-Powered-By" headers`: enabled
+The production build requires `PUBLIC_TURNSTILE_SITE_KEY`. Runtime secrets are stored in Cloudflare, never in Git.
 
-The AI policy is intentionally selective: block crawler traffic used primarily for model training/collection while keeping ordinary search and user-initiated assistant/search traffic available unless a later policy decision changes this. Do not block Googlebot/BingBot or user-initiated AI assistant/search agents merely because they are AI-related.
+Required Worker secrets:
 
-## 6. Response-header ownership
+- `TURNSTILE_SECRET_KEY`
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL`
 
-Cloudflare Response Header Transform Rule `Security Headers - Baseline` is active for all incoming requests with these values:
+## 3. DNS model
+
+Before the first Worker production deployment, an empty web DNS zone is valid.
+
+The apex uses a Workers **Custom Domain**. Cloudflare creates the DNS record and certificate for `arkadiuszkamrowski.com` when the Custom Domain is attached; do not invent an A/CNAME origin record.
+
+Canonical host policy:
+
+- `https://arkadiuszkamrowski.com` — application Custom Domain.
+- `https://www.arkadiuszkamrowski.com` — redirect-only alias.
+
+The existing Cloudflare rule `Redirect from WWW to apex` remains authoritative and must return **308**, preserving path and query. Because `www` is redirect-only and has no origin, create the Cloudflare-documented originless placeholder after the Worker is ready:
+
+```text
+A | www | 192.0.2.0 | Proxied
+```
+
+`192.0.2.0` is a reserved documentation address; proxied requests are intercepted by Cloudflare and must never be sent there.
+
+Email verification/delivery DNS records (MX/TXT/DKIM/DMARC/SPF) remain DNS-only unless the provider explicitly documents otherwise.
+
+## 4. Static asset routing
+
+Wrangler deploys `./dist` as Workers Static Assets.
+
+Policy:
+
+- assets are attempted directly without Worker invocation;
+- `/api/*` invokes Worker code first;
+- trailing-slash requests invoke Worker code first so the repository preserves the existing one-hop **308** no-trailing-slash contract;
+- unknown paths return a real custom 404 (`not_found_handling = 404-page`);
+- `html_handling = drop-trailing-slash` is defense in depth for alternate HTML file forms.
+
+Static asset requests therefore remain on the optimized asset path instead of paying Worker execution cost for every page view.
+
+## 5. Security headers and cache policy
+
+`public/_headers` is the application-level source for headers on Static Assets. Dynamic Worker responses emit the same security baseline in code.
+
+Baseline:
 
 ```text
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
 ```
 
-NGINX intentionally emits the same baseline values as origin-side defense in depth. Cloudflare `Set static` remains authoritative at the public edge.
+CSP allows only the existing same-origin resources plus Cloudflare Turnstile (`https://challenges.cloudflare.com`) in the required script/frame/connect directives. `unsafe-inline` is not permitted.
 
-NGINX additionally owns:
+Static cache policy:
 
-- `Content-Security-Policy`
-- `Strict-Transport-Security`
+- `/_astro/*`: `public, max-age=31536000, immutable`
+- `/assets/*` and `/scripts/*`: one day + stale-while-revalidate
+- HTML: Workers Static Assets default revalidation semantics
+- `/api/contact`: `no-store`
 
-The CSP must allow Cloudflare Turnstile:
+The dashboard Response Header Transform `Security Headers - Baseline` may remain as edge defense in depth. Values must stay semantically identical to the repository contract so duplicate/conflicting policy is not created.
 
-```text
-script-src https://challenges.cloudflare.com
-frame-src https://challenges.cloudflare.com
-```
+## 6. Contact API
 
-Do not enable Rocket Loader, Cloudflare Fonts, JavaScript Detection or another script-injection feature without re-running CSP, accessibility, privacy and performance checks.
+Production endpoint: same-origin `POST /api/contact` handled by `worker/index.mjs`.
 
-## 7. URL normalization
+Controls:
 
-Configured Cloudflare URL normalization:
+- explicit production Origin allow-list;
+- 32 KiB body ceiling;
+- strict field lengths and topic allow-list;
+- honeypot and minimum completion time;
+- Cloudflare Workers Rate Limiting binding (10 attempts/minute per edge client identity, permissive safety layer);
+- mandatory Turnstile token and server-side Siteverify;
+- expected Turnstile hostname `arkadiuszkamrowski.com`;
+- Resend idempotency key derived from submission identity;
+- no message body, visitor email, Turnstile token or secret in application logs;
+- no contact database, CRM or newsletter enrollment.
 
-- normalization type: **Cloudflare**
-- Normalize incoming URLs: **enabled**
-- Normalize URLs to origin: **disabled**
+Turnstile remains configured as widget `arkadiuszkamrowski-contact`, Managed mode, pre-clearance disabled. Restrict its production hostname to the apex domain.
 
-Application routing must therefore remain correct when Cloudflare normalizes the request used by edge products. The origin must not depend on receiving a second transformed path.
+## 7. Existing dashboard controls
 
-## 8. Cache and performance baseline
+Keep the security posture already established:
 
-Configured baseline:
+- Universal SSL / managed edge certificates
+- HTTP/2 and HTTP/3 enabled
+- minimum TLS target 1.2+
+- 0-RTT disabled
+- managed security ruleset active
+- Browser Integrity Check enabled
+- HTTP DDoS protection
+- Bot Fight Mode / bot protections as configured
+- AI crawler policy as configured
+- URL normalization: Cloudflare normalization enabled for incoming requests
+- managed transform removing `X-Powered-By`
+- Rocket Loader / Cloudflare Fonts / script-injection optimizations disabled unless re-audited
 
-- Caching Level: `Standard`
-- Browser Cache TTL: `4 hours`
-- no custom Cache Rules yet
-- Speed Brain: disabled
-- Cloudflare Fonts: disabled
-- Early Hints: disabled
-- Rocket Loader: disabled
-- Always Online: disabled
-- Crawler Hints: disabled
+`Full (strict)` is no longer an application-origin launch dependency because the Worker Custom Domain is itself the origin. If the zone later proxies another external origin, that hostname must use an appropriate strict origin-TLS posture independently.
 
-NGINX remains the source of application cache semantics:
+## 8. Notifications
 
-- `/_astro/*`: one year, immutable
-- human-named static assets: one day + revalidation
-- HTML: no browser freshness cache
-- contact API: `no-store`
-
-Do not create `Cache Everything` rules for the site or `/api/contact` without a measured need and an explicit bypass for dynamic/API responses.
-
-## 9. Turnstile contract
-
-Configured widget:
-
-- name: `arkadiuszkamrowski-contact`
-- mode: **Managed**
-- pre-clearance: disabled
-
-Before public launch:
-
-1. restrict the widget hostname list to `arkadiuszkamrowski.com` (and only explicitly approved staging hosts, if any);
-2. put the public sitekey in the frontend build as `PUBLIC_TURNSTILE_SITE_KEY`;
-3. put the secret key only in the platform secret store as `TURNSTILE_SECRET_KEY`;
-4. set `TURNSTILE_REQUIRED=1` and `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`;
-5. server-side Siteverify validation is mandatory before sending email;
-6. never log the Turnstile token or secret.
-
-Local/CI dry-run does not require a real Turnstile secret. Production predeploy does.
-
-## 10. Notifications baseline
-
-Active notification policies:
+Keep the active policies:
 
 - `Abuse | Cloudflare Abuse Report Alert | arkadiuszkamrowski.com`
-- `Cloudflare Status | Incident Alert` — Major + Critical impact
+- `Cloudflare Status | Incident Alert` — Major + Critical
 - `DDoS Protection | HTTP DDoS Attack Alert | arkadiuszkamrowski.com`
 - `SSL/TLS | Universal SSL Alert | arkadiuszkamrowski.com`
-- `Security insights | New Insight detected | arkadiuszkamrowski.com` — selected high-signal insight classes
+- `Security insights | New Insight detected | arkadiuszkamrowski.com`
 
-Add `Traffic Monitoring | Passive Origin Monitoring` and Health Check notifications only after the production origin/health check actually exists.
+Origin-specific monitoring such as Passive Origin Monitoring is no longer required for the Cloudflare-native target. Use Workers observability plus public HTTPS uptime monitoring instead.
 
-## 11. Launch verification
+## 9. Production launch gate
 
-The Cloudflare portion of launch is PASS only when all are true:
+PASS requires all of the following:
 
-- [ ] apex DNS record points to the real origin and is Proxied
-- [ ] `www` is Proxied and returns one-hop 308 to apex with path/query preserved
-- [ ] `http://` redirects to `https://`
-- [ ] SSL/TLS is Full (strict)
-- [ ] Universal SSL is valid for every public hostname
-- [ ] managed rules and Browser Integrity Check remain active
-- [ ] baseline response headers are present exactly once/effectively resolve to the intended values
-- [ ] CSP permits Turnstile but no unnecessary third-party origins
-- [ ] Turnstile validates server-side and rejects missing/invalid tokens
-- [ ] `/api/contact` is never cached
-- [ ] public origin cannot be trivially bypassed around Cloudflare
-- [ ] Cloudflare alerts remain enabled
-- [ ] DNS/email records have been reviewed for SPF/DKIM/DMARC correctness
+- [ ] preview deploy passes on the Workers preview hostname
+- [ ] Worker secrets exist in Cloudflare
+- [ ] production sitekey is present at Astro build time
+- [ ] Turnstile widget hostname is restricted to approved production host(s)
+- [ ] production Wrangler dry-run passes
+- [ ] apex Workers Custom Domain is attached and certificate is valid
+- [ ] apex DNS is Cloudflare-managed by the Custom Domain
+- [ ] proxied `www → 192.0.2.0` placeholder exists for the redirect-only hostname
+- [ ] `www` returns one-hop 308 to apex preserving path/query
+- [ ] HTTP redirects to HTTPS
+- [ ] all core routes and real 404 pass public smoke
+- [ ] static and Worker security headers match the contract
+- [ ] `/api/contact` is `no-store`, validates Turnstile server-side and delivers exactly one test email
+- [ ] SPF/DKIM/DMARC are reviewed for the Resend sender domain
+- [ ] Workers logs contain operational metadata only
+- [ ] existing Cloudflare alert policies remain enabled
 
-Any dashboard change that affects these contracts must be reflected in this document and in automated tests where technically enforceable.
+Any dashboard change that affects this contract must be reflected here and, where enforceable, in automated tests.
