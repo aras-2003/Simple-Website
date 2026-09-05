@@ -1,18 +1,18 @@
 ---
 locale: en
 slug: transformation-operating-model
-category: Transformation
-title: Transformation needs an operating model, not only a roadmap
-dek: A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, and in what decision rhythm?
+category: "Transformation"
+title: "Transformation needs an operating model, not only a roadmap"
+dek: "A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, and in what decision rhythm?"
 readTime: 5
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
-  - label: BCG · Corporate Transformation · 2024
+  - label: "BCG · Corporate Transformation · 2024"
     href: https://www.bcg.com/publications/2024/five-truths-and-a-lie-about-corporate-transformation
-  - label: McKinsey · Transformations for long-term impact
+  - label: "McKinsey · Transformations for long-term impact"
     href: https://www.mckinsey.com/capabilities/implementation/our-insights/how-to-implement-transformations-for-long-term-impact
-  - label: MIT CISR · Operating model & EA
+  - label: "MIT CISR · Operating model & EA"
     href: https://cisr.mit.edu/publication/enterprise-architecture-as-strategy
 ---
 
