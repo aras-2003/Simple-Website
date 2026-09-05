@@ -1,6 +1,5 @@
 ---
 locale: pl
-slug: transformation-operating-model
 category: "Transformation"
 title: "Transformacja potrzebuje operating modelu, nie tylko roadmapy"
 dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto i w jakim rytmie potrafi tę kolejność zmieniać."

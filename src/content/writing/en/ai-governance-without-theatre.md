@@ -1,6 +1,5 @@
 ---
 locale: en
-slug: ai-governance-without-theatre
 category: "AI & Governance"
 title: AI governance without control theatre
 dek: Mature governance does not try to stop experimentation. It designs boundaries, accountability and evidence in proportion to risk.

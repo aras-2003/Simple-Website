@@ -1,6 +1,5 @@
 ---
 locale: en
-slug: architecture-as-decision-system
 category: Enterprise Architecture
 title: Architecture as a decision system, not a document system
 dek: Architecture rarely suffers from a lack of models. More often it lacks the mechanism that turns a model into a choice, accountability and consequence.

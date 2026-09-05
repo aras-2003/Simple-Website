@@ -1,6 +1,5 @@
 ---
 locale: pl
-slug: architecture-as-decision-system
 category: Enterprise Architecture
 title: Architektura jako system decyzji, nie system dokumentów
 dek: Problemem architektury rzadko jest brak modeli. Częściej brakuje mechanizmu, który zamienia model w wybór, odpowiedzialność i konsekwencję.

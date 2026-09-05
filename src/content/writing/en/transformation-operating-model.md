@@ -1,6 +1,5 @@
 ---
 locale: en
-slug: transformation-operating-model
 category: "Transformation"
 title: "Transformation needs an operating model, not only a roadmap"
 dek: "A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, and in what decision rhythm?"

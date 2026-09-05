@@ -1,6 +1,5 @@
 ---
 locale: pl
-slug: ai-governance-without-theatre
 category: "AI & Governance"
 title: AI governance bez teatru kontroli
 dek: Dojrzałe governance nie próbuje zatrzymać eksperymentu. Projektuje granice, odpowiedzialność i dowody proporcjonalne do ryzyka.

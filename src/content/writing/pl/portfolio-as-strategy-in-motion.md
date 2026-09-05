@@ -1,6 +1,5 @@
 ---
 locale: pl
-slug: portfolio-as-strategy-in-motion
 category: "Portfolio & PMO"
 title: Portfolio jest strategią w ruchu
 dek: Deklarowana strategia mówi, co jest ważne. Portfolio pokazuje, czy organizacja naprawdę w to wierzy.

@@ -1,6 +1,5 @@
 ---
 locale: en
-slug: portfolio-as-strategy-in-motion
 category: "Portfolio & PMO"
 title: Portfolio is strategy in motion
 dek: Declared strategy says what matters. The portfolio shows whether the organization really believes it.

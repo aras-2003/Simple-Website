@@ -2,17 +2,19 @@
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { editorial } from '../content/editorial';
+import { writingSlug } from '../content/writing';
 import { route, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; note: CollectionEntry<'writing'>; }
 const { locale, note } = Astro.props;
 const ia = editorial[locale];
 const data = note.data;
+const slug = writingSlug(note);
 const td = (value: string) => value.replaceAll('—', '–');
 const title = `${td(data.title)} – Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
-const plPath = `${route('pl', 'writing')}/${data.slug}`;
-const enPath = `${route('en', 'writing')}/${data.slug}`;
+const plPath = `${route('pl', 'writing')}/${slug}`;
+const enPath = `${route('en', 'writing')}/${slug}`;
 const publishedAt = data.publishedAt.toISOString();
 const modifiedAt = (data.modifiedAt ?? data.publishedAt).toISOString();
 const { Content } = await render(note);
