@@ -1,62 +1,75 @@
 # Production launch runbook
 
-This is the operational checklist for promoting the site from release candidate to the public Internet. It separates what the repository can guarantee from what still requires access to Cloudflare, the hosting platform, Resend and real assistive technology.
+This is the operational checklist for promoting `arkadiuszkamrowski.com` to the public Internet on **Cloudflare Workers + Static Assets**.
 
-The Cloudflare dashboard contract is documented in `docs/CLOUDFLARE.md`; this runbook treats that edge configuration as part of the production system, not as an optional CDN layer.
+The detailed Cloudflare configuration contract is in `docs/CLOUDFLARE.md`.
 
 ## 1. Locked release decisions
 
-Unless explicitly changed and re-reviewed, production uses:
+Unless explicitly changed and re-reviewed:
 
 - canonical origin: `https://arkadiuszkamrowski.com`
 - canonical host: `arkadiuszkamrowski.com`
-- `www`: redirect-only alias to apex, never a second copy
-- public edge: **Cloudflare**
-- frontend: pre-rendered Astro served by hardened NGINX
-- contact: same-origin `POST /api/contact` → isolated Node sidecar
-- contact abuse protection: **Cloudflare Turnstile Managed + server-side Siteverify**
+- `www`: redirect-only alias to apex
+- runtime: Cloudflare Workers + Static Assets
+- frontend: pre-rendered Astro
+- dynamic endpoint: same-origin `POST /api/contact`
+- anti-abuse: Cloudflare security controls + Workers Rate Limiting + Turnstile Managed
 - email delivery: Resend HTTPS API
 - analytics/advertising: disabled at launch
-- public database / CRM / newsletter capture: none
-- production secrets: hosting-platform secret store only
-- release images: immutable digest or commit-addressable hexadecimal tag; never `latest`/`production`
+- database / CRM / newsletter capture: none
+- production secrets: Cloudflare Worker secrets only
 
-Target request path:
+Target path:
 
 ```text
-Internet → Cloudflare → managed origin (ACA preferred if Azure)
-                     → NGINX :8080 → contact API :8787
+Internet
+  → Cloudflare Workers Custom Domain
+      ├── Static Assets / Astro
+      └── /api/contact → Turnstile Siteverify → Resend
 ```
 
-The origin must not become a trivial alternative path around Cloudflare. The contact sidecar must never have independent public ingress.
+No VM, NGINX, container registry, Container App, public origin server or Kubernetes cluster is required for production v1.
 
-## 2. Inputs required from owner/platform
+## 2. Inputs still required
 
-Only these values/decisions cannot be manufactured by the repository:
+1. Cloudflare Workers deployment permission.
+2. Production Turnstile sitekey + secret for `arkadiuszkamrowski-contact`.
+3. Turnstile hostname restriction for `arkadiuszkamrowski.com`.
+4. `RESEND_API_KEY`.
+5. Final `CONTACT_TO_EMAIL` mailbox.
+6. Verified sender/domain for `CONTACT_FROM_EMAIL`.
+7. Final privacy/legal review.
+8. VoiceOver and NVDA manual QA.
 
-1. Hosting target/account/subscription and deployment permission.
-2. Cloudflare DNS control for `arkadiuszkamrowski.com`.
-3. Final production origin values produced by the selected hosting platform.
-4. Cloudflare Turnstile `site key` and `secret key` for widget `arkadiuszkamrowski-contact`.
-5. Confirmation that the Turnstile hostname list includes `arkadiuszkamrowski.com` and no unnecessary production hosts.
-6. `RESEND_API_KEY`.
-7. Final `CONTACT_TO_EMAIL` mailbox.
-8. Verified sender/domain for `CONTACT_FROM_EMAIL`.
-9. Final privacy/legal approval for Cloudflare/Turnstile/Resend/provider processing.
-10. Access to macOS/iOS VoiceOver and Windows NVDA for the manual audit.
-
-Never paste production secret keys into source, documentation, PR comments or public issue threads.
+Never paste production secrets into source, PRs, issues or screenshots.
 
 ## 3. Production configuration
 
-Use `.env.production.example` as the contract; never commit a populated copy.
+Use `.env.production.example` only as a contract/template.
 
-For a local preflight only:
+Required public build value:
+
+```text
+PUBLIC_TURNSTILE_SITE_KEY
+```
+
+Required Worker secrets:
+
+```text
+TURNSTILE_SECRET_KEY
+RESEND_API_KEY
+CONTACT_TO_EMAIL
+```
+
+Non-secret Worker runtime configuration is committed in `wrangler.production.jsonc`.
+
+Local preflight:
 
 ```bash
 umask 077
 cp .env.production.example .env.production
-# populate immutable image refs + private values locally
+# populate private values locally
 set -a
 source .env.production
 set +a
@@ -64,319 +77,289 @@ make predeploy
 rm .env.production
 ```
 
-`make predeploy` fails when, among other things:
+`make predeploy` rejects wrong canonical origin, weak/missing Turnstile configuration, incorrect Origin allow-list, missing delivery secrets and sender-domain mismatch. It never prints private values.
 
-- canonical origin is not HTTPS or host-aligned,
-- image refs are mutable/missing,
-- contact dry-run remains enabled,
-- Origin enforcement/allow-list is wrong,
-- Turnstile is not required in production,
-- Turnstile sitekey/secret is absent or malformed,
-- Turnstile expected hostname differs from `arkadiuszkamrowski.com`,
-- email delivery credentials/addresses are incomplete,
-- sender domain is not aligned,
-- runtime/rate-limit values are invalid.
+## 4. Preview deployment
 
-The preflight never prints Resend or Turnstile secrets.
-
-After PASS:
+Before touching the apex Custom Domain:
 
 ```bash
-make docker-build-production
+SITE_BASE_URL=https://arkadiuszkamrowski.com \
+SITE_PRODUCTION_HOST=arkadiuszkamrowski.com \
+REQUIRE_PRODUCTION_SITE=1 \
+PUBLIC_TURNSTILE_SITE_KEY=<approved-preview-or-production-sitekey> \
+make worker-preview
 ```
 
-## 4. Cloudflare edge pre-launch state
+`wrangler.jsonc` keeps `workers.dev` and Preview URLs enabled.
 
-The dashboard has already been hardened, but the DNS zone intentionally remains empty while no origin exists.
+Preview acceptance:
 
-Configured baseline includes:
+- build succeeds;
+- core PL/EN routes render;
+- custom 404 works;
+- security headers are present;
+- CSP does not contain `unsafe-inline`;
+- `/api/contact` rejects bad Origin;
+- Worker logs contain no sensitive payloads;
+- if real Turnstile is tested on preview, that preview hostname must be explicitly approved in the widget configuration. Do not weaken the production hostname restriction merely for convenience.
 
-- 308 `www` → apex redirect with query preservation,
-- Browser Integrity Check,
-- Cloudflare managed ruleset,
-- HTTP DDoS protection,
-- selected AI crawler blocking,
-- URL normalization at the edge,
-- response-header baseline transform,
-- removal of `X-Powered-By`,
-- HTTP/2, HTTP/2 to origin and HTTP/3,
-- 0-RTT disabled,
-- conservative cache/performance baseline,
-- Turnstile widget in Managed mode,
-- security/DDoS/TLS/status notifications.
+## 5. Provision Worker secrets
 
-Do **not** create placeholder DNS records merely to make dashboard recommendations disappear.
+From a trusted local environment or equivalent Cloudflare secret-management flow:
 
-## 5. Hosting/runtime requirements
+```bash
+npx --yes wrangler@4.129.0 secret put TURNSTILE_SECRET_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put RESEND_API_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put CONTACT_TO_EMAIL --config wrangler.production.jsonc
+```
 
-The production origin platform must provide:
+Confirm secret names exist without printing values.
 
-- valid automatically renewed origin TLS,
-- secret storage/injection,
-- one application ingress to NGINX,
-- private/loopback communication to the contact sidecar,
-- a practical way to prevent trivial direct-origin bypass around Cloudflare,
-- health/restart handling,
-- immutable revision/image deployment tied to Git commit,
-- logs without request/contact/token bodies,
-- deterministic rollback,
-- basic runtime monitoring.
+## 6. Email-domain setup
 
-If Azure is selected, default to Azure Container Apps. Existing AKS IaC is reference-only; see `infra/azure/README.md`.
-
-## 6. DNS and TLS cutover
-
-The zone currently has **0 records by design**.
-
-When the final origin exists:
-
-1. Capture/export the current Cloudflare zone state before changes.
-2. Add hosting-provider ownership/verification TXT records exactly as generated; keep them DNS-only.
-3. Complete origin custom-domain/certificate validation required by the hosting provider.
-4. Add the final apex web record using the real origin value.
-5. After origin validation, set the apex web record to **Proxied / orange cloud**.
-6. Add a proxied `www` record so Cloudflare can terminate HTTPS and execute the existing redirect rule.
-7. Set Cloudflare SSL/TLS encryption mode to **Full (strict)** after the origin certificate is valid.
-8. Confirm Minimum TLS target remains 1.2+.
-9. Confirm HTTP→HTTPS and `www`→apex are one-hop and loop-free.
-10. Confirm origin is not trivially reachable in a way that bypasses Cloudflare controls.
-
-Email/service records are different: MX, SPF, DKIM, DMARC and verification TXT records normally remain DNS-only.
-
-Target behavior:
-
-| Request | Expected result |
-|---|---|
-| `http://arkadiuszkamrowski.com/*` | permanent HTTPS redirect |
-| `https://arkadiuszkamrowski.com/` | `200` |
-| `https://arkadiuszkamrowski.com/about` | `200` |
-| `https://arkadiuszkamrowski.com/en/about` | `200` |
-| `https://arkadiuszkamrowski.com/path/` | `308` to no-trailing-slash path |
-| `https://www.arkadiuszkamrowski.com/*` | **308** to apex preserving path/query |
-| unknown path | real `404`, not SPA `200` |
-
-TLS acceptance:
-
-- valid Cloudflare certificate for every public hostname,
-- valid origin certificate compatible with Full (strict),
-- no mixed content,
-- automatic renewal,
-- HTTP redirects before content is served,
-- HSTS only after every covered hostname is intentionally HTTPS-capable.
-
-## 7. Turnstile production activation
-
-Before enabling real contact delivery:
-
-1. Confirm Cloudflare widget `arkadiuszkamrowski-contact` uses **Managed** mode.
-2. Confirm hostname restriction includes `arkadiuszkamrowski.com`.
-3. Put `PUBLIC_TURNSTILE_SITE_KEY` in the frontend build configuration.
-4. Put `TURNSTILE_SECRET_KEY` only in the hosting secret store.
-5. Set `TURNSTILE_REQUIRED=1`.
-6. Set `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`.
-7. Build/promote a new immutable revision.
-8. Verify the widget loads under the production CSP.
-9. Verify a missing/invalid token cannot send email.
-10. Verify one valid token results in exactly one delivered message.
-
-Pre-clearance remains disabled; do not enable it casually because that changes challenge/cookie behavior beyond the contact action.
-
-## 8. Email-domain setup
-
-Default sender identity:
+Default sender:
 
 ```text
 Website <contact@arkadiuszkamrowski.com>
 ```
 
-Use the exact verification records generated by the email provider.
+Publish only provider-generated values:
 
-- DKIM: publish exactly.
-- SPF: inspect existing SPF first; never create two independent SPF policies.
-- DMARC: inspect current policy before changing enforcement.
-- MX: do not alter inbound-mail routing merely to enable transactional sending unless explicitly required and understood.
+- DKIM exactly as generated;
+- SPF merged with any existing SPF policy, never a second independent SPF TXT record;
+- DMARC reviewed before enforcement changes;
+- MX changed only if inbound-mail impact is understood and explicitly required.
 
 Acceptance:
 
-- provider reports sender/domain verified,
-- SPF/DKIM checks pass,
-- DMARC has no known configuration error,
-- a real form submission reaches `CONTACT_TO_EMAIL`,
-- Reply targets the submitted visitor because API uses `reply_to`,
-- no visitor message/email body is logged.
+- Resend reports sender/domain verified;
+- SPF/DKIM checks pass;
+- DMARC has no known syntax/configuration error.
 
-## 9. Security-header / CSP acceptance
+## 7. Production Worker deployment
 
-At the public edge, effective responses must expose the intended baseline:
+With production build/runtime values loaded:
+
+```bash
+make worker-deploy-production
+```
+
+`wrangler.production.jsonc`:
+
+- disables `workers.dev`;
+- disables public Preview URLs for the production deployment;
+- attaches `arkadiuszkamrowski.com` as a Workers Custom Domain;
+- deploys `dist` as Static Assets;
+- sends `/api/*` and trailing-slash canonicalization through Worker code;
+- uses real 404 handling;
+- binds the contact rate limiter.
+
+Cloudflare creates the apex Custom Domain DNS record and certificate automatically.
+
+## 8. `www` redirect-only DNS
+
+Keep the existing Cloudflare Redirect Rule:
+
+- `www` → apex
+- **308 Permanent Redirect**
+- preserve path/query
+
+Because `www` has no origin, add the Cloudflare-documented originless placeholder:
+
+```text
+A | www | 192.0.2.0 | Proxied
+```
+
+Do not attach `www` as a second application Custom Domain.
+
+Verify:
+
+```text
+https://www.arkadiuszkamrowski.com/oaf?x=1
+→ 308
+https://arkadiuszkamrowski.com/oaf?x=1
+```
+
+## 9. Public route/TLS acceptance
+
+Expected behavior:
+
+| Request | Expected |
+|---|---|
+| `http://arkadiuszkamrowski.com/*` | HTTPS redirect |
+| `https://arkadiuszkamrowski.com/` | `200` |
+| `https://arkadiuszkamrowski.com/about` | `200` |
+| `https://arkadiuszkamrowski.com/en/about` | `200` |
+| `https://arkadiuszkamrowski.com/path/` | `308` to no-trailing-slash path |
+| `https://www.arkadiuszkamrowski.com/*` | `308` to apex preserving path/query |
+| unknown path | real `404` |
+
+TLS acceptance:
+
+- valid Cloudflare-managed certificate for apex and `www`;
+- minimum TLS target remains 1.2+;
+- HTTP/2 and HTTP/3 remain enabled;
+- 0-RTT remains disabled;
+- no mixed content;
+- HSTS only while all covered public hosts are intentionally HTTPS-capable.
+
+There is no separate origin-certificate or Full-(strict)-to-origin dependency in the Worker-native architecture.
+
+## 10. Security-header acceptance
+
+Static Assets use `public/_headers`; Worker responses emit the same application security baseline.
+
+Verify effective public values:
 
 ```text
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 X-Frame-Options: DENY
+Strict-Transport-Security: max-age=31536000; includeSubDomains
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
 ```
 
-Origin CSP/HSTS remain in NGINX. CSP must allow Turnstile without opening `unsafe-inline`:
+CSP must:
 
-```text
-script-src ... https://challenges.cloudflare.com
-frame-src https://challenges.cloudflare.com
-```
+- allow same-origin application resources;
+- allow `https://challenges.cloudflare.com` only where required for Turnstile;
+- block inline script attributes;
+- contain no `unsafe-inline`.
 
-Do not enable Rocket Loader, Cloudflare Fonts, JavaScript Detection or other browser-script injection without re-running CSP, accessibility, privacy and performance validation.
+Do not enable Rocket Loader, Cloudflare Fonts or other browser-script injection without re-running CSP/accessibility/performance/privacy gates.
 
-## 10. Manual accessibility sign-off
+## 11. Turnstile production activation
 
-Automated axe/Playwright is necessary but not sufficient. Record PASS/FIX on final production build.
+1. Widget remains `arkadiuszkamrowski-contact`, Managed mode.
+2. Hostname list contains the apex and no unnecessary production hosts.
+3. `PUBLIC_TURNSTILE_SITE_KEY` is present in the built form.
+4. `TURNSTILE_SECRET_KEY` exists only as Worker secret.
+5. Missing token cannot send email.
+6. Invalid token cannot send email.
+7. Wrong-hostname Siteverify response is rejected.
+8. One valid token produces exactly one email.
+9. Token/secret never appear in logs.
 
-### Keyboard only
+Pre-clearance remains disabled unless separately reviewed.
 
-Test Home, Perspective article, OAF, Practice, About, Contact and Privacy in PL plus representative EN routes.
+## 12. Production contact smoke
 
-- skip link works,
-- all controls reachable,
-- focus visible,
-- no trap,
-- navigation order coherent,
-- contact form including Turnstile remains usable without a pointer.
+From the real public page:
 
-### VoiceOver + Safari
+1. Submit an invalid form and verify useful feedback.
+2. Complete one valid Turnstile-backed submission using an address you control.
+3. Confirm on-page success.
+4. Confirm exactly one email arrives.
+5. Reply and confirm Reply-To targets the submitted visitor address.
+6. Confirm logs show only operational metadata.
+7. Confirm repeated rapid attempts eventually hit abuse controls without breaking normal later submissions.
 
-- title/language/landmarks/headings announced correctly,
-- decorative visuals do not pollute order,
-- form labels/hints/errors/status are understandable,
-- Turnstile does not create an inaccessible dead end,
-- successful submission is announced.
+Do not load-test Resend or Turnstile.
 
-### NVDA + Chrome/Firefox
+## 13. Automated public smoke
 
-Verify headings/landmarks, form names/descriptions/errors, live status, PL/EN language changes and Turnstile flow.
-
-### Zoom/reflow/contrast
-
-- 200% zoom usable,
-- 400% / ~320 CSS px without page-level horizontal scrolling,
-- increased text size usable,
-- reduced-motion respected,
-- forced colors/focus remain perceivable.
-
-Only after the manual pass should a formal WCAG conformance claim be made.
-
-## 11. Privacy/compliance sign-off
-
-Before public delivery confirm:
-
-- privacy copy accurately names Cloudflare/Turnstile, hosting and Resend roles,
-- actual data collected matches the notice,
-- provider transfer/DPA terms have been reviewed as appropriate,
-- no analytics/advertising is silently enabled,
-- logs exclude contact payloads, visitor emails, Turnstile token and secret,
-- no automatic CRM/newsletter enrollment occurs.
-
-Final legal basis/wording requires owner/legal approval; repository checks are not legal advice.
-
-## 12. SEO/social production check
-
-After public DNS cutover verify:
-
-- title/description on Home plus PL/EN inner pages,
-- canonical URLs use final HTTPS apex,
-- hreflang pairs + `x-default`,
-- `sitemap-index.xml`,
-- `robots.txt` canonical sitemap,
-- 1200×630 OG image,
-- LinkedIn/social preview,
-- Perspective Article structured data,
-- no staging/localhost/provider-origin URLs in rendered HTML.
-
-## 13. Production contact smoke
-
-From the public UI:
-
-1. Invalid form produces useful feedback.
-2. Turnstile is visible/non-disruptive as appropriate for Managed mode.
-3. Valid submission succeeds.
-4. Exactly one email arrives.
-5. Reply targets visitor address.
-6. Logs contain operational metadata only.
-7. Missing/invalid Turnstile cannot deliver.
-8. Repeated rapid submissions eventually reach limiter/WAF behavior without breaking normal later submissions.
-
-Do not load-test the live mail provider or Turnstile unnecessarily.
-
-## 14. Public automated smoke
-
-After DNS/TLS/revision are live:
+After the Custom Domain and `www` DNS are live:
 
 ```bash
 SITE_BASE_URL=https://arkadiuszkamrowski.com make smoke-production
 ```
 
-The smoke test checks routes, canonicalization, `robots.txt`/sitemap, effective security/CSP headers, exact **308** `www` redirect, bad-origin rejection and same-origin CORS preflight. It intentionally does not send a real contact message.
+It checks core routes, canonical URLs, real 404, `robots.txt`, sitemap, security headers, trailing-slash canonicalization, `www` 308, bad-Origin rejection and same-origin CORS preflight. It intentionally does not send a real email.
 
-Then manually walk:
+## 14. Accessibility sign-off
 
-`Home → Perspective → article → OAF → Practice → About → Contact`
+Automated axe/Playwright is necessary but not sufficient.
 
-in PL and equivalent EN paths.
+Manual PASS required for:
 
-## 15. Monitoring baseline
+- keyboard-only navigation and Contact flow;
+- VoiceOver + Safari;
+- NVDA + Chrome/Firefox;
+- 200% and 400% zoom/reflow;
+- reduced motion;
+- visible focus / forced colors;
+- Turnstile not creating an accessibility dead end;
+- live success/error messaging.
 
-Already configured in Cloudflare:
+## 15. Privacy/compliance sign-off
 
-- Abuse Report Alert,
-- Major/Critical Cloudflare Status Incident Alert,
-- HTTP DDoS Attack Alert,
-- Universal SSL Alert,
-- selected high-signal Security Insights.
+Confirm actual behavior matches the privacy notice:
 
-After origin exists add, where useful:
+- Cloudflare/Turnstile and Resend roles are accurately described;
+- only declared form + technical data is processed;
+- no behavioral analytics/advertising is silently enabled;
+- no contact payloads, visitor email addresses or Turnstile tokens are stored in Worker logs;
+- no automatic CRM/newsletter enrollment;
+- provider DPA/transfer terms reviewed as appropriate.
 
-- HTTPS uptime check on `/`,
-- origin/container restart/crash alerting,
-- `turnstile_unavailable` / contact-delivery error visibility,
-- Passive Origin Monitoring,
-- Health Check notifications.
+Final legal wording requires owner/legal approval.
 
-For first 24h review errors/contact delivery manually. Review field Core Web Vitals later only when sufficient real traffic exists.
+## 16. SEO/social sign-off
 
-## 16. Rollback
+Verify publicly:
 
-Keep previous known-good image/artifact digests and Git commit available.
+- title/description on Home and representative PL/EN inner pages;
+- apex canonical URLs;
+- hreflang + `x-default`;
+- sitemap and robots;
+- OG image 1200×630;
+- social preview;
+- Perspective structured data;
+- no `workers.dev`, preview or localhost URLs in production HTML.
 
-Rollback if any of these cannot be safely corrected in place:
+## 17. Monitoring
 
-- redirect loop/canonical break,
-- invalid TLS or broad outage,
-- direct-origin/security bypass introduced,
-- Turnstile blocks legitimate contact flow or validation is bypassable,
-- contact endpoint leaks data,
-- repeated delivery failures,
-- severe accessibility regression,
-- effective headers/routing materially differ from tested contract.
+Keep configured Cloudflare alerts:
 
-Rollback restores previous immutable revision/configuration; never hot-edit production files.
+- Abuse Report Alert;
+- Major/Critical Cloudflare Status Incident Alert;
+- HTTP DDoS Attack Alert;
+- Universal SSL Alert;
+- selected Security Insights.
 
-## 17. Final GO / NO-GO
+Add/retain:
+
+- public HTTPS uptime monitoring on `/`;
+- Workers error/exception visibility;
+- contact `turnstile_unavailable` / `delivery_unavailable` visibility;
+- deployment version + Git SHA ownership.
+
+Passive Origin Monitoring is not applicable to the Worker-native production target.
+
+## 18. Rollback
+
+Keep the previous known-good Worker deployment/version and Git commit.
+
+Rollback immediately if unresolved:
+
+- canonical/redirect loop;
+- certificate/public availability failure;
+- Turnstile blocks legitimate contact or validation can be bypassed;
+- contact leaks data;
+- repeated delivery failures;
+- major accessibility regression;
+- public headers/routing differ materially from the tested contract.
+
+Rollback promotes a previous Worker version/deployment; do not mutate deployed assets manually.
+
+## 19. Final GO / NO-GO
 
 | Gate | Owner | Required |
 |---|---|---|
-| PR CI: build/static/performance/references | repository | PASS |
-| Browser matrix + automated WCAG | repository | PASS |
-| Container runtime E2E + Trivy | repository | PASS |
-| Production predeploy + immutable images | platform owner | PASS |
-| Cloudflare edge contract matches `docs/CLOUDFLARE.md` | domain owner | PASS |
-| Origin direct-bypass restriction | platform owner | PASS |
-| Cloudflare DNS + Full (strict) TLS + 308 canonical redirects | domain/platform owner | PASS |
-| Turnstile hostname + sitekey/secret + server-side verification | domain/platform owner | PASS |
-| Public non-destructive smoke | owner/QA | PASS |
+| Astro/static/Worker CI | repository | PASS |
+| Wrangler preview + production dry-run | repository | PASS |
+| Performance + browser matrix + automated WCAG | repository | PASS |
+| Worker secrets provisioned | platform owner | PASS |
+| Turnstile hostname/sitekey/secret/server validation | platform owner | PASS |
+| Apex Workers Custom Domain + certificate | domain/platform owner | PASS |
+| `www` proxied placeholder + exact 308 redirect | domain owner | PASS |
+| Public automated smoke | owner/QA | PASS |
 | SPF/DKIM/DMARC reviewed | domain/email owner | PASS |
 | Real contact delivery | owner | PASS |
-| VoiceOver + Safari | manual QA | PASS |
-| NVDA + Chrome/Firefox | manual QA | PASS |
-| Keyboard/zoom/reflow | manual QA | PASS |
+| VoiceOver / NVDA / keyboard / zoom | manual QA | PASS |
 | Privacy/legal/provider review | owner/legal | PASS |
 | Social preview + structured data | owner/QA | PASS |
-| Monitoring + rollback path | platform owner | PASS |
+| Monitoring + rollback | platform owner | PASS |
 
 **GO only when every required row is PASS.**
