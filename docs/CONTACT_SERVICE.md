@@ -1,46 +1,78 @@
 # Contact service
 
-The public website remains **Astro SSG + NGINX**. A small dependency-free Node.js sidecar exposes only `POST /api/contact` and `/healthz`. NGINX proxies the public same-origin `/api/contact` route to the sidecar.
+The public website remains **Astro SSG + NGINX** behind Cloudflare. A small dependency-free Node.js sidecar exposes only `POST /api/contact` and `/healthz`; NGINX is the only web-facing application container and proxies the same-origin contact route to the sidecar over loopback.
+
+## Production request path
+
+```text
+browser
+  → Cloudflare (DNS/TLS/WAF/DDoS/Turnstile)
+  → NGINX :8080
+  → POST /api/contact
+  → contact-api :8787
+  → Cloudflare Turnstile Siteverify
+  → Resend HTTPS Email API
+```
+
+The contact sidecar must not have independent public ingress. The origin must also be protected against trivial direct access that would bypass Cloudflare; see `docs/CLOUDFLARE.md` and `docs/HOSTING_DECISION.md`.
 
 ## Delivery
 
 Production delivery uses the Resend HTTPS Email API. The API key and destination address are server-side environment variables and never reach browser code.
 
-Required production secrets/private values:
+Required production values:
 
-- `RESEND_API_KEY`
-- `CONTACT_TO_EMAIL`
-- `CONTACT_FROM_EMAIL` — use a sender on the public domain or its subdomain and verify that sender/domain with the transactional email provider
+- `RESEND_API_KEY` — secret
+- `CONTACT_TO_EMAIL` — private configuration
+- `CONTACT_FROM_EMAIL` — verified sender on the public domain or subdomain
 
-Runtime controls:
+The delivery request includes a deterministic idempotency key so an identical browser submission cannot accidentally produce duplicate transactional emails if a request is retried.
 
-- `CONTACT_ALLOWED_ORIGINS` — comma-separated explicit origins
-- `CONTACT_REQUIRE_ORIGIN=1` — required by the production contract
-- `CONTACT_RATE_LIMIT` — default 5 requests per 10 minutes per process
-- `CONTACT_RATE_BUCKETS` — default 5000 bounded in-memory rate-limit identities
-- `CONTACT_DRY_RUN=1` — local/CI mode that validates the full request without sending mail; production requires `0`
+## Cloudflare Turnstile
 
-The delivery request includes a deterministic 24-hour idempotency key so an identical browser submission cannot accidentally produce duplicate transactional emails if a request is retried.
+The Cloudflare dashboard widget is named `arkadiuszkamrowski-contact` and uses **Managed** mode. Production requires server-side Siteverify validation before an email can be sent.
+
+Configuration:
+
+- `PUBLIC_TURNSTILE_SITE_KEY` — public browser sitekey; safe to include in the frontend build
+- `TURNSTILE_REQUIRED=1` — mandatory in production
+- `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`
+- `TURNSTILE_SECRET_KEY` — secret; hosting-platform secret store only
+
+The browser obtains a short-lived token from Turnstile and submits it with the contact payload. The sidecar sends that token to Cloudflare Siteverify and rejects missing, invalid, failed or wrong-hostname responses. The token and secret are never written to application logs.
+
+Local/CI dry-run keeps `TURNSTILE_REQUIRED=0` unless a dedicated test widget or mocked Siteverify endpoint is being exercised.
 
 ## Abuse and privacy controls
 
+- Cloudflare edge security / DDoS / managed rules
+- Cloudflare Turnstile with mandatory server-side verification in production
 - 32 KB request body limit
 - field length and topic allow-list validation
-- explicit contact-purpose consent
+- explicit contact-purpose acknowledgement
 - honeypot field
 - minimum form-completion time
 - per-IP in-memory rate limiting
 - bounded rate-limit bucket storage
-- origin allow-list validation; origin required in production
-- NGINX supplies the rate-limit identity through a controlled `X-Real-IP` header instead of trusting a client-provided forwarded chain
-- no message body or email address written to application logs
+- origin allow-list validation; Origin required in production
+- no message body, visitor email address, Turnstile token or secret in application logs
 - no contact database and no newsletter/CRM enrollment
 
-For a public high-traffic deployment, add edge/WAF rate limiting because the in-memory limiter is intentionally lightweight and scoped to each replica.
+NGINX supplies the application's `X-Real-IP` from Cloudflare's `CF-Connecting-IP` header. That trust boundary is safe only when direct-origin bypass is prevented at the hosting/network layer. The sidecar never trusts a browser-controlled `X-Forwarded-For` chain as its rate-limit identity.
+
+The application limiter is deliberately lightweight and replica-local. Cloudflare edge rate limiting/WAF should be the first scaling step if measured abuse justifies additional controls.
+
+## Runtime controls
+
+- `CONTACT_ALLOWED_ORIGINS` — comma-separated explicit origins
+- `CONTACT_REQUIRE_ORIGIN=1` — required in production
+- `CONTACT_RATE_LIMIT` — default 5 requests per 10 minutes per process
+- `CONTACT_RATE_BUCKETS` — default 5000 bounded identities
+- `CONTACT_DRY_RUN=1` — local/CI mode; production requires `0`
 
 ## Production contract
 
-Use `.env.production.example` as the public template and store the populated values in the hosting platform's secret/config system.
+Use `.env.production.example` as the public configuration contract. Real secret values belong only in the selected platform's secret/config store.
 
 Before promotion:
 
@@ -51,24 +83,28 @@ set +a
 make predeploy
 ```
 
-The predeploy check validates that live delivery is enabled, the canonical HTTPS origin is explicitly allowed, localhost/wildcards are absent, sender and recipient addresses are valid, the sender belongs to the public domain/subdomain, runtime limits are sane and the delivery key is present. It reports only configuration state; it never prints the API key.
+The predeploy check verifies:
 
-Email DNS must be configured carefully: use provider-generated DKIM records exactly, inspect the existing SPF policy before editing it (do not create a second independent SPF policy), and review any existing DMARC/MX records before changing them. The full operational procedure is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+- canonical HTTPS origin and host,
+- immutable web/contact image references,
+- live contact mode,
+- exact production Origin allow-list,
+- Turnstile enabled with sitekey, secret and canonical expected hostname,
+- valid sender/recipient configuration,
+- sane rate-limit/runtime values.
+
+It reports only configuration state and never prints email or Turnstile secrets.
+
+## Email DNS
+
+Use provider-generated DKIM records exactly. Inspect existing SPF before editing it; do not create two independent SPF TXT policies. Review DMARC and MX before changing either. Provider verification records remain DNS-only in Cloudflare unless the provider explicitly documents otherwise.
+
+The complete operational sequence is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Local development
 
 `make dev` starts the contact API in dry-run mode and Astro. Astro's dev proxy keeps `/api/contact` same-origin.
 
-`make mac-demo` builds the static site, starts a loopback-only Python web server and a loopback contact API. The build points the form to the local contact port because the Python static server does not proxy.
+`make mac-demo` builds the static site, starts a loopback-only preview and a loopback contact API. Real Cloudflare/Resend secrets are not required for this flow.
 
-To test real email delivery locally:
-
-```bash
-export CONTACT_DRY_RUN=0
-export RESEND_API_KEY='...'
-export CONTACT_TO_EMAIL='...'
-export CONTACT_FROM_EMAIL='Website <contact@arkadiuszkamrowski.com>'
-make dev
-```
-
-Never commit these values. Production Kubernetes expects them in the `personal-site-contact` Secret, which must be provisioned separately from the repository; other production platforms should use their native secret store.
+Never commit production secrets. Azure Container Apps, if selected, should use its native secret store/injection mechanism rather than Kubernetes Secrets or repository variables.
