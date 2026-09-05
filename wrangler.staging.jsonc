@@ -1,0 +1,41 @@
+{
+  "name": "arkadiuszkamrowski-staging",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-09-06",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "staging.arkadiuszkamrowski.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/*"]
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "DEPLOYMENT_ENV": "staging",
+    "CONTACT_REQUIRE_ORIGIN": "1",
+    "CONTACT_ALLOWED_ORIGINS": "https://staging.arkadiuszkamrowski.com",
+    "TURNSTILE_REQUIRED": "1",
+    "TURNSTILE_EXPECTED_HOSTNAME": "staging.arkadiuszkamrowski.com",
+    "CONTACT_FROM_EMAIL": "Website Staging <contact@arkadiuszkamrowski.com>"
+  },
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMITER",
+      "namespace_id": "42018",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ]
+}
