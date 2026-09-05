@@ -2,15 +2,18 @@
 
 This is the operational checklist for promoting `arkadiuszkamrowski.com` to the public Internet on **Cloudflare Workers + Static Assets**.
 
-The detailed Cloudflare configuration contract is in `docs/CLOUDFLARE.md`.
+The Cloudflare contract is in `docs/CLOUDFLARE.md`; the branch/environment model is in `docs/ENVIRONMENTS.md`.
 
 ## 1. Locked release decisions
 
 Unless explicitly changed and re-reviewed:
 
-- canonical origin: `https://arkadiuszkamrowski.com`
-- canonical host: `arkadiuszkamrowski.com`
-- `www`: redirect-only alias to apex
+- integration branch: `main` — **no automatic deployment**
+- staging branch: `staging`
+- production branch: `production`
+- staging origin: `https://staging.arkadiuszkamrowski.com`
+- production origin: `https://arkadiuszkamrowski.com`
+- `www`: redirect-only alias to production apex
 - runtime: Cloudflare Workers + Static Assets
 - frontend: pre-rendered Astro
 - dynamic endpoint: same-origin `POST /api/contact`
@@ -18,35 +21,137 @@ Unless explicitly changed and re-reviewed:
 - email delivery: Resend HTTPS API
 - analytics/advertising: disabled at launch
 - database / CRM / newsletter capture: none
-- production secrets: Cloudflare Worker secrets only
+- secrets: separate Cloudflare Worker secrets per release environment
 
-Target path:
+Promotion path:
 
 ```text
-Internet
-  → Cloudflare Workers Custom Domain
-      ├── Static Assets / Astro
-      └── /api/contact → Turnstile Siteverify → Resend
+feature/* → PR → main → PR → staging → acceptance → PR → production → public smoke
 ```
 
 No VM, NGINX, container registry, Container App, public origin server or Kubernetes cluster is required for production v1.
 
-## 2. Inputs still required
+## 2. Cloudflare Workers Builds setup gate
 
-1. Cloudflare Workers deployment permission.
-2. Production Turnstile sitekey + secret for `arkadiuszkamrowski-contact`.
-3. Turnstile hostname restriction for `arkadiuszkamrowski.com`.
-4. `RESEND_API_KEY`.
-5. Final `CONTACT_TO_EMAIL` mailbox.
-6. Verified sender/domain for `CONTACT_FROM_EMAIL`.
-7. Final privacy/legal review.
-8. VoiceOver and NVDA manual QA.
+Before any release deployment, configure **two independent Workers Builds applications** connected to `aras-2003/Simple-Website`.
 
-Never paste production secrets into source, PRs, issues or screenshots.
+### Staging application
 
-## 3. Production configuration
+- Worker/application: `arkadiuszkamrowski-staging`
+- Production branch: `staging`
+- Builds for non-production branches: **OFF**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler@4.129.0 deploy --config wrangler.staging.jsonc`
+- Path: `/`
+- Cloudflare Access: **ON**
 
-Use `.env.production.example` only as a contract/template.
+Build variables:
+
+```text
+SITE_BASE_URL=https://staging.arkadiuszkamrowski.com
+SITE_PRODUCTION_HOST=staging.arkadiuszkamrowski.com
+REQUIRE_PRODUCTION_SITE=1
+NODE_VERSION=22.23.2
+PUBLIC_TURNSTILE_SITE_KEY=<staging site key>
+```
+
+### Production application
+
+- Worker/application: `arkadiuszkamrowski`
+- Production branch: `production`
+- Builds for non-production branches: **OFF**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler@4.129.0 deploy --config wrangler.production.jsonc`
+- Path: `/`
+- Cloudflare Access: **OFF**
+
+Build variables:
+
+```text
+SITE_BASE_URL=https://arkadiuszkamrowski.com
+SITE_PRODUCTION_HOST=arkadiuszkamrowski.com
+REQUIRE_PRODUCTION_SITE=1
+NODE_VERSION=22.23.2
+PUBLIC_TURNSTILE_SITE_KEY=<production site key>
+```
+
+Do not configure `main` as a deployment branch for either application.
+
+## 3. Inputs still required
+
+Staging:
+
+1. Dedicated Turnstile widget/sitekey/secret restricted to `staging.arkadiuszkamrowski.com`.
+2. Staging Worker secrets: `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`.
+3. Cloudflare Access policy for the staging hostname.
+
+Production:
+
+1. Production Turnstile sitekey + secret for `arkadiuszkamrowski-contact`.
+2. Turnstile hostname restriction for `arkadiuszkamrowski.com`.
+3. Production `RESEND_API_KEY`.
+4. Final `CONTACT_TO_EMAIL` mailbox.
+5. Verified sender/domain for `CONTACT_FROM_EMAIL`.
+6. Final privacy/legal review.
+7. VoiceOver and NVDA manual QA.
+
+Never paste secret values into source, PRs, issues or screenshots.
+
+## 4. `main` → `staging` promotion
+
+Promote through a PR into `staging`; do not deploy `main` directly.
+
+Before merge:
+
+- repository CI PASS;
+- preview/staging/production Wrangler dry-runs PASS;
+- no known P0/P1 UX/security/accessibility defect;
+- release notes/change scope understood.
+
+After merge, Workers Builds deploys the `staging` branch to `staging.arkadiuszkamrowski.com`.
+
+## 5. Staging acceptance
+
+Staging is a release candidate, not a public SEO surface.
+
+Required PASS:
+
+- Cloudflare Access blocks unauthenticated access;
+- certificate and HTTPS valid;
+- `X-Robots-Tag: noindex, nofollow, noarchive` present;
+- `/robots.txt` returns `User-agent: *` + `Disallow: /`;
+- PL/EN core routes render;
+- canonical URLs point to staging origin in the staging build;
+- real custom 404 works;
+- trailing slash returns one-hop 308;
+- CSP/security headers match contract;
+- staging Turnstile validates only the staging hostname;
+- staging contact delivery works if enabled;
+- no contact payload/token/private values appear in logs;
+- Chromium/Firefox/WebKit and manual keyboard/accessibility acceptance PASS.
+
+If staging fails, fix on a normal development branch → `main`, then re-promote to `staging`. Do not patch staging-only code manually.
+
+## 6. `staging` → `production` promotion
+
+Production must be promoted by PR from `staging` into `production` after staging acceptance.
+
+Do not cherry-pick arbitrary feature commits directly into `production`.
+
+Before merge:
+
+- exact staging release candidate accepted;
+- production CI PASS on the candidate lineage;
+- production Worker secrets/config reviewed without revealing values;
+- Turnstile production widget/hostname ready;
+- Resend sender DNS ready;
+- rollback version/path identified.
+
+After merge, only the production Workers Builds application may deploy the `production` branch.
+
+## 7. Production configuration
+
+Use `.env.production.example` only as a contract/template for local preflight.
 
 Required public build value:
 
@@ -54,7 +159,7 @@ Required public build value:
 PUBLIC_TURNSTILE_SITE_KEY
 ```
 
-Required Worker secrets:
+Required production Worker secrets:
 
 ```text
 TURNSTILE_SECRET_KEY
@@ -62,7 +167,7 @@ RESEND_API_KEY
 CONTACT_TO_EMAIL
 ```
 
-Non-secret Worker runtime configuration is committed in `wrangler.production.jsonc`.
+Non-secret runtime configuration is committed in `wrangler.production.jsonc`.
 
 Local preflight:
 
@@ -79,44 +184,47 @@ rm .env.production
 
 `make predeploy` rejects wrong canonical origin, weak/missing Turnstile configuration, incorrect Origin allow-list, missing delivery secrets and sender-domain mismatch. It never prints private values.
 
-## 4. Preview deployment
+## 8. Production Worker deployment behavior
 
-Before touching the apex Custom Domain:
+`wrangler.production.jsonc`:
 
-```bash
-SITE_BASE_URL=https://arkadiuszkamrowski.com \
-SITE_PRODUCTION_HOST=arkadiuszkamrowski.com \
-REQUIRE_PRODUCTION_SITE=1 \
-PUBLIC_TURNSTILE_SITE_KEY=<approved-preview-or-production-sitekey> \
-make worker-preview
+- disables `workers.dev`;
+- disables Preview URLs;
+- attaches `arkadiuszkamrowski.com` as a Workers Custom Domain;
+- deploys `dist` as Static Assets;
+- sends `/api/*` and trailing-slash canonicalization through Worker code;
+- preserves real 404 handling;
+- binds the production contact rate limiter.
+
+Cloudflare creates the apex Custom Domain DNS record and certificate automatically.
+
+The manual GitHub workflow is fallback-only and hard-fails unless dispatched from the `production` branch.
+
+## 9. `www` redirect-only DNS
+
+Keep the existing Cloudflare Redirect Rule:
+
+- `www` → apex
+- **308 Permanent Redirect**
+- preserve path/query
+
+Because `www` has no origin, add the redirect-only proxied placeholder at production launch:
+
+```text
+A | www | 192.0.2.0 | Proxied
 ```
 
-`wrangler.jsonc` keeps `workers.dev` and Preview URLs enabled.
+Do not attach `www` as a second application Custom Domain.
 
-Preview acceptance:
+Verify:
 
-- build succeeds;
-- core PL/EN routes render;
-- custom 404 works;
-- security headers are present;
-- CSP does not contain `unsafe-inline`;
-- `/api/contact` rejects bad Origin;
-- Worker logs contain no sensitive payloads;
-- if real Turnstile is tested on preview, that preview hostname must be explicitly approved in the widget configuration. Do not weaken the production hostname restriction merely for convenience.
-
-## 5. Provision Worker secrets
-
-From a trusted local environment or equivalent Cloudflare secret-management flow:
-
-```bash
-npx --yes wrangler@4.129.0 secret put TURNSTILE_SECRET_KEY --config wrangler.production.jsonc
-npx --yes wrangler@4.129.0 secret put RESEND_API_KEY --config wrangler.production.jsonc
-npx --yes wrangler@4.129.0 secret put CONTACT_TO_EMAIL --config wrangler.production.jsonc
+```text
+https://www.arkadiuszkamrowski.com/oaf?x=1
+→ 308
+https://arkadiuszkamrowski.com/oaf?x=1
 ```
 
-Confirm secret names exist without printing values.
-
-## 6. Email-domain setup
+## 10. Email-domain setup
 
 Default sender:
 
@@ -137,53 +245,9 @@ Acceptance:
 - SPF/DKIM checks pass;
 - DMARC has no known syntax/configuration error.
 
-## 7. Production Worker deployment
+## 11. Public route/TLS acceptance
 
-With production build/runtime values loaded:
-
-```bash
-make worker-deploy-production
-```
-
-`wrangler.production.jsonc`:
-
-- disables `workers.dev`;
-- disables public Preview URLs for the production deployment;
-- attaches `arkadiuszkamrowski.com` as a Workers Custom Domain;
-- deploys `dist` as Static Assets;
-- sends `/api/*` and trailing-slash canonicalization through Worker code;
-- uses real 404 handling;
-- binds the contact rate limiter.
-
-Cloudflare creates the apex Custom Domain DNS record and certificate automatically.
-
-## 8. `www` redirect-only DNS
-
-Keep the existing Cloudflare Redirect Rule:
-
-- `www` → apex
-- **308 Permanent Redirect**
-- preserve path/query
-
-Because `www` has no origin, add the Cloudflare-documented originless placeholder:
-
-```text
-A | www | 192.0.2.0 | Proxied
-```
-
-Do not attach `www` as a second application Custom Domain.
-
-Verify:
-
-```text
-https://www.arkadiuszkamrowski.com/oaf?x=1
-→ 308
-https://arkadiuszkamrowski.com/oaf?x=1
-```
-
-## 9. Public route/TLS acceptance
-
-Expected behavior:
+Expected production behavior:
 
 | Request | Expected |
 |---|---|
@@ -202,15 +266,15 @@ TLS acceptance:
 - HTTP/2 and HTTP/3 remain enabled;
 - 0-RTT remains disabled;
 - no mixed content;
-- HSTS only while all covered public hosts are intentionally HTTPS-capable.
+- HSTS only while all covered hosts are intentionally HTTPS-capable.
 
 There is no separate origin-certificate or Full-(strict)-to-origin dependency in the Worker-native architecture.
 
-## 10. Security-header acceptance
+## 12. Security-header acceptance
 
-Static Assets use `public/_headers`; Worker responses emit the same application security baseline.
+Static Assets use `public/_headers`; dynamic Worker responses emit the same application baseline.
 
-Verify effective public values:
+Verify effective production values:
 
 ```text
 X-Content-Type-Options: nosniff
@@ -220,21 +284,16 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
 ```
 
-CSP must:
-
-- allow same-origin application resources;
-- allow `https://challenges.cloudflare.com` only where required for Turnstile;
-- block inline script attributes;
-- contain no `unsafe-inline`.
+CSP must allow same-origin resources and `https://challenges.cloudflare.com` only where required for Turnstile, while containing no `unsafe-inline`.
 
 Do not enable Rocket Loader, Cloudflare Fonts or other browser-script injection without re-running CSP/accessibility/performance/privacy gates.
 
-## 11. Turnstile production activation
+## 13. Turnstile production activation
 
 1. Widget remains `arkadiuszkamrowski-contact`, Managed mode.
 2. Hostname list contains the apex and no unnecessary production hosts.
-3. `PUBLIC_TURNSTILE_SITE_KEY` is present in the built form.
-4. `TURNSTILE_SECRET_KEY` exists only as Worker secret.
+3. `PUBLIC_TURNSTILE_SITE_KEY` is present in the production build.
+4. `TURNSTILE_SECRET_KEY` exists only as production Worker secret.
 5. Missing token cannot send email.
 6. Invalid token cannot send email.
 7. Wrong-hostname Siteverify response is rejected.
@@ -243,7 +302,7 @@ Do not enable Rocket Loader, Cloudflare Fonts or other browser-script injection 
 
 Pre-clearance remains disabled unless separately reviewed.
 
-## 12. Production contact smoke
+## 14. Production contact smoke
 
 From the real public page:
 
@@ -257,7 +316,7 @@ From the real public page:
 
 Do not load-test Resend or Turnstile.
 
-## 13. Automated public smoke
+## 15. Automated public smoke
 
 After the Custom Domain and `www` DNS are live:
 
@@ -267,7 +326,7 @@ SITE_BASE_URL=https://arkadiuszkamrowski.com make smoke-production
 
 It checks core routes, canonical URLs, real 404, `robots.txt`, sitemap, security headers, trailing-slash canonicalization, `www` 308, bad-Origin rejection and same-origin CORS preflight. It intentionally does not send a real email.
 
-## 14. Accessibility sign-off
+## 16. Accessibility sign-off
 
 Automated axe/Playwright is necessary but not sufficient.
 
@@ -282,7 +341,7 @@ Manual PASS required for:
 - Turnstile not creating an accessibility dead end;
 - live success/error messaging.
 
-## 15. Privacy/compliance sign-off
+## 17. Privacy/compliance sign-off
 
 Confirm actual behavior matches the privacy notice:
 
@@ -295,7 +354,7 @@ Confirm actual behavior matches the privacy notice:
 
 Final legal wording requires owner/legal approval.
 
-## 16. SEO/social sign-off
+## 18. SEO/social sign-off
 
 Verify publicly:
 
@@ -306,9 +365,9 @@ Verify publicly:
 - OG image 1200×630;
 - social preview;
 - Perspective structured data;
-- no `workers.dev`, preview or localhost URLs in production HTML.
+- no staging, preview, `workers.dev` or localhost URLs in production HTML.
 
-## 17. Monitoring
+## 19. Monitoring
 
 Keep configured Cloudflare alerts:
 
@@ -320,14 +379,14 @@ Keep configured Cloudflare alerts:
 
 Add/retain:
 
-- public HTTPS uptime monitoring on `/`;
+- public production HTTPS uptime monitoring on `/`;
 - Workers error/exception visibility;
 - contact `turnstile_unavailable` / `delivery_unavailable` visibility;
 - deployment version + Git SHA ownership.
 
 Passive Origin Monitoring is not applicable to the Worker-native production target.
 
-## 18. Rollback
+## 20. Rollback
 
 Keep the previous known-good Worker deployment/version and Git commit.
 
@@ -341,16 +400,18 @@ Rollback immediately if unresolved:
 - major accessibility regression;
 - public headers/routing differ materially from the tested contract.
 
-Rollback promotes a previous Worker version/deployment; do not mutate deployed assets manually.
+Rollback promotes a previous Worker version/deployment. Do not mutate deployed assets manually or bypass the branch promotion model with ad hoc fixes.
 
-## 19. Final GO / NO-GO
+## 21. Final GO / NO-GO
 
 | Gate | Owner | Required |
 |---|---|---|
-| Astro/static/Worker CI | repository | PASS |
-| Wrangler preview + production dry-run | repository | PASS |
-| Performance + browser matrix + automated WCAG | repository | PASS |
-| Worker secrets provisioned | platform owner | PASS |
+| PR + CI into `main` | repository | PASS |
+| PR + CI into `staging` | repository | PASS |
+| Staging Custom Domain + Access + noindex | platform owner | PASS |
+| Staging functional/accessibility acceptance | owner/QA | PASS |
+| PR `staging → production` + CI | repository | PASS |
+| Production Worker secrets | platform owner | PASS |
 | Turnstile hostname/sitekey/secret/server validation | platform owner | PASS |
 | Apex Workers Custom Domain + certificate | domain/platform owner | PASS |
 | `www` proxied placeholder + exact 308 redirect | domain owner | PASS |
