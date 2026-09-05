@@ -1,10 +1,13 @@
-.PHONY: install build check test test-a11y test-contact audit dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build build-local check test test-a11y test-contact audit dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
-	npm install --no-audit --no-fund
+	npm ci --no-audit --no-fund
 
 build:
 	npm run build
+
+build-local:
+	npm run build:local
 
 check:
 	npm run check
@@ -13,7 +16,7 @@ test:
 	bash scripts/test.sh
 
 test-a11y:
-	npx playwright install chromium
+	npx playwright install chromium firefox webkit
 	npm run test:a11y
 
 test-contact:
@@ -22,13 +25,12 @@ test-contact:
 contact-api:
 	CONTACT_DRY_RUN=$${CONTACT_DRY_RUN:-1} node server/contact.mjs
 
+contact-dev: contact-api
+
 audit: test test-a11y
 
 dev:
 	bash scripts/dev.sh
-
-contact-dev:
-	npm run contact:dev
 
 mac-demo:
 	bash scripts/mac-demo.sh
@@ -39,7 +41,7 @@ mac-stop:
 browser-test: test-a11y
 
 docker-build:
-	docker build -t arkadiusz-kamrowski-site:local .
+	docker build --build-arg SITE_BASE_URL=http://localhost:8080 --build-arg ALLOW_LOCAL_SITE_BASE=1 -t arkadiusz-kamrowski-site:local .
 	docker build -f server/Dockerfile -t arkadiusz-kamrowski-contact:local .
 
 docker-run:
