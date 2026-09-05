@@ -1,6 +1,6 @@
 WRANGLER_VERSION ?= 4.129.0
 
-.PHONY: install build check test test-a11y test-contact test-worker test-predeploy audit predeploy smoke-production dev contact-dev contact-api mac-demo mac-stop browser-test worker-preview worker-deploy-production portability-docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y test-contact test-worker test-predeploy audit predeploy smoke-production dev contact-dev contact-api mac-demo mac-stop browser-test worker-preview worker-deploy-staging worker-deploy-production portability-docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
 	npm install --no-audit --no-fund
@@ -36,11 +36,19 @@ predeploy:
 smoke-production:
 	SITE_BASE_URL="$${SITE_BASE_URL:-https://arkadiuszkamrowski.com}" node scripts/production-smoke.mjs
 
-# Cloudflare Workers is the production runtime. Preview keeps workers.dev enabled;
-# production uses the custom apex domain declared in wrangler.production.jsonc.
+# Manual preview is intentionally isolated from both release environments.
 worker-preview: build
 	npx --yes wrangler@$(WRANGLER_VERSION) deploy --config wrangler.jsonc
 
+# Staging uses its own Worker, custom domain, secrets and Turnstile widget.
+worker-deploy-staging:
+	SITE_BASE_URL=https://staging.arkadiuszkamrowski.com \
+	SITE_PRODUCTION_HOST=staging.arkadiuszkamrowski.com \
+	REQUIRE_PRODUCTION_SITE=1 \
+	npm run build
+	npx --yes wrangler@$(WRANGLER_VERSION) deploy --config wrangler.staging.jsonc
+
+# Production uses only the apex production Worker and production secrets.
 worker-deploy-production: predeploy build
 	npx --yes wrangler@$(WRANGLER_VERSION) deploy --config wrangler.production.jsonc
 

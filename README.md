@@ -15,7 +15,29 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **No client framework:** JavaScript is used only for the contact form, Turnstile integration and intentional micro-interactions.
 - **Portability:** legacy NGINX, Docker, Kubernetes and AKS material is retained only as optional reference/testing material; it is not the production deployment target.
 
-See `docs/CLOUDFLARE.md`, `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+See `docs/ENVIRONMENTS.md`, `docs/CLOUDFLARE.md`, `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+
+## Release model
+
+`main` is an integration branch and **never deploys directly**.
+
+```text
+feature/*
+   ↓ PR + CI
+main
+   ↓ PR / promote
+staging
+   ↓ Cloudflare staging + acceptance
+production
+   ↓ Cloudflare production
+```
+
+Release environments are isolated:
+
+- `staging` → Worker `arkadiuszkamrowski-staging` → `https://staging.arkadiuszkamrowski.com`
+- `production` → Worker `arkadiuszkamrowski` → `https://arkadiuszkamrowski.com`
+
+Cloudflare Workers Builds must have **Builds for non-production branches OFF** for both release applications. `main` is not the production branch for either application. Full branch/environment details are in `docs/ENVIRONMENTS.md`.
 
 ## macOS — fastest local preview
 
@@ -45,18 +67,28 @@ make dev
 
 The local Astro flow keeps the legacy Node adapter for fast development compatibility. The production contract is always the Worker implementation in `worker/index.mjs` and its dedicated tests.
 
-## Cloudflare preview and production
+## Cloudflare environments
 
 Wrangler is intentionally invoked at a pinned version from the Makefile; it is not added to the application dependency graph.
 
-Preview deployment to `workers.dev` / Preview URLs:
+Manual/non-release preview:
 
 ```bash
 npm run build
 make worker-preview
 ```
 
-Production deployment to the apex Workers Custom Domain:
+This uses `wrangler.jsonc` and the isolated Worker name `arkadiuszkamrowski-preview`. It is not a release environment and must not be wired to `main` for automatic deployment.
+
+Staging:
+
+```bash
+make worker-deploy-staging
+```
+
+This uses `wrangler.staging.jsonc`, the dedicated Worker `arkadiuszkamrowski-staging`, the staging custom domain, staging-only secrets and a separate Turnstile widget. Staging is protected from indexing at the Worker layer and should additionally be protected with Cloudflare Access.
+
+Production:
 
 ```bash
 set -a
@@ -65,7 +97,7 @@ set +a
 make worker-deploy-production
 ```
 
-`wrangler.jsonc` is the preview contract. `wrangler.production.jsonc` disables `workers.dev` and declares `arkadiuszkamrowski.com` as the production Custom Domain.
+`wrangler.production.jsonc` disables `workers.dev` and declares `arkadiuszkamrowski.com` as the production Custom Domain.
 
 ## Publishing Perspective
 
@@ -89,13 +121,13 @@ make test-a11y     # Playwright + axe across core and article routes
 make audit         # combined local quality gate
 ```
 
-GitHub CI checks static/SEO/privacy/link behavior, Worker contact logic, Wrangler preview/production packaging, Chromium/Firefox/WebKit paths, performance budgets and automated WCAG checks.
+GitHub CI runs on PRs and pushes to `main`, `staging` and `production`. It validates static/SEO/privacy/link behavior, Worker contact logic, all Wrangler preview/staging/production packages, Chromium/Firefox/WebKit paths, performance budgets and automated WCAG checks.
 
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
 
 ## Production configuration
 
-`.env.production.example` documents the build/runtime contract. Real secret values belong in Cloudflare Workers secrets or the selected CI/build secret store and must never be committed.
+`.env.production.example` documents the production build/runtime contract. Real secret values belong in Cloudflare Workers secrets or the selected CI/build secret store and must never be committed.
 
 Production requires:
 
@@ -104,7 +136,9 @@ Production requires:
 - exact canonical origin/hostname values from `.env.production.example`;
 - verified Resend sender/domain DNS.
 
-`make predeploy` validates the contract without printing private values.
+Staging uses equivalent values, but they are configured separately for `staging.arkadiuszkamrowski.com`. In particular, staging and production Turnstile secrets must not be shared.
+
+`make predeploy` validates the production contract without printing private values.
 
 ## Docker / Kubernetes portability reference
 
@@ -120,9 +154,12 @@ These paths are retained for portability/reference and local experimentation onl
 
 - macOS native: ready
 - Cloudflare Worker contact implementation: ready by configuration
-- Wrangler preview/production contracts: ready
-- GitHub CI: Astro/static + Worker + Wrangler dry-run + accessibility/browser/performance gates
-- production secrets: not provisioned in Cloudflare yet
+- manual preview Worker contract: ready
+- staging Worker contract: ready; deployment/account secrets not provisioned yet
+- production Worker contract: ready; deployment/account secrets not provisioned yet
+- branch promotion model: `main → staging → production`
+- GitHub CI: Astro/static + Worker + Wrangler preview/staging/production dry-run + accessibility/browser/performance gates
 - production Custom Domain/DNS: not deployed yet
-- `www` redirect rule: configured in Cloudflare; redirect-only DNS placeholder still required at launch
+- staging Custom Domain/DNS: not deployed yet
+- `www` redirect rule: configured in Cloudflare; redirect-only DNS record still required at production launch
 - Docker/Kubernetes/AKS: portability/reference only

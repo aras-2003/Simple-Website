@@ -1,4 +1,4 @@
-name: Deploy Cloudflare Production
+name: Manual Deploy Cloudflare Production
 
 on:
   workflow_dispatch:
@@ -27,6 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - name: Enforce production branch
+        run: |
+          test "$GITHUB_REF_NAME" = "production" || {
+            echo "Production deployment is allowed only from the production branch; got: $GITHUB_REF_NAME"
+            exit 1
+          }
+
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
@@ -43,7 +50,7 @@ jobs:
         env:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
         run: |
-          test -n "$PUBLIC_TURNSTILE_SITE_KEY" || { echo 'PUBLIC_TURNSTILE_SITE_KEY repository/environment variable is required'; exit 1; }
+          test -n "$PUBLIC_TURNSTILE_SITE_KEY" || { echo 'PUBLIC_TURNSTILE_SITE_KEY production environment variable is required'; exit 1; }
 
       - name: Build production site
         env:

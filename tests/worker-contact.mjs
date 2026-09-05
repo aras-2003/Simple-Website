@@ -16,6 +16,7 @@ const basePayload = {
 };
 
 const env = {
+  DEPLOYMENT_ENV: 'production',
   CONTACT_ALLOWED_ORIGINS: origin,
   CONTACT_REQUIRE_ORIGIN: '1',
   TURNSTILE_REQUIRED: '1',
@@ -108,6 +109,7 @@ try {
   const trailing = await worker.fetch(new Request(`${origin}/about/?from=test`), env);
   assert.equal(trailing.status, 308);
   assert.equal(trailing.headers.get('location'), `${origin}/about?from=test`);
+  assert.equal(trailing.headers.get('x-robots-tag'), null, 'production redirects must not be marked noindex');
 
   const unknownApi = await worker.fetch(new Request(`${origin}/api/unknown`), env);
   assert.equal(unknownApi.status, 404);
@@ -115,8 +117,32 @@ try {
   const assetFallback = await worker.fetch(new Request(`${origin}/missing`), env);
   assert.equal(assetFallback.status, 404);
   assert.equal(await assetFallback.text(), 'asset-fallback');
+  assert.equal(assetFallback.headers.get('x-robots-tag'), null, 'production assets must remain indexable');
 
-  console.log('WORKER CONTACT TEST PASS · validation, Turnstile, rate limit, Resend and canonical redirects');
+  const stagingOrigin = 'https://staging.arkadiuszkamrowski.com';
+  const stagingEnv = {
+    ...env,
+    DEPLOYMENT_ENV: 'staging',
+    CONTACT_ALLOWED_ORIGINS: stagingOrigin,
+    TURNSTILE_EXPECTED_HOSTNAME: 'staging.arkadiuszkamrowski.com',
+  };
+
+  const stagingRobots = await worker.fetch(new Request(`${stagingOrigin}/robots.txt`), stagingEnv);
+  assert.equal(stagingRobots.status, 200);
+  assert.equal(await stagingRobots.text(), 'User-agent: *\nDisallow: /\n');
+  assert.equal(stagingRobots.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive');
+  assert.equal(stagingRobots.headers.get('cache-control'), 'no-store');
+
+  const stagingAsset = await worker.fetch(new Request(`${stagingOrigin}/about`), stagingEnv);
+  assert.equal(stagingAsset.status, 404);
+  assert.equal(stagingAsset.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive');
+
+  const stagingTrailing = await worker.fetch(new Request(`${stagingOrigin}/about/?from=test`), stagingEnv);
+  assert.equal(stagingTrailing.status, 308);
+  assert.equal(stagingTrailing.headers.get('location'), `${stagingOrigin}/about?from=test`);
+  assert.equal(stagingTrailing.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive');
+
+  console.log('WORKER CONTACT TEST PASS · validation, Turnstile, rate limit, Resend, canonical redirects and staging noindex');
 } finally {
   globalThis.fetch = originalFetch;
 }

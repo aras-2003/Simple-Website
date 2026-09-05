@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, staging, production]
 
 permissions:
   contents: read
@@ -86,11 +86,19 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Build canonical static site
+      - name: Build production-canonical static site
         run: npm run build
-      - name: Worker contact runtime tests
+      - name: Worker contact/runtime tests
         run: npm run test:worker
-      - name: Validate preview Worker package
+      - name: Validate manual preview Worker package
         run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.jsonc
       - name: Validate production Worker package
         run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.production.jsonc
+      - name: Build staging-canonical static site
+        env:
+          SITE_BASE_URL: https://staging.arkadiuszkamrowski.com
+          SITE_PRODUCTION_HOST: staging.arkadiuszkamrowski.com
+          REQUIRE_PRODUCTION_SITE: '1'
+        run: npm run build
+      - name: Validate staging Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.staging.jsonc
