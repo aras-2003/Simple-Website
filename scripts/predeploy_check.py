@@ -8,6 +8,8 @@ from urllib.parse import urlparse
 
 
 EMAIL_RE = re.compile(r"^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$")
+SHA_TAG_RE = re.compile(r"^[0-9a-fA-F]{7,64}$")
+DIGEST_RE = re.compile(r"^sha256:[0-9a-fA-F]{64}$")
 
 
 def env(name: str) -> str:
@@ -36,6 +38,20 @@ def positive_int(value: str, *, minimum: int = 1, maximum: int | None = None) ->
     return True
 
 
+def immutable_image_ref(value: str) -> bool:
+    """Accept a sha256 digest or a commit-addressable hexadecimal tag; reject mutable aliases."""
+    if not value or any(char.isspace() for char in value):
+        return False
+    if "@" in value:
+        repository, digest = value.rsplit("@", 1)
+        return bool(repository) and bool(DIGEST_RE.fullmatch(digest))
+    last_segment = value.rsplit("/", 1)[-1]
+    if ":" not in last_segment:
+        return False
+    repository, tag = value.rsplit(":", 1)
+    return bool(repository) and bool(SHA_TAG_RE.fullmatch(tag))
+
+
 p = argparse.ArgumentParser(description="Validate the production deployment contract without printing secrets.")
 p.add_argument("--site-base-url", required=True)
 p.add_argument("--host", required=True)
@@ -43,7 +59,7 @@ p.add_argument("--namespace", default="personal-site")
 p.add_argument(
     "--require-contact-production",
     action="store_true",
-    help="also require a live, origin-locked contact configuration and delivery secrets",
+    help="also require immutable image refs plus a live, origin-locked contact configuration and delivery secrets",
 )
 a = p.parse_args()
 
@@ -59,6 +75,8 @@ if url.username or url.password or url.query or url.fragment:
     errors.append("site-base-url must be a clean public origin without credentials, query or fragment")
 if url.path not in ("", "/"):
     errors.append("site-base-url must not contain a path")
+if url.port is not None:
+    errors.append("site-base-url must use the default HTTPS port without an explicit port")
 if url.hostname and url.hostname.lower() != a.host.lower():
     errors.append(f"URL host ({url.hostname}) must equal ingress host ({a.host})")
 if "/" in a.namespace or not a.namespace:
@@ -67,6 +85,8 @@ if any(x in a.host.lower() for x in ["example.", "localhost", "replace_"]):
     errors.append("host still looks like a placeholder")
 
 if a.require_contact_production:
+    image = env("IMAGE")
+    contact_image = env("CONTACT_IMAGE")
     dry_run = env("CONTACT_DRY_RUN")
     require_origin = env("CONTACT_REQUIRE_ORIGIN")
     allowed_origins_raw = env("CONTACT_ALLOWED_ORIGINS")
@@ -77,6 +97,13 @@ if a.require_contact_production:
     rate_limit = env("CONTACT_RATE_LIMIT") or "5"
     rate_buckets = env("CONTACT_RATE_BUCKETS") or "5000"
     api_port = env("CONTACT_API_PORT") or "8787"
+
+    if not immutable_image_ref(image):
+        errors.append("IMAGE must use an immutable sha256 digest or a commit-addressable hexadecimal tag")
+    if not immutable_image_ref(contact_image):
+        errors.append("CONTACT_IMAGE must use an immutable sha256 digest or a commit-addressable hexadecimal tag")
+    if image and contact_image and image == contact_image:
+        errors.append("IMAGE and CONTACT_IMAGE must reference distinct images")
 
     if dry_run != "0":
         errors.append("CONTACT_DRY_RUN must be 0 for production")
@@ -139,6 +166,7 @@ print("PREDEPLOY CHECK PASS")
 print(f" - origin: https://{a.host}")
 print(f" - namespace: {a.namespace}")
 if a.require_contact_production:
+    print(" - images: immutable release references present")
     print(" - contact: live delivery configuration present; secrets not displayed")
 for warning in warnings:
     print(" - warning:", warning)
