@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0 <23"
   },
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 4321",
@@ -12,9 +12,11 @@
     "build": "node scripts/validate-site-base.mjs && astro build",
     "build:local": "SITE_BASE_URL=http://127.0.0.1:8080 ALLOW_LOCAL_SITE_BASE=1 astro build",
     "preview": "astro preview --host 127.0.0.1 --port 4173",
-    "test:static": "npm run check && npm run build && node tests/static.mjs && npm run test:contact",
+    "test:static": "npm run check && npm run build && node tests/static.mjs && npm run test:links && npm run test:contact",
+    "test:links": "node tests/links.mjs",
     "test:a11y": "playwright test",
     "test:contact": "node tests/contact-api.mjs",
+    "test:runtime": "bash tests/runtime-smoke.sh",
     "test": "npm run test:static && npm run test:a11y"
   },
   "dependencies": {
