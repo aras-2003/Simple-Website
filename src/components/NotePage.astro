@@ -12,6 +12,7 @@ const title = `${td(note.title)} – Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
 const plPath = `${route('pl', 'writing')}/${note.slug}`;
 const enPath = `${route('en', 'writing')}/${note.slug}`;
+const publishedAt = '2026-09-04T00:00:00+02:00';
 const sourceSets: Record<string, { label: string; href: string }[]> = {
   'Enterprise Architecture': [
     { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
@@ -34,19 +35,36 @@ const sourceSets: Record<string, { label: string; href: string }[]> = {
 };
 const sources = sourceSets[note.category] ?? [];
 ---
-<BaseLayout locale={locale} routeKey="writing" title={title} description={td(note.dek)} paths={{ pl: plPath, en: enPath }}>
-  <article class="note-page note-page-editorial">
+<BaseLayout
+  locale={locale}
+  routeKey="writing"
+  title={title}
+  description={td(note.dek)}
+  paths={{ pl: plPath, en: enPath }}
+  contentType="article"
+  publishedTime={publishedAt}
+  modifiedTime={publishedAt}
+  articleSection={note.category}
+>
+  <article class="note-page note-page-editorial" itemscope itemtype="https://schema.org/Article">
+    <meta itemprop="datePublished" content={publishedAt} />
+    <meta itemprop="dateModified" content={publishedAt} />
+    <meta itemprop="articleSection" content={note.category} />
+    <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+      <meta itemprop="name" content="Arkadiusz Kamrowski" />
+    </span>
+
     <header class="note-hero">
       <p class="eyebrow">{note.category}</p>
-      <h1>{td(note.title)}</h1>
-      <p class="page-lead">{td(note.dek)}</p>
+      <h1 itemprop="headline">{td(note.title)}</h1>
+      <p class="page-lead" itemprop="description">{td(note.dek)}</p>
       <div class="article-thesis-label">
         <span>Status</span>
         <strong>{locale === 'pl' ? 'teza robocza do konfrontowania z dowodami' : 'working thesis to be tested against evidence'}</strong>
       </div>
     </header>
 
-    <div class="note-body">
+    <div class="note-body" itemprop="articleBody">
       {note.sections.map((section) => (
         <section>
           <h2>{td(section.heading)}</h2>
