@@ -1,10 +1,12 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 WORKDIR /app
 COPY package.json astro.config.mjs tsconfig.json ./
+COPY scripts ./scripts
 RUN npm install --no-audit --no-fund
 COPY public ./public
 COPY src ./src
-ARG SITE_BASE_URL=http://127.0.0.1:8080
+ARG SITE_BASE_URL
+RUN test -n "$SITE_BASE_URL" || (echo "SITE_BASE_URL build arg is required" >&2 && exit 1)
 ENV SITE_BASE_URL=$SITE_BASE_URL
 RUN npm run build
 
