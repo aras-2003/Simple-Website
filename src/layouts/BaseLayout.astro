@@ -18,7 +18,7 @@ interface Props {
   title: string;
   description: string;
   paths?: { pl: string; en: string };
-  article?: ArticleMeta;
+  article?: ArticleMeta | undefined;
 }
 
 const { locale, routeKey, title, description, paths, article } = Astro.props;
