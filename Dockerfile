@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:22-alpine AS build
+FROM --platform=$BUILDPLATFORM node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 AS build
 WORKDIR /app
 COPY package.json package-lock.json astro.config.mjs tsconfig.json ./
 COPY scripts ./scripts
@@ -12,7 +12,7 @@ ENV SITE_BASE_URL=$SITE_BASE_URL
 ENV ALLOW_LOCAL_SITE_BASE=$ALLOW_LOCAL_SITE_BASE
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24
+FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24@sha256:9b87ad3dd9f431c733f19dfb278c7eb3dba9dca381942c79818bb42f1a566a83
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 USER 101
