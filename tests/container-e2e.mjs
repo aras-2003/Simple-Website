@@ -40,6 +40,27 @@ async function postContact(payload, headers = {}) {
   });
 }
 
+async function waitForContact() {
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    try {
+      const response = await postContact({
+        name: 'Runtime Probe',
+        email: 'probe@example.com',
+        organization: 'CI',
+        topic: 'architecture',
+        message: 'Contact sidecar readiness probe for runtime test.',
+        website: '',
+        consent: true,
+        locale: 'en',
+        startedAt: Date.now() - 2500,
+      });
+      if (response.status === 202) return;
+    } catch {}
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  throw new Error('contact sidecar did not become ready through NGINX');
+}
+
 cleanup();
 try {
   docker(
@@ -65,6 +86,7 @@ try {
   );
 
   await waitFor(`${baseUrl}/healthz`);
+  await waitForContact();
 
   const home = await fetch(`${baseUrl}/`);
   assert.equal(home.status, 200);
