@@ -59,6 +59,31 @@ function isAllowedOrigin(origin, env) {
   return allowedOrigins(env).includes(origin);
 }
 
+function deploymentEnvironment(env) {
+  return clean(env.DEPLOYMENT_ENV) || 'preview';
+}
+
+function isNonProduction(env) {
+  return deploymentEnvironment(env) !== 'production';
+}
+
+function nonProductionHeaders(env) {
+  return isNonProduction(env)
+    ? { 'X-Robots-Tag': 'noindex, nofollow, noarchive' }
+    : {};
+}
+
+function applyDeploymentHeaders(response, env) {
+  if (!isNonProduction(env)) return response;
+  const headers = new Headers(response.headers);
+  headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 function clientIp(request) {
   return clean(request.headers.get('CF-Connecting-IP')) || 'unknown';
 }
@@ -252,14 +277,27 @@ export default {
     if (url.pathname === '/api/contact') return handleContact(request, env);
     if (url.pathname.startsWith('/api/')) return json(404, { error: 'not_found' });
 
+    if (isNonProduction(env) && url.pathname === '/robots.txt') {
+      return new Response('User-agent: *\nDisallow: /\n', {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-store',
+          ...SECURITY_HEADERS,
+          ...nonProductionHeaders(env),
+        },
+      });
+    }
+
     if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
       url.pathname = url.pathname.replace(/\/+$/, '');
       return new Response(null, {
         status: 308,
-        headers: { Location: url.toString(), ...SECURITY_HEADERS },
+        headers: { Location: url.toString(), ...SECURITY_HEADERS, ...nonProductionHeaders(env) },
       });
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    return applyDeploymentHeaders(response, env);
   },
 };
