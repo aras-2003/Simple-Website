@@ -1,10 +1,10 @@
 # Contact service
 
-The production contact endpoint is a **Cloudflare Worker** at same-origin `POST /api/contact`.
+The release contact endpoint is a **Cloudflare Worker** at same-origin `POST /api/contact`.
 
-The previous Node sidecar remains only as a local/portability adapter. It is not part of the production request path.
+The previous Node sidecar remains only as a local/portability adapter. It is not part of the release request path.
 
-## Production request path
+## Request path
 
 ```text
 browser
@@ -18,21 +18,35 @@ browser
 
 No public application server or contact sidecar exists behind Cloudflare in the v1 target.
 
+## Environment isolation
+
+Staging and production are separate Workers with separate hostnames and secret sets.
+
+| Environment | Hostname | Worker | Turnstile expected hostname |
+|---|---|---|---|
+| staging | `staging.arkadiuszkamrowski.com` | `arkadiuszkamrowski-staging` | `staging.arkadiuszkamrowski.com` |
+| production | `arkadiuszkamrowski.com` | `arkadiuszkamrowski` | `arkadiuszkamrowski.com` |
+
+Use a dedicated staging Turnstile widget. **Never reuse the production Turnstile secret on staging.**
+
+Each release Worker has its own values for:
+
+- `TURNSTILE_SECRET_KEY` — secret
+- `RESEND_API_KEY` — secret
+- `CONTACT_TO_EMAIL` — secret/private configuration
+- `PUBLIC_TURNSTILE_SITE_KEY` — browser-visible build value
+
+Non-secret Origin/hostname policy is committed in the matching `wrangler.*.jsonc` file.
+
 ## Delivery
 
-Production delivery uses the Resend HTTPS Email API.
+Delivery uses the Resend HTTPS Email API.
 
-Required production values:
-
-- `RESEND_API_KEY` — Worker secret
-- `CONTACT_TO_EMAIL` — Worker secret/private value
-- `CONTACT_FROM_EMAIL` — verified sender on the public domain/subdomain; non-secret runtime variable
-
-The delivery request uses a deterministic idempotency key derived from the submission identity so a browser retry does not accidentally create duplicate transactional email.
+`CONTACT_FROM_EMAIL` is a verified sender on the public domain/subdomain and is committed as a non-secret runtime value. The delivery request uses a deterministic idempotency key derived from the submission identity so a browser retry does not accidentally create duplicate transactional email.
 
 ## Cloudflare Turnstile
 
-Dashboard widget: `arkadiuszkamrowski-contact`, Managed mode.
+Production widget: `arkadiuszkamrowski-contact`, Managed mode, restricted to the apex production hostname.
 
 Production configuration:
 
@@ -40,6 +54,8 @@ Production configuration:
 - `TURNSTILE_REQUIRED=1`
 - `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`
 - `TURNSTILE_SECRET_KEY` — Worker secret
+
+Staging uses the same validation mechanism but a dedicated widget restricted to `staging.arkadiuszkamrowski.com`.
 
 Server-side Siteverify validation is mandatory before Resend is called. Missing, invalid, expired, already-used or wrong-hostname tokens are rejected. Turnstile tokens and secrets are never logged.
 
@@ -53,7 +69,7 @@ Server-side Siteverify validation is mandatory before Resend is called. Missing,
 - explicit contact-purpose acknowledgement
 - honeypot
 - minimum form-completion time
-- exact production Origin allow-list
+- exact environment-specific Origin allow-list
 - `Cache-Control: no-store`
 - no message body, visitor email, Turnstile token or secrets in Worker logs
 - no contact database
@@ -61,9 +77,11 @@ Server-side Siteverify validation is mandatory before Resend is called. Missing,
 
 The rate limiter is a coarse abuse safety layer; Turnstile and Cloudflare edge controls are the primary anti-automation controls. Do not treat the rate limiter as an accounting system.
 
-## Production configuration
+## Configuration contracts
 
-`wrangler.production.jsonc` contains non-secret runtime bindings/variables and the production Custom Domain. `.env.production.example` documents the complete build/runtime contract without real private values.
+- `.env.staging.example` + `wrangler.staging.jsonc` describe staging.
+- `.env.production.example` + `wrangler.production.jsonc` describe production.
+- `wrangler.jsonc` is manual/CI preview only and is not a release environment.
 
 Before production promotion:
 
@@ -78,7 +96,7 @@ make predeploy
 
 ## Worker secrets
 
-Provision private values directly in Cloudflare before the first production deployment, for example with Wrangler from a trusted local environment:
+Provision private values directly in the matching Cloudflare Worker. Example for production:
 
 ```bash
 npx --yes wrangler@4.129.0 secret put TURNSTILE_SECRET_KEY --config wrangler.production.jsonc
@@ -86,7 +104,9 @@ npx --yes wrangler@4.129.0 secret put RESEND_API_KEY --config wrangler.productio
 npx --yes wrangler@4.129.0 secret put CONTACT_TO_EMAIL --config wrangler.production.jsonc
 ```
 
-Do not place those values in `wrangler*.jsonc`, GitHub source, build logs or frontend variables.
+For staging use `--config wrangler.staging.jsonc` and staging-only values.
+
+Do not place secret values in `wrangler*.jsonc`, GitHub source, build logs or frontend variables.
 
 ## Email DNS
 
@@ -100,18 +120,18 @@ Use the exact DNS records generated by Resend.
 
 ## Automated tests
 
-Primary production runtime test:
+Primary Worker runtime test:
 
 ```bash
 make test-worker
 ```
 
-It covers Origin policy, JSON/body validation, timing, Turnstile success/failure, rate limiting, Resend call behavior, 308 canonicalization and asset fallback.
+It covers Origin policy, JSON/body validation, timing, Turnstile success/failure, rate limiting, Resend behavior, 308 canonicalization, asset fallback, production indexability and staging `noindex`/`robots.txt` behavior.
 
-CI also performs Wrangler dry-runs against both preview and production configs.
+CI performs Wrangler dry-runs against preview, staging and production configs.
 
 ## Local development and portability
 
-`make dev` currently keeps the small Node contact adapter for fast Astro local development and dry-run behavior. This is deliberately separate from the production Worker contract.
+`make dev` keeps the small Node contact adapter for fast Astro local development and dry-run behavior. This is deliberately separate from the release Worker contract.
 
-Docker/NGINX/Kubernetes remain reference/portability paths only. New production features must be implemented and tested in `worker/index.mjs` first; the portability adapter may mirror them only when maintaining that reference path is worthwhile.
+Docker/NGINX/Kubernetes remain reference/portability paths only. New release features must be implemented and tested in `worker/index.mjs` first; the portability adapter may mirror them only when maintaining that reference path is worthwhile.
