@@ -29,6 +29,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Astro type, build, static and contact API validation
         run: npm run test:static
+      - name: External reference check
+        run: node tests/external-links.mjs
       - name: Upload static artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
