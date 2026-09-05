@@ -4,17 +4,18 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 
 ## Architecture
 
+- **Public edge:** Cloudflare is the intended production DNS/CDN/security edge, owning public TLS, DDoS/WAF controls, AI crawler policy, canonical `www` redirect, selected response-header transforms and Turnstile.
 - **Frontend:** Astro 7 static generation. Content and navigation are pre-rendered to HTML.
-- **Runtime web:** hardened non-root NGINX serving `dist/`.
-- **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
+- **Runtime web:** hardened non-root NGINX serving `dist/` behind Cloudflare.
+- **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; server-side Cloudflare Turnstile verification protects production submissions and email delivery uses Resend when production secrets are configured.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
 - **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
 - **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
 - **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
-- **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
+- **No client framework:** JavaScript is used only for the contact form, Turnstile integration and intentional micro-interactions.
 - **Deployment:** public deployment remains disabled until owner/platform gates are complete. The production recommendation is a proportional managed container runtime; when Azure is selected, `docs/HOSTING_DECISION.md` recommends Azure Container Apps. Kubernetes/AKS stays future-ready/reference-only.
 
-See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+See `docs/CLOUDFLARE.md`, `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## macOS — fastest preview
 
@@ -26,7 +27,7 @@ cd Simple-Website
 make mac-demo
 ```
 
-Open `http://127.0.0.1:8080`. The contact API starts in **dry-run** mode by default, so the UX can be tested without sending mail.
+Open `http://127.0.0.1:8080`. The contact API starts in **dry-run** mode by default, so the UX can be tested without sending mail or requiring real Turnstile credentials.
 
 Stop with:
 
@@ -43,7 +44,7 @@ make dev
 # /api/contact is proxied to the local contact sidecar
 ```
 
-To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
+To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`. Real Turnstile enforcement should normally be tested with a dedicated non-production widget/test configuration rather than production secrets.
 
 ## Publishing Perspective
 
@@ -81,11 +82,11 @@ set +a
 make predeploy
 ```
 
-The preflight validates HTTPS/canonical host alignment, immutable frontend/contact image references, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
+The preflight validates HTTPS/canonical host alignment, immutable frontend/contact image references, live contact mode, explicit origin locking, mandatory Turnstile site/secret configuration and hostname binding, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
 
 After a passing preflight, `make docker-build-production` creates both production images with canonical production build guards and the explicit immutable tags supplied as `IMAGE` / `CONTACT_IMAGE`.
 
-The hosting topology and platform criteria are in `docs/HOSTING_DECISION.md`. The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+The Cloudflare edge contract is in `docs/CLOUDFLARE.md`. The hosting topology and platform criteria are in `docs/HOSTING_DECISION.md`. The end-to-end owner/platform procedure — Cloudflare DNS/TLS, email-domain verification, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Docker / Kubernetes
 
@@ -101,7 +102,8 @@ Docker Compose and Kubernetes run NGINX plus the contact API as an isolated comp
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
+- GitHub CI: locked build + static/SEO/privacy/link tests + contact/Turnstile tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
+- Cloudflare edge contract: documented; dashboard hardening configured, public DNS intentionally empty until origin exists
 - production configuration contract: ready; requires real platform values/secrets
 - production hosting recommendation: ready; Azure Container Apps preferred when Azure is selected
 - generic Kubernetes: future-ready/reference
