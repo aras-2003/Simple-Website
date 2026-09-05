@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
 
 env:
   SITE_BASE_URL: https://arkadiuszkamrowski.com
@@ -94,37 +93,69 @@ jobs:
           tags: personal-contact:ci
       - name: Runtime E2E through NGINX and contact API
         run: node tests/container-e2e.mjs
-      - name: Trivy site image scan
+
+      - name: Trivy site image gate
         id: trivy_site
+        continue-on-error: true
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-site:ci
-          format: sarif
-          output: trivy-site.sarif
+          format: table
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: '1'
-      - name: Trivy contact API image scan
+
+      - name: Trivy contact API image gate
         id: trivy_contact
+        continue-on-error: true
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: personal-contact:ci
-          format: sarif
-          output: trivy-contact.sarif
+          format: table
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: '1'
-      - name: Upload site scan to GitHub Security
-        if: ${{ always() && steps.trivy_site.outcome != 'skipped' }}
-        continue-on-error: true
-        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
+
+      - name: Write site vulnerability report
+        if: always()
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          sarif_file: trivy-site.sarif
-          category: site-container
-      - name: Upload contact scan to GitHub Security
-        if: ${{ always() && steps.trivy_contact.outcome != 'skipped' }}
-        continue-on-error: true
-        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
+          image-ref: personal-site:ci
+          format: json
+          output: trivy-site.json
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '0'
+
+      - name: Write contact vulnerability report
+        if: always()
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          sarif_file: trivy-contact.sarif
-          category: contact-container
+          image-ref: personal-contact:ci
+          format: json
+          output: trivy-contact.json
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '0'
+
+      - name: Upload container security reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: container-security-reports
+          path: |
+            trivy-site.json
+            trivy-contact.json
+          if-no-files-found: error
+
+      - name: Enforce container vulnerability gate
+        if: always()
+        run: |
+          echo "site scan outcome: ${{ steps.trivy_site.outcome }}"
+          echo "contact scan outcome: ${{ steps.trivy_contact.outcome }}"
+          test "${{ steps.trivy_site.outcome }}" = "success"
+          test "${{ steps.trivy_contact.outcome }}" = "success"
