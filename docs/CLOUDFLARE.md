@@ -1,6 +1,6 @@
-# Cloudflare production contract
+# Cloudflare runtime and edge contract
 
-This is the repository-side source of truth for the Cloudflare configuration and production runtime of `arkadiuszkamrowski.com`.
+This is the repository-side source of truth for the Cloudflare configuration and public runtime of `arkadiuszkamrowski.com`.
 
 Last aligned: **2026-09-06**.
 
@@ -10,7 +10,7 @@ Cloudflare is both the public edge and the application origin.
 
 ```text
 GitHub
-  │ build / deploy
+  │ branch-gated build / deploy
   ▼
 Cloudflare Workers
   ├── Static Assets → pre-rendered Astro HTML/CSS/JS
@@ -25,25 +25,52 @@ Cloudflare Workers
 
 There is **no production VM, NGINX, container registry, Container App, Kubernetes cluster or public application server** in the v1 target. Docker/Kubernetes material in the repository is portability/reference-only.
 
-This removes origin-bypass as an architectural class of risk: the Worker Custom Domain is the origin.
+This removes origin-bypass as an architectural class of risk: each Workers Custom Domain is the application origin.
 
-## 2. Deployments
+## 2. Branch and environment model
 
-Two Wrangler contracts are committed:
+`main` is integration-only and must not deploy automatically.
 
-- `wrangler.jsonc` — preview deployment with `workers.dev` and Preview URLs enabled.
-- `wrangler.production.jsonc` — production deployment, `workers.dev` disabled, apex attached as a Workers **Custom Domain**.
+```text
+feature/* → PR → main → PR/promote → staging → PR/promote → production
+```
+
+Release mapping:
+
+| Git branch | Cloudflare Worker | Public hostname | Automatic release role |
+|---|---|---|---|
+| `main` | none | none | integration only |
+| `staging` | `arkadiuszkamrowski-staging` | `staging.arkadiuszkamrowski.com` | release candidate |
+| `production` | `arkadiuszkamrowski` | `arkadiuszkamrowski.com` | production |
+
+Use **two separate Workers Builds applications** connected to the same repository. For both applications, set **Builds for non-production branches = OFF**. `main` must not be selected as the production branch for either application.
+
+Detailed setup values and promotion gates are in `docs/ENVIRONMENTS.md`.
+
+## 3. Wrangler contracts
+
+Three contracts are committed:
+
+- `wrangler.jsonc` — isolated manual/CI preview Worker (`arkadiuszkamrowski-preview`), `workers.dev` enabled; never a release environment.
+- `wrangler.staging.jsonc` — staging Worker `arkadiuszkamrowski-staging`, custom domain `staging.arkadiuszkamrowski.com`.
+- `wrangler.production.jsonc` — production Worker `arkadiuszkamrowski`, custom domain `arkadiuszkamrowski.com`.
 
 Pinned CLI for repository procedures: `wrangler 4.129.0`.
 
-Preview:
+Manual preview:
 
 ```bash
 npm run build
 make worker-preview
 ```
 
-Production:
+Staging manual equivalent to Workers Builds:
+
+```bash
+make worker-deploy-staging
+```
+
+Production manual equivalent:
 
 ```bash
 set -a
@@ -52,26 +79,48 @@ set +a
 make worker-deploy-production
 ```
 
-The production build requires `PUBLIC_TURNSTILE_SITE_KEY`. Runtime secrets are stored in Cloudflare, never in Git.
+Cloudflare Workers Builds is the preferred branch-driven release mechanism. The manual GitHub production workflow is retained as a guarded fallback and rejects execution unless the selected ref is `production`.
 
-Required Worker secrets:
+## 4. Environment isolation
 
-- `TURNSTILE_SECRET_KEY`
-- `RESEND_API_KEY`
-- `CONTACT_TO_EMAIL`
+### Staging
 
-## 3. DNS model
+Staging uses its own:
 
-Before the first Worker production deployment, an empty web DNS zone is valid.
+- Custom Domain `staging.arkadiuszkamrowski.com`;
+- Turnstile widget/sitekey/secret restricted to the staging hostname;
+- Worker secret set;
+- rate-limit namespace;
+- build variables;
+- Cloudflare Workers Builds application.
 
-The apex uses a Workers **Custom Domain**. Cloudflare creates the DNS record and certificate for `arkadiuszkamrowski.com` when the Custom Domain is attached; do not invent an A/CNAME origin record.
+Staging must not share the production Turnstile secret.
 
-Canonical host policy:
+Staging is non-indexable by construction:
+
+- Worker emits `X-Robots-Tag: noindex, nofollow, noarchive`;
+- Worker overrides `/robots.txt` to `Disallow: /`;
+- `wrangler.staging.jsonc` sends all requests through Worker code so the noindex policy cannot be bypassed by direct Static Asset handling;
+- Cloudflare Access should additionally protect the staging hostname.
+
+### Production
+
+Production remains public and indexable. Its Worker only runs first for `/api/*` and trailing-slash canonicalization; normal static pages stay on the optimized Static Assets path.
+
+Production Turnstile remains widget `arkadiuszkamrowski-contact`, Managed mode, pre-clearance disabled, restricted to `arkadiuszkamrowski.com`.
+
+## 5. DNS model
+
+The production apex uses a Workers **Custom Domain**. Cloudflare creates the DNS record and certificate for `arkadiuszkamrowski.com` when the Custom Domain is attached; do not invent an A/CNAME origin record.
+
+Staging uses the same Custom Domain mechanism for `staging.arkadiuszkamrowski.com`.
+
+Canonical production host policy:
 
 - `https://arkadiuszkamrowski.com` — application Custom Domain.
 - `https://www.arkadiuszkamrowski.com` — redirect-only alias.
 
-The existing Cloudflare rule `Redirect from WWW to apex` remains authoritative and must return **308**, preserving path and query. Because `www` is redirect-only and has no origin, create the Cloudflare-documented originless placeholder after the Worker is ready:
+The existing Cloudflare rule `Redirect from WWW to apex` remains authoritative and must return **308**, preserving path and query. Because `www` is redirect-only and has no origin, create the documented originless placeholder only for production launch:
 
 ```text
 A | www | 192.0.2.0 | Proxied
@@ -81,21 +130,21 @@ A | www | 192.0.2.0 | Proxied
 
 Email verification/delivery DNS records (MX/TXT/DKIM/DMARC/SPF) remain DNS-only unless the provider explicitly documents otherwise.
 
-## 4. Static asset routing
+## 6. Static asset routing
 
 Wrangler deploys `./dist` as Workers Static Assets.
 
-Policy:
+Production policy:
 
 - assets are attempted directly without Worker invocation;
 - `/api/*` invokes Worker code first;
-- trailing-slash requests invoke Worker code first so the repository preserves the existing one-hop **308** no-trailing-slash contract;
+- trailing-slash requests invoke Worker code first so the repository preserves the one-hop **308** no-trailing-slash contract;
 - unknown paths return a real custom 404 (`not_found_handling = 404-page`);
 - `html_handling = drop-trailing-slash` is defense in depth for alternate HTML file forms.
 
-Static asset requests therefore remain on the optimized asset path instead of paying Worker execution cost for every page view.
+Staging/preview policy deliberately uses `run_worker_first = ["/*"]` so non-production anti-indexing headers and `robots.txt` policy are applied consistently.
 
-## 5. Security headers and cache policy
+## 7. Security headers and cache policy
 
 `public/_headers` is the application-level source for headers on Static Assets. Dynamic Worker responses emit the same security baseline in code.
 
@@ -120,26 +169,28 @@ Static cache policy:
 
 The dashboard Response Header Transform `Security Headers - Baseline` may remain as edge defense in depth. Values must stay semantically identical to the repository contract so duplicate/conflicting policy is not created.
 
-## 6. Contact API
+## 8. Contact API
 
-Production endpoint: same-origin `POST /api/contact` handled by `worker/index.mjs`.
+Same-origin `POST /api/contact` is handled by `worker/index.mjs`.
 
 Controls:
 
-- explicit production Origin allow-list;
+- explicit environment-specific Origin allow-list;
 - 32 KiB body ceiling;
 - strict field lengths and topic allow-list;
 - honeypot and minimum completion time;
-- Cloudflare Workers Rate Limiting binding (10 attempts/minute per edge client identity, permissive safety layer);
-- mandatory Turnstile token and server-side Siteverify;
-- expected Turnstile hostname `arkadiuszkamrowski.com`;
+- Cloudflare Workers Rate Limiting binding;
+- mandatory Turnstile token and server-side Siteverify on release environments;
+- expected Turnstile hostname bound to the current environment;
 - Resend idempotency key derived from submission identity;
 - no message body, visitor email, Turnstile token or secret in application logs;
 - no contact database, CRM or newsletter enrollment.
 
-Turnstile remains configured as widget `arkadiuszkamrowski-contact`, Managed mode, pre-clearance disabled. Restrict its production hostname to the apex domain.
+Production expected hostname: `arkadiuszkamrowski.com`.
 
-## 7. Existing dashboard controls
+Staging expected hostname: `staging.arkadiuszkamrowski.com`.
+
+## 9. Existing dashboard controls
 
 Keep the security posture already established:
 
@@ -156,11 +207,11 @@ Keep the security posture already established:
 - managed transform removing `X-Powered-By`
 - Rocket Loader / Cloudflare Fonts / script-injection optimizations disabled unless re-audited
 
-`Full (strict)` is no longer an application-origin launch dependency because the Worker Custom Domain is itself the origin. If the zone later proxies another external origin, that hostname must use an appropriate strict origin-TLS posture independently.
+`Full (strict)` is no longer an application-origin launch dependency because Workers Custom Domains are the origins. If the zone later proxies an external origin, that hostname must use an appropriate strict origin-TLS posture independently.
 
-## 8. Notifications
+## 10. Notifications
 
-Keep the active policies:
+Keep the active production policies:
 
 - `Abuse | Cloudflare Abuse Report Alert | arkadiuszkamrowski.com`
 - `Cloudflare Status | Incident Alert` — Major + Critical
@@ -168,20 +219,40 @@ Keep the active policies:
 - `SSL/TLS | Universal SSL Alert | arkadiuszkamrowski.com`
 - `Security insights | New Insight detected | arkadiuszkamrowski.com`
 
-Origin-specific monitoring such as Passive Origin Monitoring is no longer required for the Cloudflare-native target. Use Workers observability plus public HTTPS uptime monitoring instead.
+Origin-specific monitoring such as Passive Origin Monitoring is not required for the Cloudflare-native target. Use Workers observability plus public HTTPS uptime monitoring instead.
 
-## 9. Production launch gate
+## 11. Staging acceptance gate
+
+PASS requires:
+
+- [ ] `staging` branch CI passes
+- [ ] staging Workers Builds application tracks only `staging`
+- [ ] non-production branch builds are OFF
+- [ ] staging Custom Domain/certificate is valid
+- [ ] Cloudflare Access protects staging
+- [ ] `X-Robots-Tag: noindex, nofollow, noarchive` is present
+- [ ] staging `/robots.txt` disallows all crawlers
+- [ ] PL/EN routes, 404 and 308 canonical redirects pass
+- [ ] staging Turnstile uses staging-only credentials and hostname
+- [ ] contact flow passes if enabled for acceptance
+- [ ] browser/accessibility checks pass on the release candidate
+
+## 12. Production launch gate
 
 PASS requires all of the following:
 
-- [ ] preview deploy passes on the Workers preview hostname
-- [ ] Worker secrets exist in Cloudflare
+- [ ] exact release candidate has been accepted on `staging`
+- [ ] promotion to `production` occurs through PR/review
+- [ ] `production` branch CI passes
+- [ ] production Workers Builds application tracks only `production`
+- [ ] non-production branch builds are OFF
+- [ ] Worker secrets exist in the production Worker
 - [ ] production sitekey is present at Astro build time
-- [ ] Turnstile widget hostname is restricted to approved production host(s)
+- [ ] Turnstile widget hostname is restricted to the production apex
 - [ ] production Wrangler dry-run passes
 - [ ] apex Workers Custom Domain is attached and certificate is valid
 - [ ] apex DNS is Cloudflare-managed by the Custom Domain
-- [ ] proxied `www → 192.0.2.0` placeholder exists for the redirect-only hostname
+- [ ] proxied `www → 192.0.2.0` redirect-only record exists
 - [ ] `www` returns one-hop 308 to apex preserving path/query
 - [ ] HTTP redirects to HTTPS
 - [ ] all core routes and real 404 pass public smoke
