@@ -49,11 +49,13 @@ Detailed setup values and promotion gates are in `docs/ENVIRONMENTS.md`.
 
 ## 3. Wrangler contracts
 
-Three contracts are committed:
+Three explicit contracts are committed:
 
-- `wrangler.jsonc` — isolated manual/CI preview Worker (`arkadiuszkamrowski-preview`), `workers.dev` enabled; never a release environment.
+- `wrangler.preview.jsonc` — isolated manual/CI preview Worker (`arkadiuszkamrowski-preview`), `workers.dev` enabled; never a release environment.
 - `wrangler.staging.jsonc` — staging Worker `arkadiuszkamrowski-staging`, custom domain `staging.arkadiuszkamrowski.com`.
 - `wrangler.production.jsonc` — production Worker `arkadiuszkamrowski`, custom domain `arkadiuszkamrowski.com`.
+
+The repository intentionally does **not** use a default `wrangler.jsonc`. This prevents Cloudflare Workers Builds from trying to auto-reconcile a release Worker name/config into the unrelated manual preview contract. Release builds always pass an explicit `--config` path.
 
 Pinned CLI for repository procedures: `wrangler 4.129.0`.
 

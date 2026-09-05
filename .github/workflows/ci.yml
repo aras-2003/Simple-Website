@@ -91,7 +91,7 @@ jobs:
       - name: Worker contact/runtime tests
         run: npm run test:worker
       - name: Validate manual preview Worker package
-        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.jsonc
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.preview.jsonc
       - name: Validate production Worker package
         run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.production.jsonc
       - name: Build staging-canonical static site

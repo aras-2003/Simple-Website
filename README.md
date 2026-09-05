@@ -78,7 +78,7 @@ npm run build
 make worker-preview
 ```
 
-This uses `wrangler.jsonc` and the isolated Worker name `arkadiuszkamrowski-preview`. It is not a release environment and must not be wired to `main` for automatic deployment.
+This uses `wrangler.preview.jsonc` and the isolated Worker name `arkadiuszkamrowski-preview`. The preview contract intentionally does not use the default `wrangler.jsonc` filename so Cloudflare Workers Builds cannot try to auto-reconcile staging/production dashboard settings into the manual preview config. It is not a release environment and must not be wired to `main` for automatic deployment.
 
 Staging:
 
