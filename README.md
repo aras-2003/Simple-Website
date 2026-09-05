@@ -8,12 +8,13 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Runtime web:** hardened non-root NGINX serving `dist/`.
 - **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
-- **Primary IA:** OAF → Practice → Perspective → About → Contact. Privacy is a footer-level utility route.
+- **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
+- **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
 - **Writing:** four real editorial notes in PL and EN, generated as static article routes.
 - **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
-- Azure/public deployment remains disabled; the future AKS workflow stays under `.github/workflows-disabled/`.
+- **Deployment:** public/Azure deployment remains disabled. Kubernetes/AKS stays future-ready/reference-only until a proportional production hosting model is selected.
 
-See `docs/INFORMATION_ARCHITECTURE.md` and `docs/CONTACT_SERVICE.md`.
+See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md` and `docs/DEPLOY_APPROVAL.md`.
 
 ## macOS — fastest preview
 
@@ -52,6 +53,8 @@ make test-a11y     # Playwright + axe across core and article routes
 make audit         # both
 ```
 
+GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
+
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
 
 ## Docker / Kubernetes
@@ -61,13 +64,14 @@ make mac-docker
 make k8s-local
 ```
 
-Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic production template expects email secrets to be created separately.
+Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic Kubernetes template is a portability/reference target rather than a mandatory production topology.
 
 ## Environment status
 
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: Astro + contact API + accessibility + two container security scans
+- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + automated accessibility + browser matrix + runtime container E2E + two container security scans
+- generic Kubernetes: future-ready/reference
 - Azure AKS: future-ready, disabled
 - public DNS/TLS: not deployed
