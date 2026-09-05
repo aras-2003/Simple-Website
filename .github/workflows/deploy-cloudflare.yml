@@ -1,0 +1,82 @@
+name: Deploy Cloudflare Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_public_smoke:
+        description: Run public smoke after deploy (requires apex + www launch DNS complete)
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-production
+  cancel-in-progress: false
+
+env:
+  SITE_BASE_URL: https://arkadiuszkamrowski.com
+  SITE_PRODUCTION_HOST: arkadiuszkamrowski.com
+  REQUIRE_PRODUCTION_SITE: '1'
+  WRANGLER_VERSION: '4.129.0'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Validate public build configuration
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+        run: |
+          test -n "$PUBLIC_TURNSTILE_SITE_KEY" || { echo 'PUBLIC_TURNSTILE_SITE_KEY repository/environment variable is required'; exit 1; }
+
+      - name: Build production site
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+        run: npm run build
+
+      - name: Test Worker runtime
+        run: npm run test:worker
+
+      - name: Confirm required Worker secrets exist
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@$WRANGLER_VERSION secret list --config wrangler.production.jsonc --format json > /tmp/worker-secrets.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const configured = new Set(JSON.parse(fs.readFileSync('/tmp/worker-secrets.json', 'utf8')).map((item) => item.name));
+          const required = ['TURNSTILE_SECRET_KEY', 'RESEND_API_KEY', 'CONTACT_TO_EMAIL'];
+          const missing = required.filter((name) => !configured.has(name));
+          if (missing.length) {
+            console.error(`Missing Cloudflare Worker secrets: ${missing.join(', ')}`);
+            process.exit(1);
+          }
+          console.log('Required Worker secret names are present.');
+          NODE
+
+      - name: Deploy Worker + Static Assets to production Custom Domain
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@$WRANGLER_VERSION deploy --config wrangler.production.jsonc
+
+      - name: Public production smoke
+        if: ${{ inputs.run_public_smoke }}
+        run: make smoke-production
