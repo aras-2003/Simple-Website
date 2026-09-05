@@ -25,7 +25,7 @@ for _ in $(seq 1 50); do
 done
 curl -fsS "$BASE/healthz" >/dev/null
 
-for path in / /about /en/about /oaf /work /writing /privacy /assets/og-card.png /sitemap-index.xml; do
+for path in / /about /en/about /oaf /work /writing /privacy /assets/og-card.png /scripts/contact-form.js /sitemap-index.xml /.well-known/security.txt; do
   status=$(curl -sS -o /dev/null -w '%{http_code}' "$BASE$path")
   test "$status" = "200" || { echo "$path expected 200, got $status"; exit 1; }
 done
@@ -44,6 +44,14 @@ for expected in \
   'cross-origin-resource-policy: same-origin'; do
   echo "$headers" | grep -qiF "$expected" || { echo "missing header: $expected"; exit 1; }
 done
+echo "$headers" | grep -qiE '^cache-control: no-cache\r?$' || { echo 'HTML cache policy is not no-cache'; exit 1; }
+
+public_headers=$(curl -sSI "$BASE/assets/og-card.png")
+echo "$public_headers" | grep -qiE '^cache-control: public, max-age=86400\r?$' || { echo 'public asset cache policy is incorrect'; exit 1; }
+if echo "$public_headers" | grep -qi 'immutable'; then
+  echo 'human-named public asset must not be immutable'
+  exit 1
+fi
 
 html=$(curl -fsS "$BASE/")
 echo "$html" | grep -q 'http-equiv="Content-Security-Policy"'
@@ -51,6 +59,15 @@ if echo "$html" | grep -q 'unsafe-inline'; then
   echo 'CSP unexpectedly allows unsafe-inline'
   exit 1
 fi
+astro_asset=$(printf '%s' "$html" | grep -oE '/_astro/[^"'"'"' ]+\.(css|js)' | head -n 1 || true)
+test -n "$astro_asset" || { echo 'no fingerprinted Astro asset found'; exit 1; }
+astro_headers=$(curl -sSI "$BASE$astro_asset")
+echo "$astro_headers" | grep -qiE '^cache-control: public, max-age=31536000, immutable\r?$' || { echo 'fingerprinted Astro cache policy is incorrect'; exit 1; }
+
+security_txt=$(curl -fsS "$BASE/.well-known/security.txt")
+for field in 'Contact:' 'Expires:' 'Canonical:' 'Preferred-Languages:'; do
+  echo "$security_txt" | grep -q "^$field" || { echo "security.txt missing $field"; exit 1; }
+done
 
 timestamp=$(($(date +%s%3N) - 2500))
 payload() {
