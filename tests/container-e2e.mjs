@@ -61,6 +61,16 @@ async function waitForContact() {
   throw new Error('contact sidecar did not become ready through NGINX');
 }
 
+function assertSecurityHeaders(response, label) {
+  const csp = response.headers.get('content-security-policy') || '';
+  assert.ok(csp.includes("script-src 'self'"), `${label}: CSP must allow same-origin bundled scripts`);
+  assert.ok(csp.includes("script-src-attr 'none'"), `${label}: CSP must block inline event handlers`);
+  assert.ok(!csp.includes("'unsafe-inline'"), `${label}: CSP must not contain unsafe-inline`);
+  assert.equal(response.headers.get('x-content-type-options'), 'nosniff', `${label}: nosniff required`);
+  assert.equal(response.headers.get('x-frame-options'), 'DENY', `${label}: framing must be denied`);
+  assert.ok((response.headers.get('strict-transport-security') || '').includes('max-age='), `${label}: HSTS required`);
+}
+
 cleanup();
 try {
   docker(
@@ -93,14 +103,7 @@ try {
   const homeHtml = await home.text();
   assert.match(homeHtml, new RegExp(`<link rel="canonical" href="${canonicalOrigin.replaceAll('.', '\\.')}\/?"`));
   assert.match(homeHtml, /<meta property="og:image" content="https:\/\/arkadiuszkamrowski\.com\/assets\/og-card\.png"/);
-
-  const csp = home.headers.get('content-security-policy') || '';
-  assert.ok(csp.includes("script-src 'self'"), 'CSP must allow same-origin bundled scripts');
-  assert.ok(csp.includes("script-src-attr 'none'"), 'CSP must block inline event handlers');
-  assert.ok(!csp.includes("'unsafe-inline'"), 'CSP must not contain unsafe-inline');
-  assert.equal(home.headers.get('x-content-type-options'), 'nosniff');
-  assert.equal(home.headers.get('x-frame-options'), 'DENY');
-  assert.ok((home.headers.get('strict-transport-security') || '').includes('max-age='));
+  assertSecurityHeaders(home, 'home');
 
   for (const path of ['/about/', '/en/about/']) {
     const response = await fetch(`${baseUrl}${path}`, { redirect: 'manual' });
@@ -115,6 +118,7 @@ try {
   const namedCache = namedAsset.headers.get('cache-control') || '';
   assert.ok(namedCache.includes('max-age=86400'));
   assert.ok(!namedCache.includes('immutable'));
+  assertSecurityHeaders(namedAsset, 'named asset');
 
   const bundledAsset = homeHtml.match(/(?:href|src)="(\/_astro\/[^"?]+\.(?:css|js))"/)?.[1];
   assert.ok(bundledAsset, 'expected at least one fingerprinted Astro asset');
@@ -123,6 +127,7 @@ try {
   const bundleCache = bundleResponse.headers.get('cache-control') || '';
   assert.ok(bundleCache.includes('max-age=31536000'));
   assert.ok(bundleCache.includes('immutable'));
+  assertSecurityHeaders(bundleResponse, 'fingerprinted asset');
 
   const contactPayload = {
     name: 'Runtime Test',
@@ -139,6 +144,7 @@ try {
   assert.equal(contact.status, 202);
   assert.deepEqual(await contact.json(), { ok: true });
   assert.equal(contact.headers.get('cache-control'), 'no-store');
+  assertSecurityHeaders(contact, 'contact API');
 
   const badOrigin = await fetch(`${baseUrl}/api/contact`, {
     method: 'POST',
@@ -150,7 +156,7 @@ try {
   const hidden = await fetch(`${baseUrl}/.git/config`, { redirect: 'manual' });
   assert.ok([403, 404].includes(hidden.status));
 
-  console.log('CONTAINER E2E PASS · NGINX canonicalization, security headers, cache policy and reverse-proxy contact flow');
+  console.log('CONTAINER E2E PASS · NGINX canonicalization, inherited security headers, cache policy and reverse-proxy contact flow');
 } catch (error) {
   try {
     console.error('SITE LOGS\n', docker('logs', siteName));
