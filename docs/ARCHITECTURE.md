@@ -16,13 +16,21 @@ Astro/TypeScript are build-time concerns. The browser receives pre-rendered HTML
 
 - `src/layouts/BaseLayout.astro` — document shell, SEO, hreflang and landmarks.
 - `src/components/*Page.astro` — localized page compositions.
-- `src/content/` — editorial long-form content, OAF/practice detail and article data.
+- `src/content.config.ts` — typed schema for long-form editorial entries.
+- `src/content/writing/{pl,en}/*.md` — bilingual Perspective essays; filenames define stable public slugs.
+- `src/content/` — OAF/practice/editorial platform data that is not long-form article body content.
 - `src/i18n/` — interface and page-level PL/EN copy.
 - `src/lib/site.ts` — locale-safe route helpers.
 - `src/pages/` / `src/pages/en/` — Polish default routes and mirrored English routes.
 - `server/contact.mjs` — isolated contact delivery endpoint.
 - `nginx/default.conf` — static delivery, security headers and same-origin API proxy.
 - `tests/` — static IA/SEO/privacy/link tests, contact API tests, browser/a11y automation and container runtime E2E.
+
+## Content model
+
+Perspective uses Astro Content Collections rather than a TypeScript object store. The collection schema validates metadata and source URLs at build time. The entry ID includes the locale directory, while the public article slug is derived from the Markdown filename. This allows `/writing/<slug>` and `/en/writing/<slug>` to share the same human-facing slug without creating duplicate collection IDs.
+
+Article body content is authored as Markdown. Metadata includes locale, category, title, description, reading time, editorial order, publication/modification dates and source references. The legacy duplicated TypeScript essay store has been removed so article content has one source of truth.
 
 ## Information architecture
 

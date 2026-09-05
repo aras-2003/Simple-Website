@@ -10,7 +10,7 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
 - **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
 - **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
-- **Writing:** four real editorial notes in PL and EN, generated as static article routes.
+- **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
 - **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
 - **Deployment:** public/Azure deployment remains disabled. Kubernetes/AKS stays future-ready/reference-only until a proportional production hosting model is selected.
 
@@ -45,6 +45,19 @@ make dev
 
 To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
 
+## Publishing Perspective
+
+Long-form Perspective content lives under:
+
+```text
+src/content/writing/pl/<slug>.md
+src/content/writing/en/<slug>.md
+```
+
+The **filename is the canonical article slug**. Each article is validated by the schema in `src/content.config.ts`, including locale, category, title, description, reading time, ordering, publication/modification dates and source URLs. PL and EN counterparts should use the same filename so hreflang pairs remain stable.
+
+Do not add a `slug` field to Markdown frontmatter: Astro treats it as an entry-ID override, which would collide across locales. When YAML text contains syntax-significant characters such as `:`, quote the value. Invalid metadata fails the build before release.
+
 ## Quality gates
 
 ```bash
@@ -53,7 +66,7 @@ make test-a11y     # Playwright + axe across core and article routes
 make audit         # both
 ```
 
-GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
+GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, the five-second home-layout contract, cross-browser visual audit captures, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
 
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
 
@@ -71,7 +84,7 @@ Docker Compose and Kubernetes run NGINX plus the contact API as an isolated comp
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + automated accessibility + browser matrix + runtime container E2E + two container security scans
+- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
 - generic Kubernetes: future-ready/reference
 - Azure AKS: future-ready, disabled
 - public DNS/TLS: not deployed
