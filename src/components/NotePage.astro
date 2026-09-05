@@ -12,6 +12,13 @@ const title = `${td(note.title)} – Arkadiusz Kamrowski`;
 const base = route(locale, 'writing');
 const plPath = `${route('pl', 'writing')}/${note.slug}`;
 const enPath = `${route('en', 'writing')}/${note.slug}`;
+const articleDates: Record<string, string> = {
+  'architecture-as-decision-system': '2026-09-04',
+  'portfolio-as-strategy-in-motion': '2026-09-04',
+  'ai-governance-without-theatre': '2026-09-04',
+  'transformation-operating-model': '2026-09-04',
+};
+const published = articleDates[note.slug];
 const sourceSets: Record<string, { label: string; href: string }[]> = {
   'Enterprise Architecture': [
     { label: 'MIT CISR · Enterprise Architecture', href: platformSources.mitCisrEa },
@@ -34,7 +41,14 @@ const sourceSets: Record<string, { label: string; href: string }[]> = {
 };
 const sources = sourceSets[note.category] ?? [];
 ---
-<BaseLayout locale={locale} routeKey="writing" title={title} description={td(note.dek)} paths={{ pl: plPath, en: enPath }}>
+<BaseLayout
+  locale={locale}
+  routeKey="writing"
+  title={title}
+  description={td(note.dek)}
+  paths={{ pl: plPath, en: enPath }}
+  article={published ? { datePublished: published, dateModified: published, section: note.category } : undefined}
+>
   <article class="note-page note-page-editorial">
     <header class="note-hero">
       <p class="eyebrow">{note.category}</p>
