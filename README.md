@@ -8,12 +8,13 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Runtime web:** hardened non-root NGINX serving `dist/`.
 - **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
-- **Primary IA:** OAF → Practice → Perspective → About → Contact. Privacy is a footer-level utility route.
-- **Writing:** four real editorial notes in PL and EN, generated as static article routes.
+- **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
+- **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
+- **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
 - **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
-- Azure/public deployment remains disabled; the future AKS workflow stays under `.github/workflows-disabled/`.
+- **Deployment:** public deployment remains disabled until owner/platform gates are complete. The production recommendation is a proportional managed container runtime; when Azure is selected, `docs/HOSTING_DECISION.md` recommends Azure Container Apps. Kubernetes/AKS stays future-ready/reference-only.
 
-See `docs/INFORMATION_ARCHITECTURE.md` and `docs/CONTACT_SERVICE.md`.
+See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## macOS — fastest preview
 
@@ -44,15 +45,47 @@ make dev
 
 To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
 
+## Publishing Perspective
+
+Long-form Perspective content lives under:
+
+```text
+src/content/writing/pl/<slug>.md
+src/content/writing/en/<slug>.md
+```
+
+The **filename is the canonical article slug**. Each article is validated by the schema in `src/content.config.ts`, including locale, category, title, description, reading time, ordering, publication/modification dates and source URLs. PL and EN counterparts should use the same filename so hreflang pairs remain stable.
+
+Do not add a `slug` field to Markdown frontmatter: Astro treats it as an entry-ID override, which would collide across locales. When YAML text contains syntax-significant characters such as `:`, quote the value. Invalid metadata fails the build before release.
+
 ## Quality gates
 
 ```bash
-make test          # astro check + build + static IA validation + contact API tests
+make test          # astro check + build + static IA validation + contact API + production predeploy contract tests
 make test-a11y     # Playwright + axe across core and article routes
 make audit         # both
 ```
 
+GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, the five-second home-layout contract, cross-browser visual audit captures, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
+
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
+
+## Production preflight
+
+`.env.production.example` is the public configuration contract; real values belong in the selected platform's secret/config store. A populated `.env.production` is ignored by Git and should be temporary if used locally.
+
+```bash
+set -a
+source .env.production
+set +a
+make predeploy
+```
+
+The preflight validates HTTPS/canonical host alignment, immutable frontend/contact image references, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
+
+After a passing preflight, `make docker-build-production` creates both production images with canonical production build guards and the explicit immutable tags supplied as `IMAGE` / `CONTACT_IMAGE`.
+
+The hosting topology and platform criteria are in `docs/HOSTING_DECISION.md`. The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Docker / Kubernetes
 
@@ -61,13 +94,16 @@ make mac-docker
 make k8s-local
 ```
 
-Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic production template expects email secrets to be created separately.
+Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic Kubernetes template is a portability/reference target rather than a mandatory production topology. The AKS workflow remains physically disabled under `.github/workflows-disabled/` and is maintained only as a hardened reference path.
 
 ## Environment status
 
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: Astro + contact API + accessibility + two container security scans
-- Azure AKS: future-ready, disabled
+- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
+- production configuration contract: ready; requires real platform values/secrets
+- production hosting recommendation: ready; Azure Container Apps preferred when Azure is selected
+- generic Kubernetes: future-ready/reference
+- Azure AKS: future-ready/reference, disabled
 - public DNS/TLS: not deployed

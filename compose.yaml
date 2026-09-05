@@ -4,6 +4,7 @@ services:
       context: .
       args:
         SITE_BASE_URL: http://localhost:${PORT:-8080}
+        REQUIRE_PRODUCTION_SITE: "0"
     ports:
       - "127.0.0.1:${PORT:-8080}:8080"
     read_only: true
@@ -24,6 +25,7 @@ services:
       CONTACT_API_PORT: 8787
       CONTACT_DRY_RUN: ${CONTACT_DRY_RUN:-1}
       CONTACT_RATE_LIMIT: ${CONTACT_RATE_LIMIT:-5}
+      CONTACT_RATE_BUCKETS: ${CONTACT_RATE_BUCKETS:-5000}
       CONTACT_REQUIRE_ORIGIN: ${CONTACT_REQUIRE_ORIGIN:-0}
       CONTACT_ALLOWED_ORIGINS: ${CONTACT_ALLOWED_ORIGINS:-http://127.0.0.1:8080,http://localhost:8080}
       RESEND_API_KEY: ${RESEND_API_KEY:-}

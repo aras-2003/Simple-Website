@@ -16,6 +16,9 @@ const title = locale === 'pl'
 const description = locale === 'pl'
   ? 'Perspektywa o tym, jak łączyć strategię, architekturę, portfel, ład decyzyjny i wykonanie w jeden system decyzji.'
   : 'A perspective on connecting strategy, architecture, portfolio, governance and execution into one decision system.';
+const heroContext = locale === 'pl'
+  ? 'Arkadiusz Kamrowski · perspektywa dla zarządów, CIO/CTO oraz liderów architektury i transformacji, którzy łączą decyzje biznesowe, technologiczne i wykonawcze.'
+  : 'Arkadiusz Kamrowski · a perspective for boards, CIO/CTOs, and leaders of architecture and transformation connecting business, technology and execution decisions.';
 const deeperPaths = [
   { href: route(locale, 'writing'), eyebrow: x.home.perspective.eyebrow, title: x.home.perspective.title, body: x.home.perspective.body, cta: x.home.perspective.cta },
   { href: route(locale, 'work'), eyebrow: x.home.practice.eyebrow, title: x.home.practice.title, body: x.home.practice.body, cta: x.home.practice.cta },
@@ -28,6 +31,7 @@ const deeperPaths = [
       <p class="eyebrow">{td(x.home.hero.eyebrow)}</p>
       <h1 id="hero-title">{td(x.home.hero.title)} <em>{td(x.home.hero.emphasis)}</em></h1>
       <p class="hero-lead">{td(x.home.hero.lead)}</p>
+      <p class="hero-context">{heroContext}</p>
       <div class="hero-actions">
         <a class="button button-primary" href={route(locale, 'writing')}>{x.home.hero.primary}<span aria-hidden="true">→</span></a>
         <a class="button button-quiet" href={route(locale, 'oaf')}>{x.home.hero.secondary}<span aria-hidden="true">→</span></a>

@@ -1,9 +1,10 @@
 ---
 import NotePage from '../../../components/NotePage.astro';
-import { getNotes } from '../../../content/notes';
+import { getWriting, writingSlug } from '../../../content/writing';
 
-export function getStaticPaths() {
-  return getNotes('en').map((note) => ({ params: { slug: note.slug }, props: { note } }));
+export async function getStaticPaths() {
+  const notes = await getWriting('en');
+  return notes.map((note) => ({ params: { slug: writingSlug(note) }, props: { note } }));
 }
 const { note } = Astro.props;
 ---

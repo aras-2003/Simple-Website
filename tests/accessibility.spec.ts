@@ -25,14 +25,38 @@ for (const path of routes) {
     await page.keyboard.press('Tab');
     const first = page.locator(':focus');
     await expect(first).toHaveAttribute('href', '#main');
+    await expect(first).toBeVisible();
     await page.keyboard.press('Enter');
     await expect(page.locator('#main')).toBeFocused();
   });
 
-  test(`${path} does not overflow horizontally at 320px`, async ({ page }) => {
+  test(`${path} reflows at the WCAG-equivalent 320px / 400% viewport`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto(path);
     const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(sizes.scroll).toBeLessThanOrEqual(sizes.client + 1);
   });
 }
+
+test('home honors prefers-reduced-motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const motion = await page.locator('.hero-actions .button-primary').evaluate((element) => {
+    const maxDurationMs = (value: string) => Math.max(...value.split(',').map((part) => {
+      const duration = part.trim();
+      if (duration.endsWith('ms')) return Number.parseFloat(duration);
+      if (duration.endsWith('s')) return Number.parseFloat(duration) * 1000;
+      return Number.POSITIVE_INFINITY;
+    }));
+    const htmlStyle = getComputedStyle(document.documentElement);
+    const elementStyle = getComputedStyle(element);
+    return {
+      scrollBehavior: htmlStyle.scrollBehavior,
+      transitionDurationMs: maxDurationMs(elementStyle.transitionDuration),
+      animationDurationMs: maxDurationMs(elementStyle.animationDuration),
+    };
+  });
+  expect(motion.scrollBehavior).toBe('auto');
+  expect(motion.transitionDurationMs).toBeLessThanOrEqual(1);
+  expect(motion.animationDurationMs).toBeLessThanOrEqual(1);
+});

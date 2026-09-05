@@ -1,9 +1,10 @@
-import { readFile, readdir } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import { readFile, readdir, stat } from 'node:fs/promises';
+import { join, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
+const productionOrigin = 'https://arkadiuszkamrowski.com';
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
 const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
 const requiredRoutes = [
@@ -12,6 +13,10 @@ const requiredRoutes = [
   ...sharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
   ...noteSlugs.map((slug) => `/en/writing/${slug}`),
 ];
+const articleRoutes = new Set([
+  ...noteSlugs.map((slug) => `/writing/${slug}`),
+  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+]);
 const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
 const portraitAsset = /\/assets\/arkadiusz-kamrowski[^"'<> ]*\.(?:webp|png|jpe?g)/;
 
@@ -31,6 +36,22 @@ function routeFile(route) {
   return join(dist, clean ? `${clean}/index.html` : 'index.html');
 }
 
+async function localTargetExists(urlPath) {
+  const clean = decodeURIComponent(urlPath.split(/[?#]/, 1)[0]);
+  if (!clean || clean === '/') return true;
+  const relativePath = clean.replace(/^\//, '');
+  const candidates = extname(relativePath)
+    ? [join(dist, relativePath)]
+    : [join(dist, relativePath, 'index.html'), join(dist, relativePath)];
+  for (const candidate of candidates) {
+    try {
+      const info = await stat(candidate);
+      if (info.isFile()) return true;
+    } catch {}
+  }
+  return false;
+}
+
 let errors = [];
 for (const route of requiredRoutes) {
   const file = routeFile(route);
@@ -38,22 +59,39 @@ for (const route of requiredRoutes) {
   try { html = await readFile(file, 'utf8'); }
   catch { errors.push(`${route}: missing generated HTML`); continue; }
   const expectedLang = route.startsWith('/en') ? 'en' : 'pl';
+  const expectedCanonical = `${productionOrigin}${route === '/' ? '/' : route}`;
   const checks = [
     [new RegExp(`<html[^>]+lang=["']${expectedLang}["']`), 'correct html lang'],
     [/<title>[^<]+<\/title>/, 'title'],
     [/<meta name="description" content="[^"]+"/, 'meta description'],
-    [/<link rel="canonical" href="[^"]+"/, 'canonical'],
+    [new RegExp(`<link rel="canonical" href="${expectedCanonical.replaceAll('.', '\\.')}"`), 'production canonical'],
     [/<link rel="alternate" hreflang="pl"/, 'PL hreflang'],
     [/<link rel="alternate" hreflang="en"/, 'EN hreflang'],
     [/<main id="main"/, 'main landmark'],
     [/class="skip-link"/, 'skip link'],
     [/<nav[^>]+aria-label=/, 'labelled navigation'],
+    [/<meta property="og:image" content="https:\/\/arkadiuszkamrowski\.com\/assets\/og-card\.png"/, 'raster OG image'],
+    [/<meta property="og:image:width" content="1200"/, 'OG image width'],
+    [/<meta property="og:image:height" content="630"/, 'OG image height'],
+    [/<meta property="og:image:alt" content="[^"]+"/, 'OG image alt'],
+    [/<meta name="twitter:card" content="summary_large_image"/, 'Twitter card'],
   ];
   for (const [regex, name] of checks) if (!regex.test(html)) errors.push(`${route}: missing ${name}`);
+
   const h1s = (html.match(/<h1\b/g) || []).length;
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
   if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
+  if (/<script(?![^>]*\bsrc=)[^>]*>/.test(html)) errors.push(`${route}: inline script found; CSP requires external scripts`);
+
+  if (articleRoutes.has(route)) {
+    if (!/<meta property="og:type" content="article"/.test(html)) errors.push(`${route}: article OG type expected`);
+    if (!/<meta property="article:published_time" content="[^"]+"/.test(html)) errors.push(`${route}: article published time expected`);
+    if (!/itemtype="https:\/\/schema\.org\/Article"/.test(html)) errors.push(`${route}: Article structured data expected`);
+  } else if (!/<meta property="og:type" content="website"/.test(html)) {
+    errors.push(`${route}: website OG type expected`);
+  }
+
   if (expectedLang === 'pl') {
     for (const token of forbiddenPlUi) if (html.includes(`>${token}<`)) errors.push(`${route}: untranslated UI token ${token}`);
   }
@@ -93,17 +131,48 @@ for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid
   if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
 }
 
+const privacyPl = await readFile(routeFile('/privacy'), 'utf8');
+for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Transfer poza EOG', 'Twoje prawa']) {
+  if (!privacyPl.includes(term)) errors.push(`/privacy: missing GDPR information layer ${term}`);
+}
+const privacyEn = await readFile(routeFile('/en/privacy'), 'utf8');
+for (const term of ['Data controller', 'Purpose and legal basis', 'Transfers outside the EEA', 'Your rights']) {
+  if (!privacyEn.includes(term)) errors.push(`/en/privacy: missing GDPR information layer ${term}`);
+}
+
+try {
+  const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
+  if (!robots.includes('User-agent: *')) errors.push('robots.txt: missing crawler policy');
+  if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
+} catch {
+  errors.push('robots.txt: missing generated public file');
+}
+
+try {
+  const sitemapIndex = await readFile(join(dist, 'sitemap-index.xml'), 'utf8');
+  if (!sitemapIndex.includes(productionOrigin)) errors.push('sitemap-index.xml: production origin expected');
+  if (sitemapIndex.includes('localhost')) errors.push('sitemap-index.xml: localhost URL leaked');
+} catch {
+  errors.push('sitemap-index.xml: missing generated sitemap index');
+}
+
 const allFiles = await walk(dist);
-for (const file of allFiles.filter(f => f.endsWith('.html'))) {
+for (const file of allFiles.filter((entry) => entry.endsWith('.html'))) {
   const html = await readFile(file, 'utf8');
-  if (html.includes('javascript:void')) errors.push(`${relative(dist, file)}: javascript:void link`);
-  if (html.includes('Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO')) errors.push(`${relative(dist, file)}: stale employment title exposed`);
-  if (html.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push(`${relative(dist, file)}: stale employment title exposed`);
+  const rel = relative(dist, file);
+  if (html.includes('javascript:void')) errors.push(`${rel}: javascript:void link`);
+  if (html.includes('Dyrektor Departamentu Architektury Korporacyjnej, Strategii i PMO')) errors.push(`${rel}: stale employment title exposed`);
+  if (html.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push(`${rel}: stale employment title exposed`);
+
+  const references = [...html.matchAll(/\b(?:href|src)="(\/[^"]+)"/g)].map((match) => match[1]);
+  for (const reference of new Set(references)) {
+    if (!(await localTargetExists(reference))) errors.push(`${rel}: broken internal reference ${reference}`);
+  }
 }
 
 if (errors.length) {
   console.error('STATIC VALIDATION FAILED');
-  errors.forEach(e => console.error(`- ${e}`));
+  errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} canonical translated routes checked + brand/content architecture gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + SEO/social/privacy/internal-link/robots/sitemap gates`);
