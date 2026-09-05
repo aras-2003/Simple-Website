@@ -4,6 +4,7 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const pl = locale === 'pl';
 const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '/api/contact';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 const topics = pl
   ? [
       ['architecture', 'Enterprise Architecture'],
@@ -31,6 +32,7 @@ const topics = pl
   data-validation={pl ? 'Sprawdź pola formularza i spróbuj ponownie.' : 'Check the form fields and try again.'}
   data-rate-limit={pl ? 'Za dużo prób w krótkim czasie. Spróbuj ponownie za kilka minut.' : 'Too many attempts in a short time. Try again in a few minutes.'}
   data-delivery={pl ? 'Usługa wysyłki jest chwilowo niedostępna. Spróbuj później lub użyj LinkedIn.' : 'Message delivery is temporarily unavailable. Try later or use LinkedIn.'}
+  data-turnstile={pl ? 'Potwierdzenie bezpieczeństwa nie zostało ukończone. Spróbuj ponownie.' : 'The security check was not completed. Please try again.'}
   data-sending={pl ? 'Wysyłanie…' : 'Sending…'}
   novalidate
 >
@@ -71,6 +73,12 @@ const topics = pl
     <input name="consent" type="checkbox" required />
     <span>{pl ? 'Zapoznałem/am się z informacją o prywatności i rozumiem zasady obsługi tej wiadomości.' : 'I have read the privacy information and understand how this message will be handled.'} <a href={route(locale, 'privacy')}>{pl ? 'Prywatność' : 'Privacy'}</a>.</span>
   </label>
+
+  {turnstileSiteKey && (
+    <div class="turnstile-wrap" aria-label={pl ? 'Weryfikacja bezpieczeństwa' : 'Security verification'}>
+      <div data-turnstile-widget data-sitekey={turnstileSiteKey} data-language={locale}></div>
+    </div>
+  )}
 
   <div class="form-footer">
     <button class="button button-primary button-large" type="submit">
