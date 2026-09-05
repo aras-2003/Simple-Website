@@ -1,4 +1,4 @@
-.PHONY: install build check test test-a11y test-contact test-predeploy audit predeploy dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y test-contact test-predeploy audit predeploy dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-build-production docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
 	npm install --no-audit --no-fund
@@ -51,6 +51,15 @@ browser-test: test-a11y
 docker-build:
 	docker build -t arkadiusz-kamrowski-site:local .
 	docker build -f server/Dockerfile -t arkadiusz-kamrowski-contact:local .
+
+docker-build-production: predeploy
+	docker build \
+		--build-arg SITE_BASE_URL="$${SITE_BASE_URL}" \
+		--build-arg SITE_PRODUCTION_HOST="$${HOST}" \
+		--build-arg REQUIRE_PRODUCTION_SITE=1 \
+		-t "$${IMAGE:?set IMAGE to an immutable production tag}" .
+	docker build -f server/Dockerfile \
+		-t "$${CONTACT_IMAGE:?set CONTACT_IMAGE to an immutable production tag}" .
 
 docker-run:
 	bash scripts/docker-run.sh
