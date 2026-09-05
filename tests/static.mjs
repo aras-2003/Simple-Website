@@ -140,6 +140,22 @@ for (const term of ['Data controller', 'Purpose and legal basis', 'Transfers out
   if (!privacyEn.includes(term)) errors.push(`/en/privacy: missing GDPR information layer ${term}`);
 }
 
+try {
+  const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
+  if (!robots.includes('User-agent: *')) errors.push('robots.txt: missing crawler policy');
+  if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
+} catch {
+  errors.push('robots.txt: missing generated public file');
+}
+
+try {
+  const sitemapIndex = await readFile(join(dist, 'sitemap-index.xml'), 'utf8');
+  if (!sitemapIndex.includes(productionOrigin)) errors.push('sitemap-index.xml: production origin expected');
+  if (sitemapIndex.includes('localhost')) errors.push('sitemap-index.xml: localhost URL leaked');
+} catch {
+  errors.push('sitemap-index.xml: missing generated sitemap index');
+}
+
 const allFiles = await walk(dist);
 for (const file of allFiles.filter((entry) => entry.endsWith('.html'))) {
   const html = await readFile(file, 'utf8');
@@ -159,4 +175,4 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + SEO/social/privacy/internal-link gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + SEO/social/privacy/internal-link/robots/sitemap gates`);
