@@ -1,151 +1,131 @@
 # Production hosting decision
 
-## Recommendation
+## Decision
 
-For this workload, the preferred production target is a **managed container runtime with one public HTTPS origin and two tightly coupled containers**. If the site is kept in Azure, the recommended first choice is **Azure Container Apps (ACA)** rather than a dedicated AKS cluster.
+The production target for `arkadiuszkamrowski.com` is **Cloudflare Workers + Static Assets**.
 
-This is a production recommendation, not an enabled deployment. Account/subscription, DNS ownership and production secrets remain external inputs.
+Azure Container Apps is no longer the preferred v1 target. Azure Static Web Apps + Functions remains the preferred Azure alternative if a future governance or platform requirement makes Azure mandatory.
 
-## Why this fits the site
+## Why this fits the workload
 
-The runtime contract is unusually small:
+The application is intentionally small:
 
-- Astro produces static HTML/assets.
-- NGINX is the only public application container and listens on `8080`.
-- The Node contact API listens on `8787` and is reached only by NGINX over loopback.
-- There is no database, queue, worker fleet or microservice mesh.
-- Deployments should be immutable and easy to roll back.
+- Astro pre-renders the public site to static HTML/assets.
+- The only dynamic route is `POST /api/contact`.
+- Contact processing is stateless: validation → Turnstile Siteverify → Resend HTTPS API.
+- There is no database, queue, worker fleet, file store or private service mesh.
+- Cloudflare is already the authoritative DNS/security edge.
 
-Azure Container Apps supports multiple tightly coupled containers in one container app; those containers share network resources and the application lifecycle. This maps closely to the Docker Compose and Kubernetes-pod model already tested in the repository.
-
-Microsoft references:
-
-- Containers / multiple-container behavior: https://learn.microsoft.com/azure/container-apps/containers
-- Container Apps resource reference: https://learn.microsoft.com/azure/templates/microsoft.app/containerapps
-- Managed environments resource reference: https://learn.microsoft.com/azure/templates/microsoft.app/managedenvironments
-- Custom domains and free managed certificates: https://learn.microsoft.com/azure/container-apps/custom-domains-managed-certificates
+Putting this workload in a general-purpose container runtime would add registry, image lifecycle, ingress, health probes, container patching and origin security without adding business value.
 
 ## Target topology
 
 ```text
-Internet
-   │
-   │ HTTPS / managed ingress
-   ▼
-arkadiuszkamrowski.com
-   │
-   ▼
-Azure Container App (single revision)
-   ├── web / NGINX :8080  ← only public target port
-   │      │
-   │      └── http://127.0.0.1:8787/api/contact
-   │
-   └── contact-api :8787  ← no independent public ingress
-
-Secrets → contact-api only
-Images  → immutable registry tags/digests
-Logs    → operational metadata; no visitor message/email bodies
+GitHub
+  │
+  │ build / release
+  ▼
+Cloudflare Workers
+  ├── Static Assets / Astro
+  │
+  └── /api/contact
+        ├── Turnstile Siteverify
+        └── Resend API
+               ▼
+             mailbox
 ```
 
-## Production configuration
+Cloudflare also owns DNS, managed certificates, WAF/DDoS/bot controls, redirects, static delivery and Workers observability.
 
-Web build:
+## Runtime contract
+
+Static application:
 
 - `SITE_BASE_URL=https://arkadiuszkamrowski.com`
 - `SITE_PRODUCTION_HOST=arkadiuszkamrowski.com`
 - `REQUIRE_PRODUCTION_SITE=1`
+- `PUBLIC_TURNSTILE_SITE_KEY` supplied at build time
 
-Contact runtime:
+Worker runtime:
 
-- `CONTACT_DRY_RUN=0`
-- `CONTACT_API_PORT=8787`
-- `CONTACT_RATE_LIMIT=5`
-- `CONTACT_RATE_BUCKETS=5000`
 - `CONTACT_REQUIRE_ORIGIN=1`
 - `CONTACT_ALLOWED_ORIGINS=https://arkadiuszkamrowski.com`
-- `RESEND_API_KEY` from secret store
-- `CONTACT_TO_EMAIL` from secret/config store
-- `CONTACT_FROM_EMAIL` on the verified public domain or subdomain
+- `TURNSTILE_REQUIRED=1`
+- `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`
+- `CONTACT_FROM_EMAIL=Website <contact@arkadiuszkamrowski.com>`
+- `TURNSTILE_SECRET_KEY` as Worker secret
+- `RESEND_API_KEY` as Worker secret
+- `CONTACT_TO_EMAIL` as Worker secret/private value
 
-Run `make predeploy` with the final values before promotion.
+The contact Worker also uses the `CONTACT_RATE_LIMITER` Workers Rate Limiting binding defined in Wrangler.
 
-## Registry and identity
+## Routing
 
-Preferred operational pattern:
+`wrangler.jsonc` is the preview contract and keeps the `workers.dev` endpoint available for pre-production verification.
 
-1. Build the web and contact images from the same Git commit.
-2. Scan both images before promotion using the existing Trivy gate.
-3. Push immutable image tags/digests to a private registry (Azure Container Registry when using Azure).
-4. Let the runtime pull using workload/managed identity where practical rather than long-lived registry passwords.
-5. Record both image digests in the deployment/release metadata so rollback is deterministic.
+`wrangler.production.jsonc` disables `workers.dev` and attaches `arkadiuszkamrowski.com` as a Workers Custom Domain. The Custom Domain makes the Worker the application origin and lets Cloudflare create the apex DNS record and certificate.
 
-Do not place email-provider secrets in image layers, Docker build arguments, repository files or public frontend environment variables.
+`www` remains redirect-only and is not a second application hostname. The existing Cloudflare 308 redirect rule stays authoritative.
 
-## TLS and custom domain
+## Security consequences
 
-For an ACA apex domain, Microsoft currently documents an **A record** to the Container Apps environment IP plus an `asuid` TXT verification record. Subdomains use a CNAME to the generated app domain plus the corresponding `asuid.<subdomain>` verification record. The provider-managed certificate can then be bound to the custom hostname.
+Moving from containers to Workers removes several controls because the underlying risks disappear:
 
-If the DNS zone contains CAA records, confirm that the certificate issuer required by the platform is allowed before binding; otherwise issuance/renewal can fail.
+- no public origin IP/hostname to bypass;
+- no container ingress to harden;
+- no registry credentials;
+- no NGINX patch lifecycle;
+- no sidecar network exposure;
+- no VM/node/cluster lifecycle;
+- no origin certificate renewal path.
 
-The preferred canonical policy for this site remains:
+Controls that remain mandatory:
 
-- apex `arkadiuszkamrowski.com` serves the site,
-- `www.arkadiuszkamrowski.com` redirects permanently to the apex preserving path/query,
-- all HTTP redirects to HTTPS.
+- Turnstile server-side verification;
+- same-origin contact policy;
+- strict CSP/security headers;
+- input/body limits;
+- Worker rate limiting / Cloudflare WAF protections;
+- secret isolation;
+- no sensitive payloads in logs;
+- immutable Git-based release history and rollback.
 
-The `www` redirect can be implemented at the DNS/edge/front-door layer if the selected Container Apps configuration does not provide the exact redirect behavior desired. Do not serve two separately canonicalized copies of the site.
+## Cost posture
 
-## Scale and cost posture
+For this traffic profile, Static Assets are expected to dominate requests and avoid Worker invocation. Worker execution is limited to the contact API and explicit canonicalization paths.
 
-Start small. This site does not justify a dedicated Kubernetes cluster.
+Start on the smallest appropriate Workers plan and move to paid capacity only when operational requirements or measured usage justify it. Cost is secondary to the architectural benefit: fewer moving parts and less operational surface.
 
-- Use the smallest sensible managed environment/runtime profile.
-- Prefer one warm replica if the incremental cost is acceptable and predictable first-request latency matters.
-- Scale out only from measured traffic/latency/error data.
-- Do not introduce Redis, a database, service mesh or message broker without a real product requirement.
-- If traffic grows enough for the per-process contact limiter to become insufficient, add edge/WAF rate limiting before adding application complexity.
+## Deployment and rollback
 
-## Observability
+Every production release must retain:
 
-Minimum signals:
+- Git commit SHA;
+- Cloudflare Worker version/deployment identifier;
+- build artifact provenance;
+- previous known-good Worker version;
+- current runtime secret/configuration ownership.
 
-- public HTTPS availability,
-- revision/container restart failures,
-- contact `delivery_unavailable`/5xx events,
-- TLS certificate expiry/renewal,
-- deployment revision and image digest,
-- basic request/error rate without storing contact payloads.
+Rollback means promoting the previous known-good Worker deployment/version, not editing production assets manually.
 
-No analytics platform is required for the initial launch. Product analytics can be evaluated later as a separate privacy/compliance decision.
+## Alternatives
 
-## Rollback
+### Azure Static Web Apps + Functions
 
-Every production promotion must preserve:
+Preferred alternative when Azure governance, Entra/RBAC, Azure Policy, private networking or enterprise landing-zone alignment becomes a hard requirement.
 
-- previous known-good revision,
-- web image digest,
-- contact image digest,
-- Git commit SHA,
-- the previous runtime configuration version.
+### Vercel / Netlify
 
-Rollback should switch to the previous revision/images, not mutate files inside a live container.
+Strong developer-experience alternatives, but they duplicate edge/CDN concerns already owned by Cloudflare and create a second operational platform for little benefit in this workload.
 
-## Why not AKS now
+### Azure Container Apps
 
-AKS remains useful as a portability/reference architecture in this repository, but it introduces cluster lifecycle, node capacity, ingress/controller/certificate choices and a larger patching/operational surface for a site whose production runtime is two tightly coupled containers and no stateful services.
+Still valid if the application evolves into a true container workload: long-running processes, container-specific dependencies, private services, background workers or other runtime requirements that Workers cannot reasonably satisfy.
 
-Use AKS only if a broader platform already exists and makes this deployment cheaper/easier to operate, or if the site intentionally serves as a Kubernetes demonstration workload.
+### GitHub Pages
 
-## Alternative provider
+Suitable for the static half only. It would still require a separate backend for `/api/contact`, so it does not beat the single-platform Workers design.
 
-The same production contract can be implemented on another managed platform if it provides:
+## Portability reference
 
-- public HTTPS ingress to the NGINX container,
-- private/loopback communication to the contact container or an equivalent private service,
-- managed secrets,
-- immutable revisions/images,
-- automatic TLS,
-- rollback,
-- basic logs/health/monitoring.
-
-Changing provider must not change the application-level canonical, security, privacy or contact contracts.
+Existing Docker, NGINX, Kubernetes and AKS files are retained only as portability/reference material. They are not the production deployment contract and must not be enabled automatically by CI/CD.

@@ -44,11 +44,18 @@ function assertSecurityHeaders(response, label) {
   const csp = response.headers.get('content-security-policy') || '';
   assert.ok(csp.includes("default-src 'self'"), `${label}: missing CSP default-src`);
   assert.ok(csp.includes("script-src 'self'"), `${label}: missing same-origin script policy`);
+  assert.ok(csp.includes('https://challenges.cloudflare.com'), `${label}: CSP must allow Cloudflare Turnstile`);
+  assert.ok(csp.includes('frame-src https://challenges.cloudflare.com'), `${label}: CSP must allow Turnstile iframe`);
   assert.ok(!csp.includes("'unsafe-inline'"), `${label}: unsafe-inline must not ship`);
   assert.equal(response.headers.get('x-content-type-options'), 'nosniff', `${label}: missing nosniff`);
   assert.equal(response.headers.get('x-frame-options'), 'DENY', `${label}: missing frame denial`);
   assert.ok((response.headers.get('strict-transport-security') || '').includes('max-age='), `${label}: missing HSTS`);
   assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin', `${label}: unexpected referrer policy`);
+  assert.equal(
+    response.headers.get('permissions-policy'),
+    'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+    `${label}: permissions policy must match the Cloudflare baseline`,
+  );
 }
 
 function expectedCanonical(path) {
@@ -96,7 +103,7 @@ const wwwResponse = await fetch(`${wwwOrigin}/oaf?smoke=1`, {
   redirect: 'manual',
   signal: signal(),
 });
-assert.ok([301, 308].includes(wwwResponse.status), `www host must redirect permanently, got ${wwwResponse.status}`);
+assert.equal(wwwResponse.status, 308, `Cloudflare www redirect must be 308, got ${wwwResponse.status}`);
 assert.equal(
   wwwResponse.headers.get('location'),
   `${origin}/oaf?smoke=1`,
@@ -125,4 +132,4 @@ const preflight = await request('/api/contact', {
 assert.equal(preflight.status, 204, 'contact API same-origin preflight must succeed');
 assert.equal(preflight.headers.get('access-control-allow-origin'), origin, 'contact CORS allow-origin must be exact');
 
-console.log(`PRODUCTION SMOKE PASS · ${origin} · routes, canonicalization, robots/sitemap, headers and contact-origin policy`);
+console.log(`PRODUCTION SMOKE PASS · ${origin} · routes, Cloudflare redirect/security contract and contact-origin policy`);

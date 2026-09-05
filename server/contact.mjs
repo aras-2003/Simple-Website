@@ -8,7 +8,13 @@ const resendKey = process.env.RESEND_API_KEY || '';
 const resendApiUrl = process.env.RESEND_API_URL || 'https://api.resend.com/emails';
 const toEmail = process.env.CONTACT_TO_EMAIL || '';
 const fromEmail = process.env.CONTACT_FROM_EMAIL || '';
-const configured = dryRun || Boolean(resendKey && toEmail && fromEmail);
+const turnstileRequired = process.env.TURNSTILE_REQUIRED === '1';
+const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || '';
+const turnstileExpectedHostname = process.env.TURNSTILE_EXPECTED_HOSTNAME || '';
+const turnstileVerifyUrl = process.env.TURNSTILE_VERIFY_URL || 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const configured = dryRun || Boolean(
+  resendKey && toEmail && fromEmail && (!turnstileRequired || turnstileSecret),
+);
 const maxBody = 32 * 1024;
 const windowMs = 10 * 60 * 1000;
 const maxRequests = Math.max(1, Number(process.env.CONTACT_RATE_LIMIT || 5));
@@ -107,6 +113,29 @@ function idempotencyKey(data) {
   return `contact-${digest}`;
 }
 
+async function verifyTurnstile(token, ip) {
+  if (!turnstileRequired) return true;
+  if (!turnstileSecret) throw new Error('turnstile_not_configured');
+  if (!token || token.length > 2048) return false;
+
+  const response = await fetch(turnstileVerifyUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      secret: turnstileSecret,
+      response: token,
+      ...(ip && ip !== 'unknown' ? { remoteip: ip } : {}),
+    }),
+    signal: AbortSignal.timeout(8000),
+  });
+
+  if (!response.ok) throw new Error('turnstile_unavailable');
+  const result = await response.json();
+  if (!result?.success) return false;
+  if (turnstileExpectedHostname && result.hostname !== turnstileExpectedHostname) return false;
+  return true;
+}
+
 async function sendEmail(data) {
   if (dryRun) return { id: 'dry-run' };
   if (!resendKey || !toEmail || !fromEmail) throw new Error('contact_not_configured');
@@ -192,6 +221,7 @@ const server = http.createServer(async (req, res) => {
     consent: body.consent === true,
     locale: body.locale === 'en' ? 'en' : 'pl',
     startedAt: Number(body.startedAt || 0),
+    turnstileToken: clean(body.turnstileToken),
   };
 
   const elapsed = Date.now() - data.startedAt;
@@ -205,8 +235,12 @@ const server = http.createServer(async (req, res) => {
   // The timestamp is only a low-cost bot signal. An upper bound caused valid
   // submissions from long-lived tabs to be rejected and provided no security value.
   if (!Number.isFinite(elapsed) || elapsed < 1200) return json(res, 400, { error: 'invalid_timing' }, origin);
+  if (turnstileRequired && !data.turnstileToken) return json(res, 403, { error: 'turnstile_required' }, origin);
 
   try {
+    const turnstileOk = await verifyTurnstile(data.turnstileToken, ip);
+    if (!turnstileOk) return json(res, 403, { error: 'turnstile_failed' }, origin);
+
     const result = await sendEmail(data);
     console.log(JSON.stringify({
       event: 'contact_sent',
@@ -217,10 +251,14 @@ const server = http.createServer(async (req, res) => {
     }));
     return json(res, 202, { ok: true }, origin);
   } catch (error) {
-    console.error('contact_error', error?.message || error);
+    const code = error?.message || 'unknown';
+    console.error('contact_error', code);
+    if (code === 'turnstile_not_configured' || code === 'turnstile_unavailable') {
+      return json(res, 503, { error: 'turnstile_unavailable' }, origin);
+    }
     return json(
       res,
-      error?.message === 'contact_not_configured' ? 503 : 502,
+      code === 'contact_not_configured' ? 503 : 502,
       { error: 'delivery_unavailable' },
       origin,
     );
@@ -240,5 +278,5 @@ process.on('SIGINT', shutdown);
 
 server.listen(port, '0.0.0.0', () => {
   console.log(`contact-api listening on :${port}${dryRun ? ' (dry-run)' : ''}`);
-  if (!configured) console.error('contact-api is not ready: production delivery secrets are missing');
+  if (!configured) console.error('contact-api is not ready: production delivery/Turnstile configuration is incomplete');
 });

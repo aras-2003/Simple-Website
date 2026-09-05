@@ -1,22 +1,23 @@
 # Arkadiusz Kamrowski · Personal Site
 
-Personal executive / thought-leadership site built with **Astro SSG + TypeScript**, complete Polish and English routes, a small isolated contact API, and a WCAG 2.2 AA accessibility target.
+Personal executive / thought-leadership site built with **Astro SSG + TypeScript**, complete Polish and English routes, a small Cloudflare Worker contact API, and a WCAG 2.2 AA accessibility target.
 
 ## Architecture
 
-- **Frontend:** Astro 7 static generation. Content and navigation are pre-rendered to HTML.
-- **Runtime web:** hardened non-root NGINX serving `dist/`.
-- **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
+- **Production runtime:** Cloudflare Workers + Static Assets. Cloudflare is both the public edge and application origin.
+- **Frontend:** Astro 7 static generation. Content and navigation are pre-rendered to HTML and deployed as Workers Static Assets.
+- **Contact:** same-origin `POST /api/contact` handled by `worker/index.mjs`; production submissions require server-side Cloudflare Turnstile validation and are delivered with the Resend HTTPS API.
+- **Edge/security:** Cloudflare owns DNS, managed certificates, DDoS/WAF/bot posture, AI crawler policy, canonical `www` redirect, URL normalization, response headers and observability.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
 - **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
 - **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
 - **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
-- **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
-- **Deployment:** public deployment remains disabled until owner/platform gates are complete. The production recommendation is a proportional managed container runtime; when Azure is selected, `docs/HOSTING_DECISION.md` recommends Azure Container Apps. Kubernetes/AKS stays future-ready/reference-only.
+- **No client framework:** JavaScript is used only for the contact form, Turnstile integration and intentional micro-interactions.
+- **Portability:** legacy NGINX, Docker, Kubernetes and AKS material is retained only as optional reference/testing material; it is not the production deployment target.
 
-See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+See `docs/CLOUDFLARE.md`, `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
-## macOS — fastest preview
+## macOS — fastest local preview
 
 Requirements: Node.js 22+, npm and Python 3.
 
@@ -26,7 +27,7 @@ cd Simple-Website
 make mac-demo
 ```
 
-Open `http://127.0.0.1:8080`. The contact API starts in **dry-run** mode by default, so the UX can be tested without sending mail.
+Open `http://127.0.0.1:8080`. The legacy local contact adapter starts in **dry-run** mode so the UX can be tested without real mail delivery or production Turnstile credentials.
 
 Stop with:
 
@@ -40,10 +41,31 @@ make mac-stop
 make install
 make dev
 # Astro: http://127.0.0.1:4321
-# /api/contact is proxied to the local contact sidecar
 ```
 
-To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
+The local Astro flow keeps the legacy Node adapter for fast development compatibility. The production contract is always the Worker implementation in `worker/index.mjs` and its dedicated tests.
+
+## Cloudflare preview and production
+
+Wrangler is intentionally invoked at a pinned version from the Makefile; it is not added to the application dependency graph.
+
+Preview deployment to `workers.dev` / Preview URLs:
+
+```bash
+npm run build
+make worker-preview
+```
+
+Production deployment to the apex Workers Custom Domain:
+
+```bash
+set -a
+source .env.production
+set +a
+make worker-deploy-production
+```
+
+`wrangler.jsonc` is the preview contract. `wrangler.production.jsonc` disables `workers.dev` and declares `arkadiuszkamrowski.com` as the production Custom Domain.
 
 ## Publishing Perspective
 
@@ -61,49 +83,46 @@ Do not add a `slug` field to Markdown frontmatter: Astro treats it as an entry-I
 ## Quality gates
 
 ```bash
-make test          # astro check + build + static IA validation + contact API + production predeploy contract tests
+make test          # Astro/static + Worker contact + portability contact + predeploy + performance/browser gates
+make test-worker   # Worker contact runtime only
 make test-a11y     # Playwright + axe across core and article routes
-make audit         # both
+make audit         # combined local quality gate
 ```
 
-GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, the five-second home-layout contract, cross-browser visual audit captures, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
+GitHub CI checks static/SEO/privacy/link behavior, Worker contact logic, Wrangler preview/production packaging, Chromium/Firefox/WebKit paths, performance budgets and automated WCAG checks.
 
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
 
-## Production preflight
+## Production configuration
 
-`.env.production.example` is the public configuration contract; real values belong in the selected platform's secret/config store. A populated `.env.production` is ignored by Git and should be temporary if used locally.
+`.env.production.example` documents the build/runtime contract. Real secret values belong in Cloudflare Workers secrets or the selected CI/build secret store and must never be committed.
 
-```bash
-set -a
-source .env.production
-set +a
-make predeploy
-```
+Production requires:
 
-The preflight validates HTTPS/canonical host alignment, immutable frontend/contact image references, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
+- public build value `PUBLIC_TURNSTILE_SITE_KEY`;
+- Worker secrets `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`;
+- exact canonical origin/hostname values from `.env.production.example`;
+- verified Resend sender/domain DNS.
 
-After a passing preflight, `make docker-build-production` creates both production images with canonical production build guards and the explicit immutable tags supplied as `IMAGE` / `CONTACT_IMAGE`.
+`make predeploy` validates the contract without printing private values.
 
-The hosting topology and platform criteria are in `docs/HOSTING_DECISION.md`. The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
-
-## Docker / Kubernetes
+## Docker / Kubernetes portability reference
 
 ```bash
+make portability-docker-build
 make mac-docker
 make k8s-local
 ```
 
-Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic Kubernetes template is a portability/reference target rather than a mandatory production topology. The AKS workflow remains physically disabled under `.github/workflows-disabled/` and is maintained only as a hardened reference path.
+These paths are retained for portability/reference and local experimentation only. They are deliberately not the production CI/CD target.
 
 ## Environment status
 
 - macOS native: ready
-- Docker Desktop: ready by configuration
-- local Kubernetes: ready by configuration
-- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
-- production configuration contract: ready; requires real platform values/secrets
-- production hosting recommendation: ready; Azure Container Apps preferred when Azure is selected
-- generic Kubernetes: future-ready/reference
-- Azure AKS: future-ready/reference, disabled
-- public DNS/TLS: not deployed
+- Cloudflare Worker contact implementation: ready by configuration
+- Wrangler preview/production contracts: ready
+- GitHub CI: Astro/static + Worker + Wrangler dry-run + accessibility/browser/performance gates
+- production secrets: not provisioned in Cloudflare yet
+- production Custom Domain/DNS: not deployed yet
+- `www` redirect rule: configured in Cloudflare; redirect-only DNS placeholder still required at launch
+- Docker/Kubernetes/AKS: portability/reference only

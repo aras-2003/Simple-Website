@@ -25,6 +25,7 @@ function startApi(port, extraEnv = {}) {
       CONTACT_RATE_BUCKETS: '100',
       CONTACT_REQUIRE_ORIGIN: '1',
       CONTACT_ALLOWED_ORIGINS: origin,
+      TURNSTILE_REQUIRED: '0',
       ...extraEnv,
     },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -61,6 +62,7 @@ async function stop(child) {
 
 const children = [];
 let mockServer;
+let turnstileServer;
 try {
   const functional = startApi(18787);
   children.push(functional);
@@ -125,6 +127,37 @@ try {
   const otherIdentity = await post(18789, { ...basePayload, email: 'other@example.com' }, { 'X-Real-IP': '203.0.113.11', 'X-Forwarded-For': '198.51.100.3' });
   assert.equal(otherIdentity.status, 202);
 
+  turnstileServer = http.createServer(async (req, res) => {
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    const params = new URLSearchParams(Buffer.concat(chunks).toString('utf8'));
+    const success = params.get('secret') === 'test-turnstile-secret-1234567890'
+      && params.get('response') === 'valid-turnstile-token';
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success, hostname: success ? 'arkadiuszkamrowski.com' : undefined }));
+  });
+  await new Promise((resolve) => turnstileServer.listen(18998, '127.0.0.1', resolve));
+
+  const protectedApi = startApi(18790, {
+    TURNSTILE_REQUIRED: '1',
+    TURNSTILE_SECRET_KEY: 'test-turnstile-secret-1234567890',
+    TURNSTILE_EXPECTED_HOSTNAME: 'arkadiuszkamrowski.com',
+    TURNSTILE_VERIFY_URL: 'http://127.0.0.1:18998',
+  });
+  children.push(protectedApi);
+  await waitForHealth(18790);
+
+  const missingTurnstile = await post(18790, basePayload);
+  assert.equal(missingTurnstile.status, 403);
+  assert.deepEqual(await missingTurnstile.json(), { error: 'turnstile_required' });
+
+  const badTurnstile = await post(18790, { ...basePayload, turnstileToken: 'bad-token' });
+  assert.equal(badTurnstile.status, 403);
+  assert.deepEqual(await badTurnstile.json(), { error: 'turnstile_failed' });
+
+  const goodTurnstile = await post(18790, { ...basePayload, turnstileToken: 'valid-turnstile-token' });
+  assert.equal(goodTurnstile.status, 202);
+
   mockServer = http.createServer((_req, res) => {
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'mock_failure' }));
@@ -144,8 +177,9 @@ try {
   assert.equal(unavailable.status, 502);
   assert.deepEqual(await unavailable.json(), { error: 'delivery_unavailable' });
 
-  console.log('CONTACT API TEST PASS · validation, origin, size, timing, rate-limit identity and delivery failure');
+  console.log('CONTACT API TEST PASS · validation, origin, size, timing, rate-limit identity, Turnstile and delivery failure');
 } finally {
   for (const child of children) await stop(child);
   if (mockServer) await new Promise((resolve) => mockServer.close(resolve));
+  if (turnstileServer) await new Promise((resolve) => turnstileServer.close(resolve));
 }

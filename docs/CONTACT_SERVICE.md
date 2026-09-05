@@ -1,48 +1,71 @@
 # Contact service
 
-The public website remains **Astro SSG + NGINX**. A small dependency-free Node.js sidecar exposes only `POST /api/contact` and `/healthz`. NGINX proxies the public same-origin `/api/contact` route to the sidecar.
+The production contact endpoint is a **Cloudflare Worker** at same-origin `POST /api/contact`.
+
+The previous Node sidecar remains only as a local/portability adapter. It is not part of the production request path.
+
+## Production request path
+
+```text
+browser
+  → Cloudflare Workers Custom Domain
+  → POST /api/contact
+  → worker/index.mjs
+  → Turnstile Siteverify
+  → Resend HTTPS Email API
+  → mailbox
+```
+
+No public application server or contact sidecar exists behind Cloudflare in the v1 target.
 
 ## Delivery
 
-Production delivery uses the Resend HTTPS Email API. The API key and destination address are server-side environment variables and never reach browser code.
+Production delivery uses the Resend HTTPS Email API.
 
-Required production secrets/private values:
+Required production values:
 
-- `RESEND_API_KEY`
-- `CONTACT_TO_EMAIL`
-- `CONTACT_FROM_EMAIL` — use a sender on the public domain or its subdomain and verify that sender/domain with the transactional email provider
+- `RESEND_API_KEY` — Worker secret
+- `CONTACT_TO_EMAIL` — Worker secret/private value
+- `CONTACT_FROM_EMAIL` — verified sender on the public domain/subdomain; non-secret runtime variable
 
-Runtime controls:
+The delivery request uses a deterministic idempotency key derived from the submission identity so a browser retry does not accidentally create duplicate transactional email.
 
-- `CONTACT_ALLOWED_ORIGINS` — comma-separated explicit origins
-- `CONTACT_REQUIRE_ORIGIN=1` — required by the production contract
-- `CONTACT_RATE_LIMIT` — default 5 requests per 10 minutes per process
-- `CONTACT_RATE_BUCKETS` — default 5000 bounded in-memory rate-limit identities
-- `CONTACT_DRY_RUN=1` — local/CI mode that validates the full request without sending mail; production requires `0`
+## Cloudflare Turnstile
 
-The delivery request includes a deterministic 24-hour idempotency key so an identical browser submission cannot accidentally produce duplicate transactional emails if a request is retried.
+Dashboard widget: `arkadiuszkamrowski-contact`, Managed mode.
+
+Production configuration:
+
+- `PUBLIC_TURNSTILE_SITE_KEY` — browser-visible sitekey injected at Astro build time
+- `TURNSTILE_REQUIRED=1`
+- `TURNSTILE_EXPECTED_HOSTNAME=arkadiuszkamrowski.com`
+- `TURNSTILE_SECRET_KEY` — Worker secret
+
+Server-side Siteverify validation is mandatory before Resend is called. Missing, invalid, expired, already-used or wrong-hostname tokens are rejected. Turnstile tokens and secrets are never logged.
 
 ## Abuse and privacy controls
 
-- 32 KB request body limit
-- field length and topic allow-list validation
-- explicit contact-purpose consent
-- honeypot field
+- Cloudflare WAF / DDoS / bot posture
+- mandatory server-side Turnstile validation
+- Workers Rate Limiting binding on the contact route
+- 32 KiB request body ceiling
+- strict field length and topic allow-list validation
+- explicit contact-purpose acknowledgement
+- honeypot
 - minimum form-completion time
-- per-IP in-memory rate limiting
-- bounded rate-limit bucket storage
-- origin allow-list validation; origin required in production
-- NGINX supplies the rate-limit identity through a controlled `X-Real-IP` header instead of trusting a client-provided forwarded chain
-- no message body or email address written to application logs
-- no contact database and no newsletter/CRM enrollment
+- exact production Origin allow-list
+- `Cache-Control: no-store`
+- no message body, visitor email, Turnstile token or secrets in Worker logs
+- no contact database
+- no automatic CRM/newsletter enrollment
 
-For a public high-traffic deployment, add edge/WAF rate limiting because the in-memory limiter is intentionally lightweight and scoped to each replica.
+The rate limiter is a coarse abuse safety layer; Turnstile and Cloudflare edge controls are the primary anti-automation controls. Do not treat the rate limiter as an accounting system.
 
-## Production contract
+## Production configuration
 
-Use `.env.production.example` as the public template and store the populated values in the hosting platform's secret/config system.
+`wrangler.production.jsonc` contains non-secret runtime bindings/variables and the production Custom Domain. `.env.production.example` documents the complete build/runtime contract without real private values.
 
-Before promotion:
+Before production promotion:
 
 ```bash
 set -a
@@ -51,24 +74,44 @@ set +a
 make predeploy
 ```
 
-The predeploy check validates that live delivery is enabled, the canonical HTTPS origin is explicitly allowed, localhost/wildcards are absent, sender and recipient addresses are valid, the sender belongs to the public domain/subdomain, runtime limits are sane and the delivery key is present. It reports only configuration state; it never prints the API key.
+`make predeploy` validates canonical HTTPS, exact Origin locking, Turnstile build/runtime configuration, sender-domain alignment and required delivery secrets without printing them.
 
-Email DNS must be configured carefully: use provider-generated DKIM records exactly, inspect the existing SPF policy before editing it (do not create a second independent SPF policy), and review any existing DMARC/MX records before changing them. The full operational procedure is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+## Worker secrets
 
-## Local development
-
-`make dev` starts the contact API in dry-run mode and Astro. Astro's dev proxy keeps `/api/contact` same-origin.
-
-`make mac-demo` builds the static site, starts a loopback-only Python web server and a loopback contact API. The build points the form to the local contact port because the Python static server does not proxy.
-
-To test real email delivery locally:
+Provision private values directly in Cloudflare before the first production deployment, for example with Wrangler from a trusted local environment:
 
 ```bash
-export CONTACT_DRY_RUN=0
-export RESEND_API_KEY='...'
-export CONTACT_TO_EMAIL='...'
-export CONTACT_FROM_EMAIL='Website <contact@arkadiuszkamrowski.com>'
-make dev
+npx --yes wrangler@4.129.0 secret put TURNSTILE_SECRET_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put RESEND_API_KEY --config wrangler.production.jsonc
+npx --yes wrangler@4.129.0 secret put CONTACT_TO_EMAIL --config wrangler.production.jsonc
 ```
 
-Never commit these values. Production Kubernetes expects them in the `personal-site-contact` Secret, which must be provisioned separately from the repository; other production platforms should use their native secret store.
+Do not place those values in `wrangler*.jsonc`, GitHub source, build logs or frontend variables.
+
+## Email DNS
+
+Use the exact DNS records generated by Resend.
+
+- DKIM: publish exactly as generated.
+- SPF: inspect the existing policy first; do not create a second independent SPF record.
+- DMARC: review existing policy before changing enforcement.
+- MX: do not change inbound-mail routing merely to enable transactional sending unless explicitly required.
+- Provider verification records are DNS-only in Cloudflare unless the provider documents otherwise.
+
+## Automated tests
+
+Primary production runtime test:
+
+```bash
+make test-worker
+```
+
+It covers Origin policy, JSON/body validation, timing, Turnstile success/failure, rate limiting, Resend call behavior, 308 canonicalization and asset fallback.
+
+CI also performs Wrangler dry-runs against both preview and production configs.
+
+## Local development and portability
+
+`make dev` currently keeps the small Node contact adapter for fast Astro local development and dry-run behavior. This is deliberately separate from the production Worker contract.
+
+Docker/NGINX/Kubernetes remain reference/portability paths only. New production features must be implemented and tested in `worker/index.mjs` first; the portability adapter may mirror them only when maintaining that reference path is worthwhile.

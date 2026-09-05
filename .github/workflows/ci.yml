@@ -26,7 +26,7 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Astro type, build, static and contact API validation
+      - name: Astro type, build, Worker/contact and static validation
         run: npm run test:static
       - name: Performance budget
         run: npm run test:performance
@@ -74,66 +74,23 @@ jobs:
           path: artifacts
           if-no-files-found: ignore
 
-  container:
+  workers-runtime:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Setup Buildx
-        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
-      - name: Build site image for CI
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          context: .
-          load: true
-          push: false
-          tags: personal-site:ci
-          build-args: |
-            SITE_BASE_URL=https://arkadiuszkamrowski.com
-            SITE_PRODUCTION_HOST=arkadiuszkamrowski.com
-            REQUIRE_PRODUCTION_SITE=1
-      - name: Build contact API image for CI
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
-        with:
-          context: .
-          file: server/Dockerfile
-          load: true
-          push: false
-          tags: personal-contact:ci
-      - name: Runtime E2E through NGINX and contact API
-        run: node tests/container-e2e.mjs
-
-      - name: Write site vulnerability report
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          image-ref: personal-site:ci
-          format: json
-          output: trivy-site.json
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '0'
-
-      - name: Write contact vulnerability report
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          image-ref: personal-contact:ci
-          format: json
-          output: trivy-contact.json
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '0'
-
-      - name: Upload container security reports
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: container-security-reports
-          path: |
-            trivy-site.json
-            trivy-contact.json
-          if-no-files-found: error
-
-      - name: Enforce container vulnerability gate
-        run: node tests/container-vulnerability-gate.mjs trivy-site.json trivy-contact.json
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Build canonical static site
+        run: npm run build
+      - name: Worker contact runtime tests
+        run: npm run test:worker
+      - name: Validate preview Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.jsonc
+      - name: Validate production Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.production.jsonc
