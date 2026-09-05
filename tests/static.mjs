@@ -89,7 +89,7 @@ const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
 if (caseCount !== 6) errors.push(`/work: expected 6 case studies, found ${caseCount}`);
 
 const oaf = await readFile(routeFile('/oaf'), 'utf8');
-for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'boundary-list', 'oaf-use-section-polished']) {
+for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'decision-contract-section', 'boundary-list', 'oaf-use-section-polished']) {
   if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
 }
 
