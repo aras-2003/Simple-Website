@@ -16,7 +16,7 @@ const writing = defineCollection({
     sources: z.array(z.object({
       label: z.string().min(1),
       href: z.url(),
-    })).default([]),
+    })).min(1),
   }),
 });
 
