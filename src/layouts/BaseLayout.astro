@@ -19,9 +19,23 @@ interface Props {
   title: string;
   description: string;
   paths?: { pl: string; en: string };
+  contentType?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  articleSection?: string;
 }
 
-const { locale, routeKey, title, description, paths } = Astro.props;
+const {
+  locale,
+  routeKey,
+  title,
+  description,
+  paths,
+  contentType = 'website',
+  publishedTime,
+  modifiedTime,
+  articleSection,
+} = Astro.props;
 const c = copy[locale];
 const other = alternateLocale(locale);
 const canonicalPath = paths?.[locale] ?? route(locale, routeKey);
@@ -31,39 +45,16 @@ const canonical = absoluteUrl(canonicalPath, Astro.site);
 const plUrl = absoluteUrl(plPath, Astro.site);
 const enUrl = absoluteUrl(enPath, Astro.site);
 const ogLocale = locale === 'pl' ? 'pl_PL' : 'en_US';
-const personId = `${absoluteUrl(route('pl', 'about'), Astro.site)}#person`;
-const websiteId = `${absoluteUrl('/', Astro.site)}#website`;
-const person = {
-  '@type': 'Person',
-  '@id': personId,
-  name: 'Arkadiusz Kamrowski',
-  url: absoluteUrl(route('pl', 'about'), Astro.site),
-  sameAs: ['https://pl.linkedin.com/in/arkadiusz-kamrowski'],
-  description: locale === 'pl'
-    ? 'Profil ekspercki łączący architekturę organizacyjną i korporacyjną, strategię, transformację, portfel, PMO i technologię.'
-    : 'An expert profile connecting organizational and enterprise architecture, strategy, transformation, portfolio, PMO and technology.',
-  knowsAbout: ['Organizational Architecture', 'Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Portfolio Management', 'Technology', 'AI Governance'],
-};
-const jsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebSite',
-      '@id': websiteId,
-      name: 'Arkadiusz Kamrowski',
-      url: absoluteUrl('/', Astro.site),
-      inLanguage: ['pl', 'en'],
-      author: { '@id': personId },
-      description: locale === 'pl'
-        ? 'Platforma o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji i systemach decyzji.'
-        : 'A platform on organizational architecture, enterprise architecture, strategy, portfolio, transformation and decision systems.',
-    },
-    person,
-  ],
-});
+const ogAlternateLocale = locale === 'pl' ? 'en_US' : 'pl_PL';
+const ogImage = absoluteUrl('/assets/og-card.png', Astro.site);
+const ogImageAlt = locale === 'pl'
+  ? 'Arkadiusz Kamrowski – architektura organizacyjna, strategia i wykonanie'
+  : 'Arkadiusz Kamrowski – organizational architecture, strategy and execution';
+const homeUrl = absoluteUrl('/', Astro.site);
+const aboutUrl = absoluteUrl(route('pl', 'about'), Astro.site);
 ---
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} itemscope itemtype="https://schema.org/WebSite">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -71,20 +62,40 @@ const jsonLd = JSON.stringify({
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta itemprop="name" content="Arkadiusz Kamrowski" />
+    <link itemprop="url" href={homeUrl} />
+    <meta itemprop="author" content="Arkadiusz Kamrowski" />
+    <link rel="author" href={aboutUrl} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="pl" href={plUrl} />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="x-default" href={plUrl} />
-    <meta property="og:type" content="website" />
+
+    <meta property="og:type" content={contentType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
-    <meta property="og:image" content={absoluteUrl('/assets/og-card.svg', Astro.site)} />
+    <meta property="og:locale:alternate" content={ogAlternateLocale} />
+    <meta property="og:site_name" content="Arkadiusz Kamrowski" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {contentType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {contentType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {contentType === 'article' && articleSection && <meta property="article:section" content={articleSection} />}
+    {contentType === 'article' && <meta property="article:author" content="Arkadiusz Kamrowski" />}
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script is:inline type="application/ld+json" set:html={jsonLd}></script>
   </head>
   <body>
     <a class="skip-link" href="#main">{c.skipMain}</a>
