@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto';
 import '../styles/global.css';
 import '../styles/responsive.css';
 import '../styles/content-ia.css';
@@ -13,15 +14,22 @@ import Footer from '../components/Footer.astro';
 import { absoluteUrl, alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 import { copy } from '../i18n/content';
 
+interface ArticleMeta {
+  datePublished: string;
+  dateModified?: string;
+  section?: string;
+}
+
 interface Props {
   locale: Locale;
   routeKey: RouteKey;
   title: string;
   description: string;
   paths?: { pl: string; en: string };
+  article?: ArticleMeta;
 }
 
-const { locale, routeKey, title, description, paths } = Astro.props;
+const { locale, routeKey, title, description, paths, article } = Astro.props;
 const c = copy[locale];
 const other = alternateLocale(locale);
 const canonicalPath = paths?.[locale] ?? route(locale, routeKey);
@@ -33,6 +41,7 @@ const enUrl = absoluteUrl(enPath, Astro.site);
 const ogLocale = locale === 'pl' ? 'pl_PL' : 'en_US';
 const personId = `${absoluteUrl(route('pl', 'about'), Astro.site)}#person`;
 const websiteId = `${absoluteUrl('/', Astro.site)}#website`;
+const ogImage = absoluteUrl('/assets/og-card.png', Astro.site);
 const person = {
   '@type': 'Person',
   '@id': personId,
@@ -44,29 +53,61 @@ const person = {
     : 'An expert profile connecting organizational and enterprise architecture, strategy, transformation, portfolio, PMO and technology.',
   knowsAbout: ['Organizational Architecture', 'Enterprise Architecture', 'Strategy', 'Transformation', 'PMO', 'Portfolio Management', 'Technology', 'AI Governance'],
 };
-const jsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebSite',
-      '@id': websiteId,
-      name: 'Arkadiusz Kamrowski',
-      url: absoluteUrl('/', Astro.site),
-      inLanguage: ['pl', 'en'],
-      author: { '@id': personId },
-      description: locale === 'pl'
-        ? 'Platforma o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji i systemach decyzji.'
-        : 'A platform on organizational architecture, enterprise architecture, strategy, portfolio, transformation and decision systems.',
-    },
-    person,
-  ],
-});
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    name: 'Arkadiusz Kamrowski',
+    url: absoluteUrl('/', Astro.site),
+    inLanguage: ['pl', 'en'],
+    author: { '@id': personId },
+    description: locale === 'pl'
+      ? 'Platforma o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji i systemach decyzji.'
+      : 'A platform on organizational architecture, enterprise architecture, strategy, portfolio, transformation and decision systems.',
+  },
+  person,
+];
+if (article) {
+  graph.push({
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline: title,
+    description,
+    url: canonical,
+    mainEntityOfPage: canonical,
+    inLanguage: locale,
+    articleSection: article.section,
+    datePublished: article.datePublished,
+    dateModified: article.dateModified ?? article.datePublished,
+    author: { '@id': personId },
+    publisher: { '@id': personId },
+    image: ogImage,
+    isPartOf: { '@id': websiteId },
+  });
+}
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+const jsonLdHash = createHash('sha256').update(jsonLd).digest('base64');
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'sha256-${jsonLdHash}'`,
+  "style-src 'self'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-src 'none'",
+  "worker-src 'none'",
+  "manifest-src 'self'",
+].join('; ');
 ---
 <!doctype html>
 <html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
     <meta name="theme-color" content="#eee9df" />
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
@@ -75,13 +116,23 @@ const jsonLd = JSON.stringify({
     <link rel="alternate" hreflang="pl" href={plUrl} />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="x-default" href={plUrl} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
-    <meta property="og:image" content={absoluteUrl('/assets/og-card.svg', Astro.site)} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Arkadiusz Kamrowski – strategy, architecture and decision systems" />
+    {article && <meta property="article:published_time" content={article.datePublished} />}
+    {article?.dateModified && <meta property="article:modified_time" content={article.dateModified} />}
+    {article?.section && <meta property="article:section" content={article.section} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Arkadiusz Kamrowski – strategy, architecture and decision systems" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
     <script is:inline type="application/ld+json" set:html={jsonLd}></script>
