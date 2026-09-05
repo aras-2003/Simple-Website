@@ -4,6 +4,7 @@ import OafDiagram from './OafDiagram.astro';
 import PageHero from './PageHero.astro';
 import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
+import { oafOperatingModel } from '../content/oaf-operating-model';
 import { platform, platformSources } from '../content/platform';
 import { route, type Locale } from '../lib/site';
 
@@ -12,6 +13,7 @@ const { locale } = Astro.props;
 const c = copy[locale];
 const ia = editorial[locale].oaf;
 const x = platform[locale].oaf;
+const operating = oafOperatingModel[locale];
 const td = (value: string) => value.replaceAll('—', '–');
 const lineage = locale === 'pl' ? [
   { author: 'Jay Galbraith', concept: 'Star Model', body: 'Strategia, struktura, procesy, systemy motywacyjne i ludzie jako współzależne dźwignie projektu organizacji. Punkt wyjścia: organizacja to znacznie więcej niż schemat organizacyjny.', href: platformSources.galbraith },
@@ -118,6 +120,26 @@ const pageDescription = locale === 'pl'
     <div class="misfit-grid">
       {x.misfit.examples.map((item) => <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>)}
     </div>
+  </section>
+
+  <section class="section layer-deep-dive decision-contract-section" aria-labelledby="decision-contract-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{td(operating.eyebrow)}</p>
+        <h2 id="decision-contract-title">{td(operating.title)}</h2>
+      </div>
+      <p class="content-lead">{td(operating.lead)}</p>
+    </div>
+    <div class="layer-editorial-list decision-contract-list">
+      {operating.items.map((item) => (
+        <article>
+          <p class="layer-name">{td(item.title)}</p>
+          <h3>{td(item.question)}</h3>
+          <p>{td(item.body)}</p>
+        </article>
+      ))}
+    </div>
+    <p class="content-lead decision-contract-summary">{td(operating.summary)}</p>
   </section>
 
   <section class="section principles-section" aria-labelledby="principles-title">
