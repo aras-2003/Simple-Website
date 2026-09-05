@@ -1,0 +1,17 @@
+/* Cloudflare Turnstile is the only approved third-party browser widget at launch. */
+.turnstile-wrap {
+  width: 100%;
+  min-height: 65px;
+  margin-block: 1rem 0;
+}
+
+.turnstile-wrap > [data-turnstile-widget] {
+  width: 100%;
+  max-width: 30rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .turnstile-wrap {
+    scroll-behavior: auto;
+  }
+}
