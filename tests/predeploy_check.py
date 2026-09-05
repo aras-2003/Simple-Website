@@ -20,8 +20,11 @@ BASE_ARGS = [
     "--require-contact-production",
 ]
 FAKE_SECRET = "re_123456789012345678901234567890"
+GIT_SHA = "0123456789abcdef0123456789abcdef01234567"
 GOOD_ENV = {
     **os.environ,
+    "IMAGE": f"example.azurecr.io/personal-site:{GIT_SHA}",
+    "CONTACT_IMAGE": f"example.azurecr.io/personal-contact:{GIT_SHA}",
     "CONTACT_DRY_RUN": "0",
     "CONTACT_REQUIRE_ORIGIN": "1",
     "CONTACT_ALLOWED_ORIGINS": "https://arkadiuszkamrowski.com",
@@ -52,6 +55,7 @@ def expect_success() -> None:
     result = run()
     assert result.returncode == 0, result.stdout + result.stderr
     assert "PREDEPLOY CHECK PASS" in result.stdout
+    assert "immutable release references present" in result.stdout
     assert FAKE_SECRET not in result.stdout
     assert FAKE_SECRET not in result.stderr
 
@@ -67,6 +71,9 @@ def expect_failure(overrides: dict[str, str], expected: str) -> None:
 
 def main() -> None:
     expect_success()
+    expect_failure({"IMAGE": "example.azurecr.io/personal-site:latest"}, "IMAGE must use an immutable")
+    expect_failure({"CONTACT_IMAGE": "example.azurecr.io/personal-contact:production"}, "CONTACT_IMAGE must use an immutable")
+    expect_failure({"CONTACT_IMAGE": GOOD_ENV["IMAGE"]}, "IMAGE and CONTACT_IMAGE must reference distinct images")
     expect_failure({"CONTACT_DRY_RUN": "1"}, "CONTACT_DRY_RUN must be 0")
     expect_failure({"CONTACT_REQUIRE_ORIGIN": "0"}, "CONTACT_REQUIRE_ORIGIN must be 1")
     expect_failure(
@@ -84,6 +91,12 @@ def main() -> None:
     result = run(args=bad_origin_args)
     assert result.returncode != 0
     assert "site-base-url must use https" in result.stdout
+
+    bad_port_args = BASE_ARGS.copy()
+    bad_port_args[bad_port_args.index("https://arkadiuszkamrowski.com")] = "https://arkadiuszkamrowski.com:444"
+    result = run(args=bad_port_args)
+    assert result.returncode != 0
+    assert "default HTTPS port" in result.stdout
 
     print("Production predeploy contract tests: PASS")
 
