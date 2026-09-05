@@ -22,7 +22,7 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Astro type, build, static and contact API validation
+      - name: Astro type, build, static, link and contact API validation
         run: npm run test:static
       - name: Upload static artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -78,9 +78,12 @@ jobs:
           push: false
           tags: personal-contact:ci
       - name: Runtime reverse-proxy, canonicalization, headers and contact smoke test
-        run: bash tests/runtime-smoke.sh
+        id: runtime_smoke
+        continue-on-error: true
+        run: bash -x tests/runtime-smoke.sh
       - name: Trivy site image scan
         id: scan_site
+        if: always()
         continue-on-error: true
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
@@ -118,9 +121,10 @@ jobs:
         with:
           sarif_file: trivy-contact.sarif
           category: contact-container
-      - name: Enforce HIGH/CRITICAL container gate
+      - name: Enforce runtime and HIGH/CRITICAL container gates
         if: always()
         shell: bash
         run: |
+          test "${{ steps.runtime_smoke.outcome }}" = "success" || { echo "Runtime smoke gate failed"; exit 1; }
           test "${{ steps.scan_site.outcome }}" = "success" || { echo "Site image has HIGH/CRITICAL findings"; exit 1; }
           test "${{ steps.scan_contact.outcome }}" = "success" || { echo "Contact image has HIGH/CRITICAL findings"; exit 1; }
