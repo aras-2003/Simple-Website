@@ -1,85 +1,157 @@
-# Environments
+# Environments and branch promotion
 
-## Current deployment policy
+This repository uses an explicit promotion model. `main` is an integration branch and **does not deploy to any public environment**.
 
-Public and Azure deployment are **disabled**. macOS is the current reference environment; Docker and local Kubernetes validate deployment portability without publishing the site. The release candidate now also includes a production configuration contract and launch runbook so the remaining work is operational rather than architectural.
+## Branch → environment contract
 
-| Environment | Entry point | Exposure | Contact mode | Status |
-|---|---|---|---|---|
-| macOS native | `make mac-demo` | loopback only | dry-run by default | ACTIVE / recommended |
-| Astro dev | `make dev` | `127.0.0.1:4321` | dry-run by default | ACTIVE |
-| macOS Docker Desktop | `make mac-docker` | localhost mapping | dry-run by default | ACTIVE |
-| macOS local Kubernetes | `make k8s-local` | localhost port-forward | dry-run | ACTIVE |
-| GitHub CI | push / PR | no deployment | integration dry-run | ACTIVE |
-| Production preflight | `make predeploy` | no deployment | validates live config | READY |
-| Generic Kubernetes | `k8s/site.yaml.tpl` | explicit ingress/DNS | live secrets required | FUTURE-READY |
-| Azure AKS | `.github/workflows-disabled/deploy-aks.yml` | disabled | secret required | DISABLED / reference |
-| Public Internet | selected managed runtime + DNS/TLS | public | live | NOT YET PROMOTED |
+| Branch | Purpose | Cloudflare deployment |
+|---|---|---|
+| `feature/*`, `chore/*`, other short-lived branches | development / PR review | none by default |
+| `main` | integrated, releasable code | **none** |
+| `staging` | release candidate / acceptance | `arkadiuszkamrowski-staging` → `https://staging.arkadiuszkamrowski.com` |
+| `production` | approved production release | `arkadiuszkamrowski` → `https://arkadiuszkamrowski.com` |
 
-## macOS native
+Promotion path:
 
-Prerequisites: Node.js 22+, npm, Python 3 and curl.
+```text
+feature/*
+   ↓ PR + CI
+main
+   ↓ PR + CI + release decision
+staging
+   ↓ staging deployment + acceptance
+production
+   ↓ production deployment + public smoke
+```
+
+Do not configure Cloudflare Workers Builds so that `main` is a production branch for either environment.
+
+## Cloudflare Workers Builds projects
+
+Use two separate Cloudflare Workers Builds applications connected to the same GitHub repository.
+
+### Staging
+
+- Worker/application name: `arkadiuszkamrowski-staging`
+- Git repository: `aras-2003/Simple-Website`
+- Production branch: `staging`
+- Builds for non-production branches: **OFF**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler@4.129.0 deploy --config wrangler.staging.jsonc`
+- Path: `/`
+- Recommended Cloudflare Access protection: **ON**
+- Custom Domain: `staging.arkadiuszkamrowski.com`
+
+Build variables:
+
+```text
+SITE_BASE_URL=https://staging.arkadiuszkamrowski.com
+SITE_PRODUCTION_HOST=staging.arkadiuszkamrowski.com
+REQUIRE_PRODUCTION_SITE=1
+NODE_VERSION=22.23.2
+PUBLIC_TURNSTILE_SITE_KEY=<staging widget site key>
+```
+
+Runtime secrets, configured on the **staging Worker only**:
+
+```text
+TURNSTILE_SECRET_KEY
+RESEND_API_KEY
+CONTACT_TO_EMAIL
+```
+
+The staging Worker has `DEPLOYMENT_ENV=staging`, enforces `X-Robots-Tag: noindex, nofollow, noarchive`, and serves a `robots.txt` that disallows all crawlers. This is defense in depth; Cloudflare Access is the primary staging visibility control.
+
+Use a dedicated Turnstile widget restricted to `staging.arkadiuszkamrowski.com`. Do not reuse the production widget secret on staging.
+
+### Production
+
+- Worker/application name: `arkadiuszkamrowski`
+- Git repository: `aras-2003/Simple-Website`
+- Production branch: `production`
+- Builds for non-production branches: **OFF**
+- Build command: `npm run build`
+- Deploy command: `npx wrangler@4.129.0 deploy --config wrangler.production.jsonc`
+- Path: `/`
+- Cloudflare Access: **OFF** for the public site
+- Custom Domain: `arkadiuszkamrowski.com`
+
+Build variables:
+
+```text
+SITE_BASE_URL=https://arkadiuszkamrowski.com
+SITE_PRODUCTION_HOST=arkadiuszkamrowski.com
+REQUIRE_PRODUCTION_SITE=1
+NODE_VERSION=22.23.2
+PUBLIC_TURNSTILE_SITE_KEY=<production widget site key>
+```
+
+Runtime secrets, configured on the **production Worker only**:
+
+```text
+TURNSTILE_SECRET_KEY
+RESEND_API_KEY
+CONTACT_TO_EMAIL
+```
+
+The production Turnstile widget remains restricted to `arkadiuszkamrowski.com`.
+
+## Preview config
+
+`wrangler.jsonc` is intentionally named `arkadiuszkamrowski-preview` and is not a release environment. It exists for explicit/manual Worker previews and CI dry-run validation. It must not be used by the `main` branch as an automatic staging deployment.
+
+## Local and portability environments
+
+Local macOS, Docker Desktop and local Kubernetes remain development/portability targets. They do not participate in public promotion.
 
 ```bash
 make mac-demo
-```
-
-This builds all PL/EN routes, starts the static site on `127.0.0.1:8080`, starts a loopback contact API and opens the browser. Contact delivery is dry-run unless real server-side email environment variables are supplied.
-
-```bash
-make mac-stop
-```
-
-For live development with Astro HMR and the Vite `/api/contact` proxy:
-
-```bash
-make dev
-# http://127.0.0.1:4321
-```
-
-## Quality audit
-
-```bash
-make audit
-```
-
-This combines static/type/build/contact/predeploy-contract validation with the Playwright + axe accessibility gate.
-
-## Docker Desktop
-
-```bash
 make mac-docker
-make docker-down
-```
-
-Compose runs two hardened containers: NGINX/static site and the contact API. They share the network namespace so NGINX can proxy to the sidecar on loopback.
-
-## Local Kubernetes
-
-```bash
 make k8s-local
-make k8s-local-down
 ```
 
-The local Deployment contains the web and contact containers in one Pod. There is no Ingress, TLS, HPA or public DNS; access remains localhost-only through `kubectl port-forward`.
+Container/Kubernetes material remains reference-only for portability; Cloudflare Workers is the approved public runtime.
 
-## Production preparation
+## Promotion gates
 
-Start from `.env.production.example`; populate private values only in a local ignored file or the selected platform's config/secret store.
+### `main` → `staging`
 
-```bash
-set -a
-source .env.production
-set +a
-make predeploy
-```
+Required before merge/promotion:
 
-The release runtime should keep one public HTTPS origin with the NGINX container and contact sidecar/equivalent private runtime co-located so `/api/contact` remains same-origin and the API is not directly exposed.
+- all repository CI jobs PASS;
+- no known P0/P1 experience/security/accessibility regression;
+- staging config changes reviewed;
+- staging secrets and Turnstile widget remain environment-isolated.
 
-All owner/platform steps — hosting selection, sender verification, DNS/TLS, accessibility, privacy, real contact smoke testing, monitoring and rollback — are defined in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+After staging deploy:
 
-## Promotion model
+- routes / PL+EN / 404 / redirects PASS;
+- security headers and `noindex` PASS;
+- Cloudflare Access PASS;
+- Turnstile + contact delivery PASS if live staging contact testing is enabled;
+- browser/accessibility acceptance PASS for the release candidate.
 
-`Astro source → locked CI → static site + contact image → local Docker/Kubernetes → production config preflight → manual release gates → selected managed runtime → DNS/TLS promotion`
+### `staging` → `production`
 
-Public promotion requires DNS/TLS, contact email provider configuration, runtime secrets and manual accessibility/privacy review. Generic Kubernetes/AKS remain portability/reference options rather than mandatory stages.
+Promotion should be a PR from `staging` into `production`; do not cherry-pick arbitrary feature commits directly into production.
+
+Required before merge:
+
+- staging acceptance PASS;
+- production CI PASS on the exact commit lineage;
+- production secrets/config reviewed without exposing values;
+- production launch checklist / rollback path ready.
+
+After production deployment run the public smoke and final manual launch checks documented in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+
+## GitHub branch protection target
+
+Configure GitHub rulesets/branch protection for `main`, `staging`, and `production`:
+
+- require pull requests;
+- require CI status checks;
+- block force pushes and deletion;
+- require branches to be up to date before merge where practical;
+- require at least one explicit approval for `production` if the account/repository plan supports it.
+
+Production deployment must never be triggered merely by a push to `main`.
