@@ -15,7 +15,7 @@ RUN npm run build
 
 # Pin the runtime image and immediately apply the vendor-published libuuid security update.
 # CI verifies the resulting image with a deterministic HIGH/CRITICAL Trivy JSON gate.
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine3.24@sha256:45ce1e2e699234253d1def7baa96218a5d00b498d1ba0cbb1a17b6bdf73d1351
+FROM nginxinc/nginx-unprivileged:1.31.5-alpine3.24@sha256:aa8c9087d36d93e9d650c5365f883b421e8214aedbad24ade52b844c583358f1
 USER root
 RUN apk upgrade --no-cache libuuid
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
