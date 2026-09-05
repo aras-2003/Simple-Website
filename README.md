@@ -9,11 +9,12 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Contact:** small Node.js sidecar exposing only `/api/contact` and `/healthz`; email delivery through Resend when production secrets are configured.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
 - **Primary IA:** OAF → Practice → Perspective → About → Contact. Privacy is a footer-level utility route.
-- **Writing:** four real editorial notes in PL and EN, generated as static article routes.
-- **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
+- **Writing:** four real editorial notes in PL and EN, generated as static article routes with article metadata.
+- **No client framework:** JavaScript is limited to the contact workflow.
+- **Deterministic dependencies:** exact direct versions plus committed `package-lock.json`; CI, Docker and local bootstrap paths use `npm ci`.
 - Azure/public deployment remains disabled; the future AKS workflow stays under `.github/workflows-disabled/`.
 
-See `docs/INFORMATION_ARCHITECTURE.md` and `docs/CONTACT_SERVICE.md`.
+See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md` and `docs/ACCESSIBILITY.md`.
 
 ## macOS — fastest preview
 
@@ -44,15 +45,18 @@ make dev
 
 To deliver real email locally, configure environment variables described in `docs/CONTACT_SERVICE.md` and set `CONTACT_DRY_RUN=0`.
 
+Production/static builds require an explicit HTTPS `SITE_BASE_URL`. Local build scripts deliberately opt into localhost so a forgotten production base URL cannot silently generate localhost canonical metadata.
+
 ## Quality gates
 
 ```bash
-make test          # astro check + build + static IA validation + contact API tests
-make test-a11y     # Playwright + axe across core and article routes
+make test          # check + production build + static IA/SEO/security + link audit + contact API tests
+make test-a11y     # Playwright + axe in Chromium, Firefox and WebKit projects
 make audit         # both
+make docker-build  # locked static build + contact runtime images
 ```
 
-Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
+CI additionally runs the built containers through reverse-proxy/canonical/security-header/contact smoke tests and fails on HIGH/CRITICAL Trivy findings for either runtime image. Automated accessibility is a release gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing.
 
 ## Docker / Kubernetes
 
@@ -63,11 +67,20 @@ make k8s-local
 
 Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic production template expects email secrets to be created separately.
 
+## Security / privacy notes
+
+- CSP does not allow unrestricted inline script execution.
+- Reverse-proxy client IP handling is authoritative; client-supplied forwarding chains cannot choose the contact rate-limit bucket.
+- Contact rate-limit storage is bounded and TTL-pruned.
+- Human-named assets use revalidation-friendly caching; only fingerprinted Astro assets are immutable.
+- `/.well-known/security.txt` is published for vulnerability contact.
+- The privacy route documents the controller, processing purposes/legal bases, providers, transfers, retention, rights, technical logs and the absence of advertising profiling.
+
 ## Environment status
 
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: Astro + contact API + accessibility + two container security scans
+- GitHub CI: static validation + link audit + cross-browser accessibility + runtime smoke + two container security scans
 - Azure AKS: future-ready, disabled
 - public DNS/TLS: not deployed
