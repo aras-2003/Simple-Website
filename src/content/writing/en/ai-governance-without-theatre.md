@@ -6,7 +6,12 @@ dek: Mature governance does not try to stop experimentation. It designs boundari
 readTime: 6
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
+modifiedAt: 2026-09-05T00:00:00+02:00
 sources:
+  - label: NIST · AI Risk Management Framework 1.0
+    href: https://www.nist.gov/itl/ai-risk-management-framework
+  - label: European Commission · AI Act · risk-based approach
+    href: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
   - label: MIT CISR · Enterprise Architecture
     href: https://cisr.mit.edu/content/classic-topics-enterprise-architecture
   - label: BCG · Agile Operating Model · 2024
@@ -17,7 +22,7 @@ sources:
 
 The risk of a tool helping edit an internal note is different from the risk of a system influencing a decision about a citizen, customer or employee. Governance that treats them identically will be too heavy for low risk and too shallow for high risk.
 
-The starting point should be the use case, data, system autonomy, decision impact and reversibility. Guardrails come after that assessment.
+The starting point should be the use case, data, system autonomy, decision impact and reversibility. Guardrails come after that assessment. That direction is consistent with both continuous risk management in the NIST AI RMF and the proportionate, risk-based approach of the EU AI Act.
 
 ## Control should be part of delivery
 
