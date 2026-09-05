@@ -6,7 +6,12 @@ dek: Dojrzałe governance nie próbuje zatrzymać eksperymentu. Projektuje grani
 readTime: 6
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
+modifiedAt: 2026-09-05T00:00:00+02:00
 sources:
+  - label: NIST · AI Risk Management Framework 1.0
+    href: https://www.nist.gov/itl/ai-risk-management-framework
+  - label: European Commission · AI Act · risk-based approach
+    href: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
   - label: MIT CISR · Enterprise Architecture
     href: https://cisr.mit.edu/content/classic-topics-enterprise-architecture
   - label: BCG · Agile Operating Model · 2024
@@ -17,7 +22,7 @@ sources:
 
 Ryzyko narzędzia wspierającego redakcję wewnętrznej notatki jest inne niż ryzyko systemu wpływającego na decyzję dotyczącą obywatela, klienta lub pracownika. Governance, które traktuje je identycznie, będzie jednocześnie zbyt ciężkie dla niskiego ryzyka i zbyt płytkie dla wysokiego.
 
-Punktem startu powinien być więc scenariusz użycia, dane, autonomia systemu, wpływ decyzji i możliwość odwrócenia skutku. Dopiero potem dobieramy guardrails.
+Punktem startu powinien być więc scenariusz użycia, dane, autonomia systemu, wpływ decyzji i możliwość odwrócenia skutku. Dopiero potem dobieramy guardrails. Ten kierunek jest spójny zarówno z ciągłym zarządzaniem ryzykiem w NIST AI RMF, jak i z proporcjonalnym, opartym na ryzyku podejściem unijnego AI Act.
 
 ## Kontrola powinna być częścią delivery
 
