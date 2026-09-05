@@ -1,18 +1,18 @@
 ---
 locale: pl
 slug: transformation-operating-model
-category: Transformation
-title: Transformacja potrzebuje operating modelu, nie tylko roadmapy
-dek: Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto i w jakim rytmie potrafi tę kolejność zmieniać.
+category: "Transformation"
+title: "Transformacja potrzebuje operating modelu, nie tylko roadmapy"
+dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto i w jakim rytmie potrafi tę kolejność zmieniać."
 readTime: 5
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
-  - label: BCG · Corporate Transformation · 2024
+  - label: "BCG · Corporate Transformation · 2024"
     href: https://www.bcg.com/publications/2024/five-truths-and-a-lie-about-corporate-transformation
-  - label: McKinsey · Transformations for long-term impact
+  - label: "McKinsey · Transformations for long-term impact"
     href: https://www.mckinsey.com/capabilities/implementation/our-insights/how-to-implement-transformations-for-long-term-impact
-  - label: MIT CISR · Operating model & EA
+  - label: "MIT CISR · Operating model & EA"
     href: https://cisr.mit.edu/publication/enterprise-architecture-as-strategy
 ---
 
