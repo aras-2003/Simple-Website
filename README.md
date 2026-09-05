@@ -12,9 +12,9 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
 - **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
 - **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
-- **Deployment:** public/Azure deployment remains disabled. Kubernetes/AKS stays future-ready/reference-only until a proportional production hosting model is selected.
+- **Deployment:** public deployment remains disabled until owner/platform gates are complete. The production recommendation is a proportional managed container runtime; when Azure is selected, `docs/HOSTING_DECISION.md` recommends Azure Container Apps. Kubernetes/AKS stays future-ready/reference-only.
 
-See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## macOS — fastest preview
 
@@ -81,9 +81,11 @@ set +a
 make predeploy
 ```
 
-The preflight validates HTTPS/canonical host alignment, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
+The preflight validates HTTPS/canonical host alignment, immutable frontend/contact image references, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
 
-The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+After a passing preflight, `make docker-build-production` creates both production images with canonical production build guards and the explicit immutable tags supplied as `IMAGE` / `CONTACT_IMAGE`.
+
+The hosting topology and platform criteria are in `docs/HOSTING_DECISION.md`. The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Docker / Kubernetes
 
@@ -92,7 +94,7 @@ make mac-docker
 make k8s-local
 ```
 
-Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic Kubernetes template is a portability/reference target rather than a mandatory production topology.
+Docker Compose and Kubernetes run NGINX plus the contact API as an isolated companion process/container. Local Kubernetes uses contact dry-run; the generic Kubernetes template is a portability/reference target rather than a mandatory production topology. The AKS workflow remains physically disabled under `.github/workflows-disabled/` and is maintained only as a hardened reference path.
 
 ## Environment status
 
@@ -100,6 +102,8 @@ Docker Compose and Kubernetes run NGINX plus the contact API as an isolated comp
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
 - GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
+- production configuration contract: ready; requires real platform values/secrets
+- production hosting recommendation: ready; Azure Container Apps preferred when Azure is selected
 - generic Kubernetes: future-ready/reference
-- Azure AKS: future-ready, disabled
+- Azure AKS: future-ready/reference, disabled
 - public DNS/TLS: not deployed
