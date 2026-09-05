@@ -28,6 +28,9 @@ const topics = pl
   data-endpoint={endpoint}
   data-success={pl ? 'Dziękuję. Wiadomość została wysłana.' : 'Thank you. Your message has been sent.'}
   data-error={pl ? 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz przez LinkedIn.' : 'The message could not be sent. Try again or use LinkedIn.'}
+  data-validation={pl ? 'Sprawdź pola formularza i spróbuj ponownie.' : 'Check the form fields and try again.'}
+  data-rate-limit={pl ? 'Za dużo prób w krótkim czasie. Spróbuj ponownie za kilka minut.' : 'Too many attempts in a short time. Try again in a few minutes.'}
+  data-delivery={pl ? 'Usługa wysyłki jest chwilowo niedostępna. Spróbuj później lub użyj LinkedIn.' : 'Message delivery is temporarily unavailable. Try later or use LinkedIn.'}
   data-sending={pl ? 'Wysyłanie…' : 'Sending…'}
   novalidate
 >
@@ -73,12 +76,25 @@ const topics = pl
     <button class="button button-primary button-large" type="submit">
       <span>{pl ? 'Wyślij wiadomość' : 'Send message'}</span><span aria-hidden="true">→</span>
     </button>
-    <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+    <p class="form-status" data-form-status role="status" aria-live="polite" aria-atomic="true"></p>
   </div>
 </form>
 
 <script>
   const forms = document.querySelectorAll('[data-contact-form]');
+  const validationErrors = new Set([
+    'consent_required',
+    'invalid_name',
+    'invalid_email',
+    'invalid_organization',
+    'invalid_topic',
+    'invalid_message',
+    'invalid_timing',
+    'invalid_json',
+    'json_required',
+    'payload_too_large',
+  ]);
+
   for (const form of forms) {
     if (!(form instanceof HTMLFormElement)) continue;
     form.dataset.startedAt = String(Date.now());
@@ -95,6 +111,7 @@ const topics = pl
       submit.setAttribute('aria-busy', 'true');
       submit.textContent = form.dataset.sending || 'Sending…';
       status.textContent = '';
+      status.removeAttribute('data-state');
 
       const data = new FormData(form);
       const payload = {
@@ -118,12 +135,26 @@ const topics = pl
           body: JSON.stringify(payload),
         });
         const body = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(body?.error || 'request_failed');
+        if (!response.ok) {
+          const code = typeof body?.error === 'string' ? body.error : 'request_failed';
+          throw new Error(code);
+        }
         form.reset();
         form.dataset.startedAt = String(Date.now());
+        status.dataset.state = 'success';
         status.textContent = form.dataset.success || 'Sent.';
-      } catch {
-        status.textContent = form.dataset.error || 'Could not send.';
+      } catch (error) {
+        const code = error instanceof Error ? error.message : 'request_failed';
+        status.dataset.state = 'error';
+        if (code === 'rate_limited') {
+          status.textContent = form.dataset.rateLimit || form.dataset.error || 'Could not send.';
+        } else if (code === 'delivery_unavailable') {
+          status.textContent = form.dataset.delivery || form.dataset.error || 'Could not send.';
+        } else if (validationErrors.has(code)) {
+          status.textContent = form.dataset.validation || form.dataset.error || 'Could not send.';
+        } else {
+          status.textContent = form.dataset.error || 'Could not send.';
+        }
       } finally {
         submit.disabled = false;
         submit.removeAttribute('aria-busy');
