@@ -12,13 +12,25 @@
 
 /* Home: deliberately lighter than the deep pages */
 .landing-hero-light {
-  min-height: min(760px, calc(100svh - var(--header)));
+  min-height: min(710px, calc(100svh - var(--header)));
   grid-template-columns: minmax(0, 1.18fr) minmax(340px, .82fr);
-  padding-block: clamp(58px, 6.5vw, 92px);
+  padding-block: clamp(48px, 5.8vw, 78px);
 }
 
 .landing-hero-light .landing-hero-copy h1 {
   font-size: clamp(46px, 5vw, 76px);
+}
+
+.hero-context {
+  max-width: 720px;
+  margin: 22px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+  color: var(--muted-strong);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: .01em;
 }
 
 .decision-field-compact {
@@ -309,6 +321,10 @@
   .section-intro-split > .content-lead,
   .section-intro-split > div:last-child {
     align-self: start;
+  }
+
+  .hero-context {
+    font-size: 12px;
   }
 
   .evidence-ledger-home {
