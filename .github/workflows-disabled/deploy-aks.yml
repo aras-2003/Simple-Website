@@ -1,16 +1,16 @@
-name: Deploy · Azure AKS
+name: Deploy · Azure AKS (reference, disabled)
 on:
   workflow_dispatch:
     inputs:
       site_base_url:
         description: 'Production URL'
         required: true
-        default: 'https://arkadiuszkamrowski.pl'
+        default: 'https://arkadiuszkamrowski.com'
         type: string
       host:
         description: 'Ingress DNS host'
         required: true
-        default: 'arkadiuszkamrowski.pl'
+        default: 'arkadiuszkamrowski.com'
         type: string
       namespace:
         description: 'Kubernetes namespace'
@@ -18,7 +18,7 @@ on:
         default: personal-site
         type: string
       assumptions_approved:
-        description: 'I confirm docs/DEPLOY_APPROVAL.md is accepted'
+        description: 'I confirm docs/DEPLOY_APPROVAL.md and docs/PRODUCTION_LAUNCH_RUNBOOK.md are accepted'
         required: true
         default: false
         type: boolean
@@ -35,57 +35,84 @@ jobs:
   deploy:
     environment: production
     runs-on: ubuntu-latest
+    env:
+      IMAGE: ${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}
+      CONTACT_IMAGE: ${{ vars.ACR_NAME }}.azurecr.io/personal-contact:${{ github.sha }}
+      CONTACT_DRY_RUN: '0'
+      CONTACT_API_PORT: '8787'
+      CONTACT_RATE_LIMIT: '5'
+      CONTACT_RATE_BUCKETS: '5000'
+      CONTACT_REQUIRE_ORIGIN: '1'
+      CONTACT_ALLOWED_ORIGINS: ${{ inputs.site_base_url }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      CONTACT_TO_EMAIL: ${{ secrets.CONTACT_TO_EMAIL }}
+      CONTACT_FROM_EMAIL: ${{ secrets.CONTACT_FROM_EMAIL }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
-      - uses: actions/setup-python@v6
+          cache: npm
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
       - name: Guard production branch and approval
         run: |
           test "${GITHUB_REF}" = "refs/heads/main" || { echo "Production deploys must run from main"; exit 1; }
           test "${{ inputs.assumptions_approved }}" = "true" || { echo "Deployment assumptions are not approved"; exit 1; }
-      - name: Pre-deploy validation
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Production pre-deploy validation
+        env:
+          SITE_BASE_URL: ${{ inputs.site_base_url }}
+          HOST: ${{ inputs.host }}
+          NAMESPACE: ${{ inputs.namespace }}
         run: |
-          python3 scripts/predeploy_check.py --site-base-url "${{ inputs.site_base_url }}" --host "${{ inputs.host }}" --namespace "${{ inputs.namespace }}"
-          npm install --no-audit --no-fund
-          SITE_BASE_URL="${{ inputs.site_base_url }}" npm run test:static
+          python3 scripts/predeploy_check.py \
+            --site-base-url "$SITE_BASE_URL" \
+            --host "$HOST" \
+            --namespace "$NAMESPACE" \
+            --require-contact-production
+          SITE_BASE_URL="$SITE_BASE_URL" \
+          SITE_PRODUCTION_HOST="$HOST" \
+          REQUIRE_PRODUCTION_SITE=1 \
+          npm run test:static
       - name: Azure login via OIDC
-        uses: azure/login@v3
+        uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c # v3.0.2
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       - name: Install kubelogin
-        uses: azure/use-kubelogin@v1.3
+        uses: azure/use-kubelogin@0ce7c36141aa27d4934872cf00b0120804c98a29 # v1.3
         with:
           kubelogin-version: 'v0.2.19'
       - name: Login to ACR
         run: az acr login --name "${{ vars.ACR_NAME }}"
-      - uses: docker/setup-buildx-action@v4
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
       - name: Build and push immutable site image
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
             SITE_BASE_URL=${{ inputs.site_base_url }}
-          tags: |
-            ${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}
-            ${{ vars.ACR_NAME }}.azurecr.io/personal-site:latest
+            SITE_PRODUCTION_HOST=${{ inputs.host }}
+            REQUIRE_PRODUCTION_SITE=1
+          tags: ${{ env.IMAGE }}
       - name: Build and push immutable contact image
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
         with:
           context: .
           file: server/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ vars.ACR_NAME }}.azurecr.io/personal-contact:${{ github.sha }}
-            ${{ vars.ACR_NAME }}.azurecr.io/personal-contact:latest
+          tags: ${{ env.CONTACT_IMAGE }}
       - name: Connect to AKS with Microsoft Entra
         run: |
           az aks get-credentials --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --name "${{ vars.AKS_NAME }}" --overwrite-existing
@@ -93,15 +120,24 @@ jobs:
       - name: Render Kubernetes manifest
         run: >-
           python3 scripts/render-k8s.py
-          --image "${{ vars.ACR_NAME }}.azurecr.io/personal-site:${{ github.sha }}"
-          --contact-image "${{ vars.ACR_NAME }}.azurecr.io/personal-contact:${{ github.sha }}"
+          --image "$IMAGE"
+          --contact-image "$CONTACT_IMAGE"
           --host "${{ inputs.host }}"
           --namespace "${{ inputs.namespace }}"
+      - name: Provision contact secret without writing it to the repository
+        run: |
+          kubectl -n "${{ inputs.namespace }}" create secret generic personal-site-contact \
+            --from-literal=RESEND_API_KEY="$RESEND_API_KEY" \
+            --from-literal=CONTACT_TO_EMAIL="$CONTACT_TO_EMAIL" \
+            --from-literal=CONTACT_FROM_EMAIL="$CONTACT_FROM_EMAIL" \
+            --dry-run=client -o yaml | kubectl apply -f -
       - name: Deploy
         run: kubectl apply -f rendered-k8s.yaml
       - name: Wait for rollout
         run: kubectl -n "${{ inputs.namespace }}" rollout status deployment/personal-site --timeout=180s
       - name: External smoke test
         run: curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 10 "${{ inputs.site_base_url }}/healthz"
-      - name: Record deployed image
-        run: kubectl -n "${{ inputs.namespace }}" get deploy personal-site -o jsonpath='{.spec.template.spec.containers[0].image}'
+      - name: Record deployed images
+        run: |
+          kubectl -n "${{ inputs.namespace }}" get deploy personal-site \
+            -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"="}{.image}{"\n"}{end}'
