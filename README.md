@@ -14,7 +14,7 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **No client framework:** JavaScript is used only for the contact form and intentional micro-interactions.
 - **Deployment:** public/Azure deployment remains disabled. Kubernetes/AKS stays future-ready/reference-only until a proportional production hosting model is selected.
 
-See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md` and `docs/DEPLOY_APPROVAL.md`.
+See `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## macOS — fastest preview
 
@@ -61,7 +61,7 @@ Do not add a `slug` field to Markdown frontmatter: Astro treats it as an entry-I
 ## Quality gates
 
 ```bash
-make test          # astro check + build + static IA validation + contact API tests
+make test          # astro check + build + static IA validation + contact API + production predeploy contract tests
 make test-a11y     # Playwright + axe across core and article routes
 make audit         # both
 ```
@@ -69,6 +69,21 @@ make audit         # both
 GitHub CI additionally checks external references, Chromium/Firefox/WebKit smoke paths, the five-second home-layout contract, cross-browser visual audit captures, real container runtime integration through NGINX → contact API and HIGH/CRITICAL container vulnerabilities.
 
 Automated accessibility is a gate, not a substitute for manual VoiceOver/NVDA/keyboard/zoom testing. See `docs/ACCESSIBILITY.md`.
+
+## Production preflight
+
+`.env.production.example` is the public configuration contract; real values belong in the selected platform's secret/config store. A populated `.env.production` is ignored by Git and should be temporary if used locally.
+
+```bash
+set -a
+source .env.production
+set +a
+make predeploy
+```
+
+The preflight validates HTTPS/canonical host alignment, live contact mode, explicit origin locking, sender-domain alignment, delivery credentials and rate-limit/runtime values without printing secrets.
+
+The end-to-end owner/platform procedure — email-domain verification, DNS/TLS, manual accessibility, privacy, social/SEO validation, production contact smoke test, monitoring and rollback — is in `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Docker / Kubernetes
 
@@ -84,7 +99,7 @@ Docker Compose and Kubernetes run NGINX plus the contact API as an isolated comp
 - macOS native: ready
 - Docker Desktop: ready by configuration
 - local Kubernetes: ready by configuration
-- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
+- GitHub CI: locked build + static/SEO/privacy/link tests + contact tests + production predeploy contract + automated accessibility + browser matrix + visual captures + runtime container E2E + two container security scans
 - generic Kubernetes: future-ready/reference
 - Azure AKS: future-ready, disabled
 - public DNS/TLS: not deployed
