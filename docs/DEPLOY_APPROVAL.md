@@ -1,75 +1,88 @@
 # Release and deployment approval gate
 
-**Status: RELEASE CANDIDATE — public deployment disabled**
+**Status: RELEASE CANDIDATE — Cloudflare production target selected, public promotion still gated**
 
-Ten dokument opisuje aktualny baseline produktu i warunki promocji do produkcji. Nie zatwierdza konkretnej platformy hostingowej przed zakończeniem hardeningu, audytu doświadczenia i decyzji operacyjnej. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
 
 ## Aktualny baseline produktu
 
 1. **Pozycjonowanie** — osobista platforma executive / thought-leadership Arkadiusza Kamrowskiego, a nie katalog usług ani CV online.
 2. **Narracja** — problem → dowody → perspektywa → synteza OAF → praktyka → autor → kontakt.
-3. **Języki** — kompletne wersje polska i angielska są częścią tego samego release'u i utrzymują równoległą architekturę informacji.
-4. **Kontakt** — formularz kontaktowy i izolowany contact API są częścią produktu; LinkedIn pozostaje kanałem pomocniczym.
-5. **Analytics** — brak reklam, trackerów i analityki w baseline'ie. Dodanie telemetryki wymaga osobnej decyzji privacy/compliance.
-6. **Frontend** — Astro SSG + TypeScript; publiczne strony są generowane statycznie i serwowane bez klientowego frameworka aplikacyjnego.
-7. **Runtime** — hardened non-root NGINX dla statycznego frontu oraz mały, odseparowany contact API.
-8. **Canonical release origin** — automatyczne buildy release-candidate używają `https://arkadiuszkamrowski.com`. Zmiana domeny wymaga aktualizacji konfiguracji produkcyjnej, canonicali, hreflang, social metadata, DNS/TLS i testów release.
-9. **Repo / branch produkcyjny** — `aras-2003/Simple-Website`, `main`. Zmiany release-candidate trafiają przez PR i obowiązujące quality gates.
-10. **Production config contract** — `.env.production.example` definiuje wymagane wartości bez sekretów. `make predeploy` sprawdza konfigurację publicznego originu i live contact delivery przed promocją.
+3. **Języki** — kompletne wersje polska i angielska w jednym release.
+4. **Kontakt** — formularz i same-origin `/api/contact`; LinkedIn pozostaje kanałem pomocniczym.
+5. **Analytics** — brak reklam, trackerów i analityki w baseline'ie.
+6. **Frontend** — Astro SSG + TypeScript, statycznie generowane strony bez klientowego frameworka aplikacyjnego.
+7. **Production runtime** — Cloudflare Workers + Static Assets; Worker obsługuje tylko dynamiczny kontakt i wybrane canonicalization paths.
+8. **Canonical origin** — `https://arkadiuszkamrowski.com`; `www` jest redirect-only.
+9. **Repo / branch produkcyjny** — `aras-2003/Simple-Website`, `main`.
+10. **Production config contract** — `wrangler.production.jsonc` + `.env.production.example`; sekrety wyłącznie w Cloudflare/CI secret store.
 
 ## Decyzja hostingowa
 
-Publiczny deployment pozostaje wyłączony do czasu świadomego wyboru modelu operacyjnego.
+**Zatwierdzony v1 target:** Cloudflare Workers + Static Assets.
 
-Dopuszczone kierunki do decyzji:
+Uzasadnienie:
 
-- **preferowany dla tego workloadu:** managed edge/container hosting z zarządzanym TLS i secret store, z jednym publicznym originem oraz web + contact sidecar/equivalent private runtime,
-- **reference / future-ready:** Kubernetes / AKS, jeżeli istnieje uzasadnienie platformowe, demonstracyjne lub wspólna infrastruktura, która redukuje koszt operacyjny.
+- workload jest statyczny poza jednym małym endpointem;
+- Cloudflare już pełni rolę DNS/security edge;
+- Worker eliminuje osobny origin, NGINX, registry, container lifecycle i origin-bypass;
+- Turnstile i Resend mapują się bezpośrednio na stateless Worker API;
+- rozwiązanie jest proporcjonalne kosztowo i operacyjnie.
 
-Dedykowany klaster AKS nie jest wymaganiem produktu. Manifesty Kubernetes i wyłączony workflow Azure pozostają reference architecture i testem przenośności, a nie domyślnym celem produkcyjnym.
+Azure Static Web Apps + Functions pozostaje preferowaną alternatywą, jeśli Azure governance stanie się wymaganiem. Azure Container Apps i Kubernetes/AKS są reference/future-ready dla workloadu, który rzeczywiście wymaga kontenerów.
 
 ## Automatyczne release gates
 
-Przed merge'em release-candidate do `main` wymagane są:
+Przed merge'em do `main` wymagane są:
 
-- deterministyczna instalacja przez committed lockfile i `npm ci`,
-- `astro check` bez błędów,
-- production build z guardem właściwego canonical origin,
-- statyczne testy IA, SEO, social metadata, privacy i linków wewnętrznych,
-- kontrola zewnętrznych referencji,
-- testy contact API, w tym validation, origin, rate limiting, timing i failure paths,
-- test kontraktu `scripts/predeploy_check.py` obejmujący production contact mode, origin lock, sender domain i sekrety bez ich logowania,
-- automatyczny WCAG 2.2 A/AA audit,
-- smoke tests Chromium, Firefox i WebKit,
-- runtime E2E przez realny NGINX → contact API,
-- skany obrazów kontenerowych Trivy bez HIGH/CRITICAL zgodnie z polityką CI.
+- deterministyczne `npm ci` z committed lockfile;
+- `astro check` + production build z canonical guard;
+- testy IA/SEO/social/privacy/linków;
+- kontrola zewnętrznych referencji;
+- testy produkcyjnego `worker/index.mjs`: Origin, validation, body ceiling, timing, Turnstile, rate limit, Resend, failure paths, 308 i asset fallback;
+- test legacy contact adapter tylko jako portability regression;
+- test produkcyjnego predeploy contract bez logowania sekretów;
+- Wrangler dry-run dla preview i production config;
+- automated WCAG 2.2 A/AA;
+- Chromium, Firefox, WebKit smoke;
+- performance budget.
+
+Kontenerowe E2E/Trivy nie są już produkcyjnym gate'em. Docker/NGINX/Kubernetes pozostają reference-only.
 
 ## Manualne pre-launch gates
 
-Automatyczne CI nie zastępuje następujących kontroli:
+Wymagane przed publicznym GO:
 
-- VoiceOver + Safari,
-- NVDA + Chrome lub Firefox,
-- keyboard-only navigation,
-- zoom 200–400% i reflow przy 320 px,
-- reduced motion / high contrast,
-- finalne przejście formularza z realnym providerem poczty,
-- weryfikacja social preview i danych strukturalnych,
-- finalny przegląd informacji o prywatności i podstawy prawnej formularza,
-- potwierdzenie DPA / transferów dla dostawcy poczty, jeżeli mają zastosowanie,
-- konfiguracja i weryfikacja domeny wysyłkowej: SPF, DKIM i DMARC,
-- DNS, TLS, redirect/canonical policy i monitoring po uruchomieniu.
-
-Dokładna procedura, kryteria PASS/FIX i rollback są w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
+- VoiceOver + Safari;
+- NVDA + Chrome/Firefox;
+- keyboard-only;
+- zoom 200–400% / 320px reflow;
+- reduced motion / high contrast;
+- produkcyjny Turnstile + realna dostawa przez Resend;
+- social preview i structured data;
+- finalny privacy/legal review;
+- SPF/DKIM/DMARC;
+- apex Workers Custom Domain i certyfikat;
+- proxied `www` redirect-only DNS + exact 308;
+- public `make smoke-production`;
+- Workers observability, Cloudflare alerting i rollback path.
 
 ## Sekrety i dane operacyjne
 
-W repo nie przechowujemy sekretów produkcyjnych. Realna wysyłka wymaga konfiguracji providera poczty oraz odpowiednich sekretów po stronie platformy docelowej. Publiczny deployment nie może opierać się na długowiecznych poświadczeniach zapisanych w kodzie lub workflow.
+W repo nie przechowujemy sekretów produkcyjnych.
 
-`.gitignore` blokuje również warianty `.env.*` z wyjątkami wyłącznie dla publicznych plików przykładowych.
+Worker secrets:
+
+- `TURNSTILE_SECRET_KEY`
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL`
+
+GitHub/CI deployment credentials, jeśli używane, muszą być minimalnie uprawnione i przechowywane w sekretnym store. `PUBLIC_TURNSTILE_SITE_KEY` jest publicznym build value, nie sekretem.
+
+Nie logujemy visitor email/message body, Turnstile tokenów ani prywatnych kluczy.
 
 ## Reguła promocji
 
-`feature/hardening branch → PR → wszystkie automatyczne gates zielone → final experience audit → production config preflight → manual pre-launch checks → decyzja hostingowa → main → production promotion`
+`branch → PR → green CI → final experience audit → production preflight → Worker preview → manual pre-launch checks → main → guarded production deployment → public smoke → GO`
 
-Nie promujemy zmian do produkcji tylko dlatego, że build się kompiluje. Release wymaga jednocześnie jakości doświadczenia, bezpieczeństwa, accessibility, compliance i operacyjnej proporcjonalności rozwiązania.
+Szczegółowe kryteria PASS/FIX i rollback: `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
