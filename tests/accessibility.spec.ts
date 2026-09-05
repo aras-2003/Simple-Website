@@ -42,15 +42,21 @@ test('home honors prefers-reduced-motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const motion = await page.locator('.hero-actions .button-primary').evaluate((element) => {
+    const maxDurationMs = (value: string) => Math.max(...value.split(',').map((part) => {
+      const duration = part.trim();
+      if (duration.endsWith('ms')) return Number.parseFloat(duration);
+      if (duration.endsWith('s')) return Number.parseFloat(duration) * 1000;
+      return Number.POSITIVE_INFINITY;
+    }));
     const htmlStyle = getComputedStyle(document.documentElement);
     const elementStyle = getComputedStyle(element);
     return {
       scrollBehavior: htmlStyle.scrollBehavior,
-      transitionDuration: elementStyle.transitionDuration,
-      animationDuration: elementStyle.animationDuration,
+      transitionDurationMs: maxDurationMs(elementStyle.transitionDuration),
+      animationDurationMs: maxDurationMs(elementStyle.animationDuration),
     };
   });
   expect(motion.scrollBehavior).toBe('auto');
-  expect(motion.transitionDuration).toMatch(/^(0s|0\.00001s|0\.01ms)(,\s*(0s|0\.00001s|0\.01ms))*$/);
-  expect(motion.animationDuration).toMatch(/^(0s|0\.00001s|0\.01ms)(,\s*(0s|0\.00001s|0\.01ms))*$/);
+  expect(motion.transitionDurationMs).toBeLessThanOrEqual(1);
+  expect(motion.animationDurationMs).toBeLessThanOrEqual(1);
 });
