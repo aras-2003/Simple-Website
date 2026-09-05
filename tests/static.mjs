@@ -132,7 +132,7 @@ for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid
 }
 
 const privacyPl = await readFile(routeFile('/privacy'), 'utf8');
-for (const term of ['Administrator danych', 'Podstawa prawna', 'Transfer poza EOG', 'Twoje prawa']) {
+for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Transfer poza EOG', 'Twoje prawa']) {
   if (!privacyPl.includes(term)) errors.push(`/privacy: missing GDPR information layer ${term}`);
 }
 const privacyEn = await readFile(routeFile('/en/privacy'), 'utf8');
