@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { request as httpRequest } from 'node:http';
 
 const siteName = `site-runtime-${process.pid}`;
 const contactName = `contact-runtime-${process.pid}`;
@@ -25,6 +26,23 @@ async function waitFor(url) {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error(`runtime did not become ready: ${url}`);
+}
+
+function headWithHost(path, host) {
+  return new Promise((resolve, reject) => {
+    const req = httpRequest({
+      hostname: '127.0.0.1',
+      port: 18080,
+      path,
+      method: 'HEAD',
+      headers: { Host: host },
+    }, (res) => {
+      res.resume();
+      res.on('end', () => resolve(res));
+    });
+    req.on('error', reject);
+    req.end();
+  });
 }
 
 async function postContact(payload, headers = {}) {
@@ -105,6 +123,14 @@ try {
   assert.match(homeHtml, /<meta property="og:image" content="https:\/\/arkadiuszkamrowski\.com\/assets\/og-card\.png"/);
   assertSecurityHeaders(home, 'home');
 
+  const wwwRedirect = await headWithHost('/oaf?from=www', 'www.arkadiuszkamrowski.com');
+  assert.equal(wwwRedirect.statusCode, 308, 'www must permanently canonicalize to the apex host');
+  assert.equal(
+    wwwRedirect.headers.location,
+    'https://arkadiuszkamrowski.com/oaf?from=www',
+    'www redirect must preserve path and query',
+  );
+
   for (const path of ['/about/', '/en/about/']) {
     const response = await fetch(`${baseUrl}${path}`, { redirect: 'manual' });
     assert.equal(response.status, 308, `${path} should canonicalize with 308`);
@@ -156,7 +182,7 @@ try {
   const hidden = await fetch(`${baseUrl}/.git/config`, { redirect: 'manual' });
   assert.ok([403, 404].includes(hidden.status));
 
-  console.log('CONTAINER E2E PASS · NGINX canonicalization, inherited security headers, cache policy and reverse-proxy contact flow');
+  console.log('CONTAINER E2E PASS · host/path canonicalization, inherited security headers, cache policy and reverse-proxy contact flow');
 } catch (error) {
   try {
     console.error('SITE LOGS\n', docker('logs', siteName));
