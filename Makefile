@@ -1,4 +1,4 @@
-.PHONY: install build check test test-a11y test-contact audit dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y test-contact test-predeploy audit predeploy dev contact-dev contact-api mac-demo mac-stop browser-test docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
 	npm install --no-audit --no-fund
@@ -18,6 +18,16 @@ test-a11y:
 
 test-contact:
 	npm run test:contact
+
+test-predeploy:
+	npm run test:predeploy
+
+predeploy:
+	python3 scripts/predeploy_check.py \
+		--site-base-url "$${SITE_BASE_URL:?set SITE_BASE_URL}" \
+		--host "$${HOST:?set HOST}" \
+		--namespace "$${NAMESPACE:-personal-site}" \
+		--require-contact-production
 
 contact-api:
 	CONTACT_DRY_RUN=$${CONTACT_DRY_RUN:-1} node server/contact.mjs
