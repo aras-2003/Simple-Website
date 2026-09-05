@@ -52,6 +52,10 @@ def immutable_image_ref(value: str) -> bool:
     return bool(repository) and bool(SHA_TAG_RE.fullmatch(tag))
 
 
+def plausible_turnstile_key(value: str) -> bool:
+    return 10 <= len(value) <= 256 and not any(char.isspace() for char in value)
+
+
 p = argparse.ArgumentParser(description="Validate the production deployment contract without printing secrets.")
 p.add_argument("--site-base-url", required=True)
 p.add_argument("--host", required=True)
@@ -59,7 +63,7 @@ p.add_argument("--namespace", default="personal-site")
 p.add_argument(
     "--require-contact-production",
     action="store_true",
-    help="also require immutable image refs plus a live, origin-locked contact configuration and delivery secrets",
+    help="also require immutable image refs plus live origin-locked contact, Turnstile and delivery configuration",
 )
 a = p.parse_args()
 
@@ -97,6 +101,10 @@ if a.require_contact_production:
     rate_limit = env("CONTACT_RATE_LIMIT") or "5"
     rate_buckets = env("CONTACT_RATE_BUCKETS") or "5000"
     api_port = env("CONTACT_API_PORT") or "8787"
+    turnstile_required = env("TURNSTILE_REQUIRED")
+    turnstile_site_key = env("PUBLIC_TURNSTILE_SITE_KEY")
+    turnstile_secret = env("TURNSTILE_SECRET_KEY")
+    turnstile_hostname = env("TURNSTILE_EXPECTED_HOSTNAME")
 
     if not immutable_image_ref(image):
         errors.append("IMAGE must use an immutable sha256 digest or a commit-addressable hexadecimal tag")
@@ -133,6 +141,15 @@ if a.require_contact_production:
         if expected_origin not in normalized_origins:
             errors.append(f"CONTACT_ALLOWED_ORIGINS must include {expected_origin}")
 
+    if turnstile_required != "1":
+        errors.append("TURNSTILE_REQUIRED must be 1 for production")
+    if not plausible_turnstile_key(turnstile_site_key):
+        errors.append("PUBLIC_TURNSTILE_SITE_KEY is missing or looks incomplete")
+    if not plausible_turnstile_key(turnstile_secret):
+        errors.append("TURNSTILE_SECRET_KEY is missing or looks incomplete")
+    if turnstile_hostname.lower() != a.host.lower():
+        errors.append(f"TURNSTILE_EXPECTED_HOSTNAME must equal {a.host.lower()}")
+
     if len(resend_key) < 20:
         errors.append("RESEND_API_KEY is missing or looks incomplete")
     if not valid_email(to_email):
@@ -167,6 +184,7 @@ print(f" - origin: https://{a.host}")
 print(f" - namespace: {a.namespace}")
 if a.require_contact_production:
     print(" - images: immutable release references present")
+    print(" - edge: Cloudflare Turnstile enforcement configuration present")
     print(" - contact: live delivery configuration present; secrets not displayed")
 for warning in warnings:
     print(" - warning:", warning)
