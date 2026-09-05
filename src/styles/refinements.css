@@ -176,30 +176,7 @@
   border-top: 1px solid var(--line);
 }
 
-/* About: portrait supports the story rather than dominating it */
-.about-hero-brand {
-  min-height: min(650px, calc(100svh - var(--header)));
-  grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
-  align-items: center;
-}
-
-.about-portrait-primary {
-  width: min(100%, 360px);
-  justify-self: end;
-}
-
-.about-portrait-primary img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  max-height: 500px;
-  object-fit: cover;
-  object-position: 50% 24%;
-}
-
-.about-portrait-primary figcaption {
-  color: var(--paper-strong);
-}
-
+/* About: portrait geometry is isolated in about.css; this layer only owns the brand-profile treatment. */
 .brand-profile {
   max-width: none;
   display: grid;
@@ -299,10 +276,6 @@
     justify-self: start;
   }
 
-  .about-portrait-primary {
-    justify-self: start;
-  }
-
   .deeper-paths-list article {
     grid-template-columns: .32fr .9fr 1fr;
   }
@@ -352,15 +325,6 @@
 
   .interface-detail {
     padding-top: 0;
-  }
-
-  .about-portrait-primary {
-    width: min(82vw, 310px);
-    justify-self: start;
-  }
-
-  .about-portrait-primary img {
-    max-height: 430px;
   }
 
   .case-study-index {
