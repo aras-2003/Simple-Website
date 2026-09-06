@@ -5,48 +5,65 @@ interface Props { locale: Locale; id: string; compact?: boolean; }
 const { locale, id, compact = false } = Astro.props;
 const labels = locale === 'pl'
   ? {
-      top: { title: 'Kierunek', meta: 'strategia' },
-      right: { title: 'Architektura', meta: 'wybory' },
-      bottom: { title: 'Priorytety', meta: 'portfel' },
-      left: { title: 'Dowody', meta: 'wykonanie' },
+      direction: { title: 'Kierunek', meta: 'strategia' },
+      architecture: { title: 'Architektura', meta: 'wybory' },
+      priorities: { title: 'Priorytety', meta: 'portfel' },
+      evidence: { title: 'Dowody', meta: 'wykonanie' },
     }
   : {
-      top: { title: 'Direction', meta: 'strategy' },
-      right: { title: 'Architecture', meta: 'choices' },
-      bottom: { title: 'Priorities', meta: 'portfolio' },
-      left: { title: 'Evidence', meta: 'execution' },
+      direction: { title: 'Direction', meta: 'strategy' },
+      architecture: { title: 'Architecture', meta: 'choices' },
+      priorities: { title: 'Priorities', meta: 'portfolio' },
+      evidence: { title: 'Evidence', meta: 'execution' },
     };
 const centerTitle = locale === 'pl' ? 'Spójność decyzji' : 'Decision coherence';
 const centerBody = locale === 'pl'
-  ? 'Punkt ciężkości nie leży w jednym obszarze. Leży w jakości połączeń i pętli informacji zwrotnej.'
-  : 'The center of gravity is not one domain. It is the quality of the connections and the feedback loop.';
+  ? 'Punkt ciężkości leży w jakości połączeń i w tym, czy dowód może zmienić wcześniejsze założenie.'
+  : 'The center of gravity is the quality of the connections and whether evidence can change an earlier assumption.';
 const caption = locale === 'pl'
-  ? 'OAF utrzymuje zależność między kierunkiem, architekturą, priorytetami i dowodami z wykonania. Dowody wracają do kolejnej decyzji zamiast kończyć cykl.'
-  : 'OAF keeps direction, architecture, priorities and execution evidence connected. Evidence feeds the next decision instead of closing the cycle.';
+  ? 'OAF utrzymuje jedną pętlę pomiędzy kierunkiem, architekturą, priorytetami i dowodami z wykonania. Dowód nie kończy cyklu — wraca do kolejnej decyzji.'
+  : 'OAF keeps one loop across direction, architecture, priorities and execution evidence. Evidence does not close the cycle — it feeds the next decision.';
 ---
-<figure class:list={['oaf-orbit', { 'oaf-orbit-compact': compact }]} aria-labelledby={id}>
-  <p class="sr-only" id={id}>{locale === 'pl' ? 'OAF — cztery współzależne obszary architektury organizacyjnej' : 'OAF — four interdependent domains of organizational architecture'}</p>
-  <svg class="oaf-orbit-lines" viewBox="0 0 640 640" aria-hidden="true" focusable="false">
-    <circle cx="320" cy="320" r="214" pathLength="1" />
-    <path d="M320 106 A214 214 0 0 1 534 320" />
-    <path d="M534 320 A214 214 0 0 1 320 534" />
-    <path d="M320 534 A214 214 0 0 1 106 320" />
-    <path d="M106 320 A214 214 0 0 1 320 106" />
-    <line x1="320" y1="168" x2="320" y2="256" />
-    <line x1="472" y1="320" x2="384" y2="320" />
-    <line x1="320" y1="472" x2="320" y2="384" />
-    <line x1="168" y1="320" x2="256" y2="320" />
-  </svg>
+<figure class:list={['oaf-system', { 'oaf-system-compact': compact }]} aria-labelledby={id}>
+  <p class="sr-only" id={id}>{locale === 'pl' ? 'OAF — cztery współzależne obszary architektury organizacyjnej połączone pętlą informacji zwrotnej' : 'OAF — four interdependent organizational architecture domains connected by a feedback loop'}</p>
 
-  <div class="oaf-node oaf-node-top"><span>{labels.top.meta}</span><strong>{labels.top.title}</strong></div>
-  <div class="oaf-node oaf-node-right"><span>{labels.right.meta}</span><strong>{labels.right.title}</strong></div>
-  <div class="oaf-node oaf-node-bottom"><span>{labels.bottom.meta}</span><strong>{labels.bottom.title}</strong></div>
-  <div class="oaf-node oaf-node-left"><span>{labels.left.meta}</span><strong>{labels.left.title}</strong></div>
+  <div class="oaf-system-canvas">
+    <svg class="oaf-system-connectors" viewBox="0 0 100 100" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+      <path d="M50 24 L50 39" />
+      <path d="M61 50 L76 50" />
+      <path d="M50 61 L50 76" />
+      <path d="M39 50 L24 50" />
+      <path class="oaf-feedback-path" d="M18 42 C8 18, 27 8, 44 14" />
+    </svg>
 
-  <div class="oaf-center">
-    <span>OAF</span>
-    <strong>{centerTitle}</strong>
-    {!compact && <p>{centerBody}</p>}
+    <div class="oaf-system-node oaf-system-direction">
+      <span>{labels.direction.meta}</span>
+      <strong>{labels.direction.title}</strong>
+    </div>
+    <div class="oaf-system-node oaf-system-architecture">
+      <span>{labels.architecture.meta}</span>
+      <strong>{labels.architecture.title}</strong>
+    </div>
+    <div class="oaf-system-node oaf-system-priorities">
+      <span>{labels.priorities.meta}</span>
+      <strong>{labels.priorities.title}</strong>
+    </div>
+    <div class="oaf-system-node oaf-system-evidence">
+      <span>{labels.evidence.meta}</span>
+      <strong>{labels.evidence.title}</strong>
+    </div>
+
+    <div class="oaf-system-center">
+      <span>OAF</span>
+      <strong>{centerTitle}</strong>
+      {!compact && <p>{centerBody}</p>}
+    </div>
+
+    <div class="oaf-system-feedback" aria-hidden="true">
+      <span>↺</span>
+      <small>{locale === 'pl' ? 'dowód → kolejna decyzja' : 'evidence → next decision'}</small>
+    </div>
   </div>
-  <figcaption>{caption}</figcaption>
+
+  {!compact && <figcaption>{caption}</figcaption>}
 </figure>

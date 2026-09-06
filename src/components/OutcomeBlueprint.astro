@@ -3,22 +3,77 @@ import type { ExecutiveOutput } from '../content/executive';
 
 interface Props { items: ExecutiveOutput[]; }
 const { items } = Astro.props;
+const visualKinds = ['decision-map', 'tradeoff', 'portfolio', 'governance', 'roadmap'] as const;
 ---
 <div class="outcome-blueprint">
-  {items.map((item) => (
-    <article class="outcome-blueprint-item">
-      <div class="outcome-blueprint-artifact" aria-hidden="true">
-        <span class="artifact-index">{item.index}</span>
-        <span class="artifact-line artifact-line-a"></span>
-        <span class="artifact-line artifact-line-b"></span>
-        <span class="artifact-node artifact-node-a"></span>
-        <span class="artifact-node artifact-node-b"></span>
-      </div>
-      <div class="outcome-blueprint-copy">
-        <p class="micro-label">{item.artifact}</p>
-        <h3>{item.title}</h3>
-        <p>{item.decision}</p>
-      </div>
-    </article>
-  ))}
+  {items.map((item, index) => {
+    const visual = visualKinds[index] ?? 'decision-map';
+    return (
+      <article class="outcome-blueprint-item">
+        <div class:list={['outcome-blueprint-artifact', 'outcome-mini', `outcome-mini-${visual}`]} aria-hidden="true">
+          <span class="artifact-index">{item.index}</span>
+
+          {visual === 'decision-map' && (
+            <div class="mini-decision-map">
+              <span class="mini-node mini-node-a"></span>
+              <span class="mini-node mini-node-b"></span>
+              <span class="mini-node mini-node-c"></span>
+              <span class="mini-friction mini-friction-a"></span>
+              <span class="mini-friction mini-friction-b"></span>
+              <span class="mini-connector mini-connector-a"></span>
+              <span class="mini-connector mini-connector-b"></span>
+              <span class="mini-connector mini-connector-c"></span>
+            </div>
+          )}
+
+          {visual === 'tradeoff' && (
+            <div class="mini-tradeoff">
+              <span class="mini-axis mini-axis-x"></span>
+              <span class="mini-axis mini-axis-y"></span>
+              <span class="mini-choice"></span>
+              <span class="mini-choice-halo"></span>
+            </div>
+          )}
+
+          {visual === 'portfolio' && (
+            <div class="mini-portfolio">
+              <span class="mini-input mini-input-a"></span>
+              <span class="mini-input mini-input-b"></span>
+              <span class="mini-input mini-input-c"></span>
+              <span class="mini-hub"></span>
+              <span class="mini-output mini-output-a"></span>
+              <span class="mini-output mini-output-b"></span>
+              <span class="mini-output mini-output-c"></span>
+            </div>
+          )}
+
+          {visual === 'governance' && (
+            <div class="mini-governance">
+              <span class="mini-gov-node mini-gov-owner"></span>
+              <span class="mini-gov-node mini-gov-evidence"></span>
+              <span class="mini-gov-node mini-gov-decision"></span>
+              <span class="mini-gov-node mini-gov-review"></span>
+              <span class="mini-gov-loop"></span>
+            </div>
+          )}
+
+          {visual === 'roadmap' && (
+            <div class="mini-roadmap">
+              <span class="mini-road-line"></span>
+              <span class="mini-road-node mini-road-node-a"></span>
+              <span class="mini-road-node mini-road-node-b"></span>
+              <span class="mini-road-node mini-road-node-c"></span>
+              <span class="mini-road-node mini-road-node-d"></span>
+              <span class="mini-road-feedback"></span>
+            </div>
+          )}
+        </div>
+        <div class="outcome-blueprint-copy">
+          <p class="micro-label">{item.artifact}</p>
+          <h3>{item.title}</h3>
+          <p>{item.decision}</p>
+        </div>
+      </article>
+    );
+  })}
 </div>

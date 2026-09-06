@@ -1,16 +1,11 @@
-/* Phase two: sourced signals, decision-system delta and portfolio decision canvas. */
+/* Sourced signals, decision-system delta and portfolio decision canvas. */
 .benchmark-signal-field { margin: clamp(48px,6vw,84px) 0 0; }
 .benchmark-signal-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-block:1px solid var(--line); }
 .benchmark-signal { min-width:0; padding:26px clamp(22px,2.5vw,34px) 30px; }
 .benchmark-signal + .benchmark-signal { border-left:1px solid var(--line); }
 .benchmark-signal-head { display:flex; justify-content:space-between; gap:18px; color:var(--muted); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
 .benchmark-signal-head a { color:inherit; white-space:nowrap; }
-.benchmark-signal-ruler { position:relative; height:28px; margin:34px 0 20px; border-top:1px solid var(--line); }
-.benchmark-signal-fill { position:absolute; left:0; top:-2px; height:3px; background:var(--sage-dark); }
-.benchmark-signal-1 .benchmark-signal-fill { width:26%; }
-.benchmark-signal-2 .benchmark-signal-fill { width:53%; }
-.benchmark-signal-3 .benchmark-signal-fill { width:42%; }
-.benchmark-signal-value { margin:0 0 22px; color:var(--cocoa); font-size:clamp(58px,6vw,92px); font-weight:650; line-height:.86; letter-spacing:-.065em; }
+.benchmark-signal-value { margin:0 0 22px; color:var(--chocolate); font-size:clamp(58px,6vw,92px); font-weight:650; line-height:.86; letter-spacing:-.065em; }
 .benchmark-signal h3 { min-height:92px; margin:0; font-size:clamp(20px,1.8vw,27px); line-height:1.15; }
 .benchmark-context { margin-top:28px; padding-top:12px; border-top:1px solid var(--line-soft); }
 .benchmark-context summary { min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--muted-strong); font-size:11px; font-weight:700; }
@@ -74,9 +69,9 @@
   .decision-delta-panel { padding:14px; }
   .decision-delta-title { min-height:0; }
   .portfolio-matrix-meta { flex-direction:column; gap:6px; }
-  .portfolio-matrix-frame { padding-left:28px; }
-  .portfolio-axis-y { left:0; }
-  .portfolio-axis-x { left:28px; }
+  .portfolio-matrix-frame { padding:32px 0 38px; }
+  .portfolio-axis-y { left:0; top:0; transform:none; white-space:normal; }
+  .portfolio-axis-x { left:0; right:0; bottom:8px; }
   .portfolio-matrix-grid { grid-template-columns:1fr; }
   .portfolio-matrix-grid article { min-height:185px; }
   .portfolio-matrix-grid article:nth-child(1),
