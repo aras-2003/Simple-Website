@@ -59,13 +59,38 @@ Worker runtime:
 
 The contact Worker also uses the `CONTACT_RATE_LIMITER` Workers Rate Limiting binding defined in Wrangler.
 
+## Explicit environment configuration
+
+There is intentionally **no default `wrangler.jsonc`**. Every environment must name its configuration explicitly so Cloudflare build tooling cannot silently rewrite or conflate environments.
+
+- `wrangler.preview.jsonc` — manual/dev preview contract; keeps `workers.dev` available where explicitly needed.
+- `wrangler.staging.jsonc` — private staging Worker on `staging.arkadiuszkamrowski.com`; staging branch only.
+- `wrangler.production.jsonc` — public production Worker on `arkadiuszkamrowski.com`; production branch/release only.
+
 ## Routing
 
-`wrangler.jsonc` is the preview contract and keeps the `workers.dev` endpoint available for pre-production verification.
+`wrangler.staging.jsonc` disables public preview URLs and attaches `staging.arkadiuszkamrowski.com` as a Workers Custom Domain. The staging Worker is additionally protected by Cloudflare Access.
 
-`wrangler.production.jsonc` disables `workers.dev` and attaches `arkadiuszkamrowski.com` as a Workers Custom Domain. The Custom Domain makes the Worker the application origin and lets Cloudflare create the apex DNS record and certificate.
+`wrangler.production.jsonc` disables `workers.dev` and preview URLs and attaches `arkadiuszkamrowski.com` as a Workers Custom Domain. The Custom Domain makes the Worker the application origin and lets Cloudflare create the apex DNS record and certificate.
 
 `www` remains redirect-only and is not a second application hostname. The existing Cloudflare 308 redirect rule stays authoritative.
+
+## Release lanes
+
+```text
+feature/*
+   │ PR + CI
+   ▼
+ main            integration only; no deployment
+   │ promotion PR
+   ▼
+ staging         automatic Cloudflare staging build/deploy
+   │ validation + promotion PR
+   ▼
+ production      production release authority
+```
+
+The repository release-policy workflow validates the allowed PR promotion path. On the current private/free GitHub plan this is a procedural guardrail rather than hard branch protection, so direct pushes to release branches must still be avoided by convention.
 
 ## Security consequences
 
@@ -88,7 +113,8 @@ Controls that remain mandatory:
 - Worker rate limiting / Cloudflare WAF protections;
 - secret isolation;
 - no sensitive payloads in logs;
-- immutable Git-based release history and rollback.
+- immutable Git-based release history and rollback;
+- Cloudflare Access on staging only, never on the public production application.
 
 ## Cost posture
 
