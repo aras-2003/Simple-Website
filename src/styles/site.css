@@ -1,4 +1,4 @@
-/* Single ordered stylesheet entrypoint. The layer order is intentional: foundation → responsive/content → brand/layout → editorial refinements → executive storytelling → page-specific. */
+/* Single ordered stylesheet entrypoint. Foundation/layout first, then the canonical diagram grammar, then page-specific layers. */
 @import './foundation.css';
 @import './responsive.css';
 @import './content-components.css';
@@ -7,6 +7,7 @@
 @import './layout.css';
 @import './editorial.css';
 @import './refinements.css';
+@import './diagrams.css';
 @import './executive.css';
 @import './visual-storytelling.css';
 @import './oaf-executive.css';

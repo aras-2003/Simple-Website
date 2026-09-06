@@ -22,21 +22,18 @@ const pl = locale === 'pl';
 <figure class="benchmark-signal-field" aria-labelledby="benchmark-field-caption">
   <div class="benchmark-signal-grid">
     {items.map((item, index) => (
-      <article class:list={['benchmark-signal', `benchmark-signal-${index + 1}`]}>
+      <article class="benchmark-signal">
         <div class="benchmark-signal-head">
           <span>{pl ? 'Sygnał' : 'Signal'} {String(index + 1).padStart(2, '0')}</span>
           <a href={item.href} target="_blank" rel="noopener noreferrer">
             {item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> – {c.externalNewTab}</span>
           </a>
         </div>
-        <div class="benchmark-signal-ruler" aria-hidden="true">
-          <span class="benchmark-signal-fill"></span>
-          <span class="benchmark-signal-marker"></span>
-        </div>
+        <div class="benchmark-signal-divider" aria-hidden="true"></div>
         <p class="benchmark-signal-value">{item.value}</p>
         <h3>{item.title}</h3>
         <details class="benchmark-context">
-          <summary>{pl ? 'Co ten sygnał mówi zarządczo' : 'What this signal means for management'}</summary>
+          <summary>{pl ? 'Kontekst i znaczenie zarządcze' : 'Context and management meaning'}</summary>
           <p>{item.body}</p>
         </details>
       </article>
@@ -44,7 +41,7 @@ const pl = locale === 'pl';
   </div>
   <figcaption id="benchmark-field-caption">
     {pl
-      ? 'Trzy niezależne benchmarki z różnych badań. Nie są bezpośrednio porównywalne — razem pokazują, że utrata wartości często pojawia się pomiędzy projektem zmiany a zdolnością organizacji do jej wykonania.'
-      : 'Three independent benchmarks from different studies. They are not directly comparable — together they show how value is often lost between the design of change and the organization’s ability to execute it.'}
+      ? 'Trzy niezależne benchmarki z różnych badań. Nie są bezpośrednio porównywalne — dlatego każda liczba jest pokazana jako osobny sygnał, a nie punkt na wspólnej skali.'
+      : 'Three independent benchmarks from different studies. They are not directly comparable — each number is therefore shown as its own signal, not as a point on a shared scale.'}
   </figcaption>
 </figure>

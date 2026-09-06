@@ -20,36 +20,37 @@ const stages = pl
       ['Execution', 'outcome + evidence'],
     ];
 ---
-<figure class:list={['executive-system', { 'executive-system-compact': compact }]}>
-  <div class="executive-system-head">
+<figure class:list={['decision-system', { 'decision-system-compact': compact }]}>
+  <div class="decision-system-head">
     <p>{pl ? 'system decyzji' : 'decision system'}</p>
-    <span>{pl ? 'strategia → rezultat → korekta' : 'strategy → outcome → correction'}</span>
+    <span>{pl ? 'największe ryzyko jest na przejściach' : 'the highest risk sits at the hand-offs'}</span>
   </div>
 
-  <div class="executive-system-track" aria-hidden="true">
+  <div class="decision-system-chain" aria-hidden="true">
     {stages.map(([title, meta], index) => (
       <>
-        <div class="executive-system-node">
+        <div class="decision-system-node">
           <span>{String(index + 1).padStart(2, '0')}</span>
           <strong>{title}</strong>
           <small>{meta}</small>
         </div>
         {index < stages.length - 1 && (
-          <div class:list={['executive-system-link', { 'executive-system-link-risk': index === 1 || index === 2 }]}> 
+          <div class:list={['decision-system-handoff', { 'decision-system-handoff-risk': index === 1 || index === 2 }]}> 
             <span></span>
+            {(index === 1 || index === 2) && <small>{pl ? 'tarcie' : 'friction'}</small>}
           </div>
         )}
       </>
     ))}
   </div>
 
-  <div class="executive-system-feedback" aria-hidden="true">
-    <span class="feedback-arrow">↩</span>
+  <div class="decision-system-feedback" aria-hidden="true">
+    <span class="decision-feedback-arrow">↩</span>
     <span>{pl ? 'dowód z wykonania wraca do kolejnej decyzji' : 'execution evidence feeds the next decision'}</span>
   </div>
 
   <figcaption>
     <strong>{pl ? 'Wartość nie znika w jednym silosie.' : 'Value rarely disappears inside one silo.'}</strong>
-    <span>{pl ? 'Najczęściej znika na przejściach — gdy właściciel, kryterium lub rytm decyzji zmienia się po drodze.' : 'It disappears at the handoffs — when ownership, criteria or decision cadence changes along the way.'}</span>
+    <span>{pl ? 'Najczęściej znika na przejściach — gdy zmieniają się właściciel, kryterium albo rytm decyzji.' : 'It disappears at the hand-offs — when ownership, criteria or decision cadence changes along the way.'}</span>
   </figcaption>
 </figure>

@@ -34,7 +34,7 @@ test('home five-second executive clarity layout remains intact', async ({ page }
   const title = page.locator('#hero-title');
   const lead = page.locator('.executive-hero .hero-lead');
   const value = page.locator('.executive-value-line');
-  const system = page.locator('.executive-hero .executive-system');
+  const system = page.locator('.executive-hero .decision-system');
   const primary = page.locator('.hero-actions .button-primary');
   const firstTrigger = page.locator('.executive-trigger-grid article').first();
 
@@ -47,6 +47,7 @@ test('home five-second executive clarity layout remains intact', async ({ page }
   await expect(primary).toBeVisible();
   await expect(primary).toHaveAttribute('href', '/work');
   await expect(firstTrigger).toBeAttached();
+  await expect(page.locator('.outcome-mini')).toHaveCount(5);
 
   const viewport = page.viewportSize();
   const heroBox = await hero.boundingBox();
@@ -80,12 +81,22 @@ test('home five-second executive clarity layout remains intact', async ({ page }
   });
 });
 
-test('Perspective turns benchmark evidence into a visual signal field', async ({ page }) => {
+test('Perspective presents independent benchmark signals without a false shared scale', async ({ page }) => {
   await page.goto('/writing', { waitUntil: 'networkidle' });
   await expect(page.locator('.benchmark-signal-field')).toBeVisible();
   await expect(page.locator('.benchmark-signal')).toHaveCount(3);
   await expect(page.locator('.benchmark-signal-value')).toHaveText(['26%', '53%', '42%']);
   await expect(page.locator('.benchmark-context')).toHaveCount(3);
+  await expect(page.locator('.benchmark-signal-ruler')).toHaveCount(0);
+  await expect(page.locator('.benchmark-signal-divider')).toHaveCount(3);
+});
+
+test('OAF uses one coherent geometry and preserves the evidence feedback loop', async ({ page }) => {
+  await page.goto('/oaf', { waitUntil: 'networkidle' });
+  await expect(page.locator('.oaf-system')).toBeVisible();
+  await expect(page.locator('.oaf-system-node')).toHaveCount(4);
+  await expect(page.locator('.oaf-system-center')).toBeVisible();
+  await expect(page.locator('.oaf-system-feedback')).toBeVisible();
 });
 
 test('advisory page makes decision change, trade-offs and proof tangible', async ({ page }) => {
@@ -96,7 +107,7 @@ test('advisory page makes decision change, trade-offs and proof tangible', async
   await expect(page.locator('.portfolio-matrix-grid article')).toHaveCount(4);
   await expect(page.locator('.advisory-domain-grid article')).toHaveCount(4);
   await expect(page.locator('.case-proof-item')).toHaveCount(3);
-  await expect(page.locator('.case-proof-item svg')).toHaveCount(3);
+  await expect(page.locator('.case-proof-item svg.proof-exhibit-svg')).toHaveCount(3);
 });
 
 for (const [name, path] of visualRoutes) {

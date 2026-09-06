@@ -121,17 +121,19 @@ requireOrderedClasses(home, '/', [
   'executive-method-section',
   'executive-close',
 ], 'executive narrative section');
-for (const required of ['executive-system', 'outcome-blueprint', 'executive-case-rail']) {
+for (const required of ['decision-system', 'outcome-blueprint', 'executive-case-rail']) {
   if (!home.includes(required)) errors.push(`/: missing visual storytelling layer ${required}`);
 }
 for (const removed of ['problem-section-light', 'evidence-section-home', 'deeper-paths', 'thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
   if (home.includes(removed)) errors.push(`/: legacy narrative layer ${removed} must stay off executive Home`);
 }
 if (!home.includes('Współpraca')) errors.push('/: executive navigation/advisory label expected');
+if (!home.includes('Opisz problem')) errors.push('/: problem-led contact CTA expected');
 
 const homeEn = await readFile(routeFile('/en'), 'utf8');
 if (!homeEn.includes('Advisory')) errors.push('/en: executive Advisory navigation label expected');
-for (const required of ['executive-system', 'outcome-blueprint', 'executive-case-rail']) {
+if (!homeEn.includes('Discuss a decision')) errors.push('/en: problem-led contact CTA expected');
+for (const required of ['decision-system', 'outcome-blueprint', 'executive-case-rail']) {
   if (!homeEn.includes(required)) errors.push(`/en: missing visual storytelling layer ${required}`);
 }
 
@@ -143,8 +145,9 @@ if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enter
 
 const perspective = await readFile(routeFile('/writing'), 'utf8');
 if (!perspective.includes('benchmark-signal-field')) errors.push('/writing: visual benchmark signal field expected');
-const benchmarkCount = (perspective.match(/class="benchmark-signal benchmark-signal-/g) || []).length;
+const benchmarkCount = (perspective.match(/class="benchmark-signal"/g) || []).length;
 if (benchmarkCount !== 3) errors.push(`/writing: expected 3 benchmark signals, found ${benchmarkCount}`);
+if (perspective.includes('benchmark-signal-ruler')) errors.push('/writing: benchmark signals must not imply a shared quantitative scale');
 if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
 if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
 
@@ -161,7 +164,7 @@ for (const required of ['decision-architecture-delta', 'engagement-grid', 'portf
 }
 const caseCount = (practice.match(/class="case-study-item case-proof-item"/g) || []).length;
 if (caseCount !== 3) errors.push(`/work: expected 3 anonymized proof blueprints, found ${caseCount}`);
-const proofSvgCount = (practice.match(/<svg viewBox="0 0 760 250"/g) || []).length;
+const proofSvgCount = (practice.match(/class="proof-exhibit-svg"/g) || []).length;
 if (proofSvgCount !== 3) errors.push(`/work: expected 3 schematic proof artifacts, found ${proofSvgCount}`);
 const engagementCount = (practice.match(/<article>\s*<div class="engagement-index"/g) || []).length;
 if (engagementCount !== 3) errors.push(`/work: expected 3 engagement formats, found ${engagementCount}`);
@@ -174,9 +177,11 @@ requireOrderedClasses(oaf, '/oaf', [
   'oaf-application-executive',
   'oaf-reference-section',
 ], 'executive OAF section');
-for (const required of ['oaf-question-grid', 'oaf-orbit', 'oaf-misfit-rail', 'oaf-use-rail', 'oaf-reference-grid', 'oaf-boundary-strip']) {
+for (const required of ['oaf-question-grid', 'oaf-system', 'oaf-misfit-rail', 'oaf-use-rail', 'oaf-reference-grid', 'oaf-boundary-strip']) {
   if (!oaf.includes(required)) errors.push(`/oaf: missing executive OAF layer ${required}`);
 }
+const oafNodeCount = (oaf.match(/class="oaf-system-node /g) || []).length;
+if (oafNodeCount !== 4) errors.push(`/oaf: expected 4 canonical OAF nodes, found ${oafNodeCount}`);
 const detailCount = (oaf.match(/<details>/g) || []).length;
 if (detailCount < 2) errors.push(`/oaf: expected progressive disclosure for supporting depth, found ${detailCount} details sections`);
 for (const removed of ['lineage-river', 'convergence-map', 'decision-contract-section', 'principle-strips', 'oaf-use-section-polished']) {
