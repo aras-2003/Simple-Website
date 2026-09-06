@@ -10,7 +10,7 @@ Cloudflare is both the public edge and the application origin.
 
 ```text
 GitHub
-  │ branch-gated build / deploy
+  │ branch-gated build / release
   ▼
 Cloudflare Workers
   ├── Static Assets → pre-rendered Astro HTML/CSS/JS
@@ -32,20 +32,22 @@ This removes origin-bypass as an architectural class of risk: each Workers Custo
 `main` is integration-only and must not deploy automatically.
 
 ```text
-feature/* → PR → main → PR/promote → staging → PR/promote → production
+feature/* → PR → main → PR/promote → staging → accept → PR/promote → production → explicit release
 ```
 
 Release mapping:
 
-| Git branch | Cloudflare Worker | Public hostname | Automatic release role |
+| Git branch | Cloudflare Worker | Hostname | Release behavior |
 |---|---|---|---|
-| `main` | none | none | integration only |
-| `staging` | `arkadiuszkamrowski-staging` | `staging.arkadiuszkamrowski.com` | release candidate |
-| `production` | `arkadiuszkamrowski` | `arkadiuszkamrowski.com` | production |
+| `main` | none | none | integration only; no deployment |
+| `staging` | `arkadiuszkamrowski-staging` | `staging.arkadiuszkamrowski.com` | automatic Workers Build |
+| `production` | `arkadiuszkamrowski` | `arkadiuszkamrowski.com` | manual v1 production release |
 
-Use **two separate Workers Builds applications** connected to the same repository. For both applications, set **Builds for non-production branches = OFF**. `main` must not be selected as the production branch for either application.
+The staging Workers Build tracks only `staging`, with **Builds for non-production branches = OFF**. `main` is not a deployment branch.
 
-Detailed setup values and promotion gates are in `docs/ENVIRONMENTS.md`.
+Production remains manual for the first public release. `.github/workflows/deploy-cloudflare.yml` is `workflow_dispatch` only and rejects any ref other than `production`. Automatic production branch deployment may be considered only after the first stable launch and an explicit owner decision.
+
+Detailed values and promotion gates are in `docs/ENVIRONMENTS.md`.
 
 ## 3. Wrangler contracts
 
@@ -72,7 +74,7 @@ Staging manual equivalent to Workers Builds:
 make worker-deploy-staging
 ```
 
-Production manual equivalent:
+Production release is performed through the guarded GitHub workflow from the `production` branch. The corresponding local/manual command remains available only as an operator fallback:
 
 ```bash
 set -a
@@ -80,8 +82,6 @@ source .env.production
 set +a
 make worker-deploy-production
 ```
-
-Cloudflare Workers Builds is the preferred branch-driven release mechanism. The manual GitHub production workflow is retained as a guarded fallback and rejects execution unless the selected ref is `production`.
 
 ## 4. Environment isolation
 
@@ -94,7 +94,7 @@ Staging uses its own:
 - Worker secret set;
 - rate-limit namespace;
 - build variables;
-- Cloudflare Workers Builds application.
+- Cloudflare Workers Build.
 
 Staging must not share the production Turnstile secret.
 
@@ -103,11 +103,13 @@ Staging is non-indexable by construction:
 - Worker emits `X-Robots-Tag: noindex, nofollow, noarchive`;
 - Worker overrides `/robots.txt` to `Disallow: /`;
 - `wrangler.staging.jsonc` sends all requests through Worker code so the noindex policy cannot be bypassed by direct Static Asset handling;
-- Cloudflare Access should additionally protect the staging hostname.
+- Cloudflare Access protects the staging Worker and its associated hostnames.
+
+Current staging setup already includes the dedicated Turnstile site key/secret and owner-only Cloudflare Access. Resend/contact-delivery secrets remain pending.
 
 ### Production
 
-Production remains public and indexable. Its Worker only runs first for `/api/*` and trailing-slash canonicalization; normal static pages stay on the optimized Static Assets path.
+Production is public and indexable. Its Worker only runs first for `/api/*` and trailing-slash canonicalization; normal static pages stay on the optimized Static Assets path.
 
 Production Turnstile remains widget `arkadiuszkamrowski-contact`, Managed mode, pre-clearance disabled, restricted to `arkadiuszkamrowski.com`.
 
@@ -194,11 +196,12 @@ Staging expected hostname: `staging.arkadiuszkamrowski.com`.
 
 ## 9. Existing dashboard controls
 
-Keep the security posture already established:
+Keep the established posture:
 
 - Universal SSL / managed edge certificates
 - HTTP/2 and HTTP/3 enabled
-- minimum TLS target 1.2+
+- **minimum TLS 1.3**
+- TLS 1.3 enabled
 - 0-RTT disabled
 - managed security ruleset active
 - Browser Integrity Check enabled
@@ -209,7 +212,7 @@ Keep the security posture already established:
 - managed transform removing `X-Powered-By`
 - Rocket Loader / Cloudflare Fonts / script-injection optimizations disabled unless re-audited
 
-`Full (strict)` is no longer an application-origin launch dependency because Workers Custom Domains are the origins. If the zone later proxies an external origin, that hostname must use an appropriate strict origin-TLS posture independently.
+`Full (strict)` remains the zone setting and is the correct strict posture for any future proxied external origin. Workers Custom Domains themselves do not introduce a separately managed application-origin certificate lifecycle.
 
 ## 10. Notifications
 
@@ -228,7 +231,7 @@ Origin-specific monitoring such as Passive Origin Monitoring is not required for
 PASS requires:
 
 - [ ] `staging` branch CI passes
-- [ ] staging Workers Builds application tracks only `staging`
+- [ ] staging Workers Build tracks only `staging`
 - [ ] non-production branch builds are OFF
 - [ ] staging Custom Domain/certificate is valid
 - [ ] Cloudflare Access protects staging
@@ -236,7 +239,7 @@ PASS requires:
 - [ ] staging `/robots.txt` disallows all crawlers
 - [ ] PL/EN routes, 404 and 308 canonical redirects pass
 - [ ] staging Turnstile uses staging-only credentials and hostname
-- [ ] contact flow passes if enabled for acceptance
+- [ ] contact flow passes when enabled for acceptance
 - [ ] browser/accessibility checks pass on the release candidate
 
 ## 12. Production launch gate
@@ -246,8 +249,7 @@ PASS requires all of the following:
 - [ ] exact release candidate has been accepted on `staging`
 - [ ] promotion to `production` occurs through PR/review
 - [ ] `production` branch CI passes
-- [ ] production Workers Builds application tracks only `production`
-- [ ] non-production branch builds are OFF
+- [ ] production deployment is explicitly dispatched from `production`
 - [ ] Worker secrets exist in the production Worker
 - [ ] production sitekey is present at Astro build time
 - [ ] Turnstile widget hostname is restricted to the production apex
