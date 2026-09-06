@@ -1,0 +1,424 @@
+/* Phase two visual storytelling: benchmark signals, decision-system delta and portfolio trade-off canvas. */
+
+.benchmark-signal-field {
+  margin: clamp(48px, 6vw, 84px) 0 0;
+}
+
+.benchmark-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.benchmark-signal {
+  min-width: 0;
+  padding: 26px clamp(22px, 2.5vw, 34px) 30px;
+}
+
+.benchmark-signal + .benchmark-signal {
+  border-left: 1px solid var(--line);
+}
+
+.benchmark-signal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: baseline;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.benchmark-signal-head a {
+  color: inherit;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.benchmark-signal-ruler {
+  position: relative;
+  height: 54px;
+  margin: 38px 0 22px;
+  border-top: 1px solid var(--line);
+  background: repeating-linear-gradient(90deg, transparent 0, transparent calc(10% - 1px), var(--line-soft) calc(10% - 1px), var(--line-soft) 10%);
+}
+
+.benchmark-signal-fill {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  background: var(--sage-dark);
+}
+
+.benchmark-signal-1 .benchmark-signal-fill { width: 26%; }
+.benchmark-signal-2 .benchmark-signal-fill { width: 53%; }
+.benchmark-signal-3 .benchmark-signal-fill { width: 42%; }
+
+.benchmark-signal-marker {
+  position: absolute;
+  top: -7px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--paper-strong);
+  border: 2px solid var(--sage-dark);
+  transform: translateX(-50%);
+}
+
+.benchmark-signal-1 .benchmark-signal-marker { left: 26%; }
+.benchmark-signal-2 .benchmark-signal-marker { left: 53%; }
+.benchmark-signal-3 .benchmark-signal-marker { left: 42%; }
+
+.benchmark-signal-value {
+  margin: 0 0 22px;
+  color: var(--cocoa);
+  font-size: clamp(58px, 6vw, 92px);
+  font-weight: 650;
+  line-height: .86;
+  letter-spacing: -.065em;
+}
+
+.benchmark-signal h3 {
+  min-height: 92px;
+  margin: 0;
+  font-size: clamp(20px, 1.8vw, 27px);
+  line-height: 1.15;
+}
+
+.benchmark-context {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.benchmark-context summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .035em;
+}
+
+.benchmark-context summary::marker { color: var(--sage-dark); }
+.benchmark-context p { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+.benchmark-signal-field > figcaption {
+  max-width: 780px;
+  margin: 20px 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Advisory: fragmented decision system -> connected decision architecture. */
+.decision-architecture-delta {
+  min-width: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  padding: 22px;
+  background: var(--ink);
+  color: var(--inverse-text);
+  border: 1px solid rgba(255,255,255,.05);
+}
+
+.decision-delta-panel {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line-inverse);
+}
+
+.decision-delta-kicker {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--inverse-muted);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.decision-delta-kicker span { color: #b7c2ae; }
+.decision-delta-title { min-height: 54px; margin: 18px 0 26px; font-size: 15px; font-weight: 700; line-height: 1.25; }
+
+.decision-delta-lanes {
+  display: grid;
+  gap: 8px;
+}
+
+.decision-delta-lane {
+  position: relative;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  padding-right: 34px;
+  border-top: 1px solid rgba(242,238,230,.12);
+  color: var(--inverse-muted);
+  font-size: 9px;
+}
+
+.decision-delta-lane::after {
+  content: '';
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  width: 14px;
+  height: 1px;
+  background: rgba(242,238,230,.2);
+}
+
+.decision-delta-dot {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(242,238,230,.45);
+  transform: translateY(-50%);
+}
+
+.decision-delta-dot-risk {
+  width: 9px;
+  height: 9px;
+  border-color: #c7d2bd;
+  box-shadow: 0 0 0 4px rgba(199,210,189,.09);
+}
+
+.decision-delta-shift {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.decision-delta-shift span {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(199,210,189,.7), transparent);
+}
+
+.decision-delta-shift strong {
+  position: relative;
+  z-index: 1;
+  padding: 7px;
+  background: var(--ink);
+  color: #c7d2bd;
+  font-size: 20px;
+}
+
+.decision-delta-spine {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  padding-right: 24px;
+}
+
+.decision-delta-backbone {
+  position: absolute;
+  top: 17px;
+  bottom: 17px;
+  right: 7px;
+  width: 1px;
+  background: rgba(199,210,189,.72);
+}
+
+.decision-delta-node {
+  position: relative;
+  min-height: 34px;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid rgba(242,238,230,.12);
+}
+
+.decision-delta-node::after {
+  content: '';
+  position: absolute;
+  right: -21px;
+  top: 50%;
+  width: 21px;
+  height: 1px;
+  background: rgba(199,210,189,.72);
+}
+
+.decision-delta-node span { color: #aeb9a7; font-size: 8px; }
+.decision-delta-node strong { font-size: 10px; font-weight: 700; }
+.decision-delta-feedback { position: absolute; right: -3px; bottom: -18px; color: #c7d2bd; font-size: 18px; }
+
+.decision-architecture-delta > figcaption {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-inverse);
+  color: var(--inverse-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* Advisory: a concrete portfolio decision artifact instead of another list of deliverables. */
+.advisory-canvas-section {
+  max-width: none;
+  padding-inline: max(var(--pad), calc((100vw - var(--max)) / 2 + var(--pad)));
+  background: var(--stone-soft);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.portfolio-tradeoff-matrix { margin: clamp(52px, 7vw, 94px) 0 0; }
+
+.portfolio-matrix-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.portfolio-matrix-meta p { margin: 0; color: var(--text); font-weight: 800; }
+
+.portfolio-matrix-frame {
+  position: relative;
+  padding: 0 0 42px 64px;
+}
+
+.portfolio-axis {
+  position: absolute;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.portfolio-axis-y {
+  left: 0;
+  top: 50%;
+  width: 28px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left top;
+  white-space: nowrap;
+}
+
+.portfolio-axis-x {
+  left: 64px;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.portfolio-axis i { color: var(--sage-dark); font-style: normal; font-size: 14px; }
+
+.portfolio-matrix-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  background: var(--paper-strong);
+}
+
+.portfolio-matrix-grid article {
+  position: relative;
+  min-height: 250px;
+  padding: clamp(24px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-matrix-grid article:nth-child(1),
+.portfolio-matrix-grid article:nth-child(3) { border-right: 1px solid var(--line); }
+.portfolio-matrix-grid article:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+
+.portfolio-matrix-grid article > span {
+  color: var(--sage-dark);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.portfolio-matrix-grid h3 {
+  margin: auto 0 12px;
+  font-size: clamp(25px, 2.5vw, 39px);
+  line-height: 1.06;
+}
+
+.portfolio-matrix-grid p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.portfolio-matrix-crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--sage-dark);
+  background: var(--paper-strong);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.portfolio-tradeoff-matrix > figcaption {
+  max-width: 780px;
+  margin: 22px 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1080px) {
+  .benchmark-signal-grid { grid-template-columns: 1fr; }
+  .benchmark-signal + .benchmark-signal { border-left: 0; border-top: 1px solid var(--line); }
+  .benchmark-signal h3 { min-height: 0; }
+  .decision-architecture-delta { grid-template-columns: 1fr; }
+  .decision-delta-shift { min-height: 38px; }
+  .decision-delta-shift span { left: 42%; right: 42%; top: 0; bottom: 0; width: 1px; height: auto; }
+  .decision-delta-shift strong { transform: rotate(90deg); }
+}
+
+@media (max-width: 720px) {
+  .benchmark-signal { padding-inline: 0; }
+  .benchmark-signal-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .benchmark-signal-ruler { margin-top: 28px; }
+  .benchmark-signal-field > figcaption,
+  .portfolio-tradeoff-matrix > figcaption { margin-left: 0; }
+
+  .decision-architecture-delta { padding: 14px; }
+  .decision-delta-panel { padding: 14px; }
+  .decision-delta-title { min-height: 0; }
+
+  .portfolio-matrix-meta { flex-direction: column; gap: 6px; }
+  .portfolio-matrix-frame { padding-left: 30px; }
+  .portfolio-axis-y { left: 1px; }
+  .portfolio-axis-x { left: 30px; }
+  .portfolio-matrix-grid { grid-template-columns: 1fr; }
+  .portfolio-matrix-grid article { min-height: 190px; }
+  .portfolio-matrix-grid article:nth-child(1),
+  .portfolio-matrix-grid article:nth-child(3) { border-right: 0; }
+  .portfolio-matrix-grid article + article { border-top: 1px solid var(--line); }
+  .portfolio-matrix-grid article:nth-child(-n+2) { border-bottom: 0; }
+  .portfolio-matrix-crosshair { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-delta-dot-risk { box-shadow: none; }
+}
