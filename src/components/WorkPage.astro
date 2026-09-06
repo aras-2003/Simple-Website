@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
-import ExecutiveSystemMap from './ExecutiveSystemMap.astro';
-import OutcomeBlueprint from './OutcomeBlueprint.astro';
+import DecisionArchitectureDelta from './DecisionArchitectureDelta.astro';
+import PortfolioTradeoffMatrix from './PortfolioTradeoffMatrix.astro';
 import { caseStudies } from '../content/case-studies';
 import { executive } from '../content/executive';
 import { route, type Locale } from '../lib/site';
@@ -10,7 +10,6 @@ import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const x = executive[locale].work;
-const home = executive[locale].home;
 const cases = caseStudies[locale].slice(0, 4);
 const pl = locale === 'pl';
 const pageTitle = pl ? 'Współpraca – executive advisory i architektura decyzji' : 'Advisory – executive decision architecture';
@@ -27,7 +26,7 @@ const pageDescription = pl
         <p class="eyebrow">{x.engagements.eyebrow}</p>
         <h2 id="engagements-title">{x.engagements.title}</h2>
       </div>
-      <ExecutiveSystemMap locale={locale} compact />
+      <DecisionArchitectureDelta locale={locale} />
     </div>
     <div class="engagement-grid">
       {x.engagements.items.map((item, index) => (
@@ -41,15 +40,15 @@ const pageDescription = pl
     </div>
   </section>
 
-  <section class="section executive-output-section work-output-section" aria-labelledby="work-outputs-title">
+  <section class="section advisory-canvas-section" aria-labelledby="decision-canvas-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{home.outputs.eyebrow}</p>
-        <h2 id="work-outputs-title">{home.outputs.title}</h2>
+        <p class="eyebrow">{pl ? 'Przykład artefaktu / decyzja portfelowa' : 'Example artifact / portfolio decision'}</p>
+        <h2 id="decision-canvas-title">{pl ? 'Kompromis powinien być widoczny na jednej planszy — nie ukryty w pięciu deckach.' : 'A trade-off should be visible on one canvas — not hidden across five decks.'}</h2>
       </div>
-      <p class="content-lead">{home.outputs.lead}</p>
+      <p class="content-lead">{pl ? 'Poniżej nie ma „gotowej macierzy do wdrożenia”. To przykład, jak rezultat pracy może materializować decyzję: pokazać wartość, zależności i capacity w formie, która prowadzi do stop / merge / sequence / continue.' : 'This is not a ready-made matrix to implement. It shows how an engagement output can materialize a decision: make value, dependencies and capacity visible enough to drive stop / merge / sequence / continue.'}</p>
     </div>
-    <OutcomeBlueprint items={home.outputs.items} />
+    <PortfolioTradeoffMatrix locale={locale} />
   </section>
 
   <section class="section advisory-domains-section" aria-labelledby="domains-title">
