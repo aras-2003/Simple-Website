@@ -32,7 +32,7 @@ const mobileModeTitle = mode === 'portfolio'
     <p><strong>{pl ? 'Interwencja' : 'Intervention'}</strong><span>{item.approach}</span></p>
     <p class="case-study-value"><strong>{pl ? 'Wartość zarządcza' : 'Management value'}</strong><span>{item.value.replace(/^Wartość: |^Value: /, '')}</span></p>
 
-    <div class="proof-exhibit" aria-label={mobileModeTitle}>
+    <div class="proof-exhibit" role="img" aria-label={mobileModeTitle}>
       {mode === 'portfolio' && (
         <svg class="proof-exhibit-svg" viewBox="0 0 760 260" aria-hidden="true" focusable="false">
           <rect class="proof-bg" x="0" y="0" width="760" height="260" />
