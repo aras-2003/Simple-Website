@@ -1,178 +1,329 @@
-# Content & Logic Audit — executive review
+# Content & Logic Audit — CEO/CIO clarity review
 
 ## Review lens
 
-This audit evaluates the site as if reviewed by a skeptical CEO/CIO/CTO who has little patience for frameworks, personal branding or decorative thought leadership.
+This audit evaluates the site as if reviewed by a skeptical CEO/CIO/CTO with limited time and no obligation to care about the author’s framework vocabulary.
 
-Primary questions:
-1. Does the site begin with a problem I recognize?
-2. Is there evidence that the problem matters?
-3. Does each next section add a deeper explanatory layer?
-4. Is OAF presented as a useful synthesis rather than an invented universe?
-5. Does the author earn credibility through trajectory and reasoning rather than titles and vanity metrics?
-6. Does the presentation help me decide where to go next?
+The critical questions are:
+
+1. In six seconds, do I know what this is and why it may matter to me?
+2. In thirty seconds, can I recognize my situation and see what I would actually receive?
+3. In two minutes, can I understand the engagement model, proof and method?
+4. Is the site commercially legible without becoming a generic consulting catalogue?
+5. Does OAF strengthen the proposition rather than compete with it?
+6. Are abstract ideas visually compressed rather than repeatedly explained in prose?
+7. Is every strong claim either evidence-backed, clearly an author thesis, or explicitly a method hypothesis?
 
 ## Executive verdict
 
-### What now works
+The previous architecture was intellectually stronger than most personal-expert sites, but still too demanding commercially. It asked a senior visitor to assemble the value proposition from multiple deep sections.
 
-**P1 — narrative order: PASS**
+The redesign corrects that by separating two jobs:
 
-The architecture is now problem-led: Home → Perspective → OAF → Practice → About → Contact. OAF is no longer the opening proposition. This materially improves executive relevance.
+- **buyer job:** relevance → outcome → tangible outputs → proof → next step;
+- **thinker job:** evidence → OAF → provenance → deeper research.
 
-**P1 — intellectual honesty: PASS**
+The site now leads with the buyer job while keeping the deeper layer intact.
 
-Organizational architecture is explicitly described as an established field. OAF is positioned as an evolving synthesis across organization design, enterprise architecture, operating model, portfolio/governance and execution evidence. Galbraith, 7-S, fit/misfit and MIT CISR are visible reference points.
+## Highest-impact diagnosis
 
-**P1 — author placement: PASS**
+### P0/P1 — “What do I actually get?” was too implicit
 
-The portrait, current role, education and credentials are removed from Home and concentrated in About. Home retains only a short author bridge after the ideas and applications are already established.
+**Old risk:** a CEO/CIO could understand the worldview but still not know what an engagement produces.
 
-**P1 — granularity: PASS**
+**Change:** Home and Advisory now expose five tangible outputs:
 
-The intended depth progression is now explicit:
-- Home: recognition
-- Perspective: evidence and thesis
-- OAF: theory and synthesis
-- Practice: application and decisions
-- About: provenance and credibility
-- Contact: action
+1. decision / friction map;
+2. choices and target decision architecture;
+3. portfolio logic — stop / merge / sequence / continue;
+4. decision rights + executive cadence;
+5. transition roadmap + feedback loop.
 
-This removes the previous pattern where market-level statements, framework detail and biography appeared as peer sections.
+**Why it matters:** this converts abstract expertise into a usable buying model without promising a fixed consulting package.
 
-**P1 — evidence layer: PASS with expansion backlog**
+### P1 — the site was too text-dominant
 
-Home/Perspective use BCG and McKinsey benchmark signals. Articles also expose research-context links. The evidence base is now visible before OAF. It is not yet a full research moat; each major essay should eventually carry claim-level citations and a stronger bibliography.
+**Old risk:** repeated heading + paragraph + heading + paragraph structures made good ideas feel heavier than they were.
 
-## Page-by-page critique
+**Change:** high-value concepts now get visual carriers:
+
+- decision-system map;
+- four trigger quadrants;
+- output blueprint;
+- friction → shift → value case flows;
+- OAF diagram;
+- progressive disclosure for intellectual lineage and principles.
+
+**Why it matters:** the visitor can scan relationships before reading every sentence.
+
+### P1 — OAF carried too much first-order burden
+
+**Old risk:** the method could look like the thing being sold, forcing the visitor to understand a proprietary framework before understanding the business value.
+
+**Change:** OAF is explicitly the thinking layer behind the work. Home establishes value first. OAF remains a strong named asset for deeper exploration.
+
+### P1 — Practice was too anti-commercial
+
+**Old risk:** “not a services catalogue” protected intellectual positioning but made it harder to answer “how could we work together?”.
+
+**Change:** navigation becomes **Współpraca / Advisory** and the page defines three ways to enter a problem:
+
+- Diagnostic;
+- Design;
+- Advisory.
+
+These are engagement shapes, not off-the-shelf products.
+
+### P2 — case studies were too documentary
+
+**Old risk:** six cases × context/challenge/approach/value created a long evidence ledger.
+
+**Change:** Home uses three selected cases. Advisory uses four. The visual logic is compressed to **friction → intervention/shift → management value**.
+
+No unsupported KPI, client names or pseudo-precision are introduced.
+
+### P2 — navigation followed author taxonomy more than buyer intent
+
+**Old:** Perspective → OAF → Practice → About → Contact.
+
+**New:** Advisory → OAF → Perspective → About → Contact.
+
+The change is intentional: a buyer can now understand the offer before deciding whether to inspect the method or research depth.
+
+## Page-by-page audit
 
 ### Home
 
-**Executive test:** Would I continue after 20 seconds?
+**Executive job:** relevance and value.
 
-PASS. The opening proposition is an organizational problem, not an author introduction. No portrait or role competes with the thesis. The visual decision field creates a systemic cue without explaining the whole framework prematurely.
+**New sequence:**
 
-Risk: the hero claim is intentionally broad. It needs the following problem and evidence sections to arrive quickly; spacing therefore stays tighter than a cinematic portfolio site.
+1. executive hero — audience + systemic problem + outcome;
+2. decision-system visual;
+3. four trigger situations;
+4. tangible output blueprint;
+5. three proof cases;
+6. OAF as method;
+7. direct contact close.
 
-### Perspective
+**Assessment:** PASS at content-architecture level.
 
-**Executive test:** Does this feel like insight rather than a blog?
+**Remaining live check:** validate actual line breaks, visual hierarchy and scan time on staging. The hero must not become visually impressive but cognitively crowded.
 
-PASS. The page opens with a research lens, benchmark ledger and featured thesis before the library. The publishing standard (observation → evidence → implication) gives the section a clear editorial contract.
+### Advisory / Współpraca
 
-Backlog: future essays should add stronger primary sources, dates and explicit distinction between sourced findings, interpretation and author thesis.
+**Executive job:** “What would working together look like?”
+
+**New sequence:**
+
+1. cross-system problem framing;
+2. Diagnostic / Design / Advisory;
+3. output blueprint;
+4. connected disciplines;
+5. selected cases;
+6. CTA.
+
+**Assessment:** PASS conceptually.
+
+The key improvement is that the page now makes the engagement concrete without turning expertise into generic service cards.
 
 ### OAF
 
-**Executive test:** Do I understand why this framework exists before learning its parts?
+**Executive job:** understand the method once there is already a reason to care.
 
-PASS. Definition and intellectual lineage precede the model. The page explains the gap between organization design, EA, portfolio/governance and execution before introducing the full OAF diagram.
+**New visible sequence:**
 
-Critical distinction preserved: OAF does not claim to invent organizational architecture, organization design, enterprise architecture or operating-model thinking.
+1. four executive questions;
+2. OAF model;
+3. misfit examples;
+4. application contexts.
 
-Backlog: formalize decision objects, owners, cadence, evidence types and misfit diagnostics before presenting OAF as a mature methodology.
+**Progressive disclosure:** intellectual lineage and decision-quality principles.
 
-### Practice
+**Assessment:** PASS conceptually, with one important guardrail: OAF must remain an evolving synthesis, not be described as an industry standard or invention of organizational architecture.
 
-**Executive test:** Can I recognize my operating problem without buying a service category?
+### Perspective
 
-PASS. The page is organized around four interfaces, each expressed as question → problem → signal → decision. Disciplines are presented later as tools.
+**Executive job:** evidence and depth.
 
-Backlog: 2–3 real anonymized cases would materially increase credibility once safe publication scope exists.
+Perspective retains the research-led structure and no longer carries the burden of explaining the advisory proposition.
+
+**Assessment:** PASS.
+
+Backlog remains: long-form essays should progressively gain stronger claim-level sourcing and explicit separation between external evidence and author interpretation.
 
 ### About
 
-**Executive test:** Does the biography explain the point of view?
+**Executive job:** “Why this person?”
 
-PASS. The story is not a chronology of titles. It explains how the level of problem expanded from technology/execution to architecture, transformation, strategy, portfolio and executive decision systems.
+The page remains trajectory-led rather than current-title-led. Portrait and credentials stay concentrated here instead of competing with the Home proposition.
 
-Credentials are deliberately lower in the hierarchy. This is the correct order for a senior expert brand.
+**Assessment:** PASS.
 
 ### Contact
 
-**Executive test:** Is there a low-friction next action?
+**Executive job:** low-friction first action around a concrete decision/context.
 
-PASS. The form remains direct and contextual. Contact is not inserted as the primary answer to every page.
+**Assessment:** PASS structurally; delivery remains incomplete until Resend is configured and tested.
 
-## Content coherence audit
+## CEO/CIO language rules
 
-### Vocabulary
+### Prefer
 
-Preferred Polish vocabulary:
-- architektura organizacyjna
-- architektura korporacyjna (for Enterprise Architecture as a discipline)
-- portfel
-- wykonanie / dostarczanie zmiany
-- ład decyzyjny / mechanizmy zarządcze
-- model operacyjny
-- zdolności organizacyjne
-- stan docelowy
-- dowody / dane z wykonania
+- decision / choice / trade-off;
+- business outcome;
+- operating model;
+- investment sequence;
+- accountability / decision rights;
+- capacity / constraint;
+- portfolio logic;
+- evidence from execution;
+- transition / course correction;
+- friction / dependency / handoff.
 
-English terms remain only where they are established proper names, formal framework names, certification names or useful parenthetical industry references.
+### Use carefully
 
-### Claim hierarchy
+- enterprise architecture;
+- governance;
+- capability;
+- target state;
+- PMO;
+- OAF.
 
-Every strong statement should belong to one of four levels:
-1. **Observed problem** — what repeatedly happens in organizations.
-2. **External evidence** — research or benchmark showing materiality/pattern.
+These are useful but should not appear as unexplained first-order value propositions.
+
+### Avoid as default sales language
+
+- transformation theatre;
+- framework implementation;
+- maturity journey;
+- best-practice operating model;
+- end-to-end optimization;
+- holistic transformation;
+- value realization framework;
+- generic “accelerate / unlock / empower” language.
+
+The tone should feel like one senior operator speaking to another: concrete, calm and slightly provocative.
+
+## Claim hierarchy
+
+Every strong statement must belong to one of four levels:
+
+1. **Observed problem** — recurring organizational pattern.
+2. **External evidence** — research/benchmark with source and date where relevant.
 3. **Author thesis** — interpretation that can be challenged.
-4. **OAF implication** — how the synthesis proposes to organize decisions.
+4. **OAF implication** — how the synthesis organizes the decision problem.
 
-The site should never present level 3 or 4 as if it were level 2.
+The site must not present level 3 or 4 as if it were level 2.
 
-### OAF provenance
+## Proof rules
 
-The site explicitly separates:
-- established fields and authors,
-- interpretation of their contribution,
-- OAF synthesis,
-- future formalization work.
+Public case material may show:
 
-This distinction is mandatory for intellectual credibility.
+- problem type;
+- decision tension;
+- intervention logic;
+- management value;
+- anonymized artifact examples where safe.
+
+Do not publish without evidence/permission:
+
+- client names/logos;
+- revenue/savings figures;
+- percentages;
+- confidential architecture;
+- internal program names;
+- claims of causality that cannot be defended.
+
+Absence of a metric is better than a fabricated one.
 
 ## Visual coherence audit
 
-### PASS
-- Home has no portrait and no biography block.
-- Perspective behaves like research editorial, not a card blog.
-- OAF uses a collision-safe diagram: labels are semantic layout items and geometry is a separate decorative layer.
-- Mobile OAF falls back to a linear sequence instead of forcing a tiny circular diagram.
-- Practice uses long interface rows instead of repeated service cards.
-- About is the only major page where the portrait is a primary visual.
-- Arbitrary 01/02/A/B/C numbering is not required to create hierarchy.
+### PASS by implementation
 
-### FIX / next refinement
-- Run manual browser review at 320, 390, 768, 1024, 1440 and 1920 px for line breaks and local density.
-- Validate the processed portrait crop on real mobile Safari.
-- Consider one additional original data visualization for Perspective once the benchmark corpus is larger.
+- Home has no portrait/biography block.
+- Home includes a dedicated decision-system visual.
+- Tangible outputs use blueprint graphics rather than another card wall.
+- Cases use flow logic.
+- OAF supporting depth is progressively disclosed.
+- mobile OAF uses a semantic linear fallback.
+- visual motion is CSS-only and non-essential.
+- `prefers-reduced-motion` removes the animated flow/pulse.
+- performance budget is retained rather than relaxed to accommodate new visuals.
+
+### FIX before staging acceptance
+
+- inspect full-page desktop/mobile captures for local density;
+- verify system-map node labels are legible at tablet widths;
+- verify output blueprint does not feel like repeated decoration after row 3;
+- check Home vertical length against the previous version;
+- review PL/EN line lengths separately;
+- verify visual hierarchy at 320/390/768/1024/1440 px;
+- ensure the dark system field does not visually overpower the core proposition.
+
+## Executive scan acceptance
+
+### Six-second test
+
+A new visitor should answer:
+
+- who is this for?
+- what class of problem?
+- what business effect is being improved?
+
+### Thirty-second test
+
+They should identify:
+
+- at least two recognizable trigger situations;
+- at least three concrete outputs;
+- the primary next action.
+
+### Two-minute test
+
+They should understand:
+
+- three engagement formats;
+- at least one proof case;
+- what OAF is and is not;
+- why the author has a cross-functional point of view.
+
+If a senior tester cannot do this without explanation, the fix should be copy/hierarchy reduction — not additional explanatory paragraphs.
 
 ## Severity backlog
 
-### P1
-- Keep all market statistics source-linked and dated.
-- Do not add case studies without safe, truthful evidence.
-- Do not describe OAF as a standard, complete methodology or invention of organizational architecture.
+### P1 before public launch
 
-### P2
-- Add claim-level citations to every long-form Perspective essay.
-- Formalize OAF decision objects / cadence / ownership / evidence model.
-- Add 2–3 anonymized cases.
+- live staging executive scan test;
+- real contact delivery through Resend;
+- manual accessibility pass including VoiceOver/NVDA;
+- final privacy wording against actual Resend behavior;
+- production social preview / metadata check.
 
-### P3
-- Expand research library with recurring benchmark updates.
-- Add topic taxonomies only when the content volume justifies them.
+### P2 after the redesign is accepted
+
+- stronger claim-level citations in essays;
+- 2–3 deeper anonymized cases if safe publishable evidence exists;
+- formalize OAF decision objects, owners, cadence and evidence taxonomy;
+- consider one original data visualization for Perspective when enough source data exists.
+
+### P3 future
+
+- field-data Core Web Vitals review after real traffic;
+- content taxonomy only if the Perspective library becomes materially larger;
+- analytics only if there is a concrete measurement question and privacy review.
 
 ## Pre-launch assessment
 
-- Value proposition: PASS
-- Information architecture: PASS
-- Generality/depth progression: PASS
-- OAF provenance: PASS
-- Home as landing, not biography: PASS
-- PL/EN route architecture: PASS
-- Visual narrative: PASS pending browser-level visual review
-- Automated accessibility: requires CI confirmation after implementation
-- Manual assistive-technology audit: FIX before formal WCAG compliance claim
-- Real contact delivery: FIX until production email secrets and sender domain are configured
-- Case-study evidence: FIX / intentionally absent until publishable
+- Executive value proposition: **PASS at architecture level / live visual review pending**
+- “What do I get?” clarity: **PASS**
+- Information architecture: **PASS**
+- Visual storytelling density: **PASS in code / staging review pending**
+- OAF provenance: **PASS**
+- Evidence honesty: **PASS**
+- PL/EN route architecture: **PASS**
+- Automated accessibility: **PASS when current CI is green**
+- Cross-browser smoke: **PASS when current CI is green**
+- Manual assistive-technology audit: **FIX before formal compliance claim**
+- Real contact delivery: **FIX — waiting for Resend**
+- Production release readiness: **FIX — production Worker and public launch gates still pending**
