@@ -111,6 +111,19 @@ try {
   assert.equal(trailing.headers.get('location'), `${origin}/about?from=test`);
   assert.equal(trailing.headers.get('x-robots-tag'), null, 'production redirects must not be marked noindex');
 
+  const legacyRoutes = [
+    ['/work?from=legacy', '/wspolpraca?from=legacy'],
+    ['/writing', '/perspektywa'],
+    ['/writing/architecture-as-decision-system?x=1', '/perspektywa/architecture-as-decision-system?x=1'],
+    ['/en/work', '/en/advisory'],
+    ['/en/writing/ai-governance-without-theatre', '/en/perspective/ai-governance-without-theatre'],
+  ];
+  for (const [legacy, canonical] of legacyRoutes) {
+    const response = await worker.fetch(new Request(`${origin}${legacy}`), env);
+    assert.equal(response.status, 308, `${legacy} must permanently redirect`);
+    assert.equal(response.headers.get('location'), `${origin}${canonical}`, `${legacy} must preserve suffix/query`);
+  }
+
   const unknownApi = await worker.fetch(new Request(`${origin}/api/unknown`), env);
   assert.equal(unknownApi.status, 404);
 
@@ -142,7 +155,12 @@ try {
   assert.equal(stagingTrailing.headers.get('location'), `${stagingOrigin}/about?from=test`);
   assert.equal(stagingTrailing.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive');
 
-  console.log('WORKER CONTACT TEST PASS · validation, Turnstile, rate limit, Resend, canonical redirects and staging noindex');
+  const stagingLegacy = await worker.fetch(new Request(`${stagingOrigin}/work?from=test`), stagingEnv);
+  assert.equal(stagingLegacy.status, 308);
+  assert.equal(stagingLegacy.headers.get('location'), `${stagingOrigin}/wspolpraca?from=test`);
+  assert.equal(stagingLegacy.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive');
+
+  console.log('WORKER CONTACT TEST PASS · validation, Turnstile, rate limit, Resend, canonical + legacy redirects and staging noindex');
 } finally {
   globalThis.fetch = originalFetch;
 }
