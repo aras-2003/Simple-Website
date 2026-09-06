@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
+import BenchmarkSignalField from './BenchmarkSignalField.astro';
 import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
 import { getWriting, writingSlug } from '../content/writing';
@@ -39,22 +40,16 @@ const pageDescription = locale === 'pl'
   </section>
 
   <section class="section evidence-section evidence-section-deep" aria-labelledby="perspective-evidence-title">
-    <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{locale === 'pl' ? 'Dowody / benchmarki' : 'Evidence / benchmarks'}</p>
-      <h2 id="perspective-evidence-title">{td(x.perspective.evidenceTitle)}</h2>
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{locale === 'pl' ? 'Dowody / benchmarki' : 'Evidence / benchmarks'}</p>
+        <h2 id="perspective-evidence-title">{td(x.perspective.evidenceTitle)}</h2>
+      </div>
+      <p class="content-lead">{locale === 'pl'
+        ? 'Zamiast kolejnej ściany cytatów: trzy sygnały pokazane jako osobne mierniki. Ich metodologie są różne, dlatego nie udajemy jednej wspólnej skali.'
+        : 'Instead of another wall of citations: three signals shown as separate measures. Their methodologies differ, so they are not presented as one shared scale.'}</p>
     </div>
-    <div class="evidence-ledger evidence-ledger-deep">
-      {x.evidence.map((item) => (
-        <article class="evidence-note">
-          <p class="evidence-value">{item.value}</p>
-          <div>
-            <h3>{td(item.title)}</h3>
-            <p>{td(item.body)}</p>
-            <a href={item.href} target="_blank" rel="noopener noreferrer">{item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> – {c.externalNewTab}</span></a>
-          </div>
-        </article>
-      ))}
-    </div>
+    <BenchmarkSignalField locale={locale} items={x.evidence} />
   </section>
 
   {featured && (
