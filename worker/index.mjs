@@ -21,6 +21,13 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; manifest-src 'self'",
 };
 
+const LEGACY_ROUTE_PREFIXES = [
+  ['/en/writing', '/en/perspective'],
+  ['/en/work', '/en/advisory'],
+  ['/writing', '/perspektywa'],
+  ['/work', '/wspolpraca'],
+];
+
 function json(status, body, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
     status,
@@ -82,6 +89,15 @@ function applyDeploymentHeaders(response, env) {
     statusText: response.statusText,
     headers,
   });
+}
+
+function legacyCanonicalPath(pathname) {
+  for (const [legacy, canonical] of LEGACY_ROUTE_PREFIXES) {
+    if (pathname === legacy || pathname.startsWith(`${legacy}/`)) {
+      return `${canonical}${pathname.slice(legacy.length)}`;
+    }
+  }
+  return null;
 }
 
 function clientIp(request) {
@@ -286,6 +302,15 @@ export default {
           ...SECURITY_HEADERS,
           ...nonProductionHeaders(env),
         },
+      });
+    }
+
+    const canonicalLegacyPath = legacyCanonicalPath(url.pathname);
+    if (canonicalLegacyPath) {
+      url.pathname = canonicalLegacyPath;
+      return new Response(null, {
+        status: 308,
+        headers: { Location: url.toString(), ...SECURITY_HEADERS, ...nonProductionHeaders(env) },
       });
     }
 

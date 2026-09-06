@@ -2,12 +2,13 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
-const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
+const plSharedSlugs = ['', 'about', 'oaf', 'wspolpraca', 'perspektywa', 'contact', 'privacy'];
+const enSharedSlugs = ['', 'about', 'oaf', 'advisory', 'perspective', 'contact', 'privacy'];
 const routes = [
-  ...sharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
-  ...noteSlugs.map((slug) => `/writing/${slug}`),
-  ...sharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
-  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+  ...plSharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
+  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
+  ...enSharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
+  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ];
 
 for (const path of routes) {

@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, staging, production]
+    branches: [main, production]
 
 permissions:
   contents: read
@@ -14,51 +14,70 @@ env:
   REQUIRE_PRODUCTION_SITE: '1'
 
 jobs:
-  validate:
+  quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
       - name: Setup Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
           cache: npm
+
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
+
       - name: Astro type, build, Worker/contact and static validation
         run: npm run test:static
+
       - name: Performance budget
         run: npm run test:performance
+
       - name: External reference check
         run: node tests/external-links.mjs
+
+      - name: Worker contact/runtime tests
+        run: npm run test:worker
+
+      - name: Validate preview Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.preview.jsonc
+
+      - name: Validate production Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.production.jsonc
+
+      - name: Build staging-canonical static site
+        env:
+          SITE_BASE_URL: https://staging.arkadiuszkamrowski.com
+          SITE_PRODUCTION_HOST: staging.arkadiuszkamrowski.com
+          REQUIRE_PRODUCTION_SITE: '1'
+        run: npm run build
+
+      - name: Validate staging Worker package
+        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.staging.jsonc
+
+      - name: Restore production-canonical build for browser gates
+        run: npm run build
+
+      - name: Install release browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: WCAG 2.2 A/AA automated audit
+        run: npm run test:a11y
+
+      - name: Chromium Firefox WebKit smoke matrix
+        run: npm run test:browsers
+
       - name: Upload static artifact
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: site-dist
           path: dist
-          if-no-files-found: error
+          if-no-files-found: ignore
 
-  accessibility-and-browsers:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Setup Node
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
-        with:
-          node-version: '22'
-          cache: npm
-      - name: Install locked dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Build site
-        run: npm run build
-      - name: Install release browsers
-        run: npx playwright install --with-deps chromium firefox webkit
-      - name: WCAG 2.2 A/AA automated audit
-        run: npm run test:a11y
-      - name: Chromium Firefox WebKit smoke matrix
-        run: npm run test:browsers
       - name: Upload cross-browser visual audit captures
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -66,6 +85,7 @@ jobs:
           name: visual-audit-captures
           path: artifacts/visual
           if-no-files-found: ignore
+
       - name: Upload browser reports on failure
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -73,32 +93,3 @@ jobs:
           name: browser-report
           path: artifacts
           if-no-files-found: ignore
-
-  workers-runtime:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Setup Node
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
-        with:
-          node-version: '22'
-          cache: npm
-      - name: Install locked dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Build production-canonical static site
-        run: npm run build
-      - name: Worker contact/runtime tests
-        run: npm run test:worker
-      - name: Validate manual preview Worker package
-        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.preview.jsonc
-      - name: Validate production Worker package
-        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.production.jsonc
-      - name: Build staging-canonical static site
-        env:
-          SITE_BASE_URL: https://staging.arkadiuszkamrowski.com
-          SITE_PRODUCTION_HOST: staging.arkadiuszkamrowski.com
-          REQUIRE_PRODUCTION_SITE: '1'
-        run: npm run build
-      - name: Validate staging Worker package
-        run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.staging.jsonc

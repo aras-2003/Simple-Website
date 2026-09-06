@@ -6,16 +6,17 @@ const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
 const productionOrigin = 'https://arkadiuszkamrowski.com';
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
-const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
+const plSharedSlugs = ['', 'about', 'oaf', 'wspolpraca', 'perspektywa', 'contact', 'privacy'];
+const enSharedSlugs = ['', 'about', 'oaf', 'advisory', 'perspective', 'contact', 'privacy'];
 const requiredRoutes = [
-  ...sharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
-  ...noteSlugs.map((slug) => `/writing/${slug}`),
-  ...sharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
-  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+  ...plSharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
+  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
+  ...enSharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
+  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ];
 const articleRoutes = new Set([
-  ...noteSlugs.map((slug) => `/writing/${slug}`),
-  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
+  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ]);
 const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
 const portraitAsset = /\/assets\/arkadiusz-kamrowski[^"'<> ]*\.(?:webp|png|jpe?g)/;
@@ -143,16 +144,16 @@ if (!about.includes('career-river')) errors.push('/about: career trajectory expe
 if (!about.includes('brand-profile')) errors.push('/about: brand profile expected');
 if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
 
-const perspective = await readFile(routeFile('/writing'), 'utf8');
-if (!perspective.includes('benchmark-signal-field')) errors.push('/writing: visual benchmark signal field expected');
+const perspective = await readFile(routeFile('/perspektywa'), 'utf8');
+if (!perspective.includes('benchmark-signal-field')) errors.push('/perspektywa: visual benchmark signal field expected');
 const benchmarkCount = (perspective.match(/class="benchmark-signal"/g) || []).length;
-if (benchmarkCount !== 3) errors.push(`/writing: expected 3 benchmark signals, found ${benchmarkCount}`);
-if (perspective.includes('benchmark-signal-ruler')) errors.push('/writing: benchmark signals must not imply a shared quantitative scale');
-if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
-if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
+if (benchmarkCount !== 3) errors.push(`/perspektywa: expected 3 benchmark signals, found ${benchmarkCount}`);
+if (perspective.includes('benchmark-signal-ruler')) errors.push('/perspektywa: benchmark signals must not imply a shared quantitative scale');
+if (!perspective.includes('publishing-standard')) errors.push('/perspektywa: publishing standard expected');
+if (/\b\d+\s+min\b/.test(perspective)) errors.push('/perspektywa: reading-time metadata should not be shown in the library');
 
-const practice = await readFile(routeFile('/work'), 'utf8');
-requireOrderedClasses(practice, '/work', [
+const practice = await readFile(routeFile('/wspolpraca'), 'utf8');
+requireOrderedClasses(practice, '/wspolpraca', [
   'engagement-section',
   'advisory-canvas-section',
   'advisory-domains-section',
@@ -160,14 +161,14 @@ requireOrderedClasses(practice, '/work', [
   'advisory-close',
 ], 'advisory narrative section');
 for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list', 'case-proof-item']) {
-  if (!practice.includes(required)) errors.push(`/work: missing advisory layer ${required}`);
+  if (!practice.includes(required)) errors.push(`/wspolpraca: missing advisory layer ${required}`);
 }
 const caseCount = (practice.match(/class="case-study-item case-proof-item"/g) || []).length;
-if (caseCount !== 3) errors.push(`/work: expected 3 anonymized proof blueprints, found ${caseCount}`);
-const proofSvgCount = (practice.match(/class="proof-exhibit-svg"/g) || []).length;
-if (proofSvgCount !== 3) errors.push(`/work: expected 3 schematic proof artifacts, found ${proofSvgCount}`);
+if (caseCount !== 3) errors.push(`/wspolpraca: expected 3 anonymized proof blueprints, found ${caseCount}`);
+const proofCanvasCount = (practice.match(/class="proof-exhibit-canvas /g) || []).length;
+if (proofCanvasCount !== 3) errors.push(`/wspolpraca: expected 3 responsive proof artifacts, found ${proofCanvasCount}`);
 const engagementCount = (practice.match(/<article>\s*<div class="engagement-index"/g) || []).length;
-if (engagementCount !== 3) errors.push(`/work: expected 3 engagement formats, found ${engagementCount}`);
+if (engagementCount !== 3) errors.push(`/wspolpraca: expected 3 engagement formats, found ${engagementCount}`);
 
 const oaf = await readFile(routeFile('/oaf'), 'utf8');
 requireOrderedClasses(oaf, '/oaf', [
@@ -180,7 +181,7 @@ requireOrderedClasses(oaf, '/oaf', [
 for (const required of ['oaf-question-grid', 'oaf-system', 'oaf-misfit-rail', 'oaf-use-rail', 'oaf-reference-grid', 'oaf-boundary-strip']) {
   if (!oaf.includes(required)) errors.push(`/oaf: missing executive OAF layer ${required}`);
 }
-const oafNodeCount = (oaf.match(/class="oaf-system-node /g) || []).length;
+const oafNodeCount = (oaf.match(/class="oaf-system-node"/g) || []).length;
 if (oafNodeCount !== 4) errors.push(`/oaf: expected 4 canonical OAF nodes, found ${oafNodeCount}`);
 const detailCount = (oaf.match(/<details>/g) || []).length;
 if (detailCount < 2) errors.push(`/oaf: expected progressive disclosure for supporting depth, found ${detailCount} details sections`);

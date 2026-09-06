@@ -32,3 +32,19 @@ body {
 .button-primary { background: var(--chocolate-deep); }
 .button-primary:hover { background: var(--sage-dark); }
 .section-oaf { background: var(--chocolate-deep); }
+
+/* CTA contrast is part of the brand contract, not a page-specific override. */
+.site-nav a.nav-cta,
+.mobile-nav a.nav-cta {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  color: var(--paper-strong);
+  text-decoration: none;
+}
+.site-nav a.nav-cta:hover,
+.mobile-nav a.nav-cta:hover {
+  background: var(--sage-dark);
+  border-color: var(--sage-dark);
+  color: var(--paper-strong);
+  text-decoration: none;
+}
