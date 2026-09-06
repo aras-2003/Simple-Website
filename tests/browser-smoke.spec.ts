@@ -80,10 +80,20 @@ test('home five-second executive clarity layout remains intact', async ({ page }
   });
 });
 
-test('advisory page makes engagement formats and outputs tangible', async ({ page }) => {
+test('Perspective turns benchmark evidence into a visual signal field', async ({ page }) => {
+  await page.goto('/writing', { waitUntil: 'networkidle' });
+  await expect(page.locator('.benchmark-signal-field')).toBeVisible();
+  await expect(page.locator('.benchmark-signal')).toHaveCount(3);
+  await expect(page.locator('.benchmark-signal-value')).toHaveText(['26%', '53%', '42%']);
+  await expect(page.locator('.benchmark-context')).toHaveCount(3);
+});
+
+test('advisory page makes decision change and trade-offs tangible', async ({ page }) => {
   await page.goto('/work', { waitUntil: 'networkidle' });
+  await expect(page.locator('.decision-architecture-delta')).toBeVisible();
   await expect(page.locator('.engagement-grid article')).toHaveCount(3);
-  await expect(page.locator('.outcome-blueprint-item')).toHaveCount(5);
+  await expect(page.locator('.portfolio-tradeoff-matrix')).toBeVisible();
+  await expect(page.locator('.portfolio-matrix-grid article')).toHaveCount(4);
   await expect(page.locator('.advisory-domain-grid article')).toHaveCount(4);
   await expect(page.locator('.case-study-item')).toHaveCount(4);
 });
