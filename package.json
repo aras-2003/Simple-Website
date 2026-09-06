@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 4321",
     "check": "astro check",
-    "build": "astro build",
+    "build:astro": "astro build",
+    "build": "npm run check && npm run build:astro && node tests/static.mjs && npm run test:performance && npm run test:worker",
     "preview": "astro preview --host 127.0.0.1 --port 4173",
-    "test:static": "npm run check && npm run build && node tests/static.mjs && npm run test:worker && npm run test:contact && npm run test:predeploy && node --check scripts/production-smoke.mjs",
+    "test:static": "npm run check && npm run build:astro && node tests/static.mjs && npm run test:worker && npm run test:contact && npm run test:predeploy && node --check scripts/production-smoke.mjs",
     "test:worker": "node tests/worker-contact.mjs",
     "test:predeploy": "python3 tests/predeploy_check.py",
     "test:performance": "node tests/performance-budget.mjs",

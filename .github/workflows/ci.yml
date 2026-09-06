@@ -39,9 +39,6 @@ jobs:
       - name: External reference check
         run: node tests/external-links.mjs
 
-      - name: Worker contact/runtime tests
-        run: npm run test:worker
-
       - name: Validate preview Worker package
         run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.preview.jsonc
 
@@ -53,13 +50,13 @@ jobs:
           SITE_BASE_URL: https://staging.arkadiuszkamrowski.com
           SITE_PRODUCTION_HOST: staging.arkadiuszkamrowski.com
           REQUIRE_PRODUCTION_SITE: '1'
-        run: npm run build
+        run: npm run build:astro
 
       - name: Validate staging Worker package
         run: npx --yes wrangler@4.129.0 deploy --dry-run --config wrangler.staging.jsonc
 
       - name: Restore production-canonical build for browser gates
-        run: npm run build
+        run: npm run build:astro
 
       - name: Install release browsers
         run: npx playwright install --with-deps chromium firefox webkit
