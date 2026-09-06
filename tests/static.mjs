@@ -142,19 +142,21 @@ if (!about.includes('brand-profile')) errors.push('/about: brand profile expecte
 if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
 
 const perspective = await readFile(routeFile('/writing'), 'utf8');
-if (!perspective.includes('evidence-ledger')) errors.push('/writing: evidence ledger expected');
+if (!perspective.includes('benchmark-signal-field')) errors.push('/writing: visual benchmark signal field expected');
+const benchmarkCount = (perspective.match(/class="benchmark-signal benchmark-signal-/g) || []).length;
+if (benchmarkCount !== 3) errors.push(`/writing: expected 3 benchmark signals, found ${benchmarkCount}`);
 if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
 if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
 
 const practice = await readFile(routeFile('/work'), 'utf8');
 requireOrderedClasses(practice, '/work', [
   'engagement-section',
-  'work-output-section',
+  'advisory-canvas-section',
   'advisory-domains-section',
   'executive-case-study-section',
   'advisory-close',
 ], 'advisory narrative section');
-for (const required of ['engagement-grid', 'outcome-blueprint', 'advisory-domain-grid', 'case-study-list']) {
+for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list']) {
   if (!practice.includes(required)) errors.push(`/work: missing advisory layer ${required}`);
 }
 const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
