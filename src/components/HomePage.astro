@@ -1,135 +1,123 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ExecutiveSystemMap from './ExecutiveSystemMap.astro';
+import OutcomeBlueprint from './OutcomeBlueprint.astro';
 import OafDiagram from './OafDiagram.astro';
-import { copy } from '../i18n/content';
-import { platform } from '../content/platform';
+import { caseStudies } from '../content/case-studies';
+import { executive } from '../content/executive';
 import { route, site, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
-const c = copy[locale];
-const x = platform[locale];
-const td = (value: string) => value.replaceAll('—', '–');
-const title = locale === 'pl'
-  ? 'Arkadiusz Kamrowski – architektura organizacyjna, strategia i wykonanie'
-  : 'Arkadiusz Kamrowski – organizational architecture, strategy and execution';
-const description = locale === 'pl'
-  ? 'Perspektywa o tym, jak łączyć strategię, architekturę, portfel, ład decyzyjny i wykonanie w jeden system decyzji.'
-  : 'A perspective on connecting strategy, architecture, portfolio, governance and execution into one decision system.';
-const heroContext = locale === 'pl'
-  ? 'Arkadiusz Kamrowski · perspektywa dla zarządów, CIO/CTO oraz liderów architektury i transformacji, którzy łączą decyzje biznesowe, technologiczne i wykonawcze.'
-  : 'Arkadiusz Kamrowski · a perspective for boards, CIO/CTOs, and leaders of architecture and transformation connecting business, technology and execution decisions.';
-const deeperPaths = [
-  { href: route(locale, 'writing'), eyebrow: x.home.perspective.eyebrow, title: x.home.perspective.title, body: x.home.perspective.body, cta: x.home.perspective.cta },
-  { href: route(locale, 'work'), eyebrow: x.home.practice.eyebrow, title: x.home.practice.title, body: x.home.practice.body, cta: x.home.practice.cta },
-  { href: route(locale, 'about'), eyebrow: x.home.author.eyebrow, title: x.home.author.title, body: x.home.author.body, cta: x.home.author.cta },
-];
+const x = executive[locale].home;
+const cases = caseStudies[locale].slice(0, 3);
+const pl = locale === 'pl';
+const title = pl
+  ? 'Arkadiusz Kamrowski – executive advisory: strategia, architektura, portfel i wykonanie'
+  : 'Arkadiusz Kamrowski – executive advisory across strategy, architecture, portfolio and execution';
+const description = pl
+  ? 'Pomagam CEO, CIO i liderom transformacji łączyć strategię, model operacyjny, architekturę, portfel i wykonanie w spójny system decyzji.'
+  : 'I help CEOs, CIOs and transformation leaders connect strategy, operating model, architecture, portfolio and execution into one coherent decision system.';
 ---
 <BaseLayout locale={locale} routeKey="home" title={title} description={description}>
-  <section class="landing-hero landing-hero-light" aria-labelledby="hero-title">
-    <div class="landing-hero-copy">
-      <p class="eyebrow">{td(x.home.hero.eyebrow)}</p>
-      <h1 id="hero-title">{td(x.home.hero.title)} <em>{td(x.home.hero.emphasis)}</em></h1>
-      <p class="hero-lead">{td(x.home.hero.lead)}</p>
-      <p class="hero-context">{heroContext}</p>
+  <section class="executive-hero" aria-labelledby="hero-title">
+    <div class="executive-hero-copy">
+      <p class="eyebrow">{x.hero.eyebrow}</p>
+      <h1 id="hero-title">{x.hero.title} <em>{x.hero.emphasis}</em></h1>
+      <p class="hero-lead">{x.hero.lead}</p>
+      <p class="executive-value-line">{x.hero.value}</p>
       <div class="hero-actions">
-        <a class="button button-primary" href={route(locale, 'writing')}>{x.home.hero.primary}<span aria-hidden="true">→</span></a>
-        <a class="button button-quiet" href={route(locale, 'oaf')}>{x.home.hero.secondary}<span aria-hidden="true">→</span></a>
+        <a class="button button-primary" href={route(locale, 'work')}>{x.hero.primary}<span aria-hidden="true">→</span></a>
+        <a class="button button-quiet" href={route(locale, 'contact')}>{x.hero.secondary}<span aria-hidden="true">→</span></a>
+      </div>
+      <div class="executive-audience" aria-label={pl ? 'Główne konteksty współpracy' : 'Primary collaboration contexts'}>
+        <span>CEO / Board</span><span>CIO / CTO</span><span>Transformation</span><span>Enterprise Architecture</span>
       </div>
     </div>
-
-    <figure class="decision-field decision-field-compact" aria-labelledby="decision-field-caption">
-      <div class="decision-field-grid" aria-hidden="true">
-        <span class="field-line field-line-a"></span>
-        <span class="field-line field-line-b"></span>
-        <span class="field-line field-line-c"></span>
-        <span class="field-line field-line-d"></span>
-        <span class="field-node field-node-strategy">{locale === 'pl' ? 'strategia' : 'strategy'}</span>
-        <span class="field-node field-node-architecture">{locale === 'pl' ? 'architektura' : 'architecture'}</span>
-        <span class="field-node field-node-portfolio">{locale === 'pl' ? 'portfel' : 'portfolio'}</span>
-        <span class="field-node field-node-execution">{locale === 'pl' ? 'wykonanie' : 'execution'}</span>
-        <span class="field-center"><strong>{locale === 'pl' ? 'spójność' : 'coherence'}</strong><small>{locale === 'pl' ? 'punkt ciężkości' : 'center of gravity'}</small></span>
-      </div>
-      <figcaption id="decision-field-caption">{locale === 'pl' ? 'Wartość powstaje w jakości relacji pomiędzy kierunkiem, architekturą, alokacją i wykonaniem.' : 'Value is created in the quality of the relationships between direction, architecture, allocation and execution.'}</figcaption>
-    </figure>
+    <ExecutiveSystemMap locale={locale} />
   </section>
 
-  <section class="section narrative-section problem-section problem-section-light" aria-labelledby="problem-title">
+  <section class="section executive-trigger-section" aria-labelledby="trigger-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{td(x.home.problem.eyebrow)}</p>
-        <h2 id="problem-title">{td(x.home.problem.title)}</h2>
+        <p class="eyebrow">{x.triggers.eyebrow}</p>
+        <h2 id="trigger-title">{x.triggers.title}</h2>
       </div>
-      <p class="content-lead">{td(x.home.problem.lead)}</p>
+      <p class="content-lead">{x.triggers.lead}</p>
     </div>
-    <div class="tension-sequence tension-sequence-compact">
-      {x.home.problem.tensions.slice(0, 3).map((item) => (
-        <article class="tension-row">
-          <h3>{td(item.title)}</h3>
-          <p>{td(item.body)}</p>
+    <div class="executive-trigger-grid">
+      {x.triggers.items.map((item) => (
+        <article>
+          <p class="micro-label">{item.label}</p>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+          <span class="trigger-signal" aria-hidden="true"></span>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="section evidence-section evidence-section-home" aria-labelledby="evidence-title">
+  <section class="section executive-output-section" aria-labelledby="outputs-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{td(x.home.evidence.eyebrow)}</p>
-        <h2 id="evidence-title">{td(x.home.evidence.title)}</h2>
+        <p class="eyebrow">{x.outputs.eyebrow}</p>
+        <h2 id="outputs-title">{x.outputs.title}</h2>
       </div>
-      <p class="content-lead">{td(x.home.evidence.lead)}</p>
+      <p class="content-lead">{x.outputs.lead}</p>
     </div>
-    <div class="evidence-ledger evidence-ledger-home">
-      {x.evidence.slice(0, 2).map((item) => (
-        <article class="evidence-note">
-          <p class="evidence-value">{item.value}</p>
-          <div>
-            <h3>{td(item.title)}</h3>
-            <p>{td(item.body)}</p>
-            <a href={item.href} target="_blank" rel="noopener noreferrer">{item.source}<span aria-hidden="true"> ↗</span><span class="sr-only"> – {c.externalNewTab}</span></a>
+    <OutcomeBlueprint items={x.outputs.items} />
+    <div class="executive-output-action">
+      <a class="text-link" href={route(locale, 'work')}>{pl ? 'Zobacz formaty współpracy' : 'See ways to engage'}<span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="section executive-proof-section" aria-labelledby="proof-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.proof.eyebrow}</p>
+        <h2 id="proof-title">{x.proof.title}</h2>
+      </div>
+      <p class="content-lead">{x.proof.lead}</p>
+    </div>
+    <div class="executive-case-rail">
+      {cases.map((item, index) => (
+        <article>
+          <div class="executive-case-head">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p class="micro-label">{item.tag}</p>
           </div>
+          <h3>{item.title}</h3>
+          <div class="executive-case-flow">
+            <p><strong>{pl ? 'Tarcie' : 'Friction'}</strong><span>{item.challenge}</span></p>
+            <span class="case-arrow" aria-hidden="true">→</span>
+            <p><strong>{pl ? 'Zmiana logiki' : 'Shift'}</strong><span>{item.approach}</span></p>
+          </div>
+          <p class="executive-case-value">{item.value.replace(/^Wartość: |^Value: /, '')}</p>
         </article>
       ))}
     </div>
+    <a class="text-link executive-proof-link" href={route(locale, 'work')}>{pl ? 'Więcej przykładów i kontekstów' : 'More examples and contexts'}<span aria-hidden="true">→</span></a>
   </section>
 
-  <section class="section section-oaf oaf-teaser oaf-teaser-home" aria-labelledby="oaf-teaser-title">
-    <div class="oaf-home-copy">
-      <p class="eyebrow">{td(x.home.oaf.eyebrow)}</p>
-      <h2 id="oaf-teaser-title">{td(x.home.oaf.title)}</h2>
-      <p>{td(x.home.oaf.body)}</p>
-      <a class="text-link" href={route(locale, 'oaf')}>{x.home.oaf.cta}<span aria-hidden="true">→</span></a>
+  <section class="section section-oaf executive-method-section" aria-labelledby="method-title">
+    <div class="executive-method-copy">
+      <p class="eyebrow">{x.method.eyebrow}</p>
+      <h2 id="method-title">{x.method.title}</h2>
+      <p>{x.method.body}</p>
+      <a class="text-link" href={route(locale, 'oaf')}>{x.method.cta}<span aria-hidden="true">→</span></a>
     </div>
     <OafDiagram locale={locale} id="home-oaf-diagram" compact />
   </section>
 
-  <section class="section deeper-paths" aria-labelledby="deeper-paths-title">
-    <div class="deeper-paths-head">
-      <p class="eyebrow">{locale === 'pl' ? 'Dalej / wybierz poziom' : 'Next / choose the level'}</p>
-      <h2 id="deeper-paths-title">{locale === 'pl' ? 'Nie wszystko musi być na stronie głównej.' : 'Not everything needs to live on the home page.'}</h2>
-    </div>
-    <div class="deeper-paths-list">
-      {deeperPaths.map((item) => (
-        <article>
-          <p class="micro-label">{td(item.eyebrow)}</p>
-          <h3>{td(item.title)}</h3>
-          <p>{td(item.body)}</p>
-          <a class="text-link" href={item.href}>{item.cta}<span aria-hidden="true">→</span></a>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section section-contact editorial-close" aria-labelledby="close-title">
+  <section class="section section-contact executive-close" aria-labelledby="close-title">
     <div class="contact-copy">
-      <p class="eyebrow">{td(x.home.close.eyebrow)}</p>
-      <h2 id="close-title">{td(x.home.close.title)}</h2>
-      <p>{td(x.home.close.body)}</p>
+      <p class="eyebrow">{x.close.eyebrow}</p>
+      <h2 id="close-title">{x.close.title}</h2>
+      <p>{x.close.body}</p>
     </div>
     <div class="contact-action contact-action-editorial">
-      <a class="button button-primary button-large" href={route(locale, 'contact')}>{x.home.close.cta}<span aria-hidden="true">→</span></a>
-      <a class="contact-secondary" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> – {c.externalNewTab}</span></a>
+      <a class="button button-primary button-large" href={route(locale, 'contact')}>{x.close.cta}<span aria-hidden="true">→</span></a>
+      <a class="contact-secondary" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 </BaseLayout>
