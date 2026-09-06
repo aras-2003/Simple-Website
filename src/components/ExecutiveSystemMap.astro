@@ -23,34 +23,37 @@ const stages = pl
 <figure class:list={['decision-system', { 'decision-system-compact': compact }]}>
   <div class="decision-system-head">
     <p>{pl ? 'system decyzji' : 'decision system'}</p>
-    <span>{pl ? 'największe ryzyko jest na przejściach' : 'the highest risk sits at the hand-offs'}</span>
+    <span>{pl ? 'ryzyko rośnie na przejściach' : 'risk compounds at the hand-offs'}</span>
   </div>
 
-  <div class="decision-system-chain" aria-hidden="true">
-    {stages.map(([title, meta], index) => (
-      <>
-        <div class="decision-system-node">
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <strong>{title}</strong>
-          <small>{meta}</small>
-        </div>
-        {index < stages.length - 1 && (
-          <div class:list={['decision-system-handoff', { 'decision-system-handoff-risk': index === 1 || index === 2 }]}> 
-            <span></span>
-            {(index === 1 || index === 2) && <small>{pl ? 'tarcie' : 'friction'}</small>}
+  <ol class="decision-system-chain">
+    {stages.map(([title, meta], index) => {
+      const risk = index === 1 || index === 2;
+      return (
+        <li class:list={['decision-system-stage', { 'decision-system-stage-risk': risk }]}>
+          <span class="decision-system-index">{String(index + 1).padStart(2, '0')}</span>
+          <div class="decision-system-stage-copy">
+            <strong>{title}</strong>
+            <small>{meta}</small>
           </div>
-        )}
-      </>
-    ))}
-  </div>
+          {index < stages.length - 1 && (
+            <div class="decision-system-handoff" aria-hidden="true">
+              <span></span>
+              <small>{risk ? (pl ? 'tarcie' : 'friction') : (pl ? 'przejście' : 'handoff')}</small>
+            </div>
+          )}
+        </li>
+      );
+    })}
+  </ol>
 
-  <div class="decision-system-feedback" aria-hidden="true">
-    <span class="decision-feedback-arrow">↩</span>
-    <span>{pl ? 'dowód z wykonania wraca do kolejnej decyzji' : 'execution evidence feeds the next decision'}</span>
+  <div class="decision-system-feedback">
+    <span class="decision-feedback-arrow" aria-hidden="true">↺</span>
+    <span>{pl ? 'Dowód z wykonania wraca do kolejnej decyzji.' : 'Execution evidence feeds the next decision.'}</span>
   </div>
 
   <figcaption>
     <strong>{pl ? 'Wartość nie znika w jednym silosie.' : 'Value rarely disappears inside one silo.'}</strong>
-    <span>{pl ? 'Najczęściej znika na przejściach — gdy zmieniają się właściciel, kryterium albo rytm decyzji.' : 'It disappears at the hand-offs — when ownership, criteria or decision cadence changes along the way.'}</span>
+    <span>{pl ? 'Najczęściej traci się ją przy zmianie właściciela, kryterium lub rytmu decyzji.' : 'It is usually lost when ownership, criteria or decision cadence changes.'}</span>
   </figcaption>
 </figure>

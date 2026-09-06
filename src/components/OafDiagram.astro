@@ -3,66 +3,51 @@ import type { Locale } from '../lib/site';
 
 interface Props { locale: Locale; id: string; compact?: boolean; }
 const { locale, id, compact = false } = Astro.props;
-const labels = locale === 'pl'
-  ? {
-      direction: { title: 'Kierunek', meta: 'strategia' },
-      architecture: { title: 'Architektura', meta: 'wybory' },
-      priorities: { title: 'Priorytety', meta: 'portfel' },
-      evidence: { title: 'Dowody', meta: 'wykonanie' },
-    }
-  : {
-      direction: { title: 'Direction', meta: 'strategy' },
-      architecture: { title: 'Architecture', meta: 'choices' },
-      priorities: { title: 'Priorities', meta: 'portfolio' },
-      evidence: { title: 'Evidence', meta: 'execution' },
-    };
-const centerTitle = locale === 'pl' ? 'Spójność decyzji' : 'Decision coherence';
-const centerBody = locale === 'pl'
-  ? 'Punkt ciężkości leży w jakości połączeń i w tym, czy dowód może zmienić wcześniejsze założenie.'
-  : 'The center of gravity is the quality of the connections and whether evidence can change an earlier assumption.';
-const caption = locale === 'pl'
-  ? 'OAF utrzymuje jedną pętlę pomiędzy kierunkiem, architekturą, priorytetami i dowodami z wykonania. Dowód nie kończy cyklu — wraca do kolejnej decyzji.'
-  : 'OAF keeps one loop across direction, architecture, priorities and execution evidence. Evidence does not close the cycle — it feeds the next decision.';
+const pl = locale === 'pl';
+const labels = pl
+  ? [
+      { title: 'Kierunek', meta: 'strategia' },
+      { title: 'Architektura', meta: 'wybory' },
+      { title: 'Priorytety', meta: 'portfel' },
+      { title: 'Dowody', meta: 'wykonanie' },
+    ]
+  : [
+      { title: 'Direction', meta: 'strategy' },
+      { title: 'Architecture', meta: 'choices' },
+      { title: 'Priorities', meta: 'portfolio' },
+      { title: 'Evidence', meta: 'execution' },
+    ];
+const centerTitle = pl ? 'Spójność decyzji' : 'Decision coherence';
+const centerBody = pl
+  ? 'Jedna logika łączy kierunek, wybory architektoniczne, finansowanie i dowód z wykonania.'
+  : 'One logic connects direction, architectural choices, funding and execution evidence.';
+const caption = pl
+  ? 'OAF nie jest orbitą ani kolejną warstwą governance. To prosty kontrakt: każda kolejna decyzja musi być zgodna z poprzednią, a dowód z wykonania może zmienić założenie.'
+  : 'OAF is not an orbit or another governance layer. It is a simple contract: each decision must cohere with the previous one, while execution evidence can change an assumption.';
 ---
 <figure class:list={['oaf-system', { 'oaf-system-compact': compact }]} aria-labelledby={id}>
-  <p class="sr-only" id={id}>{locale === 'pl' ? 'OAF — cztery współzależne obszary architektury organizacyjnej połączone pętlą informacji zwrotnej' : 'OAF — four interdependent organizational architecture domains connected by a feedback loop'}</p>
+  <p class="sr-only" id={id}>{pl ? 'OAF — cztery obszary połączone w zamkniętą pętlę decyzji' : 'OAF — four domains connected in a closed decision loop'}</p>
 
-  <div class="oaf-system-canvas">
-    <svg class="oaf-system-connectors" viewBox="0 0 100 100" aria-hidden="true" focusable="false" preserveAspectRatio="none">
-      <path d="M50 24 L50 39" />
-      <path d="M61 50 L76 50" />
-      <path d="M50 61 L50 76" />
-      <path d="M39 50 L24 50" />
-      <path class="oaf-feedback-path" d="M18 42 C8 18, 27 8, 44 14" />
-    </svg>
+  <div class="oaf-system-center">
+    <span>OAF / {pl ? 'pętla decyzji' : 'decision loop'}</span>
+    <strong>{centerTitle}</strong>
+    {!compact && <p>{centerBody}</p>}
+  </div>
 
-    <div class="oaf-system-node oaf-system-direction">
-      <span>{labels.direction.meta}</span>
-      <strong>{labels.direction.title}</strong>
-    </div>
-    <div class="oaf-system-node oaf-system-architecture">
-      <span>{labels.architecture.meta}</span>
-      <strong>{labels.architecture.title}</strong>
-    </div>
-    <div class="oaf-system-node oaf-system-priorities">
-      <span>{labels.priorities.meta}</span>
-      <strong>{labels.priorities.title}</strong>
-    </div>
-    <div class="oaf-system-node oaf-system-evidence">
-      <span>{labels.evidence.meta}</span>
-      <strong>{labels.evidence.title}</strong>
-    </div>
+  <ol class="oaf-system-flow">
+    {labels.map((item, index) => (
+      <li class="oaf-system-node">
+        <span>{String(index + 1).padStart(2, '0')} · {item.meta}</span>
+        <strong>{item.title}</strong>
+      </li>
+    ))}
+  </ol>
 
-    <div class="oaf-system-center">
-      <span>OAF</span>
-      <strong>{centerTitle}</strong>
-      {!compact && <p>{centerBody}</p>}
-    </div>
-
-    <div class="oaf-system-feedback" aria-hidden="true">
-      <span>↺</span>
-      <small>{locale === 'pl' ? 'dowód → kolejna decyzja' : 'evidence → next decision'}</small>
-    </div>
+  <div class="oaf-system-feedback">
+    <span class="oaf-feedback-from">04 · {pl ? 'Dowody' : 'Evidence'}</span>
+    <span class="oaf-feedback-arrow" aria-hidden="true">↺</span>
+    <span class="oaf-feedback-to">01 · {pl ? 'Kierunek' : 'Direction'}</span>
+    <small>{pl ? 'dowód zmienia kolejną decyzję, nie tylko raportuje wykonanie' : 'evidence changes the next decision, not just the execution report'}</small>
   </div>
 
   {!compact && <figcaption>{caption}</figcaption>}

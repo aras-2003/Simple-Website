@@ -14,11 +14,12 @@ const pl = locale === 'pl';
 const impact = pl
   ? ['Procesy', 'Dane', 'Systemy', 'Integracje', 'Raportowanie', 'Rozliczenia']
   : ['Processes', 'Data', 'Systems', 'Integrations', 'Reporting', 'Settlement'];
-const mobileModeTitle = mode === 'portfolio'
+const modeTitle = mode === 'portfolio'
   ? (pl ? 'Logika portfela' : 'Portfolio logic')
   : mode === 'impact'
     ? (pl ? 'Mapa wpływu' : 'Impact map')
     : (pl ? 'Prawa decyzyjne' : 'Decision rights');
+const proofId = `proof-${mode}-${index}`;
 ---
 <article class="case-study-item case-proof-item">
   <div class="case-study-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
@@ -32,110 +33,62 @@ const mobileModeTitle = mode === 'portfolio'
     <p><strong>{pl ? 'Interwencja' : 'Intervention'}</strong><span>{item.approach}</span></p>
     <p class="case-study-value"><strong>{pl ? 'Wartość zarządcza' : 'Management value'}</strong><span>{item.value.replace(/^Wartość: |^Value: /, '')}</span></p>
 
-    <div class="proof-exhibit" role="img" aria-label={mobileModeTitle}>
+    <figure class="proof-exhibit" aria-labelledby={proofId}>
+      <figcaption id={proofId} class="proof-exhibit-head">
+        <span>{mode === 'portfolio' ? 'PORTFOLIO LOGIC' : mode === 'impact' ? 'IMPACT LOGIC' : 'DECISION RIGHTS'}</span>
+        <strong>{modeTitle}</strong>
+      </figcaption>
+
       {mode === 'portfolio' && (
-        <svg class="proof-exhibit-svg" viewBox="0 0 760 260" aria-hidden="true" focusable="false">
-          <rect class="proof-bg" x="0" y="0" width="760" height="260" />
-          <text class="proof-kicker" x="30" y="32">PORTFOLIO LOGIC / SCHEMATIC</text>
-          {[0,1,2,3].map((i) => (
-            <g>
-              <rect class="proof-node proof-node-outline" x="30" y={58 + i * 40} width="112" height="28" />
-              <text class="proof-label" x="44" y={77 + i * 40}>I-0{i + 1}</text>
-              <line class="proof-line" x1="142" y1={72 + i * 40} x2="252" y2="129" />
-            </g>
-          ))}
-          <rect class="proof-node proof-node-sage" x="252" y="88" width="158" height="82" />
-          <text class="proof-small" x="270" y="115">{pl ? 'WSPÓLNE ZDOLNOŚCI' : 'SHARED CAPABILITIES'}</text>
-          <text class="proof-title" x="270" y="145">C1 / C2</text>
-          <line class="proof-line proof-line-strong" x1="410" y1="129" x2="486" y2="129" />
-          <path class="proof-arrow" d="M486 129 l-10 -6 v12 z" />
-          <rect class="proof-node proof-node-decision" x="500" y="66" width="230" height="126" />
-          <text class="proof-small" x="522" y="96">{pl ? 'WYBÓR PORTFELA' : 'PORTFOLIO CHOICE'}</text>
-          <text class="proof-title proof-title-small" x="522" y="130">STOP · MERGE</text>
-          <text class="proof-title proof-title-small" x="522" y="158">SEQUENCE · CONTINUE</text>
-          <text class="proof-caption" x="30" y="236">{pl ? 'Zależności i capacity stają się częścią decyzji.' : 'Dependencies and capacity become part of the decision.'}</text>
-        </svg>
+        <div class="proof-exhibit-canvas proof-portfolio" aria-hidden="true">
+          <div class="proof-initiative-stack">
+            <span>I-01</span><span>I-02</span><span>I-03</span><span>I-04</span>
+          </div>
+          <div class="proof-bridge">
+            <small>{pl ? 'zależności + capacity' : 'dependencies + capacity'}</small>
+            <i>→</i>
+          </div>
+          <div class="proof-capability-block">
+            <small>{pl ? 'wspólne zdolności' : 'shared capabilities'}</small>
+            <strong>C1 / C2</strong>
+          </div>
+          <div class="proof-bridge proof-bridge-short"><i>→</i></div>
+          <div class="proof-decision-block">
+            <small>{pl ? 'wybór portfela' : 'portfolio choice'}</small>
+            <strong>STOP<br/>MERGE<br/>SEQUENCE<br/>CONTINUE</strong>
+          </div>
+        </div>
       )}
 
       {mode === 'impact' && (
-        <svg class="proof-exhibit-svg" viewBox="0 0 760 260" aria-hidden="true" focusable="false">
-          <rect class="proof-bg" x="0" y="0" width="760" height="260" />
-          <text class="proof-kicker" x="30" y="32">IMPACT MAP / SCHEMATIC</text>
-          <circle class="proof-node proof-node-decision" cx="380" cy="132" r="48" />
-          <text class="proof-impact" x="380" y="128" text-anchor="middle">€</text>
-          <text class="proof-small" x="380" y="150" text-anchor="middle">IMPACT</text>
-          {[
-            [110,66, impact[0]], [285,48, impact[1]], [550,66, impact[2]],
-            [110,184, impact[3]], [285,202, impact[4]], [550,184, impact[5]],
-          ].map(([x,y,label]) => (
-            <g>
-              <line class="proof-line" x1="380" y1="132" x2={Number(x) + 50} y2={Number(y)} />
-              <rect class="proof-node proof-node-sage" x={Number(x)} y={Number(y) - 15} width="100" height="30" />
-              <text class="proof-label proof-label-centered" x={Number(x) + 50} y={Number(y) + 4} text-anchor="middle">{label}</text>
-            </g>
-          ))}
-        </svg>
+        <div class="proof-exhibit-canvas proof-impact" aria-hidden="true">
+          <div class="proof-impact-scope">
+            <small>{pl ? 'powierzchnia zmiany' : 'change surface'}</small>
+            <div class="proof-impact-tags">{impact.map((label) => <span>{label}</span>)}</div>
+          </div>
+          <div class="proof-impact-spine"><span>→</span></div>
+          <div class="proof-impact-chain">
+            <div><small>{pl ? 'zmiana' : 'change'}</small><strong>{pl ? 'przepływu' : 'flow'}</strong></div>
+            <div><small>{pl ? 'zmiana' : 'change'}</small><strong>{pl ? 'kontroli' : 'control'}</strong></div>
+            <div class="proof-impact-result"><small>{pl ? 'dowód wpływu' : 'impact evidence'}</small><strong>{pl ? 'co naprawdę się zmieniło?' : 'what actually changed?'}</strong></div>
+          </div>
+        </div>
       )}
 
       {mode === 'governance' && (
-        <svg class="proof-exhibit-svg" viewBox="0 0 760 260" aria-hidden="true" focusable="false">
-          <rect class="proof-bg" x="0" y="0" width="760" height="260" />
-          <text class="proof-kicker" x="30" y="32">DECISION RIGHTS / SCHEMATIC</text>
-          <text class="proof-small" x="30" y="60">{pl ? 'PRZED' : 'BEFORE'}</text>
-          {['A','B','C'].map((label, i) => (
-            <g>
-              <rect class="proof-node proof-node-outline" x="30" y={76 + i * 45} width="128" height="30" />
-              <text class="proof-label" x="48" y={96 + i * 45}>FORUM {label}</text>
-            </g>
-          ))}
-          <line class="proof-line proof-line-strong" x1="186" y1="136" x2="286" y2="136" />
-          <path class="proof-arrow" d="M286 136 l-10 -6 v12 z" />
-          <text class="proof-small" x="324" y="60">{pl ? 'PO' : 'AFTER'}</text>
-          <rect class="proof-node proof-node-sage" x="316" y="78" width="116" height="44" />
-          <rect class="proof-node proof-node-sage" x="452" y="78" width="116" height="44" />
-          <rect class="proof-node proof-node-decision" x="588" y="78" width="116" height="44" />
-          <rect class="proof-node proof-node-outline" x="452" y="164" width="116" height="44" />
-          <text class="proof-label proof-label-centered" x="374" y="105" text-anchor="middle">{pl ? 'Właściciel' : 'Owner'}</text>
-          <text class="proof-label proof-label-centered" x="510" y="105" text-anchor="middle">{pl ? 'Dowód' : 'Evidence'}</text>
-          <text class="proof-label proof-label-centered" x="646" y="105" text-anchor="middle">{pl ? 'Decyzja' : 'Decision'}</text>
-          <text class="proof-label proof-label-centered" x="510" y="191" text-anchor="middle">{pl ? 'Przegląd' : 'Review'}</text>
-          <line class="proof-line" x1="432" y1="100" x2="452" y2="100" />
-          <line class="proof-line" x1="568" y1="100" x2="588" y2="100" />
-          <path class="proof-loop" d="M646 122 C646 200 540 222 510 208" />
-          <text class="proof-caption" x="316" y="236">{pl ? 'Mandat + dowód + rytm przeglądu.' : 'Mandate + evidence + review cadence.'}</text>
-        </svg>
+        <div class="proof-exhibit-canvas proof-governance" aria-hidden="true">
+          <div class="proof-governance-before">
+            <small>{pl ? 'przed / rozproszony mandat' : 'before / fragmented mandate'}</small>
+            <span>FORUM A</span><span>FORUM B</span><span>FORUM C</span>
+          </div>
+          <div class="proof-governance-shift"><span>→</span><small>{pl ? 'jeden kontrakt decyzji' : 'one decision contract'}</small></div>
+          <div class="proof-governance-after">
+            <div class="proof-contract-row"><span>{pl ? 'Właściciel' : 'Owner'}</span><span>{pl ? 'Dowód' : 'Evidence'}</span><strong>{pl ? 'Decyzja' : 'Decision'}</strong></div>
+            <div class="proof-review-loop"><span>↺</span><small>{pl ? 'przegląd / rytm / trigger ponownej decyzji' : 'review / cadence / revisit trigger'}</small></div>
+          </div>
+        </div>
       )}
-
-      <div class="proof-exhibit-mobile" aria-hidden="true">
-        <p>{mobileModeTitle}</p>
-        {mode === 'portfolio' && (
-          <div class="proof-mobile-flow">
-            <span>I-01 · I-02 · I-03 · I-04</span>
-            <i>↓</i>
-            <strong>{pl ? 'Wspólne zdolności / zależności' : 'Shared capabilities / dependencies'}</strong>
-            <i>↓</i>
-            <b>STOP · MERGE · SEQUENCE · CONTINUE</b>
-          </div>
-        )}
-        {mode === 'impact' && (
-          <div class="proof-mobile-impact">
-            <strong>€ / IMPACT</strong>
-            <ul>{impact.map((label) => <li>{label}</li>)}</ul>
-          </div>
-        )}
-        {mode === 'governance' && (
-          <div class="proof-mobile-flow">
-            <span>{pl ? 'Właściciel decyzji' : 'Decision owner'}</span>
-            <i>↓</i>
-            <strong>{pl ? 'Dowód' : 'Evidence'}</strong>
-            <i>↓</i>
-            <b>{pl ? 'Decyzja' : 'Decision'}</b>
-            <i>↺</i>
-            <span>{pl ? 'Przegląd' : 'Review'}</span>
-          </div>
-        )}
-      </div>
-    </div>
+    </figure>
 
     <p><strong>{pl ? 'Uwaga' : 'Note'}</strong><span>{pl ? 'Schemat pokazuje logikę pracy, nie dane klienta ani wynik KPI.' : 'The schematic shows the work logic, not client data or KPI outcomes.'}</span></p>
   </div>

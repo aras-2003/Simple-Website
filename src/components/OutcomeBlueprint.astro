@@ -14,58 +14,71 @@ const visualKinds = ['decision-map', 'tradeoff', 'portfolio', 'governance', 'roa
           <span class="artifact-index">{item.index}</span>
 
           {visual === 'decision-map' && (
-            <div class="mini-decision-map">
-              <span class="mini-node mini-node-a"></span>
-              <span class="mini-node mini-node-b"></span>
-              <span class="mini-node mini-node-c"></span>
-              <span class="mini-friction mini-friction-a"></span>
-              <span class="mini-friction mini-friction-b"></span>
-              <span class="mini-connector mini-connector-a"></span>
-              <span class="mini-connector mini-connector-b"></span>
-              <span class="mini-connector mini-connector-c"></span>
-            </div>
+            <svg class="outcome-artifact-svg" viewBox="0 0 240 120" focusable="false">
+              <path class="artifact-line" d="M28 34 L92 62 L154 38 L210 70" />
+              <path class="artifact-line artifact-line-dashed" d="M28 88 H210" />
+              <rect class="artifact-node" x="20" y="26" width="16" height="16" />
+              <rect class="artifact-node artifact-node-solid" x="84" y="54" width="16" height="16" />
+              <rect class="artifact-node" x="146" y="30" width="16" height="16" />
+              <rect class="artifact-node" x="202" y="62" width="16" height="16" />
+              <rect class="artifact-friction" x="60" y="43" width="10" height="10" />
+              <rect class="artifact-friction" x="119" y="47" width="10" height="10" />
+              <text class="artifact-label" x="20" y="110">HAND-OFFS / FRICTION</text>
+            </svg>
           )}
 
           {visual === 'tradeoff' && (
-            <div class="mini-tradeoff">
-              <span class="mini-axis mini-axis-x"></span>
-              <span class="mini-axis mini-axis-y"></span>
-              <span class="mini-choice"></span>
-              <span class="mini-choice-halo"></span>
-            </div>
+            <svg class="outcome-artifact-svg" viewBox="0 0 240 120" focusable="false">
+              <path class="artifact-line" d="M38 94 V20 M38 94 H216" />
+              <path class="artifact-line artifact-line-soft" d="M38 56 H216 M122 20 V94" />
+              <rect class="artifact-choice" x="150" y="36" width="24" height="24" />
+              <text class="artifact-label" x="48" y="32">VALUE</text>
+              <text class="artifact-label" x="166" y="110">FEASIBILITY</text>
+              <text class="artifact-label artifact-label-strong" x="148" y="82">CHOICE</text>
+            </svg>
           )}
 
           {visual === 'portfolio' && (
-            <div class="mini-portfolio">
-              <span class="mini-input mini-input-a"></span>
-              <span class="mini-input mini-input-b"></span>
-              <span class="mini-input mini-input-c"></span>
-              <span class="mini-hub"></span>
-              <span class="mini-output mini-output-a"></span>
-              <span class="mini-output mini-output-b"></span>
-              <span class="mini-output mini-output-c"></span>
-            </div>
+            <svg class="outcome-artifact-svg" viewBox="0 0 240 120" focusable="false">
+              <rect class="artifact-node" x="18" y="20" width="34" height="13" />
+              <rect class="artifact-node" x="18" y="46" width="34" height="13" />
+              <rect class="artifact-node" x="18" y="72" width="34" height="13" />
+              <rect class="artifact-node" x="18" y="98" width="34" height="13" />
+              <path class="artifact-line" d="M52 26 L94 48 M52 52 L94 54 M52 78 L94 62 M52 104 L94 68" />
+              <rect class="artifact-hub" x="94" y="40" width="54" height="36" />
+              <path class="artifact-line" d="M148 58 H176" />
+              <rect class="artifact-choice" x="176" y="38" width="46" height="40" />
+              <text class="artifact-label" x="102" y="61">SHARED</text>
+              <text class="artifact-label artifact-label-inverse" x="184" y="61">DECIDE</text>
+            </svg>
           )}
 
           {visual === 'governance' && (
-            <div class="mini-governance">
-              <span class="mini-gov-node mini-gov-owner"></span>
-              <span class="mini-gov-node mini-gov-evidence"></span>
-              <span class="mini-gov-node mini-gov-decision"></span>
-              <span class="mini-gov-node mini-gov-review"></span>
-              <span class="mini-gov-loop"></span>
-            </div>
+            <svg class="outcome-artifact-svg" viewBox="0 0 240 120" focusable="false">
+              <rect class="artifact-node" x="18" y="38" width="46" height="26" />
+              <rect class="artifact-hub" x="96" y="38" width="46" height="26" />
+              <rect class="artifact-choice" x="176" y="38" width="46" height="26" />
+              <path class="artifact-line" d="M64 51 H96 M142 51 H176" />
+              <path class="artifact-line artifact-line-dashed" d="M198 66 C198 100 118 104 118 76" />
+              <text class="artifact-label" x="24" y="54">OWNER</text>
+              <text class="artifact-label" x="102" y="54">EVIDENCE</text>
+              <text class="artifact-label artifact-label-inverse" x="184" y="54">DECIDE</text>
+              <text class="artifact-label" x="92" y="108">REVIEW ↺</text>
+            </svg>
           )}
 
           {visual === 'roadmap' && (
-            <div class="mini-roadmap">
-              <span class="mini-road-line"></span>
-              <span class="mini-road-node mini-road-node-a"></span>
-              <span class="mini-road-node mini-road-node-b"></span>
-              <span class="mini-road-node mini-road-node-c"></span>
-              <span class="mini-road-node mini-road-node-d"></span>
-              <span class="mini-road-feedback"></span>
-            </div>
+            <svg class="outcome-artifact-svg" viewBox="0 0 240 120" focusable="false">
+              <path class="artifact-line" d="M24 62 H216" />
+              <rect class="artifact-node" x="24" y="54" width="16" height="16" />
+              <rect class="artifact-node" x="80" y="54" width="16" height="16" />
+              <rect class="artifact-node artifact-node-solid" x="136" y="54" width="16" height="16" />
+              <rect class="artifact-choice" x="200" y="50" width="24" height="24" />
+              <path class="artifact-line artifact-line-dashed" d="M212 46 C212 20 144 18 144 48" />
+              <text class="artifact-label" x="24" y="96">NOW</text>
+              <text class="artifact-label" x="126" y="96">EVIDENCE</text>
+              <text class="artifact-label artifact-label-strong" x="190" y="108">REVISIT</text>
+            </svg>
           )}
         </div>
         <div class="outcome-blueprint-copy">
