@@ -13,9 +13,9 @@ const { locale } = Astro.props;
 const x = executive[locale].work;
 const pl = locale === 'pl';
 const proofCases = [
-  { item: caseStudies[locale][2], mode: 'portfolio' as const },
-  { item: caseStudies[locale][3], mode: 'impact' as const },
-  { item: caseStudies[locale][4], mode: 'governance' as const },
+  { item: caseStudies[locale][2]!, mode: 'portfolio' as const },
+  { item: caseStudies[locale][3]!, mode: 'impact' as const },
+  { item: caseStudies[locale][4]!, mode: 'governance' as const },
 ];
 const pageTitle = pl ? 'Współpraca – executive advisory i architektura decyzji' : 'Advisory – executive decision architecture';
 const pageDescription = pl
