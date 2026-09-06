@@ -88,14 +88,15 @@ test('Perspective turns benchmark evidence into a visual signal field', async ({
   await expect(page.locator('.benchmark-context')).toHaveCount(3);
 });
 
-test('advisory page makes decision change and trade-offs tangible', async ({ page }) => {
+test('advisory page makes decision change, trade-offs and proof tangible', async ({ page }) => {
   await page.goto('/work', { waitUntil: 'networkidle' });
   await expect(page.locator('.decision-architecture-delta')).toBeVisible();
   await expect(page.locator('.engagement-grid article')).toHaveCount(3);
   await expect(page.locator('.portfolio-tradeoff-matrix')).toBeVisible();
   await expect(page.locator('.portfolio-matrix-grid article')).toHaveCount(4);
   await expect(page.locator('.advisory-domain-grid article')).toHaveCount(4);
-  await expect(page.locator('.case-study-item')).toHaveCount(4);
+  await expect(page.locator('.case-proof-item')).toHaveCount(3);
+  await expect(page.locator('.case-proof-item svg')).toHaveCount(3);
 });
 
 for (const [name, path] of visualRoutes) {

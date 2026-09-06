@@ -156,11 +156,13 @@ requireOrderedClasses(practice, '/work', [
   'executive-case-study-section',
   'advisory-close',
 ], 'advisory narrative section');
-for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list']) {
+for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list', 'case-proof-item']) {
   if (!practice.includes(required)) errors.push(`/work: missing advisory layer ${required}`);
 }
-const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
-if (caseCount !== 4) errors.push(`/work: expected 4 curated executive case studies, found ${caseCount}`);
+const caseCount = (practice.match(/class="case-study-item case-proof-item"/g) || []).length;
+if (caseCount !== 3) errors.push(`/work: expected 3 anonymized proof blueprints, found ${caseCount}`);
+const proofSvgCount = (practice.match(/<svg viewBox="0 0 760 250"/g) || []).length;
+if (proofSvgCount !== 3) errors.push(`/work: expected 3 schematic proof artifacts, found ${proofSvgCount}`);
 const engagementCount = (practice.match(/<article>\s*<div class="engagement-index"/g) || []).length;
 if (engagementCount !== 3) errors.push(`/work: expected 3 engagement formats, found ${engagementCount}`);
 
