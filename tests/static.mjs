@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
-const productionOrigin = 'https://arkadiuszkamrowski.com';
+const siteOrigin = new URL(process.env.SITE_BASE_URL || 'https://arkadiuszkamrowski.com').origin;
+const escapedSiteOrigin = siteOrigin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
 const plSharedSlugs = ['', 'about', 'oaf', 'wspolpraca', 'perspektywa', 'contact', 'privacy'];
 const enSharedSlugs = ['', 'about', 'oaf', 'advisory', 'perspective', 'contact', 'privacy'];
@@ -72,18 +73,18 @@ for (const route of requiredRoutes) {
   try { html = await readFile(file, 'utf8'); }
   catch { errors.push(`${route}: missing generated HTML`); continue; }
   const expectedLang = route.startsWith('/en') ? 'en' : 'pl';
-  const expectedCanonical = `${productionOrigin}${route === '/' ? '/' : route}`;
+  const expectedCanonical = `${siteOrigin}${route === '/' ? '/' : route}`;
   const checks = [
     [new RegExp(`<html[^>]+lang=["']${expectedLang}["']`), 'correct html lang'],
     [/<title>[^<]+<\/title>/, 'title'],
     [/<meta name="description" content="[^"]+"/, 'meta description'],
-    [new RegExp(`<link rel="canonical" href="${expectedCanonical.replaceAll('.', '\\.')}"`), 'production canonical'],
+    [new RegExp(`<link rel="canonical" href="${expectedCanonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), 'canonical'],
     [/<link rel="alternate" hreflang="pl"/, 'PL hreflang'],
     [/<link rel="alternate" hreflang="en"/, 'EN hreflang'],
     [/<main id="main"/, 'main landmark'],
     [/class="skip-link"/, 'skip link'],
     [/<nav[^>]+aria-label=/, 'labelled navigation'],
-    [/<meta property="og:image" content="https:\/\/arkadiuszkamrowski\.com\/assets\/og-card\.png"/, 'raster OG image'],
+    [new RegExp(`<meta property="og:image" content="${escapedSiteOrigin}/assets/og-card\\.png"`), 'raster OG image'],
     [/<meta property="og:image:width" content="1200"/, 'OG image width'],
     [/<meta property="og:image:height" content="630"/, 'OG image height'],
     [/<meta property="og:image:alt" content="[^"]+"/, 'OG image alt'],
@@ -201,14 +202,14 @@ for (const term of ['Data controller', 'Purpose and legal basis', 'Transfers out
 try {
   const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
   if (!robots.includes('User-agent: *')) errors.push('robots.txt: missing crawler policy');
-  if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
+  if (!robots.includes(`Sitemap: ${siteOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
 } catch {
   errors.push('robots.txt: missing generated public file');
 }
 
 try {
   const sitemapIndex = await readFile(join(dist, 'sitemap-index.xml'), 'utf8');
-  if (!sitemapIndex.includes(productionOrigin)) errors.push('sitemap-index.xml: production origin expected');
+  if (!sitemapIndex.includes(siteOrigin)) errors.push('sitemap-index.xml: configured origin expected');
   if (sitemapIndex.includes('localhost')) errors.push('sitemap-index.xml: localhost URL leaked');
 } catch {
   errors.push('sitemap-index.xml: missing generated sitemap index');
@@ -233,4 +234,4 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + executive narrative/visual/SEO/privacy/internal-link/robots/sitemap gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + executive narrative/visual/SEO/privacy/internal-link/robots/sitemap gates · ${siteOrigin}`);
