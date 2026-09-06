@@ -52,6 +52,18 @@ async function localTargetExists(urlPath) {
   return false;
 }
 
+function requireOrderedClasses(html, route, classes, label) {
+  const positions = classes.map((token) => html.indexOf(token));
+  classes.forEach((token, index) => {
+    if (positions[index] < 0) errors.push(`${route}: missing ${label} ${token}`);
+  });
+  for (let i = 1; i < positions.length; i++) {
+    if (positions[i - 1] >= 0 && positions[i] >= 0 && positions[i] <= positions[i - 1]) {
+      errors.push(`${route}: ${label} order is incorrect`);
+    }
+  }
+}
+
 let errors = [];
 for (const route of requiredRoutes) {
   const file = routeFile(route);
@@ -101,14 +113,27 @@ const home = await readFile(routeFile('/'), 'utf8');
 if (portraitAsset.test(home)) errors.push('/: portrait must not appear on Home');
 if (home.includes('Dyrektor Departamentu')) errors.push('/: employment title must not appear on Home');
 if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
-for (const cls of ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths']) {
-  if (!home.includes(cls)) errors.push(`/: missing lightweight narrative section ${cls}`);
+requireOrderedClasses(home, '/', [
+  'executive-hero',
+  'executive-trigger-section',
+  'executive-output-section',
+  'executive-proof-section',
+  'executive-method-section',
+  'executive-close',
+], 'executive narrative section');
+for (const required of ['executive-system', 'outcome-blueprint', 'executive-case-rail']) {
+  if (!home.includes(required)) errors.push(`/: missing visual storytelling layer ${required}`);
 }
-for (const removed of ['thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
-  if (home.includes(removed)) errors.push(`/: legacy heavy section ${removed} must stay off Home`);
+for (const removed of ['problem-section-light', 'evidence-section-home', 'deeper-paths', 'thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
+  if (home.includes(removed)) errors.push(`/: legacy narrative layer ${removed} must stay off executive Home`);
 }
-const homeOrder = ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths'].map((token) => home.indexOf(token));
-for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: lightweight narrative order is incorrect');
+if (!home.includes('Współpraca')) errors.push('/: executive navigation/advisory label expected');
+
+const homeEn = await readFile(routeFile('/en'), 'utf8');
+if (!homeEn.includes('Advisory')) errors.push('/en: executive Advisory navigation label expected');
+for (const required of ['executive-system', 'outcome-blueprint', 'executive-case-rail']) {
+  if (!homeEn.includes(required)) errors.push(`/en: missing visual storytelling layer ${required}`);
+}
 
 const about = await readFile(routeFile('/about'), 'utf8');
 if (!portraitAsset.test(about)) errors.push('/about: portrait expected on About');
@@ -117,18 +142,45 @@ if (!about.includes('brand-profile')) errors.push('/about: brand profile expecte
 if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
 
 const perspective = await readFile(routeFile('/writing'), 'utf8');
-if (!perspective.includes('evidence-ledger')) errors.push('/writing: evidence ledger expected');
+if (!perspective.includes('benchmark-signal-field')) errors.push('/writing: visual benchmark signal field expected');
+const benchmarkCount = (perspective.match(/class="benchmark-signal benchmark-signal-/g) || []).length;
+if (benchmarkCount !== 3) errors.push(`/writing: expected 3 benchmark signals, found ${benchmarkCount}`);
 if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
 if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
 
 const practice = await readFile(routeFile('/work'), 'utf8');
-if (!practice.includes('case-study-list')) errors.push('/work: case studies expected');
-const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
-if (caseCount !== 6) errors.push(`/work: expected 6 case studies, found ${caseCount}`);
+requireOrderedClasses(practice, '/work', [
+  'engagement-section',
+  'advisory-canvas-section',
+  'advisory-domains-section',
+  'executive-case-study-section',
+  'advisory-close',
+], 'advisory narrative section');
+for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list', 'case-proof-item']) {
+  if (!practice.includes(required)) errors.push(`/work: missing advisory layer ${required}`);
+}
+const caseCount = (practice.match(/class="case-study-item case-proof-item"/g) || []).length;
+if (caseCount !== 3) errors.push(`/work: expected 3 anonymized proof blueprints, found ${caseCount}`);
+const proofSvgCount = (practice.match(/<svg viewBox="0 0 760 250"/g) || []).length;
+if (proofSvgCount !== 3) errors.push(`/work: expected 3 schematic proof artifacts, found ${proofSvgCount}`);
+const engagementCount = (practice.match(/<article>\s*<div class="engagement-index"/g) || []).length;
+if (engagementCount !== 3) errors.push(`/work: expected 3 engagement formats, found ${engagementCount}`);
 
 const oaf = await readFile(routeFile('/oaf'), 'utf8');
-for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'decision-contract-section', 'boundary-list', 'oaf-use-section-polished']) {
-  if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
+requireOrderedClasses(oaf, '/oaf', [
+  'oaf-executive-questions',
+  'oaf-model-section-executive',
+  'oaf-misfit-executive',
+  'oaf-application-executive',
+  'oaf-reference-section',
+], 'executive OAF section');
+for (const required of ['oaf-question-grid', 'oaf-orbit', 'oaf-misfit-rail', 'oaf-use-rail', 'oaf-reference-grid', 'oaf-boundary-strip']) {
+  if (!oaf.includes(required)) errors.push(`/oaf: missing executive OAF layer ${required}`);
+}
+const detailCount = (oaf.match(/<details>/g) || []).length;
+if (detailCount < 2) errors.push(`/oaf: expected progressive disclosure for supporting depth, found ${detailCount} details sections`);
+for (const removed of ['lineage-river', 'convergence-map', 'decision-contract-section', 'principle-strips', 'oaf-use-section-polished']) {
+  if (oaf.includes(removed)) errors.push(`/oaf: legacy always-visible depth layer ${removed} should be removed`);
 }
 
 const privacyPl = await readFile(routeFile('/privacy'), 'utf8');
@@ -175,4 +227,4 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + SEO/social/privacy/internal-link/robots/sitemap gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + executive narrative/visual/SEO/privacy/internal-link/robots/sitemap gates`);

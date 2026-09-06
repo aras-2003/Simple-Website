@@ -1,0 +1,24 @@
+---
+import type { ExecutiveOutput } from '../content/executive';
+
+interface Props { items: ExecutiveOutput[]; }
+const { items } = Astro.props;
+---
+<div class="outcome-blueprint">
+  {items.map((item) => (
+    <article class="outcome-blueprint-item">
+      <div class="outcome-blueprint-artifact" aria-hidden="true">
+        <span class="artifact-index">{item.index}</span>
+        <span class="artifact-line artifact-line-a"></span>
+        <span class="artifact-line artifact-line-b"></span>
+        <span class="artifact-node artifact-node-a"></span>
+        <span class="artifact-node artifact-node-b"></span>
+      </div>
+      <div class="outcome-blueprint-copy">
+        <p class="micro-label">{item.artifact}</p>
+        <h3>{item.title}</h3>
+        <p>{item.decision}</p>
+      </div>
+    </article>
+  ))}
+</div>

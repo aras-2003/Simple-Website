@@ -1,110 +1,102 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
-import { editorial } from '../content/editorial';
+import DecisionArchitectureDelta from './DecisionArchitectureDelta.astro';
+import PortfolioTradeoffMatrix from './PortfolioTradeoffMatrix.astro';
+import CaseProofBlueprint from './CaseProofBlueprint.astro';
 import { caseStudies } from '../content/case-studies';
-import { platform } from '../content/platform';
+import { executive } from '../content/executive';
 import { route, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
-const ia = editorial[locale];
-const x = platform[locale].practice;
-const cases = caseStudies[locale];
-const td = (value: string) => value.replaceAll('—', '–');
-const pageTitle = locale === 'pl' ? 'Praktyka – interfejsy decyzji i zastosowanie' : 'Practice – decision interfaces and application';
-const pageDescription = locale === 'pl'
-  ? 'Praktyka na styku strategii, architektury, portfela, PMO, AI i wykonania – przez konkretne miejsca rozjazdu w organizacji.'
-  : 'Practice across strategy, architecture, portfolio, PMO, AI and execution – framed through concrete points of organizational misfit.';
+const x = executive[locale].work;
+const pl = locale === 'pl';
+const proofCases = [
+  { item: caseStudies[locale][2]!, mode: 'portfolio' as const },
+  { item: caseStudies[locale][3]!, mode: 'impact' as const },
+  { item: caseStudies[locale][4]!, mode: 'governance' as const },
+];
+const pageTitle = pl ? 'Współpraca – executive advisory i architektura decyzji' : 'Advisory – executive decision architecture';
+const pageDescription = pl
+  ? 'Współpraca z CEO, CIO i liderami transformacji: diagnoza systemu decyzji, operating model, architektura, portfel, governance i roadmapa wykonania.'
+  : 'Advisory for CEOs, CIOs and transformation leaders across decision diagnostics, operating model, architecture, portfolio, governance and execution roadmap.';
 ---
 <BaseLayout locale={locale} routeKey="work" title={pageTitle} description={pageDescription}>
-  <PageHero eyebrow={td(x.hero.eyebrow)} headline={td(x.hero.title)} lead={td(x.hero.lead)} />
+  <PageHero eyebrow={x.hero.eyebrow} headline={x.hero.title} lead={x.hero.lead} />
 
-  <section class="section practice-interface-section" aria-labelledby="interfaces-title">
-    <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{locale === 'pl' ? 'Punkty styku / gdzie znika spójność' : 'Interfaces / where coherence is lost'}</p>
-      <h2 id="interfaces-title">{td(x.intersectionsTitle)}</h2>
+  <section class="section engagement-section" aria-labelledby="engagements-title">
+    <div class="section-intro section-intro-split">
+      <div>
+        <p class="eyebrow">{x.engagements.eyebrow}</p>
+        <h2 id="engagements-title">{x.engagements.title}</h2>
+      </div>
+      <DecisionArchitectureDelta locale={locale} />
     </div>
-    <div class="interface-deep-list">
-      {x.intersections.map((item) => (
+    <div class="engagement-grid">
+      {x.engagements.items.map((item, index) => (
         <article>
-          <div class="interface-title"><p class="micro-label">{td(item.title)}</p><h3>{td(item.question)}</h3></div>
-          <div class="interface-detail"><p>{td(item.problem)}</p><p class="interface-signal">{td(item.signal)}</p><p class="interface-decision">{td(item.decision)}</p></div>
+          <div class="engagement-index"><span>{String(index + 1).padStart(2, '0')}</span><p class="micro-label">{item.label}</p></div>
+          <h3>{item.title}</h3>
+          <p class="engagement-when">{item.when}</p>
+          <ul>{item.outputs.map((output) => <li>{output}</li>)}</ul>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="section toolbox-section" aria-labelledby="toolbox-title">
+  <section class="section advisory-canvas-section" aria-labelledby="decision-canvas-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{td(x.toolbox.eyebrow)}</p>
-        <h2 id="toolbox-title">{td(x.toolbox.title)}</h2>
+        <p class="eyebrow">{pl ? 'Przykład artefaktu / decyzja portfelowa' : 'Example artifact / portfolio decision'}</p>
+        <h2 id="decision-canvas-title">{pl ? 'Kompromis powinien być widoczny na jednej planszy — nie ukryty w pięciu deckach.' : 'A trade-off should be visible on one canvas — not hidden across five decks.'}</h2>
       </div>
-      <p class="content-lead">{locale === 'pl' ? 'Dopiero po zlokalizowaniu problemu ma sens wybór dyscypliny i artefaktu. Ten porządek chroni przed projektowaniem rozwiązania pod ulubione narzędzie.' : 'Only after locating the problem does it make sense to choose a discipline and artifact. This sequence protects against designing the problem around a preferred tool.'}</p>
+      <p class="content-lead">{pl ? 'Poniżej nie ma „gotowej macierzy do wdrożenia”. To przykład, jak rezultat pracy może materializować decyzję: pokazać wartość, zależności i capacity w formie, która prowadzi do stop / merge / sequence / continue.' : 'This is not a ready-made matrix to implement. It shows how an engagement output can materialize a decision: make value, dependencies and capacity visible enough to drive stop / merge / sequence / continue.'}</p>
     </div>
-    <div class="toolbox-grid">
-      {x.toolbox.items.map((item) => <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>)}
-    </div>
+    <PortfolioTradeoffMatrix locale={locale} />
   </section>
 
-  <section class="section operating-method-section" aria-labelledby="method-title">
-    <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{td(x.method.eyebrow)}</p>
-      <h2 id="method-title">{td(x.method.title)}</h2>
-    </div>
-    <ol class="operating-method">
-      {x.method.steps.map((step) => (
-        <li><div class="method-marker" aria-hidden="true"></div><div><h3>{td(step.title)}</h3><p>{td(step.body)}</p></div></li>
-      ))}
-    </ol>
-  </section>
-
-  <section class="section case-study-section" aria-labelledby="case-studies-title">
+  <section class="section advisory-domains-section" aria-labelledby="domains-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Studia przypadku / doświadczenie' : 'Case studies / experience'}</p>
-        <h2 id="case-studies-title">{locale === 'pl' ? 'Sześć wzorców problemów, które przerabiałem w praktyce.' : 'Six problem patterns I have worked through in practice.'}</h2>
+        <p class="eyebrow">{x.domains.eyebrow}</p>
+        <h2 id="domains-title">{x.domains.title}</h2>
       </div>
-      <p class="content-lead">{locale === 'pl' ? 'Przypadki są anonimizowane i opisane na poziomie problemu, decyzji i wartości. Nie dopisuję organizacji, poufnych szczegółów ani efektownych KPI, których nie da się publicznie obronić.' : 'The cases are anonymized and described at the level of problem, decision and value. I do not add organizations, confidential details or impressive KPIs that cannot be defended publicly.'}</p>
+      <p class="content-lead">{pl ? 'To połączenie jest kluczowe: CEO nie potrzebuje pięciu niezależnych diagnoz, a CIO nie powinien tłumaczyć strategii na architekturę w próżni organizacyjnej.' : 'The connection matters: a CEO does not need five independent diagnostics, and a CIO should not translate strategy into architecture inside an organizational vacuum.'}</p>
     </div>
-    <div class="case-study-list">
-      {cases.map((item, index) => (
-        <article class="case-study-item">
-          <div class="case-study-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
-          <div class="case-study-title">
-            <p class="micro-label">{item.tag}</p>
-            <h3>{item.title}</h3>
-          </div>
-          <div class="case-study-detail">
-            <p><strong>{locale === 'pl' ? 'Kontekst' : 'Context'}</strong><span>{item.context}</span></p>
-            <p><strong>{locale === 'pl' ? 'Problem' : 'Challenge'}</strong><span>{item.challenge}</span></p>
-            <p><strong>{locale === 'pl' ? 'Podejście' : 'Approach'}</strong><span>{item.approach}</span></p>
-            <p class="case-study-value"><strong>{locale === 'pl' ? 'Wartość' : 'Value'}</strong><span>{item.value.replace(/^Wartość: |^Value: /, '')}</span></p>
-          </div>
+    <div class="advisory-domain-grid">
+      {x.domains.items.map((item, index) => (
+        <article>
+          <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="section context-section" aria-labelledby="contexts-title">
+  <section class="section case-study-section executive-case-study-section" aria-labelledby="case-studies-title">
     <div class="section-intro section-intro-split">
       <div>
-        <p class="eyebrow">{td(x.contexts.eyebrow)}</p>
-        <h2 id="contexts-title">{td(x.contexts.title)}</h2>
+        <p class="eyebrow">{x.cases.eyebrow}</p>
+        <h2 id="case-studies-title">{pl ? 'Wybrane przypadki pokazuję jako logikę decyzji — nie katalog osiągnięć.' : 'Selected cases are shown as decision logic — not an achievement catalogue.'}</h2>
       </div>
-      <ul class="context-list">{x.contexts.items.map((item) => <li>{td(item)}</li>)}</ul>
+      <p class="content-lead">{pl ? 'Przykłady są anonimizowane i schematyczne. Nie pokazuję nazw klientów ani dopisanych KPI. Pokazuję kontekst, problem, interwencję i to, jak zmienia się mechanizm podejmowania decyzji.' : 'Examples are anonymized and schematic. I do not publish client names or invented KPI. I show context, challenge, intervention and how the decision mechanism changes.'}</p>
+    </div>
+    <div class="case-study-list compact-case-study-list">
+      {proofCases.map(({ item, mode }, index) => <CaseProofBlueprint locale={locale} item={item} mode={mode} index={index} />)}
     </div>
   </section>
 
-  <section class="section next-path-section" aria-labelledby="practice-next-title">
+  <section class="section advisory-close" aria-labelledby="advisory-close-title">
     <div>
-      <p class="eyebrow">{locale === 'pl' ? 'Dalej' : 'Next'}</p>
-      <h2 id="practice-next-title">{locale === 'pl' ? 'Chcesz zobaczyć model systemowy czy źródło tej perspektywy?' : 'Want to see the system model or the source of this perspective?'}</h2>
+      <p class="eyebrow">{pl ? 'Dalej' : 'Next'}</p>
+      <h2 id="advisory-close-title">{x.close.title}</h2>
+      <p class="content-lead">{x.close.body}</p>
     </div>
     <div class="next-paths">
-      <a class="button button-primary" href={route(locale, 'oaf')}>OAF<span aria-hidden="true">→</span></a>
-      <a class="text-link" href={route(locale, 'about')}>{ia.nav.about}<span aria-hidden="true">→</span></a>
+      <a class="button button-primary button-large" href={route(locale, 'contact')}>{x.close.cta}<span aria-hidden="true">→</span></a>
+      <a class="text-link" href={route(locale, 'oaf')}>{pl ? 'Zobacz metodę OAF' : 'See the OAF method'}<span aria-hidden="true">→</span></a>
     </div>
   </section>
 </BaseLayout>

@@ -2,21 +2,23 @@
 
 **Status: RELEASE CANDIDATE — Cloudflare production target selected, public promotion still gated**
 
-Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`, a model branch/environment w `docs/ENVIRONMENTS.md`.
+Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`, model branch/environment w `docs/ENVIRONMENTS.md`, a kierunek content/design w `docs/EXECUTIVE_CONTENT_STRATEGY.md`.
 
 ## Aktualny baseline produktu
 
-1. **Pozycjonowanie** — osobista platforma executive / thought-leadership Arkadiusza Kamrowskiego, a nie katalog usług ani CV online.
-2. **Narracja** — problem → dowody → perspektywa → synteza OAF → praktyka → autor → kontakt.
-3. **Języki** — kompletne wersje polska i angielska w jednym release.
-4. **Kontakt** — formularz i same-origin `/api/contact`; LinkedIn pozostaje kanałem pomocniczym.
-5. **Analytics** — brak reklam, trackerów i analityki w baseline'ie.
-6. **Frontend** — Astro SSG + TypeScript, statycznie generowane strony bez klientowego frameworka aplikacyjnego.
-7. **Production runtime** — Cloudflare Workers + Static Assets; Worker obsługuje dynamiczny kontakt i wybrane canonicalization paths.
-8. **Canonical production origin** — `https://arkadiuszkamrowski.com`; `www` jest redirect-only.
-9. **Repo / branch model** — `aras-2003/Simple-Website`: `main` = integration only, `staging` = release candidate, `production` = production release.
-10. **Production config contract** — `wrangler.production.jsonc` + `.env.production.example`; sekrety wyłącznie w Cloudflare/CI secret store.
-11. **Staging contract** — `wrangler.staging.jsonc`, `staging.arkadiuszkamrowski.com`, osobne sekrety/Turnstile i obowiązkowe noindex + Cloudflare Access.
+1. **Pozycjonowanie** — osobista platforma executive advisory + thought leadership dla problemów przecinających strategię, operating model, enterprise architecture, portfel i wykonanie.
+2. **Narracja komercyjna** — executive tension → outcome → konkretne outputs → proof → method/OAF → deeper thinking → contact.
+3. **OAF** — named method / intellectual product wspierający pracę, ale nie pierwszy element, który CEO/CIO musi zrozumieć.
+4. **Współpraca / Advisory** — trzy formaty wejścia: Diagnostic, Design, Advisory; nie jest to sztywny katalog pakietów.
+5. **Języki** — kompletne wersje polska i angielska w jednym release.
+6. **Kontakt** — formularz i same-origin `/api/contact`; LinkedIn pozostaje kanałem pomocniczym.
+7. **Analytics** — brak reklam, trackerów i analityki w baseline'ie.
+8. **Frontend** — Astro SSG + TypeScript, statycznie generowane strony bez klientowego frameworka aplikacyjnego.
+9. **Production runtime** — Cloudflare Workers + Static Assets; Worker obsługuje dynamiczny kontakt i wybrane canonicalization paths.
+10. **Canonical production origin** — `https://arkadiuszkamrowski.com`; `www` jest redirect-only.
+11. **Repo / branch model** — `main` = integration only, `staging` = release candidate, `production` = production release authority.
+12. **Production deployment v1** — manualny, jawnie uruchamiany z `production`; merge do `production` sam nie publikuje strony.
+13. **Staging contract** — `wrangler.staging.jsonc`, `staging.arkadiuszkamrowski.com`, osobne Turnstile/secrets, noindex i Cloudflare Access.
 
 ## Decyzja hostingowa
 
@@ -42,37 +44,56 @@ Wymagane są:
 - `astro check` + canonical production build guard;
 - osobny staging build z canonical `https://staging.arkadiuszkamrowski.com`;
 - testy IA/SEO/social/privacy/linków;
+- executive content-architecture gates dla Home / Advisory / OAF;
 - kontrola zewnętrznych referencji;
 - testy `worker/index.mjs`: Origin, validation, body ceiling, timing, Turnstile, rate limit, Resend, failure paths, 308, asset fallback oraz staging `noindex` / `robots.txt`;
-- test legacy contact adapter tylko jako portability regression;
 - test produkcyjnego predeploy contract bez logowania sekretów;
 - Wrangler dry-run dla preview, staging i production config;
 - automated WCAG 2.2 A/AA;
 - Chromium, Firefox, WebKit smoke;
-- performance budget.
+- desktop/mobile visual-audit captures;
+- performance budget;
+- `Release Policy` dla dozwolonej ścieżki promocji branchy.
 
 Kontenerowe E2E/Trivy nie są produkcyjnym gate'em. Docker/NGINX/Kubernetes pozostają reference-only.
+
+## Content / experience acceptance gates
+
+Przed promocją nowego kierunku do stagingu wymagane są:
+
+- hero jasno komunikuje audience + problem + outcome;
+- primary CTA prowadzi do `Współpraca / Advisory`;
+- visitor może rozpoznać konkretne outputs bez czytania OAF;
+- Home nie wraca do długiego ciągu tekstowych sekcji;
+- decision-system map, output blueprint i case flows działają bez JS;
+- mobile nie ma horizontal scroll;
+- `prefers-reduced-motion` wyłącza animowany flow/pulse;
+- case studies nie zawierają wymyślonych KPI, nazw/logotypów klientów ani pseudo-precyzji;
+- PL/EN zachowują ten sam sens komercyjny, nie tylko literalne tłumaczenie;
+- live staging przechodzi ręczny 6-second / 30-second / 2-minute scan test.
 
 ## Staging acceptance gates
 
 Przed promocją `staging → production` wymagane są:
 
 - staging Worker zbudowany wyłącznie z brancha `staging`;
-- Cloudflare Workers Builds: non-production branch builds OFF;
+- Cloudflare Workers Build: non-production branch builds OFF;
 - staging Custom Domain/cert PASS;
 - Cloudflare Access PASS;
 - `X-Robots-Tag: noindex, nofollow, noarchive` PASS;
 - `/robots.txt` = `Disallow: /`;
 - core routes / PL+EN / 404 / 308 PASS;
 - osobny staging Turnstile + hostname PASS;
-- realny staging contact smoke, jeśli contact delivery jest aktywowane;
-- manual browser/accessibility acceptance na release candidate.
+- realny staging contact smoke, gdy contact delivery jest aktywowane;
+- manual browser/accessibility acceptance na release candidate;
+- content/visual acceptance po realnym renderze stagingu.
 
 ## Manualne production pre-launch gates
 
 Wymagane przed publicznym GO:
 
 - PR `staging → production` na zaakceptowanym commit lineage;
+- jawny manual production deploy uruchomiony wyłącznie z `production`;
 - VoiceOver + Safari;
 - NVDA + Chrome/Firefox;
 - keyboard-only;
@@ -101,18 +122,33 @@ GitHub/CI deployment credentials, jeśli używane, muszą być minimalnie uprawn
 
 Nie logujemy visitor email/message body, Turnstile tokenów ani prywatnych kluczy.
 
+## GitHub controls — proporcjonalne do jednoosobowego repo
+
+Repo pozostaje prywatne na GitHub Free i ma jednego maintainer'a. Hard branch protection/rulesets nie są obecnie częścią dostępnego planu.
+
+Zamiast sztucznej biurokracji obowiązują:
+
+- PR-y jako standard pracy;
+- `Release Policy` dla promotion paths;
+- full CI przed merge;
+- brak direct push do `main`, `staging`, `production` jako operating convention;
+- `main` nie jest źródłem żadnego deploymentu;
+- staging deployuje tylko `staging`;
+- production deployment wymaga jawnego workflow dispatch z `production`.
+
 ## Reguła promocji
 
 ```text
-feature/*
+short-lived branch
   → PR + green CI
 main
   → PR/promote + green CI
 staging
-  → Cloudflare staging + acceptance
+  → automatic Cloudflare staging + acceptance
   → PR to production
 production
-  → Cloudflare production + public smoke
+  → explicit manual Cloudflare production deploy
+  → public smoke
   → GO
 ```
 

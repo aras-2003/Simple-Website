@@ -1,0 +1,57 @@
+---
+import type { Locale } from '../lib/site';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const pl = locale === 'pl';
+
+const labels = pl
+  ? ['Strategia', 'Model działania', 'Architektura', 'Portfel', 'Wykonanie']
+  : ['Strategy', 'Operating model', 'Architecture', 'Portfolio', 'Execution'];
+---
+<figure class="decision-architecture-delta">
+  <div class="decision-delta-panel decision-delta-before">
+    <div class="decision-delta-kicker">
+      <span>01</span>
+      <strong>{pl ? 'Przed' : 'Before'}</strong>
+    </div>
+    <p class="decision-delta-title">{pl ? 'Dobre decyzje lokalne. Słaby system przejścia.' : 'Good local decisions. Weak system hand-offs.'}</p>
+    <div class="decision-delta-lanes" aria-label={pl ? 'Rozłączone obszary decyzyjne' : 'Disconnected decision domains'}>
+      {labels.map((label, index) => (
+        <div class="decision-delta-lane">
+          <span>{label}</span>
+          <i class:list={['decision-delta-dot', index === 1 || index === 3 ? 'decision-delta-dot-risk' : '']} aria-hidden="true"></i>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="decision-delta-shift" aria-hidden="true">
+    <span></span>
+    <strong>→</strong>
+  </div>
+
+  <div class="decision-delta-panel decision-delta-after">
+    <div class="decision-delta-kicker">
+      <span>02</span>
+      <strong>{pl ? 'Po' : 'After'}</strong>
+    </div>
+    <p class="decision-delta-title">{pl ? 'Jedna logika decyzji. Jawne zależności i feedback.' : 'One decision logic. Explicit dependencies and feedback.'}</p>
+    <div class="decision-delta-spine" aria-label={pl ? 'Połączony system decyzji' : 'Connected decision system'}>
+      <div class="decision-delta-backbone" aria-hidden="true"></div>
+      {labels.map((label, index) => (
+        <div class="decision-delta-node">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{label}</strong>
+        </div>
+      ))}
+      <div class="decision-delta-feedback" aria-hidden="true">↩</div>
+    </div>
+  </div>
+
+  <figcaption>
+    {pl
+      ? 'Wartość nie bierze się z dokładania kolejnego forum. Bierze się z zaprojektowania przejść: kto podejmuje decyzję, jakie zależności muszą być widoczne i kiedy dowód z wykonania może zmienić wcześniejsze założenie.'
+      : 'The value does not come from adding another forum. It comes from designing the hand-offs: who decides, which dependencies must be visible, and when execution evidence is allowed to change an earlier assumption.'}
+  </figcaption>
+</figure>
