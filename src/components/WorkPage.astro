@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
 import DecisionArchitectureDelta from './DecisionArchitectureDelta.astro';
 import PortfolioTradeoffMatrix from './PortfolioTradeoffMatrix.astro';
+import CaseProofBlueprint from './CaseProofBlueprint.astro';
 import { caseStudies } from '../content/case-studies';
 import { executive } from '../content/executive';
 import { route, type Locale } from '../lib/site';
@@ -10,8 +11,12 @@ import { route, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const x = executive[locale].work;
-const cases = caseStudies[locale].slice(0, 4);
 const pl = locale === 'pl';
+const proofCases = [
+  { item: caseStudies[locale][2], mode: 'portfolio' as const },
+  { item: caseStudies[locale][3], mode: 'impact' as const },
+  { item: caseStudies[locale][4], mode: 'governance' as const },
+];
 const pageTitle = pl ? 'Współpraca – executive advisory i architektura decyzji' : 'Advisory – executive decision architecture';
 const pageDescription = pl
   ? 'Współpraca z CEO, CIO i liderami transformacji: diagnoza systemu decyzji, operating model, architektura, portfel, governance i roadmapa wykonania.'
@@ -74,25 +79,12 @@ const pageDescription = pl
     <div class="section-intro section-intro-split">
       <div>
         <p class="eyebrow">{x.cases.eyebrow}</p>
-        <h2 id="case-studies-title">{x.cases.title}</h2>
+        <h2 id="case-studies-title">{pl ? 'Wybrane przypadki pokazuję jako logikę decyzji — nie katalog osiągnięć.' : 'Selected cases are shown as decision logic — not an achievement catalogue.'}</h2>
       </div>
-      <p class="content-lead">{x.cases.lead}</p>
+      <p class="content-lead">{pl ? 'Przykłady są anonimizowane i schematyczne. Nie pokazuję nazw klientów ani dopisanych KPI. Pokazuję kontekst, problem, interwencję i to, jak zmienia się mechanizm podejmowania decyzji.' : 'Examples are anonymized and schematic. I do not publish client names or invented KPI. I show context, challenge, intervention and how the decision mechanism changes.'}</p>
     </div>
     <div class="case-study-list compact-case-study-list">
-      {cases.map((item, index) => (
-        <article class="case-study-item">
-          <div class="case-study-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
-          <div class="case-study-title">
-            <p class="micro-label">{item.tag}</p>
-            <h3>{item.title}</h3>
-          </div>
-          <div class="case-study-detail">
-            <p><strong>{pl ? 'Problem' : 'Challenge'}</strong><span>{item.challenge}</span></p>
-            <p><strong>{pl ? 'Interwencja' : 'Intervention'}</strong><span>{item.approach}</span></p>
-            <p class="case-study-value"><strong>{pl ? 'Wartość' : 'Value'}</strong><span>{item.value.replace(/^Wartość: |^Value: /, '')}</span></p>
-          </div>
-        </article>
-      ))}
+      {proofCases.map(({ item, mode }, index) => <CaseProofBlueprint locale={locale} item={item} mode={mode} index={index} />)}
     </div>
   </section>
 
