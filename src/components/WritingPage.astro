@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
 import BenchmarkSignalField from './BenchmarkSignalField.astro';
-import { copy } from '../i18n/content';
 import { editorial } from '../content/editorial';
 import { getWriting, writingSlug } from '../content/writing';
 import { platform } from '../content/platform';
@@ -10,7 +9,6 @@ import { route, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
-const c = copy[locale];
 const ia = editorial[locale];
 const x = platform[locale];
 const notes = await getWriting(locale);
