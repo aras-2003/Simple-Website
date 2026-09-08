@@ -205,9 +205,9 @@ Nie zmieniać modelu Cloudflare, branch promotion, domeny, origin validation ani
 | Worker contact | PASS | `node tests/worker-contact.mjs`; mocki Turnstile/Resend, redirecty i staging noindex. |
 | Node contact API | PASS | `node tests/contact-api.mjs`; walidacja, origin, rozmiar, timing, rate limit i awarie delivery. |
 | Predeploy contract | PASS | `python3 tests/predeploy_check.py`; testy poprawnej i błędnej konfiguracji. |
-| Astro check/build/static | BLOCKED | Brak zainstalowanego Astro; próba przygotowania zależności zakończona odmową środowiska. |
-| Performance budget | NOT RUN | Wymaga rzeczywistego `dist`; nie zastępujemy go estymacją źródeł. |
-| Browser / axe / visual QA | NOT RUN | Brak build; nie wygenerowano ani nie oceniono renderów strony. |
+| Astro check/build/static | PASS w CI | Run draft PR `34250966339`: 0 błędów, 0 ostrzeżeń; 22 trasy PL/EN. Lokalny runtime pozostaje niedostępny. |
+| Performance budget | FAIL w CI | Home HTML 20,4 KiB / 20,0 KiB. Pozostałe limity PASS: całość 404,4 / 700 KiB; CSS raw 88,6 / 96 KiB; CSS gzip 16,6 / 20 KiB; JS 4,9 / 8 KiB. |
+| Browser / axe / visual QA | NOT RUN | Pipeline pominął te kroki po błędzie performance. Nie oceniono renderów strony. |
 | CI obecnego main | FAIL | Run `34061803865` (push) i `34061814290` (PR), oba failure. Odczytany job PR nie ma kroków ani artefaktów; przyczyna nieustalona. |
 | Release Policy | PASS w istniejącym run | `34061814303`; nie jest to PASS pełnego release. |
 | Dostarczenie prawdziwej wiadomości | NOT RUN | Mocki nie potwierdzają sekretów, konfiguracji domeny ani inbox delivery. |
@@ -228,6 +228,10 @@ Nie zmieniać modelu Cloudflare, branch promotion, domeny, origin validation ani
 | P2 / średnia, utrzymanie | Stare IA/runtime docs, dead content, 14 importów CSS. | Aktualizacja dokumentacji i konsolidacja po audycie użyć. |
 
 Dwa testy negatywne API uruchomiono lokalnie z syntetycznym payloadem i mockiem `fetch`; nie wysłano wiadomości ani danych do zewnętrznych usług. Nie jest to dowód naruszenia poufności, tylko odtworzona luka walidacji i obsługi błędów.
+
+### Uzupełnienie baseline po utworzeniu draft PR #31
+
+Run [34250966339](https://github.com/aras-2003/Simple-Website/actions/runs/34250966339) na head `0b3d52ea0fd6df276b73fe18101bf216c97171ca` obejmuje dokładnie tę samą aplikację co oryginalny main — jedyne zmiany to dwa pliki dokumentacji. Build i static PASS; performance FAIL na HTML Home. Potwierdza to defekt istniejącego baseline, nie regresję redesignu, którego jeszcze nie wykonano. Release Policy [34250966268](https://github.com/aras-2003/Simple-Website/actions/runs/34250966268) PASS. Job `102144983774` zawiera pełne logi. Artifact `site-dist` jest dostępny w runie; próba pobrania go do runtime zwróciła HTTP 403. Nie zmierzono liczby słów ani nie odtworzono widoku na podstawie domysłów. Zmiana treści i usunięcie miniatur powinny rozwiązać przekroczenie 20 KiB; limitu nie podnosić.
 
 ## Plan implementacji i kryteria odbioru
 
