@@ -25,7 +25,7 @@ The local workspace was empty of project source before the task. All 165 reposit
 ## Blocking capabilities
 
 1. The mission requires a remote backup tag before the first implementation change. The available GitHub connector supports branch creation but does not expose tag/ref creation for tags. Branch APIs were not misused to create a tag. Direct terminal Git network attempts ended with `network approval was cancelled before a decision was returned`. This is a tool/environment limitation, not a missing business decision or withdrawn user authorization.
-2. Astro dependencies are absent. Dependency preparation also ended with the same environment network-approval message. Build, generated static checks, budgets and browser QA therefore remain unverified. No dependencies, lockfile, CI requirements or release safeguards were changed to disguise this limitation.
+2. Astro dependencies are absent. Dependency preparation also ended with the same environment network-approval message. Local build and browser QA are unavailable. The draft PR subsequently supplied a CI build/static baseline and a failing performance measurement, recorded below. No dependencies, lockfile, CI requirements or release safeguards were changed to disguise this limitation.
 
 ## Baseline evidence
 
@@ -37,6 +37,14 @@ The local workspace was empty of project source before the task. All 165 reposit
 - Existing [Release Policy run 34061814303](https://github.com/aras-2003/Simple-Website/actions/runs/34061814303) reports success.
 - Retrieved failed CI job has no steps; its run has no downloadable artifacts. Failure cause has not been established.
 - No visual QA, field Core Web Vitals, live Turnstile/Resend delivery or full WCAG verification has been performed in this checkpoint.
+
+## Draft PR baseline update
+
+Draft PR: [#31](https://github.com/aras-2003/Simple-Website/pull/31).
+
+Run [34250966339](https://github.com/aras-2003/Simple-Website/actions/runs/34250966339), head `0b3d52ea0fd6df276b73fe18101bf216c97171ca`, used unchanged application source plus these two documentation files. Astro check reported zero errors/warnings; build, 22-route static validation, Worker/contact and predeploy passed. Performance failed only on Home HTML: **20.4 KiB / 20.0 KiB**. Other measurements passed: total 404.4 / 700 KiB; CSS raw 88.6 / 96 KiB; CSS gzip 16.6 / 20 KiB; client JS 4.9 / 8 KiB. No source maps shipped. Browser/axe/Worker-package steps were skipped after the performance failure. Release Policy run `34250966268` passed.
+
+This establishes a concrete pre-existing performance failure without establishing the cause of the older step-less CI failures. No budget was relaxed. The static artifact exists in CI; downloading the connector-provided artifact to this runtime returned HTTP 403, so it did not enable local visual inspection.
 
 ## Resume
 
