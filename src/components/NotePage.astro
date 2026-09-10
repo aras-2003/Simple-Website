@@ -1,13 +1,16 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { editorial } from '../content/editorial';
+import { perspective, relatedEssays } from '../content/perspective';
+import { journey } from '../content/journey';
+import { getWriting } from '../content/writing';
 import { writingSlug } from '../content/writing';
 import { route, type Locale } from '../lib/site';
 
 interface Props { locale: Locale; note: CollectionEntry<'writing'>; }
 const { locale, note } = Astro.props;
-const ia = editorial[locale];
+const x = perspective[locale];
+const related = (await getWriting(locale)).find(item => writingSlug(item) === relatedEssays[writingSlug(note)]);
 const data = note.data;
 const slug = writingSlug(note);
 const td = (value: string) => value.replaceAll('—', '–');
@@ -42,10 +45,7 @@ const { Content } = await render(note);
       <p class="eyebrow">{data.category}</p>
       <h1 itemprop="headline">{td(data.title)}</h1>
       <p class="page-lead" itemprop="description">{td(data.dek)}</p>
-      <div class="article-thesis-label">
-        <span>Status</span>
-        <strong>{locale === 'pl' ? 'teza robocza do konfrontowania z dowodami' : 'working thesis to be tested against evidence'}</strong>
-      </div>
+      <p class="article-byline"><a href={route(locale,'about')}>Arkadiusz Kamrowski</a> · <time datetime={publishedAt}>{data.publishedAt.toLocaleDateString(locale === 'pl' ? 'pl-PL' : 'en-GB', {year:'numeric',month:'long',day:'numeric',timeZone:'UTC'})}</time></p>
     </header>
 
     <div class="note-body note-body-markdown" itemprop="articleBody">
@@ -54,16 +54,14 @@ const { Content } = await render(note);
 
     {data.sources.length > 0 && (
       <aside class="article-sources" aria-labelledby="article-sources-title">
-        <p class="eyebrow">{locale === 'pl' ? 'Kontekst źródłowy' : 'Research context'}</p>
-        <h2 id="article-sources-title">{locale === 'pl' ? 'Punkty odniesienia do dalszej weryfikacji' : 'Reference points for further verification'}</h2>
-        <p>{locale === 'pl' ? 'Poniższe źródła nie są przypisem do każdego zdania. Pokazują literaturę i benchmarki, z którymi teza powinna być konfrontowana.' : 'These sources are not citations for every sentence. They show the literature and benchmarks against which the thesis should be tested.'}</p>
+        <h2 id="article-sources-title">{x.sources}</h2>
         <ul>{data.sources.map((source) => <li><a itemprop="citation" href={source.href} target="_blank" rel="noopener noreferrer">{source.label}<span aria-hidden="true"> ↗</span></a></li>)}</ul>
       </aside>
     )}
 
     <footer class="note-footer note-footer-editorial">
-      <a class="text-link" href={base}>← {ia.nav.writing}</a>
-      <a class="button button-primary" href={route(locale, 'oaf')}>{locale === 'pl' ? 'Zobacz syntezę w OAF' : 'See the synthesis in OAF'}<span aria-hidden="true">→</span></a>
+      {related && <div><p class="eyebrow">{x.related}</p><a class="text-link" href={`${base}/${writingSlug(related)}`}>{related.data.title}<span aria-hidden="true">↗</span></a></div>}
+      <div class="next-paths"><a class="text-link" href={route(locale,'work')}>{x.advisory}</a><a class="button button-primary" href={route(locale,'contact')}>{journey[locale].cta}<span aria-hidden="true">↗</span></a></div>
     </footer>
   </article>
 </BaseLayout>

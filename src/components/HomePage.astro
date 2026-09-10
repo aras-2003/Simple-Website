@@ -1,123 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ExecutiveSystemMap from './ExecutiveSystemMap.astro';
-import OutcomeBlueprint from './OutcomeBlueprint.astro';
-import OafDiagram from './OafDiagram.astro';
-import { caseStudies } from '../content/case-studies';
-import { executive } from '../content/executive';
-import { route, site, type Locale } from '../lib/site';
-
-interface Props { locale: Locale; }
-const { locale } = Astro.props;
-const x = executive[locale].home;
-const cases = caseStudies[locale].slice(0, 3);
-const pl = locale === 'pl';
-const title = pl
-  ? 'Arkadiusz Kamrowski – executive advisory: strategia, architektura, portfel i wykonanie'
-  : 'Arkadiusz Kamrowski – executive advisory across strategy, architecture, portfolio and execution';
-const description = pl
-  ? 'Pomagam CEO, CIO i liderom transformacji łączyć strategię, model operacyjny, architekturę, portfel i wykonanie w spójny system decyzji.'
-  : 'I help CEOs, CIOs and transformation leaders connect strategy, operating model, architecture, portfolio and execution into one coherent decision system.';
+import StartConversation from './StartConversation.astro';
+import { home } from '../content/home';
+import { journey } from '../content/journey';
+import { route, type Locale } from '../lib/site';
+interface Props {locale:Locale;}
+const {locale}=Astro.props;
+const x=home[locale];
 ---
-<BaseLayout locale={locale} routeKey="home" title={title} description={description}>
-  <section class="executive-hero" aria-labelledby="hero-title">
-    <div class="executive-hero-copy">
-      <p class="eyebrow">{x.hero.eyebrow}</p>
-      <h1 id="hero-title">{x.hero.title} <em>{x.hero.emphasis}</em></h1>
-      <p class="hero-lead">{x.hero.lead}</p>
-      <p class="executive-value-line">{x.hero.value}</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href={route(locale, 'work')}>{x.hero.primary}<span aria-hidden="true">→</span></a>
-        <a class="button button-quiet" href={route(locale, 'contact')}>{x.hero.secondary}<span aria-hidden="true">→</span></a>
-      </div>
-      <div class="executive-audience" aria-label={pl ? 'Główne konteksty współpracy' : 'Primary collaboration contexts'}>
-        <span>CEO / Board</span><span>CIO / CTO</span><span>Transformation</span><span>Enterprise Architecture</span>
-      </div>
-    </div>
-    <ExecutiveSystemMap locale={locale} />
-  </section>
-
-  <section class="section executive-trigger-section" aria-labelledby="trigger-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{x.triggers.eyebrow}</p>
-        <h2 id="trigger-title">{x.triggers.title}</h2>
-      </div>
-      <p class="content-lead">{x.triggers.lead}</p>
-    </div>
-    <div class="executive-trigger-grid">
-      {x.triggers.items.map((item) => (
-        <article>
-          <p class="micro-label">{item.label}</p>
-          <h3>{item.title}</h3>
-          <p>{item.body}</p>
-          <span class="trigger-signal" aria-hidden="true"></span>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section executive-output-section" aria-labelledby="outputs-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{x.outputs.eyebrow}</p>
-        <h2 id="outputs-title">{x.outputs.title}</h2>
-      </div>
-      <p class="content-lead">{x.outputs.lead}</p>
-    </div>
-    <OutcomeBlueprint items={x.outputs.items} />
-    <div class="executive-output-action">
-      <a class="text-link" href={route(locale, 'work')}>{pl ? 'Zobacz formaty współpracy' : 'See ways to engage'}<span aria-hidden="true">→</span></a>
-    </div>
-  </section>
-
-  <section class="section executive-proof-section" aria-labelledby="proof-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{x.proof.eyebrow}</p>
-        <h2 id="proof-title">{x.proof.title}</h2>
-      </div>
-      <p class="content-lead">{x.proof.lead}</p>
-    </div>
-    <div class="executive-case-rail">
-      {cases.map((item, index) => (
-        <article>
-          <div class="executive-case-head">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <p class="micro-label">{item.tag}</p>
-          </div>
-          <h3>{item.title}</h3>
-          <div class="executive-case-flow">
-            <p><strong>{pl ? 'Tarcie' : 'Friction'}</strong><span>{item.challenge}</span></p>
-            <span class="case-arrow" aria-hidden="true">→</span>
-            <p><strong>{pl ? 'Zmiana logiki' : 'Shift'}</strong><span>{item.approach}</span></p>
-          </div>
-          <p class="executive-case-value">{item.value.replace(/^Wartość: |^Value: /, '')}</p>
-        </article>
-      ))}
-    </div>
-    <a class="text-link executive-proof-link" href={route(locale, 'work')}>{pl ? 'Więcej przykładów i kontekstów' : 'More examples and contexts'}<span aria-hidden="true">→</span></a>
-  </section>
-
-  <section class="section section-oaf executive-method-section" aria-labelledby="method-title">
-    <div class="executive-method-copy">
-      <p class="eyebrow">{x.method.eyebrow}</p>
-      <h2 id="method-title">{x.method.title}</h2>
-      <p>{x.method.body}</p>
-      <a class="text-link" href={route(locale, 'oaf')}>{x.method.cta}<span aria-hidden="true">→</span></a>
-    </div>
-    <OafDiagram locale={locale} id="home-oaf-diagram" compact />
-  </section>
-
-  <section class="section section-contact executive-close" aria-labelledby="close-title">
-    <div class="contact-copy">
-      <p class="eyebrow">{x.close.eyebrow}</p>
-      <h2 id="close-title">{x.close.title}</h2>
-      <p>{x.close.body}</p>
-    </div>
-    <div class="contact-action contact-action-editorial">
-      <a class="button button-primary button-large" href={route(locale, 'contact')}>{x.close.cta}<span aria-hidden="true">→</span></a>
-      <a class="contact-secondary" href={site.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-    </div>
-  </section>
+<BaseLayout locale={locale} routeKey="home" title={`Arkadiusz Kamrowski – ${x.title} ${x.emphasis}`} description={x.lead}>
+ <section class="executive-hero" aria-labelledby="hero-title">
+  <div class="executive-hero-copy"><p class="eyebrow">{x.audience}</p><h1 id="hero-title">{x.title} <em>{x.emphasis}</em></h1><p class="hero-lead">{x.lead}</p><div class="hero-actions"><a class="button button-primary" href={route(locale,'contact')}>{journey[locale].cta}<span aria-hidden="true">↗</span></a><a class="text-link" href={route(locale,'work')}>{x.advisory}</a></div></div>
+  <div class="signature-choices">{x.signature.map((item,index)=><div class="signature-choice"><span class="choice-number" aria-hidden="true">0{index+1}</span><strong>{item.word}</strong><span>{item.meaning}</span></div>)}</div>
+ </section>
+ <section class="section tension-section" aria-labelledby="tension-title"><h2 id="tension-title">{x.tensionsTitle}</h2><div class="tension-list">{x.tensions.map((item,index)=><article><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
+ <section class="section proof-story" aria-labelledby="proof-title"><div><p class="eyebrow">{x.proofLabel}</p><h2 id="proof-title">{x.proofTitle}</h2></div><div><p>{x.proofBody}</p><p class="proof-output">{x.proofChange}</p></div></section>
+ <section class="section human-section" aria-labelledby="person-title"><img src="/assets/arkadiusz-kamrowski-square-v2.webp" alt="Arkadiusz Kamrowski" width="400" height="400" loading="lazy" decoding="async"/><div><p class="eyebrow">Arkadiusz Kamrowski</p><h2 id="person-title">{x.personTitle}</h2><p>{x.personBody}</p><a class="text-link" href={route(locale,'about')}>{x.personLink}<span aria-hidden="true">↗</span></a></div></section>
+ <StartConversation locale={locale}/>
+ <aside class="method-note"><p>{x.method}</p><a class="text-link" href={route(locale,'oaf')}>{x.methodLink}</a></aside>
 </BaseLayout>
