@@ -3,7 +3,7 @@ locale: pl
 category: Enterprise Architecture
 title: Architektura jako system decyzji, nie system dokumentów
 dek: Problemem architektury rzadko jest brak modeli. Częściej brakuje mechanizmu, który zamienia model w wybór, odpowiedzialność i konsekwencję.
-readTime: 6
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -32,3 +32,7 @@ Architektura zyskuje wpływ, kiedy potrafi pokazać związek między strategiczn
 Najciekawsze miary architektury nie dotyczą liczby review ani zgodności z szablonem. Bardziej interesuje mnie, czy szybciej wykrywamy sprzeczne inicjatywy, czy ograniczamy koszt nieodwracalnych decyzji i czy portfolio finansuje zależności we właściwej kolejności.
 
 W tym sensie architektura jest dźwignią. Jej zadaniem nie jest opisać całą organizację, ale pomóc jej podejmować mniej sprzecznych decyzji pod presją czasu i niepełnej informacji.
+
+## Test wpływu architektury
+
+Na najbliższym przeglądzie wybierz jedną zasadę architektoniczną. Zapytaj, którą opcję wyklucza, kto może dopuścić wyjątek i jaką konsekwencję bierze wtedy na siebie. Jeśli zasada nie zmienia żadnej dostępnej opcji, opisuje preferencję, a nie granicę decyzji. To moja praktyczna próba odróżnienia architektury, która pomaga zarządzać, od architektury, którą można jedynie zatwierdzić.

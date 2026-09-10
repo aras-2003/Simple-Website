@@ -3,10 +3,9 @@ locale: en
 category: "AI & Governance"
 title: AI governance without control theatre
 dek: Mature governance does not try to stop experimentation. It designs boundaries, accountability and evidence in proportion to risk.
-readTime: 6
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
-modifiedAt: 2026-09-05T00:00:00+02:00
 sources:
   - label: NIST · AI Risk Management Framework 1.0
     href: https://www.nist.gov/itl/ai-risk-management-framework
@@ -35,3 +34,7 @@ That does not mean more gates. It means a clear standard of evidence: what must 
 AI may support analysis, recommend or automate, but organizational accountability does not disappear. Governance should name the owner of the outcome, the model and the risk, together with an escalation path when evidence leaves the expected profile.
 
 Without that, it is easy to create an impressive policy set that cannot answer the basic question: who can say “stop”, and on what basis?
+
+## Change the control when authority changes
+
+The same model may draft a recommendation or perform an action. Those are different management situations. A recommendation needs a named reviewer. Execution also needs a boundary of autonomy, a stop condition and an escalation path. My starting point is to examine not only the tool but what the organization permits it to do.

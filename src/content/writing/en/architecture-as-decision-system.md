@@ -3,7 +3,7 @@ locale: en
 category: Enterprise Architecture
 title: Architecture as a decision system, not a document system
 dek: Architecture rarely suffers from a lack of models. More often it lacks the mechanism that turns a model into a choice, accountability and consequence.
-readTime: 6
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -32,3 +32,7 @@ Architecture gains influence when it can connect a strategic outcome, a capabili
 The most interesting architecture measures are not the number of reviews or template compliance. I care more about whether conflicting initiatives are detected earlier, irreversible decisions become cheaper and portfolio dependencies are funded in the right sequence.
 
 In that sense architecture is leverage. Its job is not to describe the entire organization, but to help it make fewer contradictory decisions under time pressure and incomplete information.
+
+## Test architecture’s influence
+
+At the next review, choose one architectural principle. Ask which option it rules out, who can authorize an exception and which consequence that person accepts. If the principle changes none of the available options, it describes a preference rather than a decision boundary. This is my practical test for architecture that helps leaders govern, rather than merely approve a document.

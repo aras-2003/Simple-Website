@@ -235,6 +235,8 @@ async function handleContact(request, env) {
     return json(400, { error: 'invalid_json' });
   }
 
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) return json(400, { error: 'invalid_json' });
+
   const data = {
     name: clean(body.name),
     email: clean(body.email),
@@ -254,7 +256,7 @@ async function handleContact(request, env) {
   if (data.name.length < 2 || data.name.length > 120) return json(400, { error: 'invalid_name' });
   if (!validEmail(data.email)) return json(400, { error: 'invalid_email' });
   if (data.organization.length > 140) return json(400, { error: 'invalid_organization' });
-  if (!(data.topic in topicLabels)) return json(400, { error: 'invalid_topic' });
+  if (!Object.hasOwn(topicLabels, data.topic)) return json(400, { error: 'invalid_topic' });
   if (data.message.length < 20 || data.message.length > 4000) return json(400, { error: 'invalid_message' });
   if (!Number.isFinite(elapsed) || elapsed < 1200) return json(400, { error: 'invalid_timing' });
   if (env.TURNSTILE_REQUIRED !== '0' && !data.turnstileToken) return json(403, { error: 'turnstile_required' });

@@ -1,21 +1,17 @@
 ---
 import { copy } from '../i18n/content';
-import { editorial } from '../content/editorial';
+import { ui } from '../content/ui';
 import { alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
 
 interface Props { locale: Locale; current: RouteKey; alternateHref?: string | undefined; }
 const { locale, current, alternateHref } = Astro.props;
 const c = copy[locale];
-const ia = editorial[locale];
+const ia = ui[locale];
 const other = alternateLocale(locale);
-const navKeys = ['work', 'oaf', 'writing', 'about', 'contact'] as const;
+const navKeys = ['work', 'writing', 'about', 'contact'] as const;
 const langHref = alternateHref ?? route(other, current);
 const langLabel = other.toUpperCase();
-const navLabel = (key: typeof navKeys[number]) => key === 'work'
-  ? (locale === 'pl' ? 'Współpraca' : 'Advisory')
-  : key === 'contact'
-    ? (locale === 'pl' ? 'Opisz problem' : 'Discuss a decision')
-    : ia.nav[key];
+const navLabel = (key: typeof navKeys[number]) => ia.nav[key];
 ---
 <header class="site-header">
   <a class="brand" href={route(locale, 'home')} aria-label={`Arkadiusz Kamrowski – ${c.nav.home}`}>

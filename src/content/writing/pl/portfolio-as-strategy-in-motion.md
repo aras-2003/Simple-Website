@@ -3,7 +3,7 @@ locale: pl
 category: "Portfolio & PMO"
 title: Portfolio jest strategią w ruchu
 dek: Deklarowana strategia mówi, co jest ważne. Portfolio pokazuje, czy organizacja naprawdę w to wierzy.
-readTime: 5
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -30,3 +30,7 @@ Dobra rozmowa portfolio powinna więc zawierać decyzje stop, start i continue o
 Portfolio potrzebuje informacji zwrotnej z wykonania. Nie tylko statusu i zużycia budżetu, ale dowodów dotyczących outcome, ryzyka i trafności wcześniejszych założeń.
 
 Jeżeli evidence nie może zmienić priorytetu, finansowania albo samego kierunku, portfolio jest systemem raportowania. Jeżeli może — staje się strategią w ruchu.
+
+## Pytanie o zasób, nie o miejsce w rankingu
+
+Dla nowego priorytetu nazwij zasób, którego potrzebuje: zespół, kompetencję lub uwagę sponsora. Następnie wskaż inicjatywę, która ten zasób odda. Jeżeli nie można wskazać żadnej, nowy priorytet jest dodatkowym zobowiązaniem. Moim zdaniem właśnie ten koszt powinien być widoczny przed zatwierdzeniem inicjatywy, a nie dopiero w raporcie o przeciążeniu.

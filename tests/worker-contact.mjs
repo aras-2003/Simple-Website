@@ -63,6 +63,17 @@ globalThis.fetch = async (input, init = {}) => {
 };
 
 try {
+  // Reject non-object JSON and prototype properties before invoking providers.
+  for (const payload of ['null', '[]', '42']) {
+    const response = await worker.fetch(contactRequest(payload), env);
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error, 'invalid_json');
+  }
+  for (const topic of ['toString', '__proto__', 'constructor']) {
+    const response = await worker.fetch(contactRequest({...basePayload, topic}), env);
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error, 'invalid_topic');
+  }
   const valid = await worker.fetch(contactRequest(), env);
   assert.equal(valid.status, 202);
   assert.deepEqual(await valid.json(), { ok: true });

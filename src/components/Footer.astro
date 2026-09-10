@@ -1,11 +1,11 @@
 ---
 import { copy } from '../i18n/content';
-import { editorial } from '../content/editorial';
+import { ui } from '../content/ui';
 import { route, site, type Locale } from '../lib/site';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const c = copy[locale];
-const ia = editorial[locale];
+const ia = ui[locale];
 const td = (value: string) => value.replaceAll('—', '–');
 ---
 <footer class="site-footer">
@@ -13,6 +13,7 @@ const td = (value: string) => value.replaceAll('—', '–');
   <span>{td(c.footer)}</span>
   <nav class="footer-links" aria-label={locale === 'pl' ? 'Nawigacja w stopce' : 'Footer navigation'}>
     <a href={route(locale, 'contact')}>{ia.nav.contact}</a>
+    <a href={route(locale, 'oaf')}>{ia.nav.oaf}</a>
     <a href={route(locale, 'privacy')}>{ia.nav.privacy}</a>
     <a href={site.linkedIn} target="_blank" rel="noopener noreferrer">
       LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> – {c.externalNewTab}</span>
