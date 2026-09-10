@@ -35,3 +35,8 @@ Tag: omitted by explicit user instruction.
 Feature: feature/astra-executive-refactor.
 PR: https://github.com/aras-2003/Simple-Website/pull/31.
 No merge or deployment has occurred. To abandon, close the feature PR; main requires no rollback. To inspect original code: git fetch origin, then git switch -c restore/pre-astra origin/backup/pre-astra-refactor-2026-09-08. If a future merge requires rollback, revert its merge commit on a new branch and use the normal PR → main → staging → production path. Never reset production or bypass promotion safeguards.
+
+## Visual QA evidence and final correction
+Reviewed CI artifact 10140111459 from d32f348: Home desktop/mobile, Advisory mobile, About desktop, Perspective desktop, OAF mobile and Contact mobile. No clipping or unreadable miniature diagrams in these captures. Contact still made mobile readers scroll past redundant introductions before the form: fixed with a shorter headline/lead and form-first mobile composition. The expanded form labels remain 14px. Manual live interaction could not be performed because the supervised preview stopped; browser interaction coverage is provided by the CI Playwright matrix, not claimed as a live manual test.
+
+Rendered-main word counts (same HTMLParser tokenization, excluding header/footer): Home PL 730 → 239 (−67%); Advisory PL 855 → 433 (−49%); About PL 546 → 211 (−61%); Perspective PL 531 → 129 (−76%); Home EN 771 → 280 (−64%); Advisory EN 940 → 485 (−48%). These are content-compression measurements, not user research or conversion uplift.
