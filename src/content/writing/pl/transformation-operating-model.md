@@ -3,7 +3,7 @@ locale: pl
 category: "Transformation"
 title: "Transformacja potrzebuje operating modelu, nie tylko roadmapy"
 dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto i w jakim rytmie potrafi tę kolejność zmieniać."
-readTime: 5
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -32,3 +32,7 @@ Dojrzały operating model redukuje liczbę miejsc, w których decyzja może utkn
 Kontrola nie polega na utrzymaniu pierwotnego planu za wszelką cenę. Polega na tym, że organizacja wie, kiedy i dlaczego plan został zmieniony oraz jakie evidence uzasadniało korektę.
 
 To pozwala połączyć odpowiedzialność z adaptacyjnością — dwie cechy, które w źle zaprojektowanym governance są często traktowane jak przeciwieństwa.
+
+## Przeprojektuj pracę przed przypisaniem ról
+
+Zanim dodasz komitet albo odpowiedzialność do opisu stanowiska, nazwij pracę: co ma zostać rozstrzygnięte, na jakich dowodach i przy jakiej niepewności. Dopiero potem dobierz wykonawcę — człowieka, wsparcie AI lub usługę zewnętrzną — i granice jego samodzielności. Delegowanie pracy nie usuwa potrzeby wskazania osoby odpowiedzialnej za jej konsekwencje.

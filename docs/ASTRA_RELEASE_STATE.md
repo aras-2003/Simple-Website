@@ -1,3 +1,5 @@
+> Superseded for the ASTRA frontend/content refactor by [ASTRA_IMPLEMENTATION.md](ASTRA_IMPLEMENTATION.md). Deployment safeguards remain in force. Tag waived; changes stay on feature branch.
+
 # Astra release state — 2026-09-08
 
 ## Executive Summary

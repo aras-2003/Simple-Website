@@ -3,7 +3,7 @@ locale: en
 category: "Portfolio & PMO"
 title: Portfolio is strategy in motion
 dek: Declared strategy says what matters. The portfolio shows whether the organization really believes it.
-readTime: 5
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -30,3 +30,7 @@ A useful portfolio conversation therefore includes stop, start and continue deci
 Portfolio needs feedback from execution. Not only status and budget consumption, but evidence about outcomes, risks and the validity of earlier assumptions.
 
 If evidence cannot change priority, funding or direction, portfolio is a reporting system. If it can, it becomes strategy in motion.
+
+## Ask about the resource, not the ranking
+
+For a new priority, name the resource it needs: a team, a skill or a sponsor’s attention. Then identify the initiative that will release that resource. If there is none, the new priority is an additional commitment. In my view, this cost should be visible before the initiative is approved, rather than first appearing in an overload report.

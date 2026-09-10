@@ -3,7 +3,7 @@ locale: en
 category: "Transformation"
 title: "Transformation needs an operating model, not only a roadmap"
 dek: "A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, and in what decision rhythm?"
-readTime: 5
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -32,3 +32,7 @@ A mature operating model reduces the number of places where a decision can get s
 Control is not the preservation of the original plan at all costs. It means the organization knows when and why the plan changed and what evidence justified the correction.
 
 That makes accountability and adaptability compatible — two properties that poorly designed governance often treats as opposites.
+
+## Design the work before assigning roles
+
+Before adding a committee or a responsibility to a job description, define the work: what must be resolved, on which evidence and under what uncertainty. Only then choose who or what performs it — a person, AI assistance or an external service — and the limits of its autonomy. Delegating work does not remove the need for a person accountable for its consequences.

@@ -1,3 +1,5 @@
+> Superseded for the ASTRA frontend/content refactor by [ASTRA_IMPLEMENTATION.md](ASTRA_IMPLEMENTATION.md). Deployment safeguards remain in force. Tag waived; changes stay on feature branch.
+
 # IA
 
 Canonical information architecture is documented in [`INFORMATION_ARCHITECTURE.md`](./INFORMATION_ARCHITECTURE.md).
