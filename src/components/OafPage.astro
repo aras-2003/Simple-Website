@@ -1,13 +1,148 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
-import {method, foundations} from '../content/method';
-import {route,type Locale} from '../lib/site';
-interface Props {locale:Locale;} const {locale}=Astro.props;const x=method[locale];
+import { method, frameworkGroups } from '../content/method';
+import { route, type Locale } from '../lib/site';
+
+interface Props { locale: Locale; }
+
+const { locale } = Astro.props;
+const x = method[locale];
+const groups = frameworkGroups[locale];
 ---
+
 <BaseLayout locale={locale} routeKey="oaf" title="OAF – Organizational Architecture Framework" description={x.lead}>
-<PageHero eyebrow="OAF / Organizational Architecture Framework" headline={x.title} lead={x.lead}/>
-<section class="section method-model" aria-labelledby="model-title"><h2 id="model-title">{x.modelTitle}</h2><ol class="question-cycle">{x.questions.map(item=><li><h3>{item.title}</h3><p>{item.body}</p></li>)}</ol><p class="feedback-line"><span aria-hidden="true">↶</span>{x.feedback}</p></section>
-<section class="section method-uses"><h2>{x.useTitle}</h2><ul>{x.uses.map(item=><li>{item}</li>)}</ul><a class="button button-primary" href={route(locale,'work')}>{locale==='pl'?'Zobacz współpracę':'Explore advisory'}<span aria-hidden="true">↗</span></a></section>
-<section class="section method-foundations"><details><summary>{x.boundaryLabel}</summary><p>{x.boundary}</p></details><details><summary>{x.sourceLabel}</summary><ul>{foundations.map(item=><li><a href={item.href}>{item.label}</a></li>)}</ul></details></section>
+  <PageHero eyebrow="OAF / Organizational Architecture Framework" headline={x.title} lead={x.lead} />
+
+  <section class="section method-model" aria-labelledby="model-title">
+    <h2 id="model-title">{x.modelTitle}</h2>
+    <ol class="question-cycle">
+      {x.questions.map((item) => (
+        <li>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="feedback-line"><span aria-hidden="true">↶</span>{x.feedback}</p>
+  </section>
+
+  <section class="section method-uses">
+    <h2>{x.useTitle}</h2>
+    <ul>{x.uses.map((item) => <li>{item}</li>)}</ul>
+    <a class="button button-primary" href={route(locale, 'work')}>
+      {locale === 'pl' ? 'Zobacz współpracę' : 'Explore advisory'}<span aria-hidden="true">↗</span>
+    </a>
+  </section>
+
+  <section class="section method-foundations">
+    <details>
+      <summary>{x.boundaryLabel}</summary>
+      <p>{x.boundary}</p>
+    </details>
+
+    <details>
+      <summary>{x.sourceLabel}</summary>
+      <p class="framework-intro">{x.frameworkIntro}</p>
+
+      <div class="framework-groups">
+        {groups.map((group, groupIndex) => (
+          <section class="framework-group" aria-labelledby={`framework-group-${groupIndex}`}>
+            <h3 id={`framework-group-${groupIndex}`}>{group.title}</h3>
+            <div class="framework-relations">
+              {group.items.map((item) => (
+                <article class="framework-relation">
+                  <h4><a href={item.href}>{item.label}<span aria-hidden="true"> ↗</span></a></h4>
+                  <div class="framework-cell framework-focus">
+                    <span class="micro-label">{x.frameworkFocusLabel}</span>
+                    <p>{item.focus}</p>
+                  </div>
+                  <div class="framework-cell framework-oaf">
+                    <span class="micro-label">{x.frameworkRelationLabel}</span>
+                    <p>{item.relation}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </details>
+  </section>
 </BaseLayout>
+
+<style>
+  .framework-intro {
+    max-width: 54rem;
+  }
+
+  .framework-group {
+    margin-top: 2.5rem;
+  }
+
+  .framework-group + .framework-group {
+    margin-top: 3rem;
+  }
+
+  .framework-group > h3 {
+    margin: 0 0 .8rem;
+    font-family: var(--sans);
+    font-size: .86rem;
+    font-weight: 650;
+    letter-spacing: .08em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .framework-relation {
+    display: grid;
+    grid-template-columns: minmax(12rem, .8fr) 1fr 1.25fr;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+
+  .framework-relation h4 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .framework-relation h4 a {
+    text-decoration-thickness: 1px;
+  }
+
+  .framework-cell .micro-label {
+    display: block;
+    margin-bottom: .35rem;
+  }
+
+  .method-foundations .framework-cell p {
+    max-width: none;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .framework-focus p {
+    color: var(--muted);
+  }
+
+  .framework-oaf p {
+    color: var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    .framework-relation {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.4rem 0 1.6rem;
+    }
+
+    .framework-cell {
+      max-width: 42rem;
+    }
+  }
+</style>
