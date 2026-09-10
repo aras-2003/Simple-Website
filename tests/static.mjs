@@ -111,83 +111,34 @@ for (const route of requiredRoutes) {
   }
 }
 
-const home = await readFile(routeFile('/'), 'utf8');
-if (portraitAsset.test(home)) errors.push('/: portrait must not appear on Home');
-if (home.includes('Dyrektor Departamentu')) errors.push('/: employment title must not appear on Home');
-if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
-requireOrderedClasses(home, '/', [
-  'executive-hero',
-  'executive-trigger-section',
-  'executive-output-section',
-  'executive-proof-section',
-  'executive-method-section',
-  'executive-close',
-], 'executive narrative section');
-for (const required of ['decision-system', 'outcome-blueprint', 'executive-case-rail']) {
-  if (!home.includes(required)) errors.push(`/: missing visual storytelling layer ${required}`);
+// Buyer-path contracts apply in both languages; visual class counts are not the product.
+for (const locale of ['pl', 'en']) {
+  const prefix = locale === 'pl' ? '' : '/en';
+  const home = await readFile(routeFile(prefix || '/'), 'utf8');
+  const nav = home.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  if (/href="[^"]*\/oaf"/.test(nav)) errors.push(`${prefix}: OAF must be secondary navigation`);
+  if (!portraitAsset.test(home)) errors.push(`${prefix}: Home must identify the person with a portrait`);
+  if (!home.includes('signature-choices')) errors.push(`${prefix}: signature choice visual missing`);
+  const hero = home.match(/<div class="hero-actions">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  if (!hero.includes(`href="${prefix}/contact"`)) errors.push(`${prefix}: direct contact path missing from hero`);
+  const work = await readFile(routeFile(locale === 'pl' ? '/wspolpraca' : '/en/advisory'), 'utf8');
+  if ((work.match(/class="engagement"/g) || []).length !== 3) errors.push(`${prefix}: expected three engagement containers`);
+  const engagements = [...work.matchAll(/<article class="engagement">([\s\S]*?)<\/article>/g)];
+  for (const [,engagement] of engagements) if ((engagement.match(/<dt>/g)||[]).length !== 5) errors.push(`${prefix}: incomplete engagement decision/process/input/output/change`);
+  if (!work.includes('decision-brief')) errors.push(`${prefix}: illustrative decision artifact missing`);
+  const about = await readFile(routeFile(`${prefix}/about`), 'utf8');
+  if (!portraitAsset.test(about) || !about.includes('trajectory')) errors.push(`${prefix}: human trajectory missing`);
+  const writing = await readFile(routeFile(locale === 'pl' ? '/perspektywa' : '/en/perspective'), 'utf8');
+  if (writing.includes('publishing-standard') || writing.includes('benchmark-signal')) errors.push(`${prefix}: meta-content must not precede writing`);
+  const oaf = await readFile(routeFile(`${prefix}/oaf`), 'utf8');
+  if ((oaf.match(/<details>/g)||[]).length !== 2) errors.push(`${prefix}: expected two method disclosures`);
+  const form = await readFile(routeFile(`${prefix}/contact`), 'utf8');
+  if (!/<form[^>]*method="post"/.test(form) || !form.includes('<noscript>')) errors.push(`${prefix}: no-JS contact fallback missing`);
 }
-for (const removed of ['problem-section-light', 'evidence-section-home', 'deeper-paths', 'thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
-  if (home.includes(removed)) errors.push(`/: legacy narrative layer ${removed} must stay off executive Home`);
-}
-if (!home.includes('Współpraca')) errors.push('/: executive navigation/advisory label expected');
-if (!home.includes('Opisz problem')) errors.push('/: problem-led contact CTA expected');
-
-const homeEn = await readFile(routeFile('/en'), 'utf8');
-if (!homeEn.includes('Advisory')) errors.push('/en: executive Advisory navigation label expected');
-if (!homeEn.includes('Discuss a decision')) errors.push('/en: problem-led contact CTA expected');
-for (const required of ['decision-system', 'outcome-blueprint', 'executive-case-rail']) {
-  if (!homeEn.includes(required)) errors.push(`/en: missing visual storytelling layer ${required}`);
-}
-
-const about = await readFile(routeFile('/about'), 'utf8');
-if (!portraitAsset.test(about)) errors.push('/about: portrait expected on About');
-if (!about.includes('career-river')) errors.push('/about: career trajectory expected');
-if (!about.includes('brand-profile')) errors.push('/about: brand profile expected');
-if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
-
-const perspective = await readFile(routeFile('/perspektywa'), 'utf8');
-if (!perspective.includes('benchmark-signal-field')) errors.push('/perspektywa: visual benchmark signal field expected');
-const benchmarkCount = (perspective.match(/class="benchmark-signal"/g) || []).length;
-if (benchmarkCount !== 3) errors.push(`/perspektywa: expected 3 benchmark signals, found ${benchmarkCount}`);
-if (perspective.includes('benchmark-signal-ruler')) errors.push('/perspektywa: benchmark signals must not imply a shared quantitative scale');
-if (!perspective.includes('publishing-standard')) errors.push('/perspektywa: publishing standard expected');
-if (/\b\d+\s+min\b/.test(perspective)) errors.push('/perspektywa: reading-time metadata should not be shown in the library');
-
-const practice = await readFile(routeFile('/wspolpraca'), 'utf8');
-requireOrderedClasses(practice, '/wspolpraca', [
-  'engagement-section',
-  'advisory-canvas-section',
-  'advisory-domains-section',
-  'executive-case-study-section',
-  'advisory-close',
-], 'advisory narrative section');
-for (const required of ['decision-architecture-delta', 'engagement-grid', 'portfolio-tradeoff-matrix', 'advisory-domain-grid', 'case-study-list', 'case-proof-item']) {
-  if (!practice.includes(required)) errors.push(`/wspolpraca: missing advisory layer ${required}`);
-}
-const caseCount = (practice.match(/class="case-study-item case-proof-item"/g) || []).length;
-if (caseCount !== 3) errors.push(`/wspolpraca: expected 3 anonymized proof blueprints, found ${caseCount}`);
-const proofCanvasCount = (practice.match(/class="proof-exhibit-canvas /g) || []).length;
-if (proofCanvasCount !== 3) errors.push(`/wspolpraca: expected 3 responsive proof artifacts, found ${proofCanvasCount}`);
-const engagementCount = (practice.match(/<article>\s*<div class="engagement-index"/g) || []).length;
-if (engagementCount !== 3) errors.push(`/wspolpraca: expected 3 engagement formats, found ${engagementCount}`);
-
-const oaf = await readFile(routeFile('/oaf'), 'utf8');
-requireOrderedClasses(oaf, '/oaf', [
-  'oaf-executive-questions',
-  'oaf-model-section-executive',
-  'oaf-misfit-executive',
-  'oaf-application-executive',
-  'oaf-reference-section',
-], 'executive OAF section');
-for (const required of ['oaf-question-grid', 'oaf-system', 'oaf-misfit-rail', 'oaf-use-rail', 'oaf-reference-grid', 'oaf-boundary-strip']) {
-  if (!oaf.includes(required)) errors.push(`/oaf: missing executive OAF layer ${required}`);
-}
-const oafNodeCount = (oaf.match(/class="oaf-system-node"/g) || []).length;
-if (oafNodeCount !== 4) errors.push(`/oaf: expected 4 canonical OAF nodes, found ${oafNodeCount}`);
-const detailCount = (oaf.match(/<details>/g) || []).length;
-if (detailCount < 2) errors.push(`/oaf: expected progressive disclosure for supporting depth, found ${detailCount} details sections`);
-for (const removed of ['lineage-river', 'convergence-map', 'decision-contract-section', 'principle-strips', 'oaf-use-section-polished']) {
-  if (oaf.includes(removed)) errors.push(`/oaf: legacy always-visible depth layer ${removed} should be removed`);
+for (const path of articleRoutes) {
+  const html = await readFile(routeFile(path), 'utf8');
+  const footer = html.match(/<footer class="note-footer[\s\S]*?<\/footer>/)?.[0] ?? '';
+  if (!footer.includes('/contact') || !/\/(?:advisory|wspolpraca)/.test(footer) || !/\/(?:perspective|perspektywa)\//.test(footer)) errors.push(`${path}: reader-intent next paths missing`);
 }
 
 const privacyPl = await readFile(routeFile('/privacy'), 'utf8');

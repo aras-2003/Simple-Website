@@ -25,6 +25,8 @@ const topics = pl
 ---
 <form
   class="contact-form"
+  method="post"
+  action={endpoint}
   data-contact-form
   data-endpoint={endpoint}
   data-success={pl ? 'Dziękuję. Wiadomość została wysłana.' : 'Thank you. Your message has been sent.'}
@@ -36,6 +38,7 @@ const topics = pl
   data-sending={pl ? 'Wysyłanie…' : 'Sending…'}
   novalidate
 >
+  <noscript><p>{pl ? 'Formularz wymaga JavaScript. Możesz także napisać przez LinkedIn.' : 'The form requires JavaScript. You can also get in touch through LinkedIn.'}</p></noscript>
   <div class="form-grid">
     <div class="field">
       <label for={`name-${locale}`}>{pl ? 'Imię i nazwisko' : 'Name'}</label>

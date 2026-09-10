@@ -9,7 +9,6 @@ const writing = defineCollection({
     category: z.string().min(1),
     title: z.string().min(1),
     dek: z.string().min(1),
-    readTime: z.number().int().positive(),
     order: z.number().int().positive(),
     publishedAt: z.coerce.date(),
     modifiedAt: z.coerce.date().optional(),

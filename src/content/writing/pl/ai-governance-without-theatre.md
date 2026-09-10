@@ -3,10 +3,9 @@ locale: pl
 category: "AI & Governance"
 title: AI governance bez teatru kontroli
 dek: Dojrzałe governance nie próbuje zatrzymać eksperymentu. Projektuje granice, odpowiedzialność i dowody proporcjonalne do ryzyka.
-readTime: 6
+modifiedAt: 2026-09-10T00:00:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
-modifiedAt: 2026-09-05T00:00:00+02:00
 sources:
   - label: NIST · AI Risk Management Framework 1.0
     href: https://www.nist.gov/itl/ai-risk-management-framework
@@ -35,3 +34,7 @@ To nie oznacza mnożenia bramek. Oznacza jasne standardy dowodu: co zespół mus
 AI może wspierać analizę, rekomendować albo automatyzować, ale odpowiedzialność organizacyjna nie znika. Governance powinno wskazywać właściciela outcome, właściciela modelu i właściciela ryzyka oraz sposób eskalacji, gdy evidence przestaje mieścić się w założonym profilu.
 
 Bez tego łatwo stworzyć imponujący zestaw polityk, który nie odpowiada na podstawowe pytanie: kto może powiedzieć „stop” i na jakiej podstawie.
+
+## Zmieniaj kontrolę wraz z uprawnieniami
+
+Ten sam model może przygotowywać propozycję albo wykonywać działanie. To różne sytuacje zarządcze. Dla propozycji trzeba wskazać osobę oceniającą. Dla wykonania także granicę samodzielności, warunek zatrzymania i ścieżkę eskalacji. Mój punkt wyjścia: oceniać nie tylko narzędzie, lecz to, co organizacja pozwala mu zrobić.

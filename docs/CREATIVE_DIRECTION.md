@@ -1,3 +1,5 @@
+> Superseded for the ASTRA frontend/content refactor by [ASTRA_IMPLEMENTATION.md](ASTRA_IMPLEMENTATION.md). Deployment safeguards remain in force. Tag waived; changes stay on feature branch.
+
 # Creative Direction
 
 ## Cel biznesowy

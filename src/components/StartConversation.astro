@@ -1,0 +1,11 @@
+---
+import { journey } from '../content/journey';
+import { route, type Locale } from '../lib/site';
+interface Props { locale:Locale; }
+const {locale}=Astro.props;
+const c=journey[locale];
+---
+<section class="section start-conversation" aria-labelledby="start-title">
+ <div><p class="eyebrow">{c.label}</p><h2 id="start-title">{c.title}</h2><a class="button button-primary" href={route(locale,'contact')}>{c.cta}<span aria-hidden="true">↗</span></a></div>
+ <ol>{c.steps.map(step=><li>{step}</li>)}</ol>
+</section>

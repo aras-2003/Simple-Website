@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const routes = ['/', '/perspektywa', '/oaf', '/wspolpraca', '/about', '/contact', '/en/about'];
+const routes = ['/', '/perspektywa', '/oaf', '/wspolpraca', '/about', '/contact', '/privacy', '/en', '/en/perspective', '/en/oaf', '/en/advisory', '/en/about', '/en/contact', '/en/privacy'];
 const visualRoutes = [
   ['home', '/'],
   ['perspective', '/perspektywa'],
@@ -27,87 +27,48 @@ for (const path of routes) {
   });
 }
 
-test('home five-second executive clarity layout remains intact', async ({ page }, testInfo) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
-
-  const hero = page.locator('.executive-hero');
-  const title = page.locator('#hero-title');
-  const lead = page.locator('.executive-hero .hero-lead');
-  const value = page.locator('.executive-value-line');
-  const system = page.locator('.executive-hero .decision-system');
-  const primary = page.locator('.hero-actions .button-primary');
-  const firstTrigger = page.locator('.executive-trigger-grid article').first();
-
-  await expect(hero).toBeVisible();
-  await expect(title).toBeVisible();
-  await expect(title).toContainText('Strategia');
-  await expect(lead).toBeVisible();
-  await expect(value).toBeVisible();
-  await expect(system).toBeVisible();
-  await expect(primary).toBeVisible();
-  await expect(primary).toHaveAttribute('href', '/wspolpraca');
-  await expect(firstTrigger).toBeAttached();
-  await expect(page.locator('.outcome-mini')).toHaveCount(5);
-
-  const viewport = page.viewportSize();
-  const heroBox = await hero.boundingBox();
-  const titleBox = await title.boundingBox();
-  const leadBox = await lead.boundingBox();
-  const primaryBox = await primary.boundingBox();
-  const systemBox = await system.boundingBox();
-
-  expect(viewport).not.toBeNull();
-  expect(heroBox).not.toBeNull();
-  expect(titleBox).not.toBeNull();
-  expect(leadBox).not.toBeNull();
-  expect(primaryBox).not.toBeNull();
-  expect(systemBox).not.toBeNull();
-
-  if (viewport && heroBox && titleBox && leadBox && primaryBox && systemBox) {
-    for (const box of [titleBox, leadBox, primaryBox, systemBox]) {
-      expect(box.x).toBeGreaterThanOrEqual(-1);
-      expect(box.x + box.width).toBeLessThanOrEqual(viewport.width + 1);
-    }
-    expect(leadBox.y).toBeGreaterThan(titleBox.y);
-    expect(primaryBox.width).toBeGreaterThanOrEqual(44);
-    expect(primaryBox.height).toBeGreaterThanOrEqual(44);
-    expect(primaryBox.y).toBeLessThanOrEqual(heroBox.y + heroBox.height + 1);
-    expect(systemBox.height).toBeGreaterThan(120);
-  }
-
-  await page.screenshot({
-    path: `artifacts/visual/home-${testInfo.project.name}.png`,
-    fullPage: true,
+test('home exposes a direct executive conversation and three choices', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#hero-title')).toContainText('Strategię');
+  await expect(page.locator('.hero-actions .button-primary')).toHaveAttribute('href', '/contact');
+  await expect(page.locator('.signature-choice')).toHaveCount(3);
+  await expect(page.locator('.human-section img')).toBeVisible();
+  await expect(page.locator('#primary-navigation a[href="/oaf"]')).toHaveCount(0);
+});
+test('Perspective begins with essays and offers relevant next paths', async ({ page }) => {
+  await page.goto('/perspektywa');
+  await page.locator('.featured-essay .text-link').click();
+  await expect(page.locator('.note-body')).toBeVisible();
+  await expect(page.locator('.note-footer a[href="/wspolpraca"]')).toBeVisible();
+  await expect(page.locator('.note-footer a[href="/contact"]')).toBeVisible();
+});
+test('OAF preserves four questions and discloses method boundaries', async ({ page }) => {
+  await page.goto('/oaf');
+  await expect(page.locator('.question-cycle li')).toHaveCount(4);
+  await page.getByText('Granice modelu', { exact: true }).click();
+  await expect(page.locator('.method-foundations details').first()).toHaveAttribute('open','');
+});
+test('advisory explains decision, process, participation and outputs', async ({ page }) => {
+  await page.goto('/wspolpraca');
+  await expect(page.locator('.engagement')).toHaveCount(3);
+  for (const engagement of await page.locator('.engagement').all()) await expect(engagement.locator('dt')).toHaveCount(5);
+  await expect(page.locator('.decision-brief')).toBeVisible();
+});
+test('contact succeeds through mocked delivery and keeps payload out of URL', async ({ page }) => {
+  await page.route('**/api/contact', async route => {
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON().email).toBe('test@example.com');
+    await route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ok:true}) });
   });
-});
-
-test('Perspective presents independent benchmark signals without a false shared scale', async ({ page }) => {
-  await page.goto('/perspektywa', { waitUntil: 'networkidle' });
-  await expect(page.locator('.benchmark-signal-field')).toBeVisible();
-  await expect(page.locator('.benchmark-signal')).toHaveCount(3);
-  await expect(page.locator('.benchmark-signal-value')).toHaveText(['26%', '53%', '42%']);
-  await expect(page.locator('.benchmark-context')).toHaveCount(3);
-  await expect(page.locator('.benchmark-signal-ruler')).toHaveCount(0);
-  await expect(page.locator('.benchmark-signal-divider')).toHaveCount(3);
-});
-
-test('OAF uses one coherent geometry and preserves the evidence feedback loop', async ({ page }) => {
-  await page.goto('/oaf', { waitUntil: 'networkidle' });
-  await expect(page.locator('.oaf-system')).toBeVisible();
-  await expect(page.locator('.oaf-system-node')).toHaveCount(4);
-  await expect(page.locator('.oaf-system-center')).toBeVisible();
-  await expect(page.locator('.oaf-system-feedback')).toBeVisible();
-});
-
-test('advisory page makes decision change, trade-offs and proof tangible', async ({ page }) => {
-  await page.goto('/wspolpraca', { waitUntil: 'networkidle' });
-  await expect(page.locator('.decision-architecture-delta')).toBeVisible();
-  await expect(page.locator('.engagement-grid article')).toHaveCount(3);
-  await expect(page.locator('.portfolio-tradeoff-matrix')).toBeVisible();
-  await expect(page.locator('.portfolio-matrix-grid article')).toHaveCount(4);
-  await expect(page.locator('.advisory-domain-grid article')).toHaveCount(4);
-  await expect(page.locator('.case-proof-item')).toHaveCount(3);
-  await expect(page.locator('.case-proof-item .proof-exhibit-canvas')).toHaveCount(3);
+  await page.goto('/en/contact');
+  await page.getByLabel('Name', { exact:true }).fill('Test User');
+  await page.getByLabel('E-mail', { exact:true }).fill('test@example.com');
+  await page.getByLabel('Topic', { exact:true }).selectOption('strategy');
+  await page.getByLabel('Message', { exact:true }).fill('A sample decision for a mocked browser integration test.');
+  await page.locator('input[name="consent"]').check();
+  await page.getByRole('button', {name:'Send message'}).click();
+  await expect(page.locator('[data-form-status]')).toContainText('sent');
+  expect(page.url()).not.toContain('test@example.com');
 });
 
 for (const [name, path] of visualRoutes) {
@@ -129,5 +90,5 @@ test('mobile navigation can be opened and contains the primary routes', async ({
   await expect(summary).toBeVisible();
   await summary.click();
   await expect(page.locator('.mobile-nav nav')).toBeVisible();
-  await expect(page.locator('.mobile-nav nav a')).toHaveCount(6);
+  await expect(page.locator('.mobile-nav nav a')).toHaveCount(5);
 });

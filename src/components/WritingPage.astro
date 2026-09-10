@@ -1,111 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
-import BenchmarkSignalField from './BenchmarkSignalField.astro';
-import { editorial } from '../content/editorial';
-import { getWriting, writingSlug } from '../content/writing';
-import { platform } from '../content/platform';
-import { route, type Locale } from '../lib/site';
-
-interface Props { locale: Locale; }
-const { locale } = Astro.props;
-const ia = editorial[locale];
-const x = platform[locale];
-const notes = await getWriting(locale);
-const [featured, ...rest] = notes;
-const perspectiveBase = route(locale, 'writing');
-const noteHref = (slug: string) => `${perspectiveBase}/${slug}`;
-const td = (value: string) => value.replaceAll('—', '–');
-const pageTitle = locale === 'pl' ? 'Perspektywa – dane, benchmarki i tezy' : 'Perspective – evidence, benchmarks and theses';
-const pageDescription = locale === 'pl'
-  ? 'Badania, benchmarki i tezy o architekturze organizacyjnej, architekturze korporacyjnej, strategii, portfelu, transformacji, AI i ładzie decyzyjnym.'
-  : 'Research, benchmarks and theses on organizational architecture, enterprise architecture, strategy, portfolio, transformation, AI and governance.';
+import {perspective} from '../content/perspective';
+import {getWriting,writingSlug} from '../content/writing';
+import {route,type Locale} from '../lib/site';
+interface Props {locale:Locale;} const {locale}=Astro.props;const x=perspective[locale];const [featured,...rest]=await getWriting(locale);const href=(note:NonNullable<typeof featured>)=>`${route(locale,'writing')}/${writingSlug(note)}`;
 ---
-<BaseLayout locale={locale} routeKey="writing" title={pageTitle} description={pageDescription}>
-  <PageHero eyebrow={td(x.perspective.hero.eyebrow)} headline={td(x.perspective.hero.title)} lead={td(x.perspective.hero.lead)} />
-
-  <section class="section research-lens" aria-labelledby="research-lens-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{td(x.perspective.manifesto.eyebrow)}</p>
-        <h2 id="research-lens-title">{td(x.perspective.manifesto.title)}</h2>
-      </div>
-      <p class="content-lead">{td(x.perspective.manifesto.body)}</p>
-    </div>
-    <div class="question-ledger">
-      {x.perspective.manifesto.questions.map((question) => <p>{td(question)}</p>)}
-    </div>
-  </section>
-
-  <section class="section evidence-section evidence-section-deep" aria-labelledby="perspective-evidence-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Dowody / benchmarki' : 'Evidence / benchmarks'}</p>
-        <h2 id="perspective-evidence-title">{td(x.perspective.evidenceTitle)}</h2>
-      </div>
-      <p class="content-lead">{locale === 'pl'
-        ? 'Zamiast kolejnej ściany cytatów: trzy sygnały pokazane jako osobne mierniki. Ich metodologie są różne, dlatego nie udajemy jednej wspólnej skali.'
-        : 'Instead of another wall of citations: three signals shown as separate measures. Their methodologies differ, so they are not presented as one shared scale.'}</p>
-    </div>
-    <BenchmarkSignalField locale={locale} items={x.evidence} />
-  </section>
-
-  {featured && (
-    <section class="section featured-essay" aria-labelledby="featured-essay-title">
-      <div class="featured-essay-meta">
-        <p class="eyebrow">{locale === 'pl' ? 'Tekst otwierający' : 'Featured essay'}</p>
-        <p class="micro-label">{featured.data.category}</p>
-      </div>
-      <div class="featured-essay-copy">
-        <h2 id="featured-essay-title"><a href={noteHref(writingSlug(featured))}>{td(featured.data.title)}</a></h2>
-        <p>{td(featured.data.dek)}</p>
-        <a class="text-link" href={noteHref(writingSlug(featured))}>{ia.writing.read}<span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-  )}
-
-  <section class="section perspective-library" aria-labelledby="library-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Biblioteka / tezy' : 'Library / theses'}</p>
-        <h2 id="library-title">{locale === 'pl' ? 'Każdy tekst zaczyna się od napięcia, nie od potrzeby publikacji.' : 'Each essay starts with a tension, not a publishing cadence.'}</h2>
-      </div>
-      <p class="content-lead">{locale === 'pl' ? 'Materiały mają tworzyć mapę problemów: od architektury i portfela po ład AI. W miarę rozwoju sekcji każdy tekst będzie miał coraz silniejszą warstwę źródeł i benchmarków.' : 'The materials are intended to form a map of problems, from architecture and portfolio to AI governance. Over time every essay will carry a stronger evidence and benchmark layer.'}</p>
-    </div>
-    <div class="editorial-library-list">
-      {rest.map((note) => (
-        <article>
-          <div class="note-meta"><span>{note.data.category}</span></div>
-          <h3><a href={noteHref(writingSlug(note))}>{td(note.data.title)}</a></h3>
-          <p>{td(note.data.dek)}</p>
-          <a class="text-link" href={noteHref(writingSlug(note))}>{ia.writing.read}<span aria-hidden="true">→</span></a>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section publishing-standard" aria-labelledby="publishing-standard-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{td(x.perspective.method.eyebrow)}</p>
-        <h2 id="publishing-standard-title">{td(x.perspective.method.title)}</h2>
-      </div>
-      <div class="standard-flow">
-        {x.perspective.method.items.map((item) => (
-          <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section perspective-bridge" aria-labelledby="perspective-bridge-title">
-    <div>
-      <p class="eyebrow">{td(x.perspective.bridge.eyebrow)}</p>
-      <h2 id="perspective-bridge-title">{td(x.perspective.bridge.title)}</h2>
-    </div>
-    <div>
-      <p class="content-lead">{td(x.perspective.bridge.body)}</p>
-      <a class="button button-primary" href={route(locale, 'oaf')}>{x.perspective.bridge.cta}<span aria-hidden="true">→</span></a>
-    </div>
-  </section>
+<BaseLayout locale={locale} routeKey="writing" title={`${locale==='pl'?'Perspektywa':'Perspective'} – Arkadiusz Kamrowski`} description={x.lead}>
+<PageHero eyebrow={locale==='pl'?'Perspektywa':'Perspective'} headline={x.title} lead={x.lead}/>
+{featured&&<section class="section featured-essay"><div><p class="eyebrow">{x.featured}</p><p class="micro-label">{featured.data.category}</p><span class="editorial-mark" aria-hidden="true">?</span></div><div><h2><a href={href(featured)}>{featured.data.title}</a></h2><p>{featured.data.dek}</p><a class="text-link" href={href(featured)}>{x.read}<span aria-hidden="true">↗</span></a></div></section>}
+<section class="section perspective-library"><h2>{x.more}</h2><div class="editorial-library-list">{rest.map(note=><article><p class="eyebrow">{note.data.category}</p><h3><a href={href(note)}>{note.data.title}</a></h3><p>{note.data.dek}</p><a class="text-link" href={href(note)}>{x.read}<span aria-hidden="true">↗</span></a></article>)}</div></section>
 </BaseLayout>

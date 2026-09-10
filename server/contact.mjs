@@ -211,6 +211,8 @@ const server = http.createServer(async (req, res) => {
     return json(res, 400, { error: 'invalid_json' }, origin);
   }
 
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) return json(res, 400, { error: 'invalid_json' }, origin);
+
   const data = {
     name: clean(body.name),
     email: clean(body.email),
@@ -230,7 +232,7 @@ const server = http.createServer(async (req, res) => {
   if (data.name.length < 2 || data.name.length > 120) return json(res, 400, { error: 'invalid_name' }, origin);
   if (!validEmail(data.email)) return json(res, 400, { error: 'invalid_email' }, origin);
   if (data.organization.length > 140) return json(res, 400, { error: 'invalid_organization' }, origin);
-  if (!(data.topic in topicLabels)) return json(res, 400, { error: 'invalid_topic' }, origin);
+  if (!Object.hasOwn(topicLabels, data.topic)) return json(res, 400, { error: 'invalid_topic' }, origin);
   if (data.message.length < 20 || data.message.length > 4000) return json(res, 400, { error: 'invalid_message' }, origin);
   // The timestamp is only a low-cost bot signal. An upper bound caused valid
   // submissions from long-lived tabs to be rejected and provided no security value.
