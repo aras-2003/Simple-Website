@@ -2,6 +2,8 @@
 
 Personal executive / thought-leadership site built with **Astro SSG + TypeScript**, complete Polish and English routes, a small Cloudflare Worker contact API, and a WCAG 2.2 AA accessibility target.
 
+Current product/source of truth: [docs/PRODUCT.md](docs/PRODUCT.md). Release evidence: [docs/PROOF_RELEASE.md](docs/PROOF_RELEASE.md).
+
 ## Architecture
 
 - **Production runtime:** Cloudflare Workers + Static Assets. Cloudflare is both the public edge and application origin.
@@ -9,10 +11,10 @@ Personal executive / thought-leadership site built with **Astro SSG + TypeScript
 - **Contact:** same-origin `POST /api/contact` handled by `worker/index.mjs`; production submissions require server-side Cloudflare Turnstile validation and are delivered with the Resend HTTPS API.
 - **Edge/security:** Cloudflare owns DNS, managed certificates, DDoS/WAF/bot posture, AI crawler policy, canonical `www` redirect, URL normalization, response headers and observability.
 - **Locales:** Polish is default; English mirrors the same information architecture under `/en`.
-- **Primary navigation:** Perspective → OAF → Practice → About → Contact. Privacy is a footer-level utility route.
-- **Narrative:** problem → evidence → perspective → OAF synthesis → application/practice → author → contact.
+- **Primary navigation:** Advisory → Perspective → About → Contact. OAF and Privacy are footer-level routes.
+- **Narrative:** thesis → executive tensions → decision proof → person → conversation; OAF is a deeper path.
 - **Writing:** Perspective essays are Markdown entries in a typed Astro Content Collection; PL and EN share the same route slugs but remain independently validated content entries.
-- **No client framework:** JavaScript is used only for the contact form, Turnstile integration and intentional micro-interactions.
+- **No client framework:** JavaScript supports the contact form, Turnstile and limited first-party event measurement; no client framework or browser storage.
 - **Portability:** legacy NGINX, Docker, Kubernetes and AKS material is retained only as optional reference/testing material; it is not the production deployment target.
 
 See `docs/ENVIRONMENTS.md`, `docs/CLOUDFLARE.md`, `docs/INFORMATION_ARCHITECTURE.md`, `docs/CONTACT_SERVICE.md`, `docs/DEPLOY_APPROVAL.md`, `docs/HOSTING_DECISION.md` and `docs/PRODUCTION_LAUNCH_RUNBOOK.md`.
@@ -29,7 +31,7 @@ main
 staging
    ↓ Cloudflare staging + acceptance
 production
-   ↓ Cloudflare production
+   ↓ guarded manual Cloudflare production workflow
 ```
 
 Release environments are isolated:
@@ -108,7 +110,7 @@ src/content/writing/pl/<slug>.md
 src/content/writing/en/<slug>.md
 ```
 
-The **filename is the canonical article slug**. Each article is validated by the schema in `src/content.config.ts`, including locale, category, title, description, reading time, ordering, publication/modification dates and source URLs. PL and EN counterparts should use the same filename so hreflang pairs remain stable.
+The **filename is the canonical article slug**. Each article is validated by the schema in `src/content.config.ts`, including locale, category, title, description, ordering, publication/modification dates and source URLs. PL and EN counterparts should use the same filename so hreflang pairs remain stable.
 
 Do not add a `slug` field to Markdown frontmatter: Astro treats it as an entry-ID override, which would collide across locales. When YAML text contains syntax-significant characters such as `:`, quote the value. Invalid metadata fails the build before release.
 
@@ -152,14 +154,6 @@ These paths are retained for portability/reference and local experimentation onl
 
 ## Environment status
 
-- macOS native: ready
-- Cloudflare Worker contact implementation: ready by configuration
-- manual preview Worker contract: ready
-- staging Worker contract: ready; deployment/account secrets not provisioned yet
-- production Worker contract: ready; deployment/account secrets not provisioned yet
-- branch promotion model: `main → staging → production`
-- GitHub CI: Astro/static + Worker + Wrangler preview/staging/production dry-run + accessibility/browser/performance gates
-- production Custom Domain/DNS: not deployed yet
-- staging Custom Domain/DNS: not deployed yet
-- `www` redirect rule: configured in Cloudflare; redirect-only DNS record still required at production launch
-- Docker/Kubernetes/AKS: portability/reference only
+Verified baseline 2026-09-11: main refactor is merged; staging contains the baseline main changes, its Cloudflare Workers Build succeeded and Access protects the custom domain. Production branch exists but its live deployment/configuration and real contact delivery are not verified. Earlier records list Resend/destination setup as pending. See the release evidence for fresh results; do not infer launch readiness from source configuration alone.
+
+Production remains a **guarded manual workflow** from `production`. Staging automatically deploys only the `staging` branch. `main` does not deploy directly. Docker/Kubernetes/AKS remain reference/portability only.

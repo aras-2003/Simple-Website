@@ -1,4 +1,5 @@
 ---
+import ProofStories from './ProofStories.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StartConversation from './StartConversation.astro';
 import { home } from '../content/home';
@@ -14,8 +15,8 @@ const x=home[locale];
   <div class="signature-choices">{x.signature.map((item,index)=><div class="signature-choice"><span class="choice-number" aria-hidden="true">0{index+1}</span><strong>{item.word}</strong><span>{item.meaning}</span></div>)}</div>
  </section>
  <section class="section tension-section" aria-labelledby="tension-title"><h2 id="tension-title">{x.tensionsTitle}</h2><div class="tension-list">{x.tensions.map((item,index)=><article><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
- <section class="section proof-story" aria-labelledby="proof-title"><div><p class="eyebrow">{x.proofLabel}</p><h2 id="proof-title">{x.proofTitle}</h2></div><div><p>{x.proofBody}</p><p class="proof-output">{x.proofChange}</p></div></section>
- <section class="section human-section" aria-labelledby="person-title"><img src="/assets/arkadiusz-kamrowski-square-v2.webp" alt="Arkadiusz Kamrowski" width="400" height="400" loading="lazy" decoding="async"/><div><p class="eyebrow">Arkadiusz Kamrowski</p><h2 id="person-title">{x.personTitle}</h2><p>{x.personBody}</p><a class="text-link" href={route(locale,'about')}>{x.personLink}<span aria-hidden="true">↗</span></a></div></section>
+ <ProofStories locale={locale} compact/>
+ <section class="section human-section" aria-labelledby="person-title"><img src="/assets/arkadiusz-kamrowski-square-v2.webp" alt="Arkadiusz Kamrowski" width="400" height="400" loading="lazy" decoding="async"/><div><p class="eyebrow">Arkadiusz Kamrowski</p><h2 id="person-title">{x.personTitle}</h2><p>{x.personBody}</p><p class="human-credential">MBA · {locale==='pl'?'Akademia Leona Koźmińskiego':'Kozminski University'} · Best Strategic Business Project</p><a class="text-link" href={route(locale,'about')}>{x.personLink}<span aria-hidden="true">↗</span></a></div></section>
  <StartConversation locale={locale}/>
  <aside class="method-note"><p>{x.method}</p><a class="text-link" href={route(locale,'oaf')}>{x.methodLink}</a></aside>
 </BaseLayout>

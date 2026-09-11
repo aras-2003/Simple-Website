@@ -1,3 +1,5 @@
+> Current production contact is the Cloudflare Worker. Node/NGINX examples below are reference/local only. Current product: [PRODUCT.md](PRODUCT.md).
+
 # Contact service
 
 The release contact endpoint is a **Cloudflare Worker** at same-origin `POST /api/contact`.
@@ -135,3 +137,7 @@ CI performs Wrangler dry-runs against preview, staging and production configs.
 `make dev` keeps the small Node contact adapter for fast Astro local development and dry-run behavior. This is deliberately separate from the release Worker contract.
 
 Docker/NGINX/Kubernetes remain reference/portability paths only. New release features must be implemented and tested in `worker/index.mjs` first; the portability adapter may mirror them only when maintaining that reference path is worthwhile.
+
+## Current topic contract (2026-09-11)
+
+`diagnostic`, `design`, `execution`, `speaking`, `other` are accepted by the frontend, Worker and reference Node adapter. Previous architecture/strategy/portfolio/ai keys are rejected. Labels describe the decision or engagement, not a competency taxonomy. Browser outcomes emit fixed form events only; no form values enter product analytics.
