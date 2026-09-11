@@ -1,4 +1,5 @@
 ---
+import ProofStories from './ProofStories.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
 import StartConversation from './StartConversation.astro';
@@ -7,12 +8,13 @@ import { type Locale } from '../lib/site';
 interface Props {locale:Locale;}
 const {locale}=Astro.props;
 const x=advisory[locale];
-const fields=['decision','process','contribution','outputs','change'] as const;
+const visibleFields=['decision','change'] as const;
+const detailFields=['process','contribution','outputs'] as const;
 ---
 <BaseLayout locale={locale} routeKey="work" title={x.title} description={x.lead}>
  <PageHero eyebrow={locale==='pl'?'Współpraca':'Advisory'} headline={x.title} lead={x.lead}/>
- <section class="section engagements" aria-labelledby="engagements-title"><h2 id="engagements-title">{x.formats}</h2>{x.engagements.map((item,index)=><article class="engagement"><div class="engagement-heading"><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.trigger}</p></div><dl>{fields.map(key=><div><dt>{x.labels[key]}</dt><dd>{item[key]}</dd></div>)}</dl></article>)}</section>
+ <section class="section engagements" aria-labelledby="engagements-title"><h2 id="engagements-title">{x.formats}</h2>{x.engagements.map((item,index)=><article class="engagement"><div class="engagement-heading"><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.trigger}</p></div><div class="engagement-content"><dl>{visibleFields.map(key=><div><dt>{x.labels[key]}</dt><dd>{item[key]}</dd></div>)}</dl><details class="engagement-details"><summary>{locale==='pl'?'Metoda, wkład zespołu i rezultat':'Method, team contribution and outputs'}</summary><dl>{detailFields.map(key=><div><dt>{x.labels[key]}</dt><dd>{item[key]}</dd></div>)}</dl></details></div></article>)}</section>
  <section class="section decision-artifact" aria-labelledby="artifact-title"><div><p class="eyebrow">{x.artifactLabel}</p><h2 id="artifact-title">{x.artifactTitle}</h2></div><dl class="decision-brief">{x.artifact.map((item,index)=><div><dt><span aria-hidden="true">0{index+1} / </span>{item.title}</dt><dd>{item.body}</dd></div>)}</dl></section>
- <section class="section proof-story" aria-labelledby="proof-title"><div><p class="eyebrow">{x.proofLabel}</p><h2 id="proof-title">{x.proofTitle}</h2></div><div><p>{x.proofContext}</p><p>{x.proofWork}</p><p class="proof-output">{x.proofOutput}</p></div></section>
+ <ProofStories locale={locale}/>
  <StartConversation locale={locale}/>
 </BaseLayout>

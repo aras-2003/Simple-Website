@@ -28,8 +28,8 @@ export const privacySections = { pl: [
     body: 'W granicach wynikających z RODO możesz żądać dostępu do danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania, a w odpowiednich przypadkach również przeniesienia danych. Możesz wnieść sprzeciw wobec przetwarzania opartego na prawnie uzasadnionym interesie oraz skargę do właściwego organu nadzorczego; w Polsce jest nim Prezes Urzędu Ochrony Danych Osobowych.',
   },
   {
-    title: 'Brak profilowania i trackerów reklamowych',
-    body: 'Strona nie wykorzystuje analityki behawioralnej, pikseli reklamowych ani automatycznego profilowania osób korzystających z formularza. Cloudflare i Turnstile są używane wyłącznie do dostarczania i zabezpieczenia serwisu, nie do reklamy. Dane z wiadomości nie są używane do zautomatyzowanego podejmowania decyzji wywołujących skutki prawne lub podobnie istotny wpływ.',
+    title: 'Pomiar działania strony',
+    body: 'Zliczamy wybrane wejścia, przejścia do współpracy i kontaktu, zmianę języka oraz rozpoczęcie, powodzenie i błąd formularza. Zdarzenie zawiera wyłącznie nazwę zdarzenia, kategorię strony, język i ogólną kategorię źródła wejścia. Nie zawiera treści wiadomości, imienia, e-maila, organizacji, pełnych adresów URL ani identyfikatora użytkownika. Nie zapisujemy cookies ani danych w pamięci przeglądarki na potrzeby tego pomiaru i respektujemy sygnały Do Not Track oraz Global Privacy Control. Zdarzenia zapisuje Cloudflare; retencja logów wynosi 3 lub 7 dni, zależnie od planu. Dane techniczne obsługiwane przez infrastrukturę bezpieczeństwa są odrębne od tych zdarzeń. Nie prowadzimy profilowania ani śledzenia reklamowego.',
   },
 ], en: [
   {
@@ -61,8 +61,8 @@ export const privacySections = { pl: [
     body: 'Subject to the conditions in the GDPR, you may request access, rectification, erasure or restriction of processing and, where applicable, data portability. You may object to processing based on legitimate interests and lodge a complaint with the competent supervisory authority.',
   },
   {
-    title: 'No profiling or advertising trackers',
-    body: 'The site does not use behavioural analytics, advertising pixels or automated profiling of people using the form. Cloudflare and Turnstile are used only to deliver and secure the service, not for advertising. Message data is not used for automated decision-making that produces legal effects or similarly significant effects.',
+    title: 'Website measurement',
+    body: 'We count selected visits, transitions to advisory and contact, language changes, and form starts, successes and errors. Each event contains only its name, page category, language and a broad referral category. It contains no message text, name, email, organization, full URLs or user identifier. This measurement uses no cookies or browser storage and respects Do Not Track and Global Privacy Control. Cloudflare stores the events; log retention is 3 or 7 days depending on the plan. Technical data processed by the security infrastructure is separate from these events. We do not use profiling or advertising trackers.',
   },
  ] };
 export const providerLinks = [

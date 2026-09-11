@@ -1315,6 +1315,25 @@ textarea {
 
 @media (max-width:850px) {
   .contact-form-shell { order:-1; }
-  .contact-form-shell > .eyebrow, .contact-form-shell > h2, .contact-form-shell > h2 + p { display:none; }
+  .contact-form-shell > .eyebrow, .contact-form-shell > h2 { display:none; }
   .contact-form { margin-top:0; }
 }
+
+/* Proof is a short evidence sequence, with deeper context available on demand. */
+.proof-system { display:grid; grid-template-columns:1fr 1.1fr; gap:5rem; }
+.proof-intro h2 { max-width:17ch; }
+.proof-intro > p:last-child { max-width:28ch; color:var(--muted); margin-top:1rem; font-size:14px; }
+.proof-example + .proof-example { border-top:1px solid var(--line); margin-top:1.8rem; padding-top:1.8rem; }
+.proof-example h3 { font-family:var(--serif); font-size:1.7rem; font-weight:400; line-height:1.2; }
+.proof-example .eyebrow { margin-bottom:.7rem; }
+.proof-example .proof-output { margin:1rem 0; font-size:16px; }
+.proof-example summary,.engagement-details summary { cursor:pointer; padding:.7rem 0; min-height:44px; color:var(--green); font-size:14px; font-weight:600; }
+.proof-example dl { margin-top:1rem; }
+.proof-example dl > div { margin-bottom:1rem; }
+.proof-example dt { font-size:14px; font-weight:650; color:var(--green); }
+.proof-example dd { font-size:15px; line-height:1.65; margin-top:.3rem; }
+.engagement-details { margin-top:1rem; border-top:1px solid var(--line); }
+.engagement-details dl { padding-top:1rem; }
+.human-section .human-credential { color:var(--muted); font-size:14px; }
+@media(max-width:850px) { .proof-system { gap:2rem; } }
+@media(max-width:600px) { .proof-system { grid-template-columns:1fr; } .proof-intro > p:last-child { max-width:100%; } }

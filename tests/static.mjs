@@ -96,7 +96,21 @@ for (const route of requiredRoutes) {
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
   if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
-  if (/<script(?![^>]*\bsrc=)[^>]*>/.test(html)) errors.push(`${route}: inline script found; CSP requires external scripts`);
+  if (/<script(?![^>]*\bsrc=)(?![^>]*type="application\/ld\+json")[^>]*>/.test(html)) errors.push(`${route}: inline script found; CSP requires external scripts`);
+
+  // JSON-LD is inert data, never a CSP exemption for executable inline scripts.
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  if (blocks.length !== 1) errors.push(`${route}: exactly one JSON-LD graph required`);
+  for (const [,text] of blocks) {
+    try {
+      const graph = JSON.parse(text);
+      const person = graph['@graph'].find(node => node['@type'] === 'Person');
+      const page = graph['@graph'].find(node => node.url === expectedCanonical && node['@type'] !== 'Person');
+      if (graph['@context'] !== 'https://schema.org' || person?.name !== 'Arkadiusz Kamrowski' || !page) throw new Error('identity/canonical mismatch');
+      if (route.endsWith('/about') && (page['@type'] !== 'ProfilePage' || page.mainEntity?.['@id'] !== person['@id'])) throw new Error('profile mismatch');
+      if (articleRoutes.has(route) && (page['@type'] !== 'Article' || page.author?.['@id'] !== person['@id'] || !page.datePublished || !page.dateModified)) throw new Error('article mismatch');
+    } catch (error) { errors.push(`${route}: invalid JSON-LD (${error.message})`); }
+  }
 
   if (articleRoutes.has(route)) {
     if (!/<meta property="og:type" content="article"/.test(html)) errors.push(`${route}: article OG type expected`);

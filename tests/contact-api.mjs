@@ -7,7 +7,7 @@ const basePayload = {
   name: 'Test User',
   email: 'test@example.com',
   organization: 'Example',
-  topic: 'architecture',
+  topic: 'diagnostic',
   message: 'This is a valid integration test message.',
   website: '',
   consent: true,

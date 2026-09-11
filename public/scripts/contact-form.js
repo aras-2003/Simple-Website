@@ -57,7 +57,10 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!form.reportValidity()) return;
+    if (!form.reportValidity()) {
+      form.dispatchEvent(new Event('form_error'));
+      return;
+    }
     if (!(submit instanceof HTMLButtonElement) || !(status instanceof HTMLElement)) return;
 
     const data = new FormData(form);
@@ -65,6 +68,7 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
     if (turnstileContainer && !turnstileToken) {
       status.dataset.state = 'error';
       status.textContent = form.dataset.turnstile || form.dataset.error || 'Security check required.';
+      form.dispatchEvent(new Event('form_error'));
       return;
     }
 
@@ -95,15 +99,17 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
         body: JSON.stringify(payload),
       });
       const body = await response.json().catch(() => ({}));
-      if (!response.ok) {
+      if (!response.ok || body?.ok !== true) {
         const code = typeof body?.error === 'string' ? body.error : 'request_failed';
         throw new Error(code);
       }
+      form.dispatchEvent(new Event('form_success'));
       form.reset();
       form.dataset.startedAt = String(Date.now());
       status.dataset.state = 'success';
       status.textContent = form.dataset.success || 'Sent.';
     } catch (error) {
+      form.dispatchEvent(new Event('form_error'));
       const code = error instanceof Error ? error.message : 'request_failed';
       status.dataset.state = 'error';
       if (code === 'rate_limited') {

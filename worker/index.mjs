@@ -1,13 +1,14 @@
+import { handleMeasurement } from './measurement.mjs';
+
 const MAX_BODY_BYTES = 32 * 1024;
 const MAX_TURNSTILE_TOKEN = 2048;
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const RESEND_API_URL = 'https://api.resend.com/emails';
 
 const topicLabels = {
-  architecture: 'Enterprise Architecture',
-  strategy: 'Strategy & Transformation',
-  portfolio: 'PMO & Portfolio',
-  ai: 'AI & Technology',
+  diagnostic: 'Decision diagnostic',
+  design: 'Operating / change design',
+  execution: 'Execution advisory',
   speaking: 'Speaking / Panel',
   other: 'Other',
 };
@@ -267,11 +268,11 @@ async function handleContact(request, env) {
       return json(403, { error: 'turnstile_failed' });
     }
 
-    const result = await sendEmail(data, env);
+    await sendEmail(data, env);
     console.log(JSON.stringify({
       event: 'contact_sent',
       topic: data.topic,
-      id: result?.id || null,
+      locale: data.locale,
       at: new Date().toISOString(),
     }));
     return json(202, { ok: true });
@@ -292,7 +293,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/contact') return handleContact(request, env);
+    if (url.pathname === '/api/events') return applyDeploymentHeaders(await handleMeasurement(request, env), env);
+    if (url.pathname === '/api/contact') return applyDeploymentHeaders(await handleContact(request, env), env);
     if (url.pathname.startsWith('/api/')) return json(404, { error: 'not_found' });
 
     if (isNonProduction(env) && url.pathname === '/robots.txt') {

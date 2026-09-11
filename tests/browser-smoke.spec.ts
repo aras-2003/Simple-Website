@@ -63,7 +63,7 @@ test('contact succeeds through mocked delivery and keeps payload out of URL', as
   await page.goto('/en/contact');
   await page.getByLabel('Name', { exact:true }).fill('Test User');
   await page.getByLabel('E-mail', { exact:true }).fill('test@example.com');
-  await page.getByLabel('Topic', { exact:true }).selectOption('strategy');
+  await page.getByLabel('What are you dealing with?', { exact:true }).selectOption('design');
   await page.getByLabel('Message', { exact:true }).fill('A sample decision for a mocked browser integration test.');
   await page.locator('input[name="consent"]').check();
   await page.getByRole('button', {name:'Send message'}).click();
@@ -92,3 +92,58 @@ test('mobile navigation can be opened and contains the primary routes', async ({
   await expect(page.locator('.mobile-nav nav')).toBeVisible();
   await expect(page.locator('.mobile-nav nav a')).toHaveCount(5);
 });
+
+// Exercise the buyer flow, including independent entries and keyboard-accessible details.
+test('advisory gives a short scan and reveals the working mechanics by keyboard', async ({ page }) => {
+  await page.goto('/wspolpraca');
+  const engagement = page.locator('.engagement').first();
+  await expect(engagement.getByText('Co rozstrzygamy', {exact:true})).toBeVisible();
+  await expect(engagement.getByText('Co staje się możliwe', {exact:true})).toBeVisible();
+  await expect(engagement.getByText('Co wnosi zespół', {exact:true})).toBeHidden();
+  await engagement.locator('summary').press('Enter');
+  await expect(engagement.getByText('Co wnosi zespół', {exact:true})).toBeVisible();
+  await page.locator('#proof-technology summary').click();
+  await expect(page.locator('#proof-technology').getByText('Mój wkład',{exact:true})).toBeVisible();
+});
+
+test('measurement observes intent and form outcomes without contact content or URL parameters', async ({ page }) => {
+  const events: Record<string, string>[] = [];
+  await page.route('**/api/events', async route => {
+    const event = route.request().postDataJSON();
+    expect(Object.keys(event).sort()).toEqual(['event','locale','page','source']);
+    expect(JSON.stringify(event)).not.toMatch(/private|example\.com|secret|utm_/);
+    events.push(event);
+    await route.fulfill({status:204});
+  });
+  await page.route('**/api/contact', async route => route.fulfill({status:503, contentType:'application/json',body:JSON.stringify({error:'delivery_unavailable'})}));
+  await page.goto('/?utm_source=private@example.com');
+  await page.locator('.hero-actions .button-primary').click();
+  await page.getByLabel('Imię i nazwisko',{exact:true}).fill('Private Person');
+  await page.getByLabel('E-mail',{exact:true}).fill('private@example.com');
+  await page.getByLabel('Z czym przychodzisz?',{exact:true}).selectOption('execution');
+  await page.locator('textarea').fill('A secret message that must never be present in analytics.');
+  await page.locator('input[name="consent"]').check();
+  await page.getByRole('button',{name:'Wyślij wiadomość'}).click();
+  await expect(page.locator('[data-form-status]')).toContainText('niedostępna');
+  await expect(page.locator('textarea')).toHaveValue('A secret message that must never be present in analytics.');
+  await expect.poll(() => events.filter(e=>e.event==='form_error').length).toBe(1);
+  expect(events.filter(e=>e.event==='contact_intent' && e.page==='home')).toHaveLength(1);
+  expect(events.filter(e=>e.event==='form_start')).toHaveLength(1);
+  await page.route('**/api/contact', async route => route.fulfill({status:202, contentType:'application/json',body:JSON.stringify({ok:true})}));
+  await page.getByRole('button',{name:'Wyślij wiadomość'}).click();
+  await expect(page.locator('[data-form-status]')).toContainText('została wysłana');
+  await expect.poll(() => events.filter(e=>e.event==='form_success').length).toBe(1);
+});
+
+for (const flag of ['doNotTrack','globalPrivacyControl']) {
+  test(`measurement honours ${flag} without using browser storage`, async ({ page }) => {
+    await page.addInitScript(key => Object.defineProperty(navigator,key,{get:()=> key==='doNotTrack'?'1':true}), flag);
+    const events: string[] = [];
+    await page.route('**/api/events', async route => { events.push(route.request().url()); await route.fulfill({status:204}); });
+    await page.goto('/');
+    await page.locator('.hero-actions .button-primary').click();
+    await page.getByLabel('Imię i nazwisko',{exact:true}).fill('Test');
+    expect(events).toHaveLength(0);
+    expect(await page.evaluate(()=>({local:localStorage.length,session:sessionStorage.length,cookie:document.cookie}))).toEqual({local:0,session:0,cookie:''});
+  });
+}

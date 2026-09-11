@@ -2,7 +2,7 @@
 import '../styles/site.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { absoluteUrl, alternateLocale, route, type Locale, type RouteKey } from '../lib/site';
+import { absoluteUrl, alternateLocale, route, site, type Locale, type RouteKey } from '../lib/site';
 import { copy } from '../i18n/content';
 
 interface Props {
@@ -44,6 +44,21 @@ const ogImageAlt = locale === 'pl'
   : 'Arkadiusz Kamrowski – organizational architecture, strategy and execution';
 const homeUrl = absoluteUrl('/', Astro.site);
 const aboutUrl = absoluteUrl(route('pl', 'about'), Astro.site);
+const personId = `${homeUrl}#person`;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {'@type': 'Person', '@id': personId, name: site.name, url: aboutUrl,
+      image: absoluteUrl('/assets/arkadiusz-kamrowski-square-v2.webp', Astro.site), sameAs: [site.linkedIn]},
+    {'@type': contentType === 'article' ? 'Article' : routeKey === 'about' ? 'ProfilePage' : 'WebPage',
+      '@id': `${canonical}#page`, url: canonical, name: title, description, inLanguage: locale,
+      ...(routeKey === 'about' ? {mainEntity: {'@id': personId}} : {}),
+      ...(contentType === 'article' ? {headline: title.replace(/ – Arkadiusz Kamrowski$/, ''),
+        author: {'@id': personId}, datePublished: publishedTime, dateModified: modifiedTime,
+        articleSection, mainEntityOfPage: canonical, image: ogImage} : {})},
+  ],
+};
+const structuredJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang={locale} itemscope itemtype="https://schema.org/WebSite">
@@ -88,8 +103,9 @@ const aboutUrl = absoluteUrl(route('pl', 'about'), Astro.site);
 
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
+    <script is:inline type="application/ld+json" set:html={structuredJson} />
   </head>
-  <body>
+  <body data-page={contentType === 'article' ? 'article' : routeKey}>
     <a class="skip-link" href="#main">{c.skipMain}</a>
     <div class="page-grid" aria-hidden="true"></div>
     <Header locale={locale} current={routeKey} alternateHref={paths?.[other]} />
@@ -97,5 +113,6 @@ const aboutUrl = absoluteUrl(route('pl', 'about'), Astro.site);
       <slot />
     </main>
     <Footer locale={locale} />
+    <script>import '../scripts/measurement';</script>
   </body>
 </html>
