@@ -1,6 +1,6 @@
 export const contact = { pl: {
   title: 'Kontakt – Arkadiusz Kamrowski',
-  description: 'Kontakt w sprawie architektury organizacyjnej, strategii, transformacji, architektury korporacyjnej, portfolio i wystąpień.',
+  description: 'Rozmowa o trudnej decyzji, projekcie zmiany lub wsparciu w wykonaniu. Doradztwo dla zarządów i CIO.',
   eyebrow: 'Kontakt / zacznijmy od problemu',
   headline: 'Jaką decyzję chcecie podjąć?',
   lead: 'Napisz kilka zdań o sytuacji i najważniejszym ograniczeniu. W rozmowie sprawdzimy, gdzie mogę pomóc.',
@@ -10,11 +10,11 @@ export const contact = { pl: {
   linkedin: 'Jeżeli wolisz krótszy kontakt, LinkedIn pozostaje najprostszą alternatywą.',
   formEyebrow: 'Wiadomość',
   formTitle: 'Opisz sytuację.',
-  formBody: 'Nie potrzebuję pełnego briefu. Kilka zdań o problemie wystarczy, żeby ocenić, czy rozmowa ma sens.',
+  formBody: 'Nie potrzebuję pełnego briefu. Przeczytam wiadomość i odpowiem e-mailem: ustalimy, czy i od jakiej rozmowy warto zacząć. Poufne szczegóły zostawmy na później.',
   privacy: 'Dane z formularza są używane wyłącznie do odpowiedzi na wiadomość.',
 }, en: {
   title: 'Contact – Arkadiusz Kamrowski',
-  description: 'Contact about organizational architecture, strategy, transformation, enterprise architecture, portfolio and speaking.',
+  description: 'Discuss a difficult decision, design a change or get an independent view during execution. Advisory for boards and CIOs.',
   eyebrow: 'Contact / start with the problem',
   headline: 'What do you need to decide?',
   lead: 'Describe the situation and the main constraint in a few sentences. We can discuss where my contribution would be useful.',
@@ -24,6 +24,6 @@ export const contact = { pl: {
   linkedin: 'If you prefer a shorter first contact, LinkedIn remains the simplest alternative.',
   formEyebrow: 'Message',
   formTitle: 'Describe the situation.',
-  formBody: 'I do not need a full brief. A few sentences about the problem are enough to see whether a conversation makes sense.',
+  formBody: 'No polished brief needed. I will read your message and reply by email to agree whether and how to start a conversation. Save confidential details for later.',
   privacy: 'Form data is used only to respond to your message.',
 }};

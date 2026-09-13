@@ -7,18 +7,16 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '/api/contact';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 const topics = pl
   ? [
-      ['architecture', 'Enterprise Architecture'],
-      ['strategy', 'Strategia i transformacja'],
-      ['portfolio', 'PMO i portfolio'],
-      ['ai', 'AI i technologia'],
-      ['speaking', 'Wystąpienie / debata'],
+      ['diagnostic', 'Decyzja utknęła — potrzebujemy diagnozy'],
+      ['design', 'Kierunek wybrany — projektujemy zmianę'],
+      ['execution', 'Zmiana trwa — potrzebujemy niezależnej oceny'],
+      ['speaking', 'Wystąpienie / panel'],
       ['other', 'Inny temat'],
     ]
   : [
-      ['architecture', 'Enterprise Architecture'],
-      ['strategy', 'Strategy & transformation'],
-      ['portfolio', 'PMO & portfolio'],
-      ['ai', 'AI & technology'],
+      ['diagnostic', 'Decision stalled — we need a diagnostic'],
+      ['design', 'Direction chosen — we need to design the change'],
+      ['execution', 'Change under way — we need an independent view'],
       ['speaking', 'Speaking / panel'],
       ['other', 'Other'],
     ];
@@ -29,7 +27,7 @@ const topics = pl
   action={endpoint}
   data-contact-form
   data-endpoint={endpoint}
-  data-success={pl ? 'Dziękuję. Wiadomość została wysłana.' : 'Thank you. Your message has been sent.'}
+  data-success={pl ? 'Dziękuję. Wiadomość została wysłana. Odpowiem e-mailem, żeby ustalić następny krok.' : 'Thank you. Your message has been sent. I will reply by email to agree on the next step.'}
   data-error={pl ? 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz przez LinkedIn.' : 'The message could not be sent. Try again or use LinkedIn.'}
   data-validation={pl ? 'Sprawdź pola formularza i spróbuj ponownie.' : 'Check the form fields and try again.'}
   data-rate-limit={pl ? 'Za dużo prób w krótkim czasie. Spróbuj ponownie za kilka minut.' : 'Too many attempts in a short time. Try again in a few minutes.'}
@@ -53,9 +51,9 @@ const topics = pl
       <input id={`organization-${locale}`} name="organization" type="text" autocomplete="organization" maxlength="140" />
     </div>
     <div class="field">
-      <label for={`topic-${locale}`}>{pl ? 'Temat' : 'Topic'}</label>
+      <label for={`topic-${locale}`}>{pl ? 'Z czym przychodzisz?' : 'What are you dealing with?'}</label>
       <select id={`topic-${locale}`} name="topic" required>
-        <option value="">{pl ? 'Wybierz temat' : 'Choose a topic'}</option>
+        <option value="">{pl ? 'Wybierz najbliższą sytuację' : 'Choose the closest situation'}</option>
         {topics.map(([value, label]) => <option value={value}>{label}</option>)}
       </select>
     </div>

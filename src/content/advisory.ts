@@ -1,6 +1,6 @@
 import type { Locale } from '../lib/site';
 interface Engagement { title:string; trigger:string; decision:string; process:string; contribution:string; outputs:string; change:string; }
-interface AdvisoryContent { title:string; lead:string; formats:string; labels:Record<'decision'|'process'|'contribution'|'outputs'|'change',string>; engagements:Engagement[]; artifactTitle:string; artifactLabel:string; artifact:{title:string;body:string}[]; proofTitle:string; proofLabel:string; proofContext:string; proofWork:string; proofOutput:string; }
+interface AdvisoryContent { title:string; lead:string; formats:string; labels:Record<'decision'|'process'|'contribution'|'outputs'|'change',string>; engagements:Engagement[]; artifactTitle:string; artifactLabel:string; artifact:{title:string;body:string}[]; }
 export const advisory = {
 pl: {
  title:'Od trudnej decyzji do warunków jej wykonania.',lead:'Możesz zaangażować mnie do rozpoznania problemu, zaprojektowania zmiany albo doradztwa podczas jej realizacji. Punktem wyjścia jest konkretna decyzja i osoby, które mają mandat ją podjąć.',formats:'Trzy sposoby pracy. Wybieramy potrzebny.',
@@ -12,7 +12,6 @@ pl: {
  ],
  artifactTitle:'Decyzja, którą da się przekazać dalej.',artifactLabel:'Przykładowy rezultat · karta decyzji, nie opis klienta',
  artifact:[{title:'Decyzja',body:'Czy uruchomić inicjatywę teraz, czy po uwolnieniu wspólnego zespołu?'},{title:'Warianty i koszt wyboru',body:'Start teraz: konkurencja o ludzi. Później: przesunięcie oczekiwanego efektu.'},{title:'Właściciel i dowody',body:'Osoba z mandatem do ustalenia priorytetu; dostępność zespołu i zależności wymagające potwierdzenia.'},{title:'Warunek powrotu',body:'Ponowny przegląd, gdy zmieni się dostępność zespołu lub znaczenie oczekiwanego efektu.'}],
- proofLabel:'Z praktyki · portfel inicjatyw',proofTitle:'Najpierw porównywalne wybory.',proofContext:'Nakładające się inicjatywy korzystały ze wspólnych zdolności i ograniczonej dostępności zespołów.',proofWork:'Analiza połączyła oczekiwane efekty, zależności, koszt alternatywny i architekturę docelową.',proofOutput:'Powstała podstawa do decyzji: zatrzymać, połączyć, ustalić kolejność lub kontynuować. Punktem odniesienia stał się cały portfel.'
 },
 en:{
  title:'From a difficult decision to the conditions for delivery.',lead:'Engage me to diagnose a problem, design a change or advise during execution. We start with a specific decision and the people who have the authority to make it.',formats:'Three ways to work. We choose the one needed.',
@@ -24,6 +23,5 @@ en:{
  ],
  artifactTitle:'A decision others can act on.',artifactLabel:'Illustrative output · decision brief, not a client case',
  artifact:[{title:'Decision',body:'Start the initiative now, or wait until the shared team is available?'},{title:'Options and trade-off',body:'Now: competition for people. Later: a delayed intended outcome.'},{title:'Owner and evidence',body:'The person authorized to set the priority; team availability and dependencies requiring confirmation.'},{title:'Revisit condition',body:'Review again if team availability or the importance of the intended outcome changes.'}],
- proofLabel:'From practice · initiative portfolio',proofTitle:'Make the choices comparable first.',proofContext:'Overlapping initiatives drew on shared capabilities and limited team capacity.',proofWork:'The analysis connected intended outcomes, dependencies, opportunity cost and target architecture.',proofOutput:'It established a basis for decisions to stop, combine, sequence or continue. The whole portfolio became the point of reference.'
 }
 } satisfies Record<Locale, AdvisoryContent>;

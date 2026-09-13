@@ -58,7 +58,7 @@ RESEND_API_KEY
 CONTACT_TO_EMAIL
 ```
 
-Current state:
+Last documented account configuration (live secrets not inspected on 2026-09-11):
 
 - dedicated staging Turnstile widget: configured;
 - `PUBLIC_TURNSTILE_SITE_KEY`: configured as build variable;
@@ -157,9 +157,9 @@ Required before merge:
 
 The merge makes the commit eligible for production release; it does **not** itself deploy production in the current v1 model. The owner then explicitly runs the guarded production deployment workflow.
 
-## GitHub Free / private-repository guardrails
+## Repository operating guardrails
 
-This is a single-owner private repository on the GitHub Free plan. Hard branch protection/rulesets for this private repository are not available on the current plan, so we deliberately avoid pretending otherwise.
+Historical setup assumed a single-owner private repository on GitHub Free. The 2026-09-11 repository API reports public visibility and unprotected branches. This release does not change visibility, plan or protection. PR + CI promotion remains the operating control; do not claim hard enforcement that has not been configured.
 
 Current controls:
 
@@ -187,3 +187,7 @@ staging/production → main
 ```
 
 This is a proportional control for a one-person repository. If the repository becomes multi-maintainer or moves to a plan supporting private-repo rulesets, add hard branch protection then.
+
+## Product measurement
+
+Staging and production enable `PRODUCT_MEASUREMENT=1`, structured Workers Logs and a separate `MEASUREMENT_RATE_LIMITER` (60/minute, distinct namespace per environment). Invocation logs are disabled; head sampling is 1. No new secrets are needed. Preview defaults to measurement disabled. See [ANALYTICS.md](ANALYTICS.md) for retention, privacy and live-verification boundaries.

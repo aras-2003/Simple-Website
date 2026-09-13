@@ -1,4 +1,4 @@
-> Superseded for the ASTRA frontend/content refactor by [ASTRA_IMPLEMENTATION.md](ASTRA_IMPLEMENTATION.md). Deployment safeguards remain in force. Tag waived; changes stay on feature branch.
+> **Historical decision/source record.** Claims and instructions below describe an earlier checkpoint, not current branch, runtime or launch state. The refactor is merged. Current truth: [PRODUCT.md](PRODUCT.md), [PROOF_RELEASE.md](PROOF_RELEASE.md), [PROOF_SOURCES.md](PROOF_SOURCES.md).
 
 # Design System
 

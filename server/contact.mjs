@@ -23,10 +23,9 @@ const buckets = new Map();
 let rateChecks = 0;
 
 const topicLabels = {
-  architecture: 'Enterprise Architecture',
-  strategy: 'Strategy & Transformation',
-  portfolio: 'PMO & Portfolio',
-  ai: 'AI & Technology',
+  diagnostic: 'Decision diagnostic',
+  design: 'Operating / change design',
+  execution: 'Execution advisory',
   speaking: 'Speaking / Panel',
   other: 'Other',
 };

@@ -1,3 +1,5 @@
+> **Historical decision/source record.** Claims and instructions below describe an earlier checkpoint, not current branch, runtime or launch state. The refactor is merged. Current truth: [PRODUCT.md](PRODUCT.md), [PROOF_RELEASE.md](PROOF_RELEASE.md), [PROOF_SOURCES.md](PROOF_SOURCES.md).
+
 # Content & Logic Audit — CEO/CIO clarity review
 
 ## Review lens

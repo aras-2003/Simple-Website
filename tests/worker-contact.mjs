@@ -6,7 +6,7 @@ const basePayload = {
   name: 'Test User',
   email: 'test@example.com',
   organization: 'Example',
-  topic: 'architecture',
+  topic: 'diagnostic',
   message: 'This is a valid Worker integration test message.',
   website: '',
   consent: true,
@@ -69,7 +69,7 @@ try {
     assert.equal(response.status, 400);
     assert.equal((await response.json()).error, 'invalid_json');
   }
-  for (const topic of ['toString', '__proto__', 'constructor']) {
+  for (const topic of ['toString', '__proto__', 'constructor', 'architecture', 'strategy', 'portfolio', 'ai']) {
     const response = await worker.fetch(contactRequest({...basePayload, topic}), env);
     assert.equal(response.status, 400);
     assert.equal((await response.json()).error, 'invalid_topic');
@@ -81,6 +81,11 @@ try {
   assert.equal(resendCalls, 1);
   assert.equal(valid.headers.get('cache-control'), 'no-store');
   assert.equal(valid.headers.get('x-content-type-options'), 'nosniff');
+
+  // Every new engagement topic survives provider-side validation.
+  for (const topic of ['diagnostic','design','execution','speaking','other']) {
+    assert.equal((await worker.fetch(contactRequest({...basePayload,topic}),env)).status,202);
+  }
 
   const noOrigin = await worker.fetch(new Request(`${origin}/api/contact`, {
     method: 'POST',

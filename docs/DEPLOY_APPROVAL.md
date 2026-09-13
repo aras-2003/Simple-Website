@@ -2,7 +2,7 @@
 
 **Status: RELEASE CANDIDATE — Cloudflare production target selected, public promotion still gated**
 
-Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`, model branch/environment w `docs/ENVIRONMENTS.md`, a kierunek content/design w `docs/EXECUTIVE_CONTENT_STRATEGY.md`.
+Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegółowy operator runbook znajduje się w `docs/PRODUCTION_LAUNCH_RUNBOOK.md`, model branch/environment w `docs/ENVIRONMENTS.md`, a kierunek content/design w `docs/PRODUCT.md`.
 
 ## Aktualny baseline produktu
 
@@ -12,7 +12,7 @@ Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegó
 4. **Współpraca / Advisory** — trzy formaty wejścia: Diagnostic, Design, Advisory; nie jest to sztywny katalog pakietów.
 5. **Języki** — kompletne wersje polska i angielska w jednym release.
 6. **Kontakt** — formularz i same-origin `/api/contact`; LinkedIn pozostaje kanałem pomocniczym.
-7. **Analytics** — brak reklam, trackerów i analityki w baseline'ie.
+7. **Analytics** — ograniczone zdarzenia własne w Cloudflare Workers Logs; bez reklam, cookies i identyfikatorów użytkowników. Zobacz `docs/ANALYTICS.md`.
 8. **Frontend** — Astro SSG + TypeScript, statycznie generowane strony bez klientowego frameworka aplikacyjnego.
 9. **Production runtime** — Cloudflare Workers + Static Assets; Worker obsługuje dynamiczny kontakt i wybrane canonicalization paths.
 10. **Canonical production origin** — `https://arkadiuszkamrowski.com`; `www` jest redirect-only.
@@ -26,7 +26,7 @@ Ten dokument opisuje baseline produktu i warunki promocji do produkcji. Szczegó
 
 Uzasadnienie:
 
-- workload jest statyczny poza jednym małym endpointem;
+- workload jest statyczny poza małymi endpointami kontaktu i zdarzeń;
 - Cloudflare już pełni rolę DNS/security edge;
 - Worker eliminuje osobny origin, NGINX, registry, container lifecycle i origin-bypass;
 - Turnstile i Resend mapują się bezpośrednio na stateless Worker API;
@@ -62,12 +62,12 @@ Kontenerowe E2E/Trivy nie są produkcyjnym gate'em. Docker/NGINX/Kubernetes pozo
 Przed promocją nowego kierunku do stagingu wymagane są:
 
 - hero jasno komunikuje audience + problem + outcome;
-- primary CTA prowadzi do `Współpraca / Advisory`;
+- primary CTA prowadzi do `Kontakt / Contact`, pomocnicze do `Współpraca / Advisory`;
 - visitor może rozpoznać konkretne outputs bez czytania OAF;
 - Home nie wraca do długiego ciągu tekstowych sekcji;
-- decision-system map, output blueprint i case flows działają bez JS;
+- dowody, karta decyzji i rozwijane szczegóły współpracy działają bez JS;
 - mobile nie ma horizontal scroll;
-- `prefers-reduced-motion` wyłącza animowany flow/pulse;
+- `prefers-reduced-motion` wyłącza ruch; brak wymaganych efektów flow/pulse;
 - case studies nie zawierają wymyślonych KPI, nazw/logotypów klientów ani pseudo-precyzji;
 - PL/EN zachowują ten sam sens komercyjny, nie tylko literalne tłumaczenie;
 - live staging przechodzi ręczny 6-second / 30-second / 2-minute scan test.

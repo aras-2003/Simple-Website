@@ -1,0 +1,18 @@
+---
+import { proof } from '../content/proof';
+import { route, type Locale } from '../lib/site';
+interface Props { locale: Locale; compact?: boolean; }
+const {locale, compact = false} = Astro.props;
+const x = proof[locale];
+const fields = ['context', 'decision', 'intervention', 'consequence'] as const;
+---
+<section class="section proof-system" aria-labelledby="proof-title">
+  <div class="proof-intro"><p class="eyebrow">{x.label}</p><h2 id="proof-title">{x.title}</h2><p>{x.scope}</p></div>
+  <div class="proof-examples">{x.stories.map(item => <article class="proof-example" id={`proof-${item.id}`}>
+    <p class="eyebrow">{item.domain}</p><h3>{item.title}</h3>
+    <p class="proof-output">{item.output}</p>
+    {compact
+      ? <a class="text-link" href={`${route(locale, 'work')}#proof-${item.id}`}>{x.more}<span aria-hidden="true">↗</span></a>
+      : <details><summary>{x.more}</summary><dl>{fields.map(key => <div><dt>{x.labels[key]}</dt><dd>{item[key]}</dd></div>)}</dl></details>}
+  </article>)}</div>
+</section>

@@ -38,6 +38,8 @@ export default defineConfig({
   },
   build: { format: 'directory' },
   vite: {
+    // Keep small executable scripts external under the strict CSP.
+    build: { assetsInlineLimit: 0 },
     server: {
       proxy: {
         '/api/contact': { target: 'http://127.0.0.1:8787', changeOrigin: false },
