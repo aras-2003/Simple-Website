@@ -5,9 +5,9 @@ pl:{nav:{home:'Start',work:'Współpraca',writing:'Perspektywa',about:'O mnie',c
     title: 'Prywatność — Arkadiusz Kamrowski',
     description: 'Informacja o przetwarzaniu danych w formularzu kontaktowym strony Arkadiusza Kamrowskiego.',
     eyebrow: 'Prywatność', headline: 'Minimum danych. Jeden cel: odpowiedzieć na Twoją wiadomość.',
-    lead: 'Strona nie używa analityki ani trackerów reklamowych. Formularz kontaktowy przetwarza tylko dane potrzebne do dostarczenia i obsługi wiadomości.',
+    lead: 'Strona nie używa reklamowych trackerów ani cookies analitycznych. Prowadzimy minimalny, anonimowy pomiar działania strony bez identyfikowania użytkowników.',
 }},
 en:{nav:{home:'Home',work:'Advisory',writing:'Perspective',about:'About',contact:'Discuss a decision',oaf:'OAF model',privacy:'Privacy'},privacy:{
-      title: 'Privacy — Arkadiusz Kamrowski', description: 'Information about data processing in the contact form on Arkadiusz Kamrowski’s website.', eyebrow: 'Privacy', headline: 'Minimum data. One purpose: respond to your message.', lead: 'The site does not use analytics or advertising trackers. The contact form processes only the data needed to deliver and handle your message.',
+      title: 'Privacy — Arkadiusz Kamrowski', description: 'Information about data processing in the contact form on Arkadiusz Kamrowski’s website.', eyebrow: 'Privacy', headline: 'Minimum data. One purpose: respond to your message.', lead: 'The site uses no advertising trackers or analytics cookies. We run minimal, anonymous first-party measurement without identifying users.',
 }}
 } satisfies Record<Locale,UI>;

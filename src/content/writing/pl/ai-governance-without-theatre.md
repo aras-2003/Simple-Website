@@ -1,40 +1,64 @@
 ---
 locale: pl
-category: "AI & Governance"
+category: Autonomia, ryzyko i governance
 title: AI governance bez teatru kontroli
-dek: Dojrzałe governance nie próbuje zatrzymać eksperymentu. Projektuje granice, odpowiedzialność i dowody proporcjonalne do ryzyka.
-modifiedAt: 2026-09-10T00:00:00+02:00
+dek: Dojrzałe AI governance nie zatrzymuje eksperymentu. Zmienia poziom kontroli wraz z ryzykiem, autonomią i konsekwencją — i pozostawia odpowiedzialność po stronie człowieka.
+modifiedAt: 2026-09-14T18:55:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
   - label: NIST · AI Risk Management Framework 1.0
     href: https://www.nist.gov/itl/ai-risk-management-framework
-  - label: European Commission · AI Act · risk-based approach
+  - label: European Commission · AI Act regulatory framework
     href: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
-  - label: MIT CISR · Enterprise Architecture
-    href: https://cisr.mit.edu/content/classic-topics-enterprise-architecture
-  - label: BCG · Agile Operating Model · 2024
-    href: https://www.bcg.com/publications/2024/why-companies-get-agile-right-wrong
+  - label: Stanford · AI Index 2025 · Responsible AI
+    href: https://hai.stanford.edu/ai-index/2025-ai-index-report/responsible-ai
+  - label: McKinsey · The state of AI · March 2025 report
+    href: https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value
 ---
 
-## Jedna polityka dla każdego use case’u nie działa
+## Adopcja wyprzedza dojrzałość governance
 
-Ryzyko narzędzia wspierającego redakcję wewnętrznej notatki jest inne niż ryzyko systemu wpływającego na decyzję dotyczącą obywatela, klienta lub pracownika. Governance, które traktuje je identycznie, będzie jednocześnie zbyt ciężkie dla niskiego ryzyka i zbyt płytkie dla wysokiego.
+AI governance nie jest już hipotetycznym problemem projektowym. W raporcie McKinsey opublikowanym w marcu 2025 roku, opartym na badaniu przeprowadzonym w 2024 roku, 78% respondentów deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. W uzupełniającym badaniu executive'ów tylko 1% określało rollout generatywnej AI jako dojrzały.
 
-Punktem startu powinien być więc scenariusz użycia, dane, autonomia systemu, wpływ decyzji i możliwość odwrócenia skutku. Dopiero potem dobieramy guardrails. Ten kierunek jest spójny zarówno z ciągłym zarządzaniem ryzykiem w NIST AI RMF, jak i z proporcjonalnym, opartym na ryzyku podejściem unijnego AI Act.
+<aside class="evidence-callout" aria-label="Dane">
+<p class="evidence-number">78%</p>
+<p class="evidence-copy">respondentów raportu McKinsey z marca 2025 roku deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. Badanie przeprowadzono w 2024 roku.</p>
+<p class="evidence-source"><a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value">McKinsey · The state of AI</a></p>
+</aside>
 
-## Kontrola powinna być częścią delivery
+Sam poziom adopcji szybko się zmienia. Trwalszy jest inny problem: organizacje już wykorzystują AI, podczas gdy właściciele odpowiedzialności, standardy przeglądu i ścieżki eskalacji wciąż są projektowane.
 
-Jeżeli compliance pojawia się wyłącznie na końcu procesu, organizacja otrzymuje konflikt między tempem i bezpieczeństwem. Lepszy model wbudowuje wymagania dotyczące danych, testów, human oversight i monitoringu do lifecycle produktu.
+## Kontrola powinna być proporcjonalna do ryzyka
 
-To nie oznacza mnożenia bramek. Oznacza jasne standardy dowodu: co zespół musi pokazać, żeby use case mógł przejść na kolejny poziom ekspozycji.
+Jedna polityka dla każdego zastosowania AI rzadko wystarcza. Narzędzie pomagające przygotować wewnętrzną notatkę tworzy inne ryzyko niż rozwiązanie wspierające istotny proces biznesowy. Governance traktujący te sytuacje identycznie będzie jednocześnie zbyt ciężki dla niskiego ryzyka i zbyt płytki dla wysokiego.
 
-## Najważniejsze pytanie: kto odpowiada za decyzję
+Ta logika jest spójna z opartą na ryzyku konstrukcją EU AI Act. Większość przepisów zaczęła być stosowana 2 sierpnia 2026 roku, natomiast część obowiązków dla systemów high-risk wchodzi później, zależnie od kategorii i kontekstu regulacyjnego. Dla projektu operacyjnego ważniejsza od samego kalendarza jest zasada: poziom kontroli powinien odpowiadać ekspozycji i konsekwencji.
 
-AI może wspierać analizę, rekomendować albo automatyzować, ale odpowiedzialność organizacyjna nie znika. Governance powinno wskazywać właściciela outcome, właściciela modelu i właściciela ryzyka oraz sposób eskalacji, gdy evidence przestaje mieścić się w założonym profilu.
+## Governance powinien być częścią cyklu życia
 
-Bez tego łatwo stworzyć imponujący zestaw polityk, który nie odpowiada na podstawowe pytanie: kto może powiedzieć „stop” i na jakiej podstawie.
+Jeżeli compliance pojawia się wyłącznie na końcu, organizacja tworzy konflikt między tempem i bezpieczeństwem. Lepszy model wbudowuje wymagania dotyczące danych, testów, nadzoru człowieka, monitoringu i eskalacji w cały cykl życia produktu.
 
-## Zmieniaj kontrolę wraz z uprawnieniami
+NIST AI Risk Management Framework porządkuje tę logikę przez funkcje Govern, Map, Measure i Manage, przy czym governance działa przekrojowo, a nie jako ostatnia bramka. To przesuwa pytanie z „czy rozwiązanie przeszło review?” na „jakie dowody muszą istnieć przy tym poziomie ekspozycji?”.
 
-Ten sam model może przygotowywać propozycję albo wykonywać działanie. To różne sytuacje zarządcze. Dla propozycji trzeba wskazać osobę oceniającą. Dla wykonania także granicę samodzielności, warunek zatrzymania i ścieżkę eskalacji. Mój punkt wyjścia: oceniać nie tylko narzędzie, lecz to, co organizacja pozwala mu zrobić.
+Potrzeba nie jest teoretyczna. Stanford AI Index 2025 odnotował 233 zgłoszone incydenty związane z AI w 2024 roku — o 56,4% więcej niż rok wcześniej. Liczba zależy również od świadomości, wykrywalności i sposobu raportowania, więc nie jest czystym pomiarem częstotliwości awarii. Jest jednak sygnałem, że konsekwencje operacyjne stają się coraz bardziej widoczne wraz ze wzrostem zastosowań AI.
+
+## „Human in the loop” nie jest modelem governance
+
+Raport McKinsey pokazuje, jak różne są obecne praktyki nadzoru. Wśród respondentów z organizacji używających generatywnej AI 27% deklarowało, że ludzie sprawdzają wszystkie wygenerowane treści przed użyciem, a podobna grupa mówiła, że weryfikowane jest 20% lub mniej.
+
+To nie mówi, który model jest właściwy. Pokazuje, dlaczego samo hasło „human in the loop” jest zbyt ogólne, żeby pełnić rolę kontroli. Governance musi określić, które wyniki wymagają przeglądu, kiedy on następuje, kto ma kompetencje i mandat, na jakich kryteriach pracuje oraz co dzieje się, gdy wynik wychodzi poza oczekiwany profil.
+
+## Odpowiedzialność pozostaje po stronie organizacji
+
+AI może wspierać analizę, rekomendować albo automatyzować fragment pracy, ale odpowiedzialność organizacyjna nie znika. Governance powinien wskazywać właściciela efektu biznesowego, rozwiązania i ryzyka oraz sposób eskalacji, gdy dowody wychodzą poza przyjęty profil.
+
+W badaniu McKinsey 28% respondentów wskazało CEO, a 17% board jako poziom odpowiedzialny za nadzór nad AI governance. Nie znaczy to, że najwyższe kierownictwo powinno zatwierdzać każdy przypadek użycia. Lepsza interpretacja jest taka, że odpowiada za system governance, a decyzje wewnątrz niego powinny być delegowane proporcjonalnie do ryzyka i konsekwencji.
+
+To ten sam balans autonomii i odpowiedzialności, który pojawia się w governance architektonicznym. Zbyt duża centralizacja zamienia eksperymentowanie w biurokrację. Zbyt luźne granice sprawiają, że odpowiedzialność staje się niejasna.
+
+## Test jednego przypadku użycia
+
+Dla jednego działającego zastosowania AI sprawdź sześć rzeczy: zakres samodzielności rozwiązania, odwracalność skutku, właściciela efektu biznesowego, monitorowane dowody, warunek eskalacji i osobę uprawnioną do wstrzymania użycia.
+
+Jeżeli te elementy są jasne i proporcjonalne do ryzyka, organizacja prawdopodobnie ma mechanizm governance. Jeżeli odpowiedzią jest jedynie „przeszło AI review”, może mieć tylko teatr kontroli.
