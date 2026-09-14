@@ -2,8 +2,8 @@
 locale: en
 category: Enterprise Architecture
 title: Architecture as a decision system, not a document system
-dek: Architecture rarely suffers from a lack of models. More often it lacks the mechanism that turns a model into a choice, accountability and consequence.
-modifiedAt: 2026-09-10T00:00:00+02:00
+dek: Architecture governance should not create more checkpoints. It should help the organization make better decisions faster — with clear ownership, criteria and consequences.
+modifiedAt: 2026-09-14T00:00:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -21,6 +21,14 @@ A capability map, target architecture or technology principle creates value only
 
 The more useful question is therefore not “do we have architecture?” but “which decisions do we make differently because of it?”. That shifts attention from completeness of documentation to quality of the decision mechanism.
 
+## Governance is a means, not the outcome
+
+> The goal of architecture governance isn't more governance. It's better decisions made faster.
+
+That is the standard I find useful for architecture governance. An architecture board, standard, exception process or review is not valuable by itself. It should shorten the path from a problem to a responsible decision without losing context, ownership or an explicit trade-off.
+
+Faster does not mean less rigorous. Good governance reduces waiting, not thinking. If a decision needs six meetings only because the process does not identify the owner, criteria or boundaries for an exception, the problem is not insufficient control. The decision system is poorly designed.
+
 ## A good decision needs context
 
 An architectural decision needs a named problem, criteria, alternatives, an owner and consequences. Without them, governance can become a document approval process that neither reduces risk nor increases speed.
@@ -35,4 +43,6 @@ In that sense architecture is leverage. Its job is not to describe the entire or
 
 ## Test architecture’s influence
 
-At the next review, choose one architectural principle. Ask which option it rules out, who can authorize an exception and which consequence that person accepts. If the principle changes none of the available options, it describes a preference rather than a decision boundary. This is my practical test for architecture that helps leaders govern, rather than merely approve a document.
+At the next review, choose one architectural principle. Ask which option it rules out, who can authorize an exception and which consequence that person accepts. Then add a second question: does the governance path help this decision happen faster, or merely move it to another forum?
+
+If the principle changes none of the available options, it describes a preference rather than a decision boundary. If governance does not accelerate a responsible decision, it becomes its own operating cost. This is my practical test for architecture that helps leaders govern, rather than merely approve a document.
