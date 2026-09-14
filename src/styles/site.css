@@ -1,1 +1,41 @@
 @import './astra.css';
+
+/* Editorial article diagrams: keep them integrated with the page, not card-like. */
+.note-body .concept-figure {
+  background: transparent !important;
+  border-top: 1px solid var(--line) !important;
+  border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important;
+  padding: clamp(1.35rem, 3vw, 1.8rem) 0 !important;
+}
+
+.note-body .concept-figure figcaption {
+  margin-bottom: 1.6rem !important;
+}
+
+.note-body .concept-node,
+.note-body .concept-branches,
+.note-body .decision-spectrum,
+.note-body .adaptation-sequence,
+.note-body .decision-trace {
+  border-color: var(--line) !important;
+}
+
+.note-body .concept-node--primary {
+  border-color: var(--line) !important;
+}
+
+.note-body .adapt-step:not(:last-child)::after {
+  background: var(--paper) !important;
+}
+
+.note-body .control-scale {
+  border-top-width: 1px !important;
+}
+
+@media (max-width: 760px) {
+  .note-body .concept-figure,
+  .note-body .decision-trace {
+    box-shadow: none !important;
+  }
+}
