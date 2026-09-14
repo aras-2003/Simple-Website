@@ -49,7 +49,18 @@ Do tego potrzebny jest rytm. Część decyzji powinna reagować szybko, część
 
 W praktyce przydatny jest prosty ciąg:
 
-**Kierunek → założenie → wykonanie → dowód → decyzja → continue albo reopen.**
+<figure class="concept-figure concept-figure--transformation" aria-labelledby="adaptation-loop-title-pl">
+<figcaption><span class="concept-kicker">Mechanizm adaptacji</span><strong id="adaptation-loop-title-pl">Dowód nie zmienia planu automatycznie. Musi przejść przez decyzję.</strong></figcaption>
+<div class="adaptation-sequence">
+<div class="adapt-step"><span>01</span><strong>Kierunek</strong><small>Jaki efekt uzasadnia zmianę?</small></div>
+<div class="adapt-step"><span>02</span><strong>Założenie</strong><small>Co musi być prawdą, żeby plan miał sens?</small></div>
+<div class="adapt-step"><span>03</span><strong>Wykonanie</strong><small>Co dzieje się w realnym systemie?</small></div>
+<div class="adapt-step"><span>04</span><strong>Dowód</strong><small>Co zmieniło naszą wiedzę?</small></div>
+<div class="adapt-step"><span>05</span><strong>Decyzja</strong><small>Czy trigger uzasadnia ponowne otwarcie?</small></div>
+<div class="adapt-step"><span>06</span><strong>Ruch</strong><small>Utrzymaj wybór albo otwórz go ponownie.</small></div>
+</div>
+<div class="decision-branches"><div><strong>CONTINUE</strong><span>Dowód nie przekroczył triggera. Zobowiązanie pozostaje.</span></div><div><strong>REOPEN</strong><span>Trigger został spełniony. Właściciel ma mandat zmienić wcześniejszą decyzję.</span></div></div>
+</figure>
 
 Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem operating model rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.
 
@@ -90,6 +101,8 @@ Zamiast oceniać całe forum transformacyjne, wybierz jedną ważną decyzję i 
 **Trigger.** Jaki warunek pozwala ponownie ją otworzyć?
 
 **Last decision.** Co konkretnie zmieniliśmy albo świadomie pozostawiliśmy bez zmian?
+
+<div class="decision-trace" aria-label="Ślad decyzji"><span>Założenie</span><span>Owner</span><span>Evidence</span><span>Trigger</span><span>Last decision</span></div>
 
 Jeżeli nie da się przejść tego śladu, roadmapa opisuje pracę, ale operating model nie zarządza adaptacją.
 
