@@ -3,7 +3,7 @@ locale: en
 category: Operating model and execution
 title: Transformation needs an operating model, not just a roadmap
 dek: "A roadmap shows sequence. An operating model answers the harder question: when may that sequence change, who can change it, and what evidence is enough?"
-modifiedAt: 2026-09-14T23:00:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -39,7 +39,7 @@ A mature operating model separates three things.
 
 **Evidence.** What has genuinely changed our understanding of value, risk, dependency or execution feasibility?
 
-**Trigger.** Which condition justifies reopening the decision?
+**Change condition.** Which condition justifies reopening the decision?
 
 **Mandate.** Who can change direction, scope, sequence or resource allocation?
 
@@ -50,16 +50,16 @@ Cadence matters as well. Some decisions should react quickly; others should move
 A useful sequence is simple:
 
 <figure class="concept-figure concept-figure--transformation" aria-labelledby="adaptation-loop-title-en">
-<figcaption><span class="concept-kicker">Adaptation mechanism</span><strong id="adaptation-loop-title-en">Evidence does not change the plan automatically. It has to pass through a decision.</strong></figcaption>
+<figcaption><span class="concept-kicker">Changing the plan</span><strong id="adaptation-loop-title-en">Evidence leads to a decision, not an automatic change.</strong></figcaption>
 <div class="adaptation-sequence">
-<div class="adapt-step"><span>01</span><strong>Direction</strong><small>Which outcome justifies the change?</small></div>
+<div class="adapt-step"><span>01</span><strong>Plan</strong><small>Which outcome are we trying to achieve?</small></div>
 <div class="adapt-step"><span>02</span><strong>Assumption</strong><small>What must be true for the plan to make sense?</small></div>
 <div class="adapt-step"><span>03</span><strong>Execution</strong><small>What is happening in the real system?</small></div>
 <div class="adapt-step"><span>04</span><strong>Evidence</strong><small>What changed our understanding?</small></div>
-<div class="adapt-step"><span>05</span><strong>Decision</strong><small>Has a reopening trigger actually been met?</small></div>
-<div class="adapt-step"><span>06</span><strong>Move</strong><small>Preserve the choice or reopen it.</small></div>
+<div class="adapt-step"><span>05</span><strong>Decision</strong><small>Has the change condition actually been met?</small></div>
+<div class="adapt-step"><span>06</span><strong>Move</strong><small>Keep the choice or reopen it.</small></div>
 </div>
-<div class="decision-branches"><div><strong>CONTINUE</strong><span>The evidence did not cross the trigger. The commitment remains.</span></div><div><strong>REOPEN</strong><span>The trigger was met. The owner has the mandate to change the earlier decision.</span></div></div>
+<div class="decision-branches"><div><strong>Keep</strong><span>The plan still makes sense.</span></div><div><strong>Change</strong><span>The change condition has been met.</span></div></div>
 </figure>
 
 Direction describes the outcome that justifies change. The assumption explains why a particular initiative, sequence or dependency should produce that outcome. Execution generates evidence. Only then does the operating model decide whether to preserve the choice or reopen it.
@@ -74,7 +74,7 @@ A new steering committee, PMO structure or set of role descriptions can change t
 
 Imagine three initiatives that depend on the same platform team. The roadmap shows three dates. Execution reveals that the shared dependency has become the real bottleneck.
 
-A good operating model does not automatically answer “escalate”. It first identifies which trigger has been met and who has the mandate to change the earlier decision.
+A good operating model does not automatically answer “escalate”. It first identifies which change condition has been met and who has the mandate to change the earlier decision.
 
 Portfolio governance may decide which outcome now has priority. The appropriate owner may move resources. Architecture may test whether the new sequence creates an expensive long-term dependency. Delivery teams can adjust local plans without reopening every reversible decision.
 
@@ -98,11 +98,11 @@ Instead of evaluating the entire transformation forum, pick one important decisi
 
 **Evidence.** What do we now know differently?
 
-**Trigger.** Which condition allows the decision to be reopened?
+**Change condition.** Which condition allows the decision to be reopened?
 
 **Last decision.** What exactly changed — or was consciously left unchanged?
 
-<div class="decision-trace" aria-label="Decision trace"><span>Assumption</span><span>Owner</span><span>Evidence</span><span>Trigger</span><span>Last decision</span></div>
+<div class="decision-trace" aria-label="Decision trace"><span>Assumption</span><span>Owner</span><span>Evidence</span><span>Change condition</span><span>Last decision</span></div>
 
 If that chain cannot be traced, the roadmap may describe the work, but the operating model is not managing adaptation.
 
