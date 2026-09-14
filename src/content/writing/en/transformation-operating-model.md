@@ -49,7 +49,18 @@ Cadence matters as well. Some decisions should react quickly; others should move
 
 A useful sequence is simple:
 
-**Direction → assumption → execution → evidence → decision → continue or reopen.**
+<figure class="concept-figure concept-figure--transformation" aria-labelledby="adaptation-loop-title-en">
+<figcaption><span class="concept-kicker">Adaptation mechanism</span><strong id="adaptation-loop-title-en">Evidence does not change the plan automatically. It has to pass through a decision.</strong></figcaption>
+<div class="adaptation-sequence">
+<div class="adapt-step"><span>01</span><strong>Direction</strong><small>Which outcome justifies the change?</small></div>
+<div class="adapt-step"><span>02</span><strong>Assumption</strong><small>What must be true for the plan to make sense?</small></div>
+<div class="adapt-step"><span>03</span><strong>Execution</strong><small>What is happening in the real system?</small></div>
+<div class="adapt-step"><span>04</span><strong>Evidence</strong><small>What changed our understanding?</small></div>
+<div class="adapt-step"><span>05</span><strong>Decision</strong><small>Has a reopening trigger actually been met?</small></div>
+<div class="adapt-step"><span>06</span><strong>Move</strong><small>Preserve the choice or reopen it.</small></div>
+</div>
+<div class="decision-branches"><div><strong>CONTINUE</strong><span>The evidence did not cross the trigger. The commitment remains.</span></div><div><strong>REOPEN</strong><span>The trigger was met. The owner has the mandate to change the earlier decision.</span></div></div>
+</figure>
 
 Direction describes the outcome that justifies change. The assumption explains why a particular initiative, sequence or dependency should produce that outcome. Execution generates evidence. Only then does the operating model decide whether to preserve the choice or reopen it.
 
@@ -90,6 +101,8 @@ Instead of evaluating the entire transformation forum, pick one important decisi
 **Trigger.** Which condition allows the decision to be reopened?
 
 **Last decision.** What exactly changed — or was consciously left unchanged?
+
+<div class="decision-trace" aria-label="Decision trace"><span>Assumption</span><span>Owner</span><span>Evidence</span><span>Trigger</span><span>Last decision</span></div>
 
 If that chain cannot be traced, the roadmap may describe the work, but the operating model is not managing adaptation.
 
