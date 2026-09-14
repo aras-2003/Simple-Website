@@ -41,6 +41,18 @@ I find three variables useful.
 
 **Reversibility.** How easily can the organization undo the effect if it proves undesirable?
 
+<figure class="concept-figure concept-figure--ai" aria-labelledby="ai-control-title-en">
+<figcaption><span class="concept-kicker">Control intensity</span><strong id="ai-control-title-en">Control should increase with exposure — not simply because a solution uses AI.</strong></figcaption>
+<div class="exposure-grid">
+<div class="exposure-row"><strong>Autonomy</strong><span>low</span><div class="exposure-track" aria-hidden="true"></div><span>high</span></div>
+<div class="exposure-row"><strong>Consequence</strong><span>low</span><div class="exposure-track" aria-hidden="true"></div><span>high</span></div>
+<div class="exposure-row"><strong>Reversibility</strong><span>easy</span><div class="exposure-track" aria-hidden="true"></div><span>hard</span></div>
+</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="control-scale"><span>monitoring</span><span>sampling</span><span>review</span><span>escalation</span><span>stop authority</span></div>
+<p class="concept-note">Regulatory requirements set the floor. This model determines additional operational control above that floor.</p>
+</figure>
+
 As autonomy and consequence rise, and reversibility falls, governance should become stronger: better evidence, monitoring, review, escalation or explicit authority to stop the system.
 
 This is not an alternative to law. Regulatory categories and mandatory requirements establish a compliance floor. An internal risk model helps design controls above that floor and distinguish cases that may look similar from a technology perspective but create very different operational exposure.
