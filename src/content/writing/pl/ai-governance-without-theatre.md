@@ -3,7 +3,7 @@ locale: pl
 category: Autonomia, ryzyko i governance
 title: AI governance bez teatru kontroli
 dek: Dojrzałe AI governance nie zatrzymuje eksperymentu. Zwiększa siłę kontroli wtedy, gdy rosną autonomia systemu, konsekwencja decyzji i trudność odwrócenia skutku.
-modifiedAt: 2026-09-14T22:45:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -42,15 +42,15 @@ W praktyce patrzę na trzy zmienne.
 **Odwracalność.** Jak łatwo organizacja może cofnąć skutek, gdy okaże się niepożądany?
 
 <figure class="concept-figure concept-figure--ai" aria-labelledby="ai-control-title-pl">
-<figcaption><span class="concept-kicker">Siła kontroli</span><strong id="ai-control-title-pl">Kontrola powinna rosnąć wraz z ekspozycją — nie dlatego, że rozwiązanie używa AI.</strong></figcaption>
+<figcaption><span class="concept-kicker">Siła kontroli</span><strong id="ai-control-title-pl">Im większe ryzyko skutku, tym mocniejsza kontrola.</strong></figcaption>
 <div class="exposure-grid">
-<div class="exposure-row"><strong>Autonomia</strong><span>niska</span><div class="exposure-track" aria-hidden="true"></div><span>wysoka</span></div>
-<div class="exposure-row"><strong>Konsekwencja</strong><span>niska</span><div class="exposure-track" aria-hidden="true"></div><span>wysoka</span></div>
+<div class="exposure-row"><strong>Autonomia</strong><span>mała</span><div class="exposure-track" aria-hidden="true"></div><span>duża</span></div>
+<div class="exposure-row"><strong>Skutek</strong><span>mały</span><div class="exposure-track" aria-hidden="true"></div><span>duży</span></div>
 <div class="exposure-row"><strong>Odwracalność</strong><span>łatwa</span><div class="exposure-track" aria-hidden="true"></div><span>trudna</span></div>
 </div>
 <div class="concept-arrow" aria-hidden="true">↓</div>
-<div class="control-scale"><span>monitoring</span><span>sampling</span><span>review</span><span>eskalacja</span><span>stop authority</span></div>
-<p class="concept-note">Wymagania regulacyjne wyznaczają minimum. Ten model określa dodatkową kontrolę operacyjną ponad tym minimum.</p>
+<div class="control-scale"><span>Obserwuj</span><span>Próbkuj</span><span>Sprawdź</span><span>Eskaluj</span><span>Zatrzymaj</span></div>
+<p class="concept-note">Prawo wyznacza minimum. Organizacja może wymagać więcej.</p>
 </figure>
 
 Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu governance potrzebujemy: lepszego evidence, monitoringu, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
@@ -79,7 +79,7 @@ To nie mówi, który model jest właściwy. Pokazuje, dlaczego samo hasło „hu
 
 Przegląd człowieka ma sens tylko wtedy, gdy wiadomo: które wyniki go wymagają, kiedy następuje, kto ma kompetencje i mandat, na jakich kryteriach pracuje oraz co dzieje się po przekroczeniu akceptowanego profilu ryzyka.
 
-Dla niskiej autonomii i łatwo odwracalnego skutku wystarczające mogą być sampling i monitoring. Przy wysokiej autonomii, wysokiej konsekwencji albo trudno odwracalnym skutku potrzebne mogą być mocniejsze dowody przed uruchomieniem, obowiązkowy review, ograniczenie działania albo jawny stop authority.
+Dla niskiej autonomii i łatwo odwracalnego skutku wystarczające mogą być próbkowanie i monitoring. Przy wysokiej autonomii, wysokiej konsekwencji albo trudno odwracalnym skutku potrzebne mogą być mocniejsze dowody przed uruchomieniem, obowiązkowy przegląd, ograniczenie działania albo jawne prawo do zatrzymania rozwiązania.
 
 ## Odpowiedzialność pozostaje po stronie organizacji
 
