@@ -1,9 +1,9 @@
 ---
 locale: en
-category: Investment & Portfolio Choices
+category: Investment and portfolio choices
 title: Portfolio is strategy in motion
-dek: Declared strategy says what matters. The portfolio shows whether the organization is willing to move money, people and attention accordingly.
-modifiedAt: 2026-09-14T18:50:00+02:00
+dek: Declared strategy says what matters. The portfolio shows whether the organization can actually move money, people and attention behind it.
+modifiedAt: 2026-09-14T22:50:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -15,60 +15,58 @@ sources:
     href: https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/how-to-put-your-money-where-your-strategy-is
 ---
 
-## Budget is more honest than a presentation
+## The budget is more honest than the presentation
 
-If strategy identifies three priorities while the portfolio funds thirty independent directions, the real strategy is different from the declared one. Allocation of people, money and management attention reveals the organization’s actual choices.
+If strategy names three priorities while the portfolio funds thirty independent directions, the real strategy is different from the declared one. The allocation of people, money and executive attention reveals the choices the organization is actually making.
 
-That gap is not unusual. In McKinsey’s 2024 survey of 617 executives and managers, only about half of respondents said their companies effectively aligned budgets with corporate strategy. Just 53% said their organizations routinely fully funded the priorities they identified. Those are two different questions, but together they expose the same problem: naming a priority is easier than moving resources behind it.
+In a 2024 McKinsey survey of 617 executives and managers, only about half of respondents said their companies effectively align budgets with strategy. Another 53% said their organizations usually fully fund identified priorities. These are different questions, but they point to the same gap: naming a priority is easier than moving resources behind it.
 
-<aside class="evidence-callout" aria-label="Data point">
+<aside class="evidence-callout" aria-label="Evidence">
 <p class="evidence-number">~50%</p>
-<p class="evidence-copy">of respondents in McKinsey’s 2024 resource-allocation survey said their companies effectively aligned budgets with corporate strategy.</p>
+<p class="evidence-copy">of respondents in McKinsey's 2024 survey said their organizations effectively align budgets with strategy.</p>
 <p class="evidence-source"><a href="https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/tying-short-term-decisions-to-long-term-strategy">McKinsey · Tying short-term decisions to long-term strategy</a></p>
 </aside>
 
-Portfolio should therefore not be a final table produced after the strategy process. It should be one of the main places where strategy is tested. A strategic priority becomes operational only when it changes funding, capacity or executive attention.
+A portfolio should therefore not be the final table produced after the strategy process. It should be one of the main places where strategy is tested. A priority becomes operational only when it changes funding, access to people or executive attention.
 
-## Prioritization also means “no”
+## Prioritization also means saying no
 
-Ranking one hundred initiatives from 1 to 100 does not solve overload if the first eighty remain active. Prioritization becomes real only when it limits work in progress and moves resources.
+Ranking one hundred initiatives from 1 to 100 does not solve overload if the first eighty remain active. Prioritization becomes real only when it reduces parallel commitments and moves resources.
 
-BCG’s 2026 transformation research frames the concentration problem sharply: companies can often capture roughly 80% of transformation value by focusing on about 20% of initiatives. That is not a universal Pareto law and should not be treated as one. It is a reminder that value is rarely distributed evenly across a transformation portfolio.
+BCG's 2026 transformation research makes the concentration problem explicit: companies can often capture around 80% of transformation value by focusing on roughly 20% of initiatives. I would not treat that as a universal Pareto law. It is a reminder that value in a transformation portfolio is rarely distributed evenly, while constraints include not only money but also capabilities, technology and leadership bandwidth.
 
-A useful portfolio conversation therefore includes stop, start and continue decisions and makes opportunity cost explicit. Without that, governance turns into a negotiation to preserve everything.
+A useful portfolio conversation therefore contains stop, start and continue decisions and makes opportunity cost explicit. Otherwise governance easily becomes a negotiation to preserve everything.
 
-## A new priority needs a donor
+## A new priority needs a resource donor
 
-Consider a portfolio with three strategic initiatives and one shared platform team. A fourth initiative receives “priority one” status because the business case is attractive. The first three initiatives keep the same status. No team is released, no funding moves and no milestone is renegotiated.
+Imagine a portfolio with three strategic initiatives and one shared platform team. A fourth initiative receives “priority 1” status because its business case looks attractive. The first three keep the same status. No team is released, funding does not change and no deadline is renegotiated.
 
 Nothing has been prioritized. A fourth commitment has been added.
 
-For every new priority I find one question particularly useful: **which existing commitment releases the resource this priority needs?** The resource may be a team, a specialist capability, funding or a sponsor’s attention. If no donor can be named, the portfolio should show the new item as additional demand rather than pretend that ranking solved the constraint.
+For every new priority, I use one simple question: **which existing commitment gives up the resource the new priority needs?** I think of this as the Resource Donor Test. The resource may be a team, specialist capability, budget or sponsor attention.
 
-This is where portfolio management becomes uncomfortable and therefore valuable. Strategy is not only about deciding what matters. It is also about accepting what receives less.
+The test does not assume every portfolio is zero-sum. There are three legitimate answers: stop something, reallocate existing capacity, or explicitly add capacity and fund the cost of that decision. The third option must be a real investment decision, not another “priority” added to an unchanged set of commitments.
 
-## Reallocation is a capability, not a yearly event
+If the organization cannot identify either a donor or an explicitly approved capacity increase, the portfolio should show the new initiative as additional demand. Ranking alone does not solve the constraint.
 
-McKinsey’s 2024 research also found an association between resource mobility and performance. Respondents from organizations that encouraged executives to release resources for better opportunities were 1.8 times more likely to report revenue-growth outperformance and 1.7 times more likely to report ROIC outperformance. These are survey associations, not proof that reallocation caused the results, but the direction matters: holding resources in place is not neutral.
+## Reallocation is a capability, not an annual event
 
-There is also older longitudinal evidence worth treating explicitly as historical. In a McKinsey analysis of more than 1,600 US companies, the top third of reallocators shifted an average of 56% of capital across business units over 15 years and achieved, on average, 30% higher annual total returns to shareholders than the bottom third. The study was published in 2012, so I would not use it as a description of today’s market. Its value is the long horizon: strategic allocation patterns compound.
+McKinsey's 2024 research also shows a relationship between resource mobility and reported performance. Respondents from organizations that encourage leaders to release resources toward better opportunities were 1.8 times more likely to report above-average revenue growth and 1.7 times more likely to report above-average ROIC. These are survey correlations, not proof that reallocation caused the results. They do show that freezing resources in the current structure is not neutral.
 
-## Evidence should reopen funding
+An older but unusually long-term McKinsey analysis covering more than 1,600 US companies is also useful. The top third of companies by reallocation shifted an average of 56% of capital across businesses over fifteen years and achieved an average annual total shareholder return around 30% higher than the bottom third. The work was published in 2012, so it does not describe today's market. Its value is in showing how allocation patterns compound over time.
 
-Portfolio needs feedback from execution. Not only status and budget consumption, but evidence about outcomes, risks and the validity of earlier assumptions.
+## Evidence should be able to reopen funding
 
-A portfolio that cannot change when the evidence changes is not governing strategy. It is defending yesterday’s allocation. Review should therefore answer more than “are we on track?”. It should ask whether the expected value still justifies the resources, whether a dependency has become the real bottleneck, and whether another initiative now has a stronger claim on the same capacity.
+A portfolio needs feedback from execution. Not only status and budget consumption, but evidence about outcomes, risk and the validity of earlier assumptions.
 
-This is also why stopping work should not automatically be treated as failure. Sometimes it is evidence that governance is functioning: an assumption was tested, the evidence changed and resources moved before more value was destroyed.
+A portfolio that cannot change when evidence changes is not managing strategy. It is defending yesterday's allocation. A review should therefore ask not only “are we on plan?” but also whether expected value still justifies the resources, whether a dependency has become the real bottleneck, and whether another initiative now has a stronger claim on the same capacity.
 
-## Test whether the portfolio is real
+Stopping work does not necessarily mean failure. Sometimes it is evidence that governance is working: an assumption was tested, the evidence changed and resources moved before more value was destroyed.
 
-At the next portfolio review, choose one new priority and answer five questions:
+## Test one new priority
 
-1. Which resource does it actually need?
-2. Which existing commitment releases that resource?
-3. What strategic outcome justifies the trade-off?
-4. Which evidence would reopen the decision?
-5. Who has the authority to move funding or capacity when that evidence appears?
+At the next portfolio review, pick one new priority and run the Resource Donor Test.
 
-If the portfolio can answer only the ranking question, it is still a reporting mechanism. If it can move resources and revisit earlier choices, it becomes what I think a portfolio should be: strategy in motion.
+Ask what capacity it actually needs, whether that capacity comes from stop, reallocation or an explicit increase, who owns the trade-off, and which evidence should later reopen the decision.
+
+If the portfolio can answer only the ranking question, it remains a reporting mechanism. If it can move resources, deliberately add capacity and reopen earlier choices when evidence changes, it becomes what it should be: strategy in motion.
