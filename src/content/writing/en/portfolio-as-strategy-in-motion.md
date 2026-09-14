@@ -45,6 +45,20 @@ Nothing has been prioritized. A fourth commitment has been added.
 
 For every new priority, I use one simple question: **which existing commitment gives up the resource the new priority needs?** I think of this as the Resource Donor Test. The resource may be a team, specialist capability, budget or sponsor attention.
 
+<figure class="concept-figure concept-figure--portfolio" aria-labelledby="resource-donor-title-en">
+<figcaption><span class="concept-kicker">Resource Donor Test</span><strong id="resource-donor-title-en">A new priority must reveal where its capacity comes from.</strong></figcaption>
+<div class="concept-node concept-node--primary">New priority</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="concept-node">What capacity does it actually need?</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="concept-branches">
+<div class="concept-branch"><span>01</span><strong>STOP</strong><small>Stop an existing commitment and release its resource.</small></div>
+<div class="concept-branch"><span>02</span><strong>REALLOCATE</strong><small>Move existing capacity from a lower-value use.</small></div>
+<div class="concept-branch"><span>03</span><strong>ADD CAPACITY</strong><small>Explicitly fund additional capacity and the cost of that choice.</small></div>
+</div>
+<div class="concept-footer-line"><span>Who owns the trade-off?</span><span>What evidence reopens the decision?</span></div>
+</figure>
+
 The test does not assume every portfolio is zero-sum. There are three legitimate answers: stop something, reallocate existing capacity, or explicitly add capacity and fund the cost of that decision. The third option must be a real investment decision, not another “priority” added to an unchanged set of commitments.
 
 If the organization cannot identify either a donor or an explicitly approved capacity increase, the portfolio should show the new initiative as additional demand. Ranking alone does not solve the constraint.
