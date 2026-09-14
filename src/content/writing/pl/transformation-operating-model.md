@@ -2,7 +2,7 @@
 locale: pl
 category: Operating model i wykonanie
 title: Transformacja potrzebuje operating modelu, nie tylko roadmapy
-dek: Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto może tę kolejność zmienić, na podstawie jakich dowodów i w jakim rytmie decyzji?
+dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kto może tę kolejność zmienić, na podstawie jakich dowodów i w jakim rytmie decyzji?"
 modifiedAt: 2026-09-14T19:00:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
