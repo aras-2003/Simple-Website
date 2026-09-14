@@ -9,9 +9,12 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const x = method[locale];
 const groups = frameworkGroups[locale];
+const metaDescription = locale === 'pl'
+  ? 'OAF: cztery pytania łączące kierunek, architekturę, priorytety i dowody. Model pracy z relacjami między strategią a wykonaniem.'
+  : 'OAF: four questions connecting direction, architecture, priorities and evidence. A working model for the relationships between strategy and execution.';
 ---
 
-<BaseLayout locale={locale} routeKey="oaf" title="OAF – Organizational Architecture Framework" description={x.lead}>
+<BaseLayout locale={locale} routeKey="oaf" title="OAF – Organizational Architecture Framework" description={metaDescription}>
   <PageHero eyebrow="OAF / Organizational Architecture Framework" headline={x.title} lead={x.lead} />
 
   <section class="section method-model" aria-labelledby="model-title">

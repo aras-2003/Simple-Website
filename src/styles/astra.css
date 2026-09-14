@@ -1314,7 +1314,6 @@ textarea {
 }
 
 @media (max-width:850px) {
-  .contact-form-shell { order:-1; }
   .contact-form-shell > .eyebrow, .contact-form-shell > h2 { display:none; }
   .contact-form { margin-top:0; }
 }

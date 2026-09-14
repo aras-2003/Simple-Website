@@ -14,3 +14,5 @@ Baseline source SHA: `083ffbe70325a04bada510dee6a088f5469b1d35` (2026-09-11 insp
 The current stories are owner-sourced qualitative evidence, not independently audited outcomes. Source documents establish the practice areas; they do not justify new numerical results. Home gives output summaries; Advisory adds context, decision, first-person contribution and the decision the output enables. `src/content/proof.ts` is the shared bilingual source; prior duplicate story fields were removed.
 
 Evidence not available in the inspected repository: attributable recommendation text with publication consent, source-backed organisation/budget/team scale, public case artifacts, and measured before/after outcomes. These are next-iteration opportunities, not grounds to fabricate proof or delay staging.
+
+2026-09-13 hardening review: current source files and CONTENT_SOURCES were inspected again. No additional public-safe leadership scale, attributable recommendation, external achievement link or measured outcome was found. Existing proof and About claims are preserved; private conversational context is not treated as publishable evidence.
