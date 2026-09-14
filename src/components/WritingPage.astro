@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from './PageHero.astro';
-import EditorialSignature from './EditorialSignature.astro';
 import {perspective} from '../content/perspective';
 import {getWriting,writingSlug} from '../content/writing';
 import {route,type Locale} from '../lib/site';
@@ -9,36 +8,6 @@ interface Props {locale:Locale;} const {locale}=Astro.props;const x=perspective[
 ---
 <BaseLayout locale={locale} routeKey="writing" title={`${locale==='pl'?'Perspektywa':'Perspective'} – Arkadiusz Kamrowski`} description={x.lead}>
 <PageHero eyebrow={locale==='pl'?'Perspektywa':'Perspective'} headline={x.title} lead={x.lead}/>
-{featured&&<section class="section featured-essay"><div><p class="eyebrow">{x.featured}</p><p class="micro-label">{featured.data.category}</p><div class="featured-signature"><EditorialSignature slug={writingSlug(featured)} inverse /></div></div><div><h2><a href={href(featured)}>{featured.data.title}</a></h2><p>{featured.data.dek}</p><a class="text-link" href={href(featured)}>{x.read}<span aria-hidden="true">↗</span></a></div></section>}
-<section class="section perspective-library"><h2>{x.more}</h2><div class="editorial-library-list">{rest.map(note=><article><div class="essay-signature"><EditorialSignature slug={writingSlug(note)} /></div><div class="essay-card-copy"><p class="eyebrow">{note.data.category}</p><h3><a href={href(note)}>{note.data.title}</a></h3><p>{note.data.dek}</p><a class="text-link" href={href(note)}>{x.read}<span aria-hidden="true">↗</span></a></div></article>)}</div></section>
+{featured&&<section class="section featured-essay"><div><p class="eyebrow">{x.featured}</p><p class="micro-label">{featured.data.category}</p><span class="editorial-mark" aria-hidden="true">?</span></div><div><h2><a href={href(featured)}>{featured.data.title}</a></h2><p>{featured.data.dek}</p><a class="text-link" href={href(featured)}>{x.read}<span aria-hidden="true">↗</span></a></div></section>}
+<section class="section perspective-library"><h2>{x.more}</h2><div class="editorial-library-list">{rest.map(note=><article><p class="eyebrow">{note.data.category}</p><h3><a href={href(note)}>{note.data.title}</a></h3><p>{note.data.dek}</p><a class="text-link" href={href(note)}>{x.read}<span aria-hidden="true">↗</span></a></article>)}</div></section>
 </BaseLayout>
-
-<style>
-  .featured-signature {
-    margin-top: 2.25rem;
-    max-width: 11rem;
-  }
-
-  .essay-signature {
-    margin-bottom: 1.35rem;
-    max-width: 9rem;
-  }
-
-  @media (max-width: 850px) {
-    .editorial-library-list article {
-      align-items: start;
-    }
-
-    .essay-signature {
-      margin: .1rem 0 0;
-      max-width: 10rem;
-    }
-  }
-
-  @media (max-width: 620px) {
-    .essay-signature {
-      margin-bottom: 1.15rem;
-      max-width: 8rem;
-    }
-  }
-</style>
