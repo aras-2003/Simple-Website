@@ -55,6 +55,17 @@ Dojrzały model nie pyta więc wyłącznie, czy decyzja jest „architektoniczna
 
 Centralizacja ma więc sens tam, gdzie konsekwencja jest szeroka, długotrwała lub trudna do odwrócenia. Nie ma sensu jako domyślny mechanizm dla każdej decyzji technicznej.
 
+<figure class="concept-figure concept-figure--architecture" aria-labelledby="decision-placement-title-pl">
+<figcaption><span class="concept-kicker">Poziom decyzji</span><strong id="decision-placement-title-pl">Governance powinien rosnąć wraz z konsekwencją, nie z samą etykietą „architektoniczna”.</strong></figcaption>
+<div class="decision-spectrum">
+<div class="spectrum-level"><span>01</span><strong>Lokalna</strong><small>Zespół decyduje, gdy skutek jest ograniczony i łatwy do odwrócenia.</small></div>
+<div class="spectrum-level"><span>02</span><strong>W guardrailach</strong><small>Zespół nadal decyduje, ale wewnątrz standardów, limitów ryzyka i budżetu.</small></div>
+<div class="spectrum-level"><span>03</span><strong>Enterprise</strong><small>Szerszy owner, gdy decyzja tworzy wspólne zależności lub długoterminowe zobowiązanie.</small></div>
+<div class="spectrum-level"><span>04</span><strong>Wyjątek</strong><small>Jawny mandat do odejścia od guardrailu i przyjęcia konsekwencji.</small></div>
+</div>
+<div class="spectrum-axis"><span>szerszy zasięg</span><span>mniejsza odwracalność</span><span>wyższy koszt błędu →</span></div>
+</figure>
+
 ## Dobra decyzja potrzebuje kontekstu
 
 Decyzja architektoniczna powinna mieć nazwany problem, kryteria, alternatywy, właściciela oraz konsekwencje. Bez tego governance łatwo zamienia się w proces zatwierdzania dokumentów, który nie redukuje ryzyka i nie zwiększa tempa.
