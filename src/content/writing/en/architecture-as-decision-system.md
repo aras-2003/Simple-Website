@@ -55,6 +55,17 @@ A mature model therefore asks more than whether a decision is “architectural�
 
 Centralization therefore makes sense when the consequence is broad, long-lived or hard to reverse. It should not be the default mechanism for every technical choice.
 
+<figure class="concept-figure concept-figure--architecture" aria-labelledby="decision-placement-title-en">
+<figcaption><span class="concept-kicker">Decision placement</span><strong id="decision-placement-title-en">Governance should increase with consequence, not with the label “architectural”.</strong></figcaption>
+<div class="decision-spectrum">
+<div class="spectrum-level"><span>01</span><strong>Local</strong><small>The team decides when impact is contained and easy to reverse.</small></div>
+<div class="spectrum-level"><span>02</span><strong>Within guardrails</strong><small>The team still decides, inside enterprise standards, risk limits and budget boundaries.</small></div>
+<div class="spectrum-level"><span>03</span><strong>Enterprise</strong><small>Broader ownership when the choice creates shared dependencies or long-term commitment.</small></div>
+<div class="spectrum-level"><span>04</span><strong>Exception</strong><small>Explicit mandate to depart from a guardrail and own the consequence.</small></div>
+</div>
+<div class="spectrum-axis"><span>broader scope</span><span>lower reversibility</span><span>higher cost of error →</span></div>
+</figure>
+
 ## A good decision needs context
 
 An architecture decision should have a named problem, criteria, alternatives, owner and consequences. Without them, governance can become a document-approval process that neither reduces risk nor increases speed.
