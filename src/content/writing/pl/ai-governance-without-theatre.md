@@ -41,6 +41,18 @@ W praktyce patrzę na trzy zmienne.
 
 **Odwracalność.** Jak łatwo organizacja może cofnąć skutek, gdy okaże się niepożądany?
 
+<figure class="concept-figure concept-figure--ai" aria-labelledby="ai-control-title-pl">
+<figcaption><span class="concept-kicker">Siła kontroli</span><strong id="ai-control-title-pl">Kontrola powinna rosnąć wraz z ekspozycją — nie dlatego, że rozwiązanie używa AI.</strong></figcaption>
+<div class="exposure-grid">
+<div class="exposure-row"><strong>Autonomia</strong><span>niska</span><div class="exposure-track" aria-hidden="true"></div><span>wysoka</span></div>
+<div class="exposure-row"><strong>Konsekwencja</strong><span>niska</span><div class="exposure-track" aria-hidden="true"></div><span>wysoka</span></div>
+<div class="exposure-row"><strong>Odwracalność</strong><span>łatwa</span><div class="exposure-track" aria-hidden="true"></div><span>trudna</span></div>
+</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="control-scale"><span>monitoring</span><span>sampling</span><span>review</span><span>eskalacja</span><span>stop authority</span></div>
+<p class="concept-note">Wymagania regulacyjne wyznaczają minimum. Ten model określa dodatkową kontrolę operacyjną ponad tym minimum.</p>
+</figure>
+
 Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu governance potrzebujemy: lepszego evidence, monitoringu, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
 
 To nie jest alternatywa dla prawa. Regulacyjne kategorie i obowiązkowe wymagania wyznaczają minimalny poziom zgodności. Wewnętrzny model ryzyka służy do zaprojektowania kontroli ponad tym minimum i do rozróżnienia przypadków, których przepisy nie traktują identycznie operacyjnie.
