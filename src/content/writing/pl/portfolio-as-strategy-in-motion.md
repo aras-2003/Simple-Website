@@ -45,6 +45,20 @@ Nic nie zostało spriorytetyzowane. Dodano czwarte zobowiązanie.
 
 Dla każdego nowego priorytetu używam prostego pytania: **które obecne zobowiązanie oddaje zasób potrzebny nowemu priorytetowi?** To mój Test dawcy zasobu. Tym zasobem może być zespół, specjalistyczna kompetencja, budżet albo uwaga sponsora.
 
+<figure class="concept-figure concept-figure--portfolio" aria-labelledby="resource-donor-title-pl">
+<figcaption><span class="concept-kicker">Test dawcy zasobu</span><strong id="resource-donor-title-pl">Nowy priorytet musi ujawnić źródło pojemności.</strong></figcaption>
+<div class="concept-node concept-node--primary">Nowy priorytet</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="concept-node">Jakiej pojemności naprawdę potrzebuje?</div>
+<div class="concept-arrow" aria-hidden="true">↓</div>
+<div class="concept-branches">
+<div class="concept-branch"><span>01</span><strong>STOP</strong><small>Zatrzymaj istniejące zobowiązanie i uwolnij jego zasób.</small></div>
+<div class="concept-branch"><span>02</span><strong>REALOKUJ</strong><small>Przesuń istniejącą pojemność z mniej wartościowego użycia.</small></div>
+<div class="concept-branch"><span>03</span><strong>DODAJ CAPACITY</strong><small>Jawnie sfinansuj dodatkową pojemność i koszt tej decyzji.</small></div>
+</div>
+<div class="concept-footer-line"><span>Kto bierze odpowiedzialność za kompromis?</span><span>Jakie dowody ponownie otwierają decyzję?</span></div>
+</figure>
+
 Test nie zakłada, że każdy portfel jest grą o sumie zerowej. Odpowiedź może być jedna z trzech: zatrzymujemy coś, realokujemy istniejącą pojemność albo świadomie zwiększamy pojemność i finansujemy koszt tej decyzji. Ważne jest, żeby trzecia opcja była prawdziwą decyzją inwestycyjną, a nie kolejnym „priorytetem” dopisanym do niezmienionej listy zobowiązań.
 
 Jeżeli nie potrafimy wskazać dawcy ani jawnie zatwierdzonego zwiększenia pojemności, portfolio powinno pokazać nową pozycję jako dodatkowy popyt. Ranking sam nie rozwiązuje ograniczenia.
