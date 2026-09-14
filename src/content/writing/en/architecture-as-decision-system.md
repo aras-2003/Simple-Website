@@ -3,7 +3,7 @@ locale: en
 category: Decision systems and architecture
 title: Architecture as a decision system, not a document system
 dek: Architecture governance should not produce more control points. It should help organizations make better decisions faster — with clear ownership, criteria and consequences.
-modifiedAt: 2026-09-14T22:55:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -56,14 +56,14 @@ A mature model therefore asks more than whether a decision is “architectural�
 Centralization therefore makes sense when the consequence is broad, long-lived or hard to reverse. It should not be the default mechanism for every technical choice.
 
 <figure class="concept-figure concept-figure--architecture" aria-labelledby="decision-placement-title-en">
-<figcaption><span class="concept-kicker">Decision placement</span><strong id="decision-placement-title-en">Governance should increase with consequence, not with the label “architectural”.</strong></figcaption>
+<figcaption><span class="concept-kicker">Decision level</span><strong id="decision-placement-title-en">The bigger the impact, the broader the ownership.</strong></figcaption>
 <div class="decision-spectrum">
-<div class="spectrum-level"><span>01</span><strong>Local</strong><small>The team decides when impact is contained and easy to reverse.</small></div>
-<div class="spectrum-level"><span>02</span><strong>Within guardrails</strong><small>The team still decides, inside enterprise standards, risk limits and budget boundaries.</small></div>
-<div class="spectrum-level"><span>03</span><strong>Enterprise</strong><small>Broader ownership when the choice creates shared dependencies or long-term commitment.</small></div>
-<div class="spectrum-level"><span>04</span><strong>Exception</strong><small>Explicit mandate to depart from a guardrail and own the consequence.</small></div>
+<div class="spectrum-level"><span>01</span><strong>Team</strong><small>The team decides when impact is contained and easy to reverse.</small></div>
+<div class="spectrum-level"><span>02</span><strong>Team within limits</strong><small>The team still decides within enterprise standards, risk limits and budget boundaries.</small></div>
+<div class="spectrum-level"><span>03</span><strong>Shared decision</strong><small>Broader ownership when the choice creates shared dependencies or long-term commitment.</small></div>
+<div class="spectrum-level"><span>04</span><strong>Exception</strong><small>Explicit mandate to step outside agreed boundaries and own the consequence.</small></div>
 </div>
-<div class="spectrum-axis"><span>broader scope</span><span>lower reversibility</span><span>higher cost of error →</span></div>
+<div class="spectrum-axis"><span>smaller impact</span><span>larger impact</span><span>harder to reverse →</span></div>
 </figure>
 
 ## A good decision needs context
