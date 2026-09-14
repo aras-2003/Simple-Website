@@ -3,7 +3,7 @@ locale: pl
 category: Systemy decyzji i architektura
 title: Architektura jako system decyzji, nie system dokumentów
 dek: Ład architektoniczny nie powinien produkować kolejnych punktów kontroli. Ma pomagać podejmować lepsze decyzje szybciej — z jasnym właścicielem, kryteriami i konsekwencjami.
-modifiedAt: 2026-09-14T22:35:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -56,14 +56,14 @@ Dojrzały model nie pyta więc wyłącznie, czy decyzja jest „architektoniczna
 Centralizacja ma więc sens tam, gdzie konsekwencja jest szeroka, długotrwała lub trudna do odwrócenia. Nie ma sensu jako domyślny mechanizm dla każdej decyzji technicznej.
 
 <figure class="concept-figure concept-figure--architecture" aria-labelledby="decision-placement-title-pl">
-<figcaption><span class="concept-kicker">Poziom decyzji</span><strong id="decision-placement-title-pl">Governance powinien rosnąć wraz z konsekwencją, nie z samą etykietą „architektoniczna”.</strong></figcaption>
+<figcaption><span class="concept-kicker">Miejsce decyzji</span><strong id="decision-placement-title-pl">Im większy wpływ, tym szersza odpowiedzialność.</strong></figcaption>
 <div class="decision-spectrum">
-<div class="spectrum-level"><span>01</span><strong>Lokalna</strong><small>Zespół decyduje, gdy skutek jest ograniczony i łatwy do odwrócenia.</small></div>
-<div class="spectrum-level"><span>02</span><strong>W guardrailach</strong><small>Zespół nadal decyduje, ale wewnątrz standardów, limitów ryzyka i budżetu.</small></div>
-<div class="spectrum-level"><span>03</span><strong>Enterprise</strong><small>Szerszy owner, gdy decyzja tworzy wspólne zależności lub długoterminowe zobowiązanie.</small></div>
-<div class="spectrum-level"><span>04</span><strong>Wyjątek</strong><small>Jawny mandat do odejścia od guardrailu i przyjęcia konsekwencji.</small></div>
+<div class="spectrum-level"><span>01</span><strong>Zespół</strong><small>Zespół decyduje, gdy skutek jest ograniczony i łatwy do odwrócenia.</small></div>
+<div class="spectrum-level"><span>02</span><strong>Zespół w granicach</strong><small>Zespół nadal decyduje, ale wewnątrz standardów, limitów ryzyka i budżetu.</small></div>
+<div class="spectrum-level"><span>03</span><strong>Wspólna decyzja</strong><small>Szerszy właściciel, gdy decyzja tworzy wspólne zależności lub długoterminowe zobowiązanie.</small></div>
+<div class="spectrum-level"><span>04</span><strong>Wyjątek</strong><small>Jawny mandat do odejścia od ustalonych granic i przyjęcia konsekwencji.</small></div>
 </div>
-<div class="spectrum-axis"><span>szerszy zasięg</span><span>mniejsza odwracalność</span><span>wyższy koszt błędu →</span></div>
+<div class="spectrum-axis"><span>mniejszy wpływ</span><span>większy wpływ</span><span>trudniej odwrócić →</span></div>
 </figure>
 
 ## Dobra decyzja potrzebuje kontekstu
