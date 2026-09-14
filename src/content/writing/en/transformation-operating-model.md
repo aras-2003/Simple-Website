@@ -2,7 +2,7 @@
 locale: en
 category: Operating Model & Execution
 title: Transformation needs an operating model, not only a roadmap
-dek: A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, on what evidence, and in what decision rhythm?
+dek: "A roadmap shows sequence. An operating model answers the harder question: who can change that sequence, on what evidence, and in what decision rhythm?"
 modifiedAt: 2026-09-14T19:00:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
