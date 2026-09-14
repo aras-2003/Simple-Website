@@ -29,6 +29,14 @@ That is the standard I find useful for architecture governance. An architecture 
 
 Faster does not mean less rigorous. Good governance reduces waiting, not thinking. If a decision needs six meetings only because the process does not identify the owner, criteria or boundaries for an exception, the problem is not insufficient control. The decision system is poorly designed.
 
+## Autonomy needs accountability
+
+> Autonomy without accountability creates chaos; governance without autonomy creates bureaucracy.
+
+Architecture governance should define the space in which teams can decide locally and the smaller set of decisions that genuinely need escalation. Autonomy without explicit ownership and boundaries turns system trade-offs into accidental local optimizations. Governance that requires central approval for every reversible decision slows teams and moves responsibility away from the people closest to the work.
+
+A healthy model therefore distinguishes enterprise guardrails from local choices, reversible decisions from hard-to-reverse ones, and exceptions from ordinary delivery. The aim is not centralized control. It is distributed decision-making with explicit accountability.
+
 ## A good decision needs context
 
 An architectural decision needs a named problem, criteria, alternatives, an owner and consequences. Without them, governance can become a document approval process that neither reduces risk nor increases speed.
