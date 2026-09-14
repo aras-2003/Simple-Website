@@ -1,9 +1,9 @@
 ---
 locale: en
-category: Decision Systems & Architecture
+category: Decision systems and architecture
 title: Architecture as a decision system, not a document system
-dek: Architecture governance should not create more checkpoints. It should help the organization make better decisions faster — with clear ownership, criteria and consequences.
-modifiedAt: 2026-09-14T18:45:00+02:00
+dek: Architecture governance should not produce more control points. It should help organizations make better decisions faster — with clear ownership, criteria and consequences.
+modifiedAt: 2026-09-14T22:55:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -15,58 +15,66 @@ sources:
     href: https://cisr.mit.edu/publication/enterprise-architecture-as-strategy
 ---
 
-## The artifact is not the product
+## The artifact is not the product of architecture
 
-A capability map, target architecture or technology principle creates value only when it changes capital allocation, initiative sequencing or the boundaries of product decisions. A correct model is not the same thing as an influential model.
+A capability map, target architecture or technology principle creates value only when it changes capital allocation, initiative sequencing or the boundaries of product decisions. A model can be correct without the organization actually using it.
 
-The more useful question is therefore not “do we have architecture?” but “which decisions do we make differently because of it?”. That shifts attention from completeness of documentation to the quality of the decision mechanism.
+That makes “do we have architecture?” less useful than “which decisions do we make differently because of it?”. The emphasis shifts from documentation completeness to the quality of the decision system.
 
-Architecture sits inside a broader organizational problem. In McKinsey’s global decision-making survey, only one in five respondents said their organizations excelled at decision making, while 37% said decisions were both fast and high quality. The numbers are self-reported, not an objective scorecard, but they point to the same operating challenge: organizations often struggle to combine speed, quality and alignment at the same time.
+Architecture sits inside a wider organizational problem. In a global McKinsey survey, only one in five respondents rated their organizations as very good at decision making, while 37% said decisions were both fast and high quality. These are self-assessments rather than an objective ranking, but they capture the tension: organizations struggle to maintain speed, quality and coherence at the same time.
 
-<aside class="evidence-callout" aria-label="Data point">
+<aside class="evidence-callout" aria-label="Evidence">
 <p class="evidence-number">37%</p>
-<p class="evidence-copy">of respondents in McKinsey’s global survey said their organizations made decisions both quickly and with high quality.</p>
+<p class="evidence-copy">of respondents in McKinsey's research said their organizations make decisions both quickly and at high quality.</p>
 <p class="evidence-source"><a href="https://www.mckinsey.com/capabilities/people-and-organization/our-insights/decision-making-in-the-age-of-urgency">McKinsey · Decision making in the age of urgency</a></p>
 </aside>
 
-## Governance is a means, not the outcome
+## Governance is a mechanism, not an outcome
 
-> The goal of architecture governance isn't more governance. It's better decisions made faster.
+The goal of architecture governance is not to produce more control points. It is to help the organization make better decisions faster.
 
-That is the standard I find useful for architecture governance. An architecture board, standard, exception process or review is not valuable by itself. It should shorten the path from a problem to a responsible decision without losing context, ownership or an explicit trade-off.
+An architecture board, standard, exception process or review has no intrinsic value. These mechanisms should shorten the path from problem to accountable decision without losing context, ownership or an explicit trade-off.
 
-Faster does not mean less rigorous. Good governance reduces waiting, not thinking. If a decision needs six meetings only because the process does not identify the owner, criteria or boundaries for an exception, the problem is not insufficient control. The decision system is poorly designed.
+Faster does not mean careless. Good governance reduces waiting, not thinking. If a decision needs six meetings because the process does not identify an owner, criteria or the boundary of an exception, the problem is a poorly designed decision system.
 
-Software delivery provides a useful warning against equating approval with control. DORA’s research on change approval found that heavyweight external approval processes were associated with poorer software-delivery performance, while finding no evidence that formal external review reduced change-fail rates. That does not prove that all approval is bad. It does show why governance should add judgment where risk requires it rather than add the same queue to every decision.
+Software delivery offers a useful warning against equating approval with control. DORA research on change approval links heavyweight external approval processes with worse software delivery performance and did not find evidence that more formal external review reduces change-fail rate. That does not mean all approval is bad. It means governance should add judgment where risk requires it rather than adding the same queue to every decision.
 
-## Autonomy needs accountability
+## Decisions should sit where their consequences can be owned
 
-> Autonomy without accountability creates chaos; governance without autonomy creates bureaucracy.
+Autonomy without accountability creates chaos. Governance without autonomy creates bureaucracy.
 
-Architecture governance should define the space in which teams can decide locally and the smaller set of decisions that genuinely need escalation. Autonomy without explicit ownership and boundaries turns system trade-offs into accidental local optimizations. Governance that requires central approval for every reversible decision slows teams and moves responsibility away from the people closest to the work.
+A mature model therefore asks more than whether a decision is “architectural”. It asks about scope, reversibility and the cost of being wrong.
 
-A healthy model therefore distinguishes enterprise guardrails from local choices, reversible decisions from hard-to-reverse ones, and exceptions from ordinary delivery. The aim is not centralized control. It is distributed decision-making with explicit accountability.
+**A local decision** can stay with a team when consequences are contained and reversible.
 
-Consider a team adopting a new platform capability. If the choice stays within agreed standards, risk limits and budget, it should often remain a local decision. If it requires an exception from an enterprise guardrail, the relevant architecture owner should be able to decide or escalate it. If the choice creates a long-lived dependency for several domains or changes investment sequencing, it becomes a broader enterprise decision. The level of governance should follow the consequence, not the existence of an architecture diagram.
+**A constrained decision** still belongs to the team but must remain within enterprise standards, risk limits or budget guardrails.
+
+**An enterprise decision** needs broader ownership when it creates dependencies across domains, changes a shared platform or data model, affects security, or creates a multi-year capital commitment.
+
+**An exception** should go to the person with the mandate to accept a departure from a guardrail and own the consequence.
+
+Centralization therefore makes sense when the consequence is broad, long-lived or hard to reverse. It should not be the default mechanism for every technical choice.
 
 ## A good decision needs context
 
-An architectural decision needs a named problem, criteria, alternatives, an owner and consequences. Without them, governance can become a document approval process that neither reduces risk nor increases speed.
+An architecture decision should have a named problem, criteria, alternatives, owner and consequences. Without them, governance can become a document-approval process that neither reduces risk nor increases speed.
 
-Architecture gains influence when it can connect a strategic outcome, a capability, a technology dependency and an investment choice. The discussion then moves from technical preference to organizational choice.
+Architecture gains influence when it can show the relationship between a strategic outcome, organizational capability, technology dependency and investment. The conversation then stops being a debate about technical preference and becomes a conversation about an organizational choice.
 
-The same McKinsey survey found that only 41% of respondents said their organizations both aligned decisions with corporate strategy and allocated financial and human resources to high-value projects. Organizations that did both were 2.9 times more likely to be classified by McKinsey as decision-making winners. That is association, not proof of causation, but it illustrates why architecture cannot stop at design consistency. It must help connect choices to strategy and resources.
+In the same McKinsey study, only 41% of respondents said their organizations both link decisions to strategy and direct people and capital toward high-value projects. Organizations doing both were 2.9 times more likely to be classified by McKinsey as “decision-making winners”. That is correlation rather than proof of causation, but it helps explain why architecture cannot end with solution consistency. It must help connect decisions with strategy and resources.
 
 ## Influence is visible in how the system moves
 
-The most interesting architecture measures are not the number of reviews or template compliance. I care more about whether conflicting initiatives are detected earlier, whether hard-to-reverse choices become cheaper to challenge before commitment, and whether portfolio dependencies are funded in the right sequence.
+The most interesting architecture measures are not the number of reviews or compliance with a template. I care more about whether conflicting initiatives are detected earlier, whether hard-to-reverse decisions are challenged before full commitment, and whether the portfolio funds dependencies in the right sequence.
 
-In that sense architecture is leverage. Its job is not to describe the entire organization, but to help it make fewer contradictory decisions under time pressure and incomplete information.
+Architecture is a lever in that sense. Its purpose is not to describe the entire organization. It is to help the organization make fewer contradictory decisions under time pressure and incomplete information.
 
-## Test architecture’s influence
+## Test the influence of one architecture principle
 
-At the next review, choose one architectural principle. Ask which option it rules out, who can authorize an exception and which consequence that person accepts. Then add two questions: does the governance path help this decision happen faster, and is the decision being made at the lowest level that can responsibly own its consequences?
+At the next review, pick one architecture principle. Ask which option it rules out, who can authorize an exception, and which consequence that person accepts.
 
-If the principle changes none of the available options, it describes a preference rather than a decision boundary. If governance does not accelerate a responsible decision, it becomes its own operating cost. If every meaningful choice must travel upward, accountability has been replaced with escalation.
+Then test the level of the decision: does it genuinely require an enterprise perspective, or can it safely remain local within existing guardrails?
 
-That is my practical test for architecture that helps leaders govern rather than merely approve a document.
+If the principle changes no available option, it describes a preference rather than a decision boundary. If every material choice must escalate, accountability has been replaced by escalation. If the consequence crosses team boundaries and nobody has the mandate to resolve it, autonomy has been confused with the absence of governance.
+
+That is my practical test for distinguishing architecture that helps manage the enterprise from architecture that can only be approved.
