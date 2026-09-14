@@ -3,7 +3,7 @@ locale: en
 category: Investment and portfolio choices
 title: Portfolio is strategy in motion
 dek: Declared strategy says what matters. The portfolio shows whether the organization can actually move money, people and attention behind it.
-modifiedAt: 2026-09-14T22:50:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -46,17 +46,17 @@ Nothing has been prioritized. A fourth commitment has been added.
 For every new priority, I use one simple question: **which existing commitment gives up the resource the new priority needs?** I think of this as the Resource Donor Test. The resource may be a team, specialist capability, budget or sponsor attention.
 
 <figure class="concept-figure concept-figure--portfolio" aria-labelledby="resource-donor-title-en">
-<figcaption><span class="concept-kicker">Resource Donor Test</span><strong id="resource-donor-title-en">A new priority must reveal where its capacity comes from.</strong></figcaption>
+<figcaption><span class="concept-kicker">Resource Donor Test</span><strong id="resource-donor-title-en">Where does the resource for the new priority come from?</strong></figcaption>
 <div class="concept-node concept-node--primary">New priority</div>
 <div class="concept-arrow" aria-hidden="true">↓</div>
-<div class="concept-node">What capacity does it actually need?</div>
+<div class="concept-node">What resource does it actually need?</div>
 <div class="concept-arrow" aria-hidden="true">↓</div>
 <div class="concept-branches">
-<div class="concept-branch"><span>01</span><strong>STOP</strong><small>Stop an existing commitment and release its resource.</small></div>
-<div class="concept-branch"><span>02</span><strong>REALLOCATE</strong><small>Move existing capacity from a lower-value use.</small></div>
-<div class="concept-branch"><span>03</span><strong>ADD CAPACITY</strong><small>Explicitly fund additional capacity and the cost of that choice.</small></div>
+<div class="concept-branch"><span>01</span><strong>Stop</strong><small>Stop an existing commitment and release its resource.</small></div>
+<div class="concept-branch"><span>02</span><strong>Move resources</strong><small>Move existing resources from a lower-value use.</small></div>
+<div class="concept-branch"><span>03</span><strong>Add resources</strong><small>Explicitly fund additional resources and the cost of that choice.</small></div>
 </div>
-<div class="concept-footer-line"><span>Who owns the trade-off?</span><span>What evidence reopens the decision?</span></div>
+<div class="concept-footer-line"><span>Who decides?</span><span>When do we revisit the decision?</span></div>
 </figure>
 
 The test does not assume every portfolio is zero-sum. There are three legitimate answers: stop something, reallocate existing capacity, or explicitly add capacity and fund the cost of that decision. The third option must be a real investment decision, not another “priority” added to an unchanged set of commitments.
