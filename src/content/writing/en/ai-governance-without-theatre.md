@@ -3,7 +3,7 @@ locale: en
 category: Autonomy, risk and governance
 title: AI governance without control theatre
 dek: Mature AI governance does not stop experimentation. It increases the strength of control when system autonomy, consequence and difficulty of reversal increase.
-modifiedAt: 2026-09-14T23:05:00+02:00
+modifiedAt: 2026-09-14T23:15:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -42,15 +42,15 @@ I find three variables useful.
 **Reversibility.** How easily can the organization undo the effect if it proves undesirable?
 
 <figure class="concept-figure concept-figure--ai" aria-labelledby="ai-control-title-en">
-<figcaption><span class="concept-kicker">Control intensity</span><strong id="ai-control-title-en">Control should increase with exposure — not simply because a solution uses AI.</strong></figcaption>
+<figcaption><span class="concept-kicker">Control strength</span><strong id="ai-control-title-en">The bigger the potential impact, the stronger the control.</strong></figcaption>
 <div class="exposure-grid">
 <div class="exposure-row"><strong>Autonomy</strong><span>low</span><div class="exposure-track" aria-hidden="true"></div><span>high</span></div>
-<div class="exposure-row"><strong>Consequence</strong><span>low</span><div class="exposure-track" aria-hidden="true"></div><span>high</span></div>
+<div class="exposure-row"><strong>Impact</strong><span>low</span><div class="exposure-track" aria-hidden="true"></div><span>high</span></div>
 <div class="exposure-row"><strong>Reversibility</strong><span>easy</span><div class="exposure-track" aria-hidden="true"></div><span>hard</span></div>
 </div>
 <div class="concept-arrow" aria-hidden="true">↓</div>
-<div class="control-scale"><span>monitoring</span><span>sampling</span><span>review</span><span>escalation</span><span>stop authority</span></div>
-<p class="concept-note">Regulatory requirements set the floor. This model determines additional operational control above that floor.</p>
+<div class="control-scale"><span>Observe</span><span>Sample</span><span>Review</span><span>Escalate</span><span>Stop</span></div>
+<p class="concept-note">Regulation sets the minimum. The organization may require more.</p>
 </figure>
 
 As autonomy and consequence rise, and reversibility falls, governance should become stronger: better evidence, monitoring, review, escalation or explicit authority to stop the system.
