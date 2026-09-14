@@ -19,9 +19,11 @@ Astro/TypeScript compile bilingual content to static HTML/CSS and small external
 | `server/contact.mjs`, Docker/NGINX/Kubernetes/Azure files | Local/reference portability; not production |
 
 ## Security and data
-Contact: origin, JSON/body bounds, own-property topic allowlist, field validation, honeypot, timing, rate limiter, server-side Turnstile and idempotent Resend submission. Contact data is never included in event payloads. Events use same-origin POST and exact enum schema. Worker secrets remain environment-isolated. No database, frontend framework, remote font or additional analytics vendor.
+Contact: origin, streamed 32 KiB JSON/body ceiling, own-property topic allowlist, field validation, honeypot, timing, rate limiter, server-side Turnstile and idempotent Resend submission. The browser aborts unconfirmed requests after 25 seconds, preserves fields and restores user-controlled retry. Provider exceptions are logged only as fixed categories. Contact data is never included in event payloads. Events use same-origin POST and exact enum schema. Worker secrets remain environment-isolated. No database, frontend framework, remote font or additional analytics vendor.
 
 CSP permits external same-origin scripts and Turnstile only. Vite `assetsInlineLimit=0` prevents automatic executable inlining. JSON-LD is inert data with `<` escaped; static validation parses every graph and continues rejecting executable inline scripts. SEO routes are `/perspektywa/<slug>` and `/en/perspective/<slug>`; legacy `/writing` redirects remain.
 
 ## Deployment and verification
 See [ENVIRONMENTS.md](ENVIRONMENTS.md), [ANALYTICS.md](ANALYTICS.md) and [PROOF_RELEASE.md](PROOF_RELEASE.md). CI exercises both canonical builds, three Worker packages, browser/a11y routes, contact/security tests, event privacy and unchanged performance budgets. Real staging acceptance/Turnstile/mail delivery remains separate from simulated provider tests.
+
+`.github/workflows-disabled/deploy-aks.yml` is historical/reference-only and is not an active GitHub Actions release path.

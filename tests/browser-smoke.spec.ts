@@ -10,6 +10,86 @@ const visualRoutes = [
   ['contact', '/contact'],
 ] as const;
 
+// A valid PNG header is insufficient: social crawlers must decode the whole image.
+test('social preview decodes at its declared dimensions', async ({ page }) => {
+  await page.goto('/');
+  expect(await page.evaluate(async () => {
+    const image = new Image();
+    image.src = document.querySelector<HTMLMetaElement>('meta[property="og:image"]')!.content.replace(location.origin, '').replace(/^https:\/\/[^/]+/, '');
+    await image.decode();
+    return [image.naturalWidth, image.naturalHeight];
+  })).toEqual([1200, 630]);
+});
+
+for (const locale of ['pl', 'en']) {
+  test(`${locale} contact guidance precedes input at narrow widths`, async ({ page }) => {
+    await page.setViewportSize({width: 320, height: 740});
+    await page.goto(locale === 'pl' ? '/contact' : '/en/contact');
+    const guidance = await page.locator('.contact-context .fit-list').boundingBox();
+    const firstField = await page.locator('input[name="name"]').boundingBox();
+    expect(guidance!.y + guidance!.height).toBeLessThan(firstField!.y);
+    await expect(page.locator('.contact-context .fit-list li')).toHaveCount(3);
+  });
+
+  // Hold a real browser fetch open, advance the clock, then retry with unchanged
+  // data. Turnstile is mocked explicitly; this does not claim live acceptance.
+  test(`${locale} contact timeout restores retry, focus and Turnstile without leaking content`, async ({ page }) => {
+    await page.clock.install();
+    const path = locale === 'pl' ? '/contact' : '/en/contact';
+    await page.addInitScript(() => {
+      Object.assign(window, {testResets: 0, turnstile: {
+        render(container: HTMLElement) {
+          container.innerHTML = '<input type="hidden" name="cf-turnstile-response" value="test-token">';
+          return 'test-widget';
+        },
+        reset() { const w = window as unknown as {testResets: number}; w.testResets += 1; },
+      }});
+    });
+    await page.route(`**${path}`, async route => {
+      const response = await route.fetch();
+      await route.fulfill({response, body: (await response.text()).replace('</form>', '<div data-turnstile-widget data-sitekey="test"></div></form>')});
+    });
+    const events: Record<string,string>[] = [];
+    await page.route('**/api/events', async route => {
+      const event = route.request().postDataJSON();
+      expect(Object.keys(event).sort()).toEqual(['event','locale','page','source']);
+      expect(JSON.stringify(event)).not.toMatch(/Zażółć|private|example\.com/);
+      events.push(event);
+      await route.fulfill({status:204});
+    });
+    let firstPayload: unknown;
+    await page.route('**/api/contact', route => {firstPayload = route.request().postDataJSON(); return new Promise<void>(() => {});});
+    await page.goto(path);
+    await page.locator('input[name="name"]').fill('Private Person');
+    await page.locator('input[name="email"]').fill('private@example.com');
+    await page.locator('select[name="topic"]').selectOption('diagnostic');
+    const message = 'Zażółć gęślą jaźń.\nA private decision to discuss.';
+    await page.locator('textarea').fill(message);
+    await page.locator('input[name="consent"]').check();
+    const button = page.locator('button[type="submit"]');
+    const pending = page.waitForRequest('**/api/contact');
+    await button.click();
+    await pending;
+    await expect(button).toBeDisabled();
+    await page.clock.fastForward(25001);
+    const status = page.locator('[data-form-status]');
+    await expect(status).toContainText(locale === 'pl' ? 'potwierdzenia' : 'confirmation');
+    await expect(status).toBeFocused();
+    await expect(button).toBeEnabled();
+    await expect(page.locator('textarea')).toHaveValue(message);
+    expect(await page.evaluate(() => (window as unknown as {testResets:number}).testResets)).toBe(1);
+    await expect.poll(() => events.filter(e => e.event === 'form_error').length).toBe(1);
+    await page.route('**/api/contact', async route => {
+      expect(route.request().postDataJSON()).toEqual(firstPayload);
+      await route.fulfill({status:202, contentType:'application/json', body:'{"ok":true}'});
+    });
+    await button.click();
+    await expect(status).toHaveAttribute('data-state','success');
+    await expect(page.locator('textarea')).toHaveValue('');
+    await expect.poll(() => events.filter(e => e.event === 'form_success').length).toBe(1);
+  });
+}
+
 for (const path of routes) {
   test(`${path} renders core experience without browser-specific breakage`, async ({ page }) => {
     const response = await page.goto(path, { waitUntil: 'networkidle' });

@@ -12,6 +12,6 @@ export const pl = {
     work: 'Praktyka',
     writing: 'Perspektywa',
   },
-  footer: 'Architektura korporacyjna × Strategia × Wykonanie',
+  footer: 'Strategię widać w wyborach.',
   externalNewTab: 'otwiera w nowej karcie',
 } as const;

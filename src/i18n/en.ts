@@ -12,6 +12,6 @@ export const en = {
     work: 'Practice',
     writing: 'Perspective',
   },
-  footer: 'Enterprise Architecture × Strategy × Execution',
+  footer: 'Strategy shows up in choices.',
   externalNewTab: 'opens in a new tab',
 } as const;

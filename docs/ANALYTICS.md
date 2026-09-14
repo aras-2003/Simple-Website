@@ -61,3 +61,5 @@ No numeric conversion target yet. Counts are **events, not unique visitors, sess
 `tests/measurement.mjs`: schema rejection/no PII logs, malformed/oversized payloads, origins, opt-outs, disabled/missing binding, rate limits and staging isolation. Browser integration tests inspect actual event requests across intent/error/retry/success and verify DNT/GPC. Existing security/CSP and asset budgets stay unchanged.
 
 Disable collection by setting `PRODUCT_MEASUREMENT=0` on the affected Worker. The frontend still functions. Local Astro/reference Node previews do not persist events; validate those flows with mocks or use the Worker package locally.
+
+Post-launch decision: after 2–4 weeks of meaningful traffic, evaluate persistent aggregates (for example Cloudflare Analytics Engine) against the actual review cadence. Qualified conversations remain the product outcome; pageviews are a diagnostic input. This review is not a pre-launch platform migration.

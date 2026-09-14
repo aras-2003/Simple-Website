@@ -196,6 +196,35 @@ async function rateLimit(request, env) {
   return success;
 }
 
+// Stop consuming undeclared/chunked payloads as soon as they exceed the ceiling.
+async function readContactBody(request) {
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error('invalid_json');
+  const chunks = [];
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_BODY_BYTES) {
+        await reader.cancel().catch(() => {});
+        throw new Error('payload_too_large');
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return new TextDecoder().decode(bytes);
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 async function handleContact(request, env) {
   const origin = clean(request.headers.get('Origin'));
   if (request.method === 'OPTIONS') {
@@ -226,13 +255,11 @@ async function handleContact(request, env) {
     return json(413, { error: 'payload_too_large' });
   }
 
-  const raw = await request.text();
-  if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return json(413, { error: 'payload_too_large' });
-
   let body;
   try {
-    body = JSON.parse(raw);
-  } catch {
+    body = JSON.parse(await readContactBody(request));
+  } catch (error) {
+    if (error instanceof Error && error.message === 'payload_too_large') return json(413, { error: 'payload_too_large' });
     return json(400, { error: 'invalid_json' });
   }
 
@@ -278,7 +305,8 @@ async function handleContact(request, env) {
     return json(202, { ok: true });
   } catch (error) {
     const code = error instanceof Error ? error.message : 'unknown';
-    console.error('contact_error', code);
+    // Provider/network exceptions may contain response text; log fixed categories only.
+    console.error('contact_error', ['turnstile_not_configured', 'turnstile_unavailable', 'contact_not_configured', 'delivery_failed'].includes(code) ? code : 'upstream_failed');
     if (code === 'turnstile_not_configured' || code === 'turnstile_unavailable') {
       return json(503, { error: 'turnstile_unavailable' });
     }

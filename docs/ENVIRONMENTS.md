@@ -159,7 +159,7 @@ The merge makes the commit eligible for production release; it does **not** itse
 
 ## Repository operating guardrails
 
-Historical setup assumed a single-owner private repository on GitHub Free. The 2026-09-11 repository API reports public visibility and unprotected branches. This release does not change visibility, plan or protection. PR + CI promotion remains the operating control; do not claim hard enforcement that has not been configured.
+Historical setup assumed a single-owner private repository on GitHub Free. The 2026-09-11 repository API reports public visibility and unprotected branches. On 2026-09-13 all three release branches still report `protected: false` and repository rulesets are empty. The connected GitHub API has no administration write capability. Required manual configuration is recorded in [BRANCH_GOVERNANCE.md](BRANCH_GOVERNANCE.md); PR + CI remains an operating convention until those settings are applied.
 
 Current controls:
 
@@ -186,7 +186,7 @@ feature/fix/main → production
 staging/production → main
 ```
 
-This is a proportional control for a one-person repository. If the repository becomes multi-maintainer or moves to a plan supporting private-repo rulesets, add hard branch protection then.
+The repository is public, so GitHub Free supports branch protection. No plan upgrade or second maintainer is required; use PRs with zero required approving reviews for this single-owner workflow.
 
 ## Product measurement
 

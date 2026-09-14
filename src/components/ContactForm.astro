@@ -29,6 +29,7 @@ const topics = pl
   data-endpoint={endpoint}
   data-success={pl ? 'Dziękuję. Wiadomość została wysłana. Odpowiem e-mailem, żeby ustalić następny krok.' : 'Thank you. Your message has been sent. I will reply by email to agree on the next step.'}
   data-error={pl ? 'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz przez LinkedIn.' : 'The message could not be sent. Try again or use LinkedIn.'}
+  data-timeout={pl ? 'Nie otrzymaliśmy potwierdzenia wysyłki na czas. Treść została zachowana. Spróbuj ponownie lub napisz przez LinkedIn.' : 'We did not receive confirmation in time. Your message has been kept. Try again or use LinkedIn.'}
   data-validation={pl ? 'Sprawdź pola formularza i spróbuj ponownie.' : 'Check the form fields and try again.'}
   data-rate-limit={pl ? 'Za dużo prób w krótkim czasie. Spróbuj ponownie za kilka minut.' : 'Too many attempts in a short time. Try again in a few minutes.'}
   data-delivery={pl ? 'Usługa wysyłki jest chwilowo niedostępna. Spróbuj później lub użyj LinkedIn.' : 'Message delivery is temporarily unavailable. Try later or use LinkedIn.'}
@@ -85,7 +86,7 @@ const topics = pl
     <button class="button button-primary button-large" type="submit">
       <span>{pl ? 'Wyślij wiadomość' : 'Send message'}</span><span aria-hidden="true">→</span>
     </button>
-    <p class="form-status" data-form-status role="status" aria-live="polite" aria-atomic="true"></p>
+    <p class="form-status" data-form-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></p>
   </div>
 </form>
 
