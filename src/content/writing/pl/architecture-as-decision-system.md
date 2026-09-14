@@ -29,6 +29,14 @@ To zdanie dobrze streszcza rolę architecture governance. Rada architektury, sta
 
 Szybciej nie znaczy pochopniej. Dobry governance skraca oczekiwanie, nie myślenie. Jeśli do podjęcia decyzji potrzebujemy sześciu spotkań tylko dlatego, że proces nie wskazuje właściciela, kryteriów i granic wyjątku, problemem nie jest brak kontroli. Problemem jest źle zaprojektowany system decyzji.
 
+## Autonomia potrzebuje odpowiedzialności
+
+> Autonomy without accountability creates chaos; governance without autonomy creates bureaucracy.
+
+Governance architektoniczny powinien wyznaczać przestrzeń, w której zespoły mogą decydować lokalnie, oraz mniejszy zestaw decyzji, które rzeczywiście wymagają eskalacji. Autonomia bez jawnego właściciela i granic zamienia kompromisy systemowe w przypadkowe lokalne optymalizacje. Governance wymagający centralnej zgody dla każdej odwracalnej decyzji spowalnia zespoły i przenosi odpowiedzialność z ludzi najbliżej problemu do kolejnego forum.
+
+Dojrzały model rozróżnia więc guardrails przedsiębiorstwa od lokalnych wyborów, decyzje odwracalne od trudnych do cofnięcia oraz wyjątki od zwykłego delivery. Celem nie jest centralna kontrola. Celem jest rozproszona decyzyjność z jawną odpowiedzialnością.
+
 ## Dobra decyzja potrzebuje kontekstu
 
 Decyzja architektoniczna powinna mieć nazwany problem, kryteria, alternatywy, właściciela oraz konsekwencje. Bez tego governance łatwo zamienić w proces zatwierdzania dokumentów, który nie redukuje ryzyka i nie zwiększa tempa.
