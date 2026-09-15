@@ -3,7 +3,7 @@ locale: pl
 category: Inwestycje i wybory portfelowe
 title: Portfolio jest strategią w ruchu
 dek: Deklarowana strategia mówi, co jest ważne. Portfolio pokazuje, czy organizacja naprawdę potrafi przesunąć za tym pieniądze, ludzi i uwagę.
-modifiedAt: 2026-09-15T10:35:00+02:00
+modifiedAt: 2026-09-15T14:15:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -45,9 +45,9 @@ Nic nie zostało spriorytetyzowane. Dodano czwarte zobowiązanie.
 
 Dla każdego nowego priorytetu używam prostego pytania: **które obecne zobowiązanie oddaje zasób potrzebny nowemu priorytetowi?** To mój Test dawcy zasobu. Tym zasobem może być zespół, specjalistyczna kompetencja, budżet albo uwaga sponsora.
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/portfolio-resource-donor-pl.svg" alt="Obecny portfel przekazuje ograniczone zasoby do jednego z trzech rozstrzygnięć: zatrzymania nowego priorytetu, przesunięcia zasobów albo jawnego zwiększenia zasobów." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowy priorytet staje się realny dopiero wtedy, gdy wiadomo, skąd bierze ludzi, budżet albo uwagę kierownictwa.</figcaption>
+<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
+<img src="/images/writing/portfolio-resource-choice-pl.webp" alt="Istniejący portfel i nowy priorytet konkurują o ograniczone zasoby. Organizacja może zatrzymać nową inicjatywę, przesunąć istniejące zasoby albo świadomie zwiększyć ich pulę." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowy priorytet staje się realny dopiero wtedy, gdy wiadomo, skąd bierze ludzi, budżet lub uwagę.</figcaption>
 </figure>
 
 Test nie zakłada, że każdy portfel jest grą o sumie zerowej. Odpowiedź może być jedna z trzech: zatrzymujemy coś, realokujemy istniejącą pojemność albo świadomie zwiększamy pojemność i finansujemy koszt tej decyzji. Ważne jest, żeby trzecia opcja była prawdziwą decyzją inwestycyjną, a nie kolejnym „priorytetem” dopisanym do niezmienionej listy zobowiązań.
