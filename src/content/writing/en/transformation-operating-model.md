@@ -3,7 +3,7 @@ locale: en
 category: Operating model and execution
 title: Transformation needs an operating model, not just a roadmap
 dek: "A roadmap shows sequence. An operating model answers the harder question: when may that sequence change, who can change it, and what evidence is enough?"
-modifiedAt: 2026-09-14T23:15:00+02:00
+modifiedAt: 2026-09-15T10:35:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -49,17 +49,9 @@ Cadence matters as well. Some decisions should react quickly; others should move
 
 A useful sequence is simple:
 
-<figure class="concept-figure concept-figure--transformation" aria-labelledby="adaptation-loop-title-en">
-<figcaption><span class="concept-kicker">Changing the plan</span><strong id="adaptation-loop-title-en">Evidence leads to a decision, not an automatic change.</strong></figcaption>
-<div class="adaptation-sequence">
-<div class="adapt-step"><span>01</span><strong>Plan</strong><small>Which outcome are we trying to achieve?</small></div>
-<div class="adapt-step"><span>02</span><strong>Assumption</strong><small>What must be true for the plan to make sense?</small></div>
-<div class="adapt-step"><span>03</span><strong>Execution</strong><small>What is happening in the real system?</small></div>
-<div class="adapt-step"><span>04</span><strong>Evidence</strong><small>What changed our understanding?</small></div>
-<div class="adapt-step"><span>05</span><strong>Decision</strong><small>Has the change condition actually been met?</small></div>
-<div class="adapt-step"><span>06</span><strong>Move</strong><small>Keep the choice or reopen it.</small></div>
-</div>
-<div class="decision-branches"><div><strong>Keep</strong><span>The plan still makes sense.</span></div><div><strong>Change</strong><span>The change condition has been met.</span></div></div>
+<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
+<img src="/images/writing/transformation-adaptation-en.svg" alt="A plan moves through execution and evidence to a decision point. Only the decision leads to keeping the current course or changing it." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">New information does not change the plan automatically. It must first reach the right decision point.</figcaption>
 </figure>
 
 Direction describes the outcome that justifies change. The assumption explains why a particular initiative, sequence or dependency should produce that outcome. Execution generates evidence. Only then does the operating model decide whether to preserve the choice or reopen it.
@@ -101,8 +93,6 @@ Instead of evaluating the entire transformation forum, pick one important decisi
 **Change condition.** Which condition allows the decision to be reopened?
 
 **Last decision.** What exactly changed — or was consciously left unchanged?
-
-<div class="decision-trace" aria-label="Decision trace"><span>Assumption</span><span>Owner</span><span>Evidence</span><span>Change condition</span><span>Last decision</span></div>
 
 If that chain cannot be traced, the roadmap may describe the work, but the operating model is not managing adaptation.
 
