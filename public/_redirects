@@ -1,0 +1,10 @@
+# Editorial visual asset redirects
+# Legacy article image URLs are kept stable while the final rendered AVIF assets are served.
+/images/writing/architecture-decision-levels-pl.webp /images/writing/architecture-decision-levels-pl.avif 302
+/images/writing/portfolio-resource-choice-pl.webp /images/writing/portfolio-resource-choice-pl.avif 302
+/images/writing/transformation-decision-point-pl.webp /images/writing/transformation-decision-point-pl.avif 302
+/images/writing/ai-governance-control-levels-pl.webp /images/writing/ai-governance-control-levels-pl.avif 302
+/images/writing/architecture-decision-placement-en.svg /images/writing/architecture-decision-levels-en.avif 302
+/images/writing/portfolio-resource-donor-en.svg /images/writing/portfolio-resource-choice-en.avif 302
+/images/writing/transformation-adaptation-en.svg /images/writing/transformation-decision-point-en.avif 302
+/images/writing/ai-governance-exposure-en.svg /images/writing/ai-governance-control-levels-en.avif 302
