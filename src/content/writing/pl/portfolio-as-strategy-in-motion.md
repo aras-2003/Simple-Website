@@ -3,7 +3,7 @@ locale: pl
 category: Inwestycje i wybory portfelowe
 title: Portfolio jest strategią w ruchu
 dek: Deklarowana strategia mówi, co jest ważne. Portfolio pokazuje, czy organizacja naprawdę potrafi przesunąć za tym pieniądze, ludzi i uwagę.
-modifiedAt: 2026-09-14T23:15:00+02:00
+modifiedAt: 2026-09-15T10:35:00+02:00
 order: 2
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -45,18 +45,9 @@ Nic nie zostało spriorytetyzowane. Dodano czwarte zobowiązanie.
 
 Dla każdego nowego priorytetu używam prostego pytania: **które obecne zobowiązanie oddaje zasób potrzebny nowemu priorytetowi?** To mój Test dawcy zasobu. Tym zasobem może być zespół, specjalistyczna kompetencja, budżet albo uwaga sponsora.
 
-<figure class="concept-figure concept-figure--portfolio" aria-labelledby="resource-donor-title-pl">
-<figcaption><span class="concept-kicker">Test dawcy zasobu</span><strong id="resource-donor-title-pl">Skąd bierzemy zasób dla nowego priorytetu?</strong></figcaption>
-<div class="concept-node concept-node--primary">Nowy priorytet</div>
-<div class="concept-arrow" aria-hidden="true">↓</div>
-<div class="concept-node">Jakiego zasobu naprawdę potrzebuje?</div>
-<div class="concept-arrow" aria-hidden="true">↓</div>
-<div class="concept-branches">
-<div class="concept-branch"><span>01</span><strong>Zatrzymaj</strong><small>Zatrzymaj istniejące zobowiązanie i uwolnij jego zasób.</small></div>
-<div class="concept-branch"><span>02</span><strong>Przesuń zasoby</strong><small>Przenieś istniejące zasoby z mniej wartościowego użycia.</small></div>
-<div class="concept-branch"><span>03</span><strong>Dodaj zasoby</strong><small>Jawnie sfinansuj dodatkowe zasoby i koszt tej decyzji.</small></div>
-</div>
-<div class="concept-footer-line"><span>Kto decyduje?</span><span>Kiedy wracamy do decyzji?</span></div>
+<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
+<img src="/images/writing/portfolio-resource-donor-pl.svg" alt="Obecny portfel przekazuje ograniczone zasoby do jednego z trzech rozstrzygnięć: zatrzymania nowego priorytetu, przesunięcia zasobów albo jawnego zwiększenia zasobów." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowy priorytet staje się realny dopiero wtedy, gdy wiadomo, skąd bierze ludzi, budżet albo uwagę kierownictwa.</figcaption>
 </figure>
 
 Test nie zakłada, że każdy portfel jest grą o sumie zerowej. Odpowiedź może być jedna z trzech: zatrzymujemy coś, realokujemy istniejącą pojemność albo świadomie zwiększamy pojemność i finansujemy koszt tej decyzji. Ważne jest, żeby trzecia opcja była prawdziwą decyzją inwestycyjną, a nie kolejnym „priorytetem” dopisanym do niezmienionej listy zobowiązań.
