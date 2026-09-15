@@ -33,6 +33,21 @@
   border-top-width: 1px !important;
 }
 
+/* Architecture hotfix: the first 3D version was split into external SVG tiles that
+   embedded raster data. Some browsers/deploy paths render those as broken images.
+   Render the native single-SVG illustration instead while preserving the article markup. */
+.note-body figure > div[role='img'][aria-label^='Cztery poziomy podejmowania decyzji'] {
+  display: block !important;
+  width: 100%;
+  aspect-ratio: 1200 / 760;
+  background: url('/images/writing/architecture-decision-placement-pl.svg') center / contain no-repeat;
+  overflow: hidden !important;
+}
+
+.note-body figure > div[role='img'][aria-label^='Cztery poziomy podejmowania decyzji'] > img {
+  display: none !important;
+}
+
 @media (max-width: 760px) {
   .note-body .concept-figure,
   .note-body .decision-trace {
