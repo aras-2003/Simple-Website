@@ -3,7 +3,7 @@ locale: pl
 category: Operating model i wykonanie
 title: Transformacja potrzebuje operating modelu, nie tylko roadmapy
 dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kiedy wolno ją zmienić, kto może to zrobić i jakie dowody są wystarczające?"
-modifiedAt: 2026-09-15T10:35:00+02:00
+modifiedAt: 2026-09-15T14:15:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -49,9 +49,9 @@ Do tego potrzebny jest rytm. Część decyzji powinna reagować szybko, część
 
 W praktyce przydatny jest prosty ciąg:
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/transformation-adaptation-pl.svg" alt="Plan przechodzi przez wykonanie i dowody do punktu decyzji. Dopiero decyzja prowadzi do utrzymania dotychczasowego kierunku albo jego zmiany." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowa informacja nie zmienia planu automatycznie. Musi najpierw trafić do właściwego punktu decyzyjnego.</figcaption>
+<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
+<img src="/images/writing/transformation-decision-point-pl.webp" alt="Plan transformacji prowadzi przez wykonanie i dowody do punktu decyzji, w którym organizacja świadomie utrzymuje albo zmienia kierunek." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowe informacje nie powinny automatycznie zmieniać roadmapy. Najpierw muszą prowadzić do świadomej decyzji.</figcaption>
 </figure>
 
 Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem operating model rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.
