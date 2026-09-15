@@ -3,7 +3,7 @@ locale: pl
 category: Autonomia, ryzyko i governance
 title: AI governance bez teatru kontroli
 dek: Dojrzałe AI governance nie zatrzymuje eksperymentu. Zwiększa siłę kontroli wtedy, gdy rosną autonomia systemu, konsekwencja decyzji i trudność odwrócenia skutku.
-modifiedAt: 2026-09-15T10:35:00+02:00
+modifiedAt: 2026-09-15T14:15:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -41,9 +41,9 @@ W praktyce patrzę na trzy zmienne.
 
 **Odwracalność.** Jak łatwo organizacja może cofnąć skutek, gdy okaże się niepożądany?
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/ai-governance-exposure-pl.svg" alt="Trzy przykłady użycia AI: wsparcie pracy, rekomendacja i samodzielne działanie. Wraz ze wzrostem autonomii i konsekwencji rośnie wymagany poziom kontroli od obserwacji do zgody i możliwości zatrzymania." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nie kontrolujemy rozwiązania dlatego, że używa AI. Kontrola rośnie wtedy, gdy rosną autonomia, konsekwencja i trudność odwrócenia skutku.</figcaption>
+<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
+<img src="/images/writing/ai-governance-control-levels-pl.webp" alt="Trzy poziomy wykorzystania AI: wsparcie pracy, rekomendowanie decyzji i samodzielne działanie. Wraz ze wzrostem autonomii i konsekwencji rośnie intensywność kontroli." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nie kontrolujemy rozwiązania dlatego, że używa AI. Kontrola rośnie wraz z autonomią, konsekwencją i trudnością odwrócenia skutków.</figcaption>
 </figure>
 
 Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu governance potrzebujemy: lepszego evidence, monitoringu, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
