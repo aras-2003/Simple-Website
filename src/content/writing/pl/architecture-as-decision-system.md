@@ -3,7 +3,7 @@ locale: pl
 category: Systemy decyzji i architektura
 title: Architektura jako system decyzji, nie system dokumentów
 dek: Ład architektoniczny nie powinien produkować kolejnych punktów kontroli. Ma pomagać podejmować lepsze decyzje szybciej — z jasnym właścicielem, kryteriami i konsekwencjami.
-modifiedAt: 2026-09-15T10:35:00+02:00
+modifiedAt: 2026-09-15T14:15:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -56,12 +56,7 @@ Dojrzały model nie pyta więc wyłącznie, czy decyzja jest „architektoniczna
 Centralizacja ma więc sens tam, gdzie konsekwencja jest szeroka, długotrwała lub trudna do odwrócenia. Nie ma sensu jako domyślny mechanizm dla każdej decyzji technicznej.
 
 <figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
-<div role="img" aria-label="Cztery poziomy podejmowania decyzji przedstawione jako przestrzenne podesty: zespół, zespół w ramach zasad, organizacja i wyjątek. Wraz ze wzrostem wpływu i trudnością odwrócenia decyzji rośnie zakres odpowiedzialności." style="display:grid;grid-template-columns:810fr 809fr;gap:0;line-height:0;background:#f8f6f1;overflow:hidden;">
-<img src="/images/writing/architecture-decision-placement-pl-q00.svg" alt="" aria-hidden="true" width="810" height="486" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<img src="/images/writing/architecture-decision-placement-pl-q01.svg" alt="" aria-hidden="true" width="809" height="486" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<img src="/images/writing/architecture-decision-placement-pl-q10.svg" alt="" aria-hidden="true" width="810" height="485" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<img src="/images/writing/architecture-decision-placement-pl-q11.svg" alt="" aria-hidden="true" width="809" height="485" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-</div>
+<img src="/images/writing/architecture-decision-levels-pl.webp" alt="Cztery poziomy podejmowania decyzji: zespół, zespół w ramach zasad, organizacja i wyjątek. Zakres odpowiedzialności rośnie wraz z wpływem i trudnością odwrócenia decyzji." width="1600" height="972" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
 <figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Im szersza konsekwencja i trudniej odwracalna decyzja, tym szerszy powinien być mandat do jej podjęcia.</figcaption>
 </figure>
 
