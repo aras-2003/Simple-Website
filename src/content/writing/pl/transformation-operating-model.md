@@ -3,7 +3,7 @@ locale: pl
 category: Operating model i wykonanie
 title: Transformacja potrzebuje operating modelu, nie tylko roadmapy
 dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kiedy wolno ją zmienić, kto może to zrobić i jakie dowody są wystarczające?"
-modifiedAt: 2026-09-14T23:15:00+02:00
+modifiedAt: 2026-09-15T10:35:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
 sources:
@@ -49,17 +49,9 @@ Do tego potrzebny jest rytm. Część decyzji powinna reagować szybko, część
 
 W praktyce przydatny jest prosty ciąg:
 
-<figure class="concept-figure concept-figure--transformation" aria-labelledby="adaptation-loop-title-pl">
-<figcaption><span class="concept-kicker">Zmiana planu</span><strong id="adaptation-loop-title-pl">Dowód prowadzi do decyzji, nie do automatycznej zmiany.</strong></figcaption>
-<div class="adaptation-sequence">
-<div class="adapt-step"><span>01</span><strong>Plan</strong><small>Jaki efekt chcemy osiągnąć?</small></div>
-<div class="adapt-step"><span>02</span><strong>Założenie</strong><small>Co musi być prawdą, żeby plan miał sens?</small></div>
-<div class="adapt-step"><span>03</span><strong>Wykonanie</strong><small>Co dzieje się w realnym systemie?</small></div>
-<div class="adapt-step"><span>04</span><strong>Dowód</strong><small>Co zmieniło naszą wiedzę?</small></div>
-<div class="adapt-step"><span>05</span><strong>Decyzja</strong><small>Czy warunek zmiany został spełniony?</small></div>
-<div class="adapt-step"><span>06</span><strong>Ruch</strong><small>Utrzymaj wybór albo otwórz go ponownie.</small></div>
-</div>
-<div class="decision-branches"><div><strong>Utrzymaj</strong><span>Plan nadal ma sens.</span></div><div><strong>Zmień</strong><span>Warunek zmiany został spełniony.</span></div></div>
+<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
+<img src="/images/writing/transformation-adaptation-pl.svg" alt="Plan przechodzi przez wykonanie i dowody do punktu decyzji. Dopiero decyzja prowadzi do utrzymania dotychczasowego kierunku albo jego zmiany." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowa informacja nie zmienia planu automatycznie. Musi najpierw trafić do właściwego punktu decyzyjnego.</figcaption>
 </figure>
 
 Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem operating model rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.
@@ -101,8 +93,6 @@ Zamiast oceniać całe forum transformacyjne, wybierz jedną ważną decyzję i 
 **Warunek zmiany.** Jaki warunek pozwala ponownie ją otworzyć?
 
 **Ostatnia decyzja.** Co konkretnie zmieniliśmy albo świadomie pozostawiliśmy bez zmian?
-
-<div class="decision-trace" aria-label="Ślad decyzji"><span>Założenie</span><span>Właściciel</span><span>Dowód</span><span>Warunek zmiany</span><span>Ostatnia decyzja</span></div>
 
 Jeżeli nie da się przejść tego śladu, roadmapa opisuje pracę, ale operating model nie zarządza adaptacją.
 
