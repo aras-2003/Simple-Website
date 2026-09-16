@@ -8,5 +8,6 @@ export const relatedEssays: Record<string,string> = {
 'architecture-as-decision-system':'transformation-operating-model',
 'portfolio-as-strategy-in-motion':'architecture-as-decision-system',
 'ai-governance-without-theatre':'transformation-operating-model',
- 'transformation-operating-model':'portfolio-as-strategy-in-motion'
+ 'transformation-operating-model':'portfolio-as-strategy-in-motion',
+'delivery-beyond-deployment':'transformation-operating-model'
 };
