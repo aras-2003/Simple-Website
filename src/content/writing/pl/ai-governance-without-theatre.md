@@ -1,8 +1,8 @@
 ---
 locale: pl
-category: Autonomia, ryzyko i governance
-title: AI governance bez teatru kontroli
-dek: Dojrzałe AI governance nie zatrzymuje eksperymentu. Zwiększa siłę kontroli wtedy, gdy rosną autonomia systemu, konsekwencja decyzji i trudność odwrócenia skutku.
+category: Autonomia, ryzyko i nadzór
+title: Nadzór nad AI bez teatru kontroli
+dek: Dojrzały nadzór nad AI nie zatrzymuje eksperymentowania. Zwiększa siłę kontroli wtedy, gdy rosną autonomia systemu, konsekwencje jego działania i trudność odwrócenia skutków.
 modifiedAt: 2026-09-15T14:15:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
@@ -17,9 +17,9 @@ sources:
     href: https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value
 ---
 
-## Adopcja wyprzedza dojrzałość governance
+## Wykorzystanie AI wyprzedza dojrzałość nadzoru
 
-AI governance nie jest już hipotetycznym problemem projektowym. W raporcie McKinsey opublikowanym w marcu 2025 roku, opartym na badaniu przeprowadzonym w 2024 roku, 78% respondentów deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. W uzupełniającym badaniu executive'ów tylko 1% określało rollout generatywnej AI jako dojrzały.
+nadzór nad AI nie jest już hipotetycznym problemem projektowym. W raporcie McKinsey opublikowanym w marcu 2025 roku, opartym na badaniu przeprowadzonym w 2024 roku, 78% respondentów deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. W uzupełniającym badaniu osób na stanowiskach kierowniczych tylko 1% określało wdrożenie generatywnej AI w skali organizacji jako dojrzały.
 
 <aside class="evidence-callout" aria-label="Dane">
 <p class="evidence-number">362</p>
@@ -50,47 +50,47 @@ W praktyce patrzę na trzy zmienne.
 <ol class="editorial-model editorial-model--3">
 <li><span class="editorial-index" aria-hidden="true">01</span><strong>Wsparcie pracy</strong><p>Człowiek wykorzystuje wynik. Określ zasady użycia i sposób weryfikacji.</p></li>
 <li><span class="editorial-index" aria-hidden="true">02</span><strong>Rekomendowanie</strong><p>AI wspiera decyzję. Wskaż osobę zatwierdzającą i wymagane dowody.</p></li>
-<li><span class="editorial-index" aria-hidden="true">03</span><strong>Samodzielne działanie</strong><p>AI wywołuje skutki. Ustal granice, monitoring i prawo do zatrzymania.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Samodzielne działanie</strong><p>AI wywołuje skutki. Ustal granice, monitorowanie i prawo do zatrzymania.</p></li>
 </ol>
 
 <p class="editorial-note">Siłę kontroli dobieraj do autonomii, konsekwencji i trudności odwrócenia skutku. Sam tryb użycia AI nie określa ryzyka.</p>
 </figure>
 
-Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu governance potrzebujemy: lepszego evidence, monitoringu, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
+Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu nadzór potrzebujemy: lepszych dowodów, monitorowania, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
 
 To nie jest alternatywa dla prawa. Regulacyjne kategorie i obowiązkowe wymagania wyznaczają minimalny poziom zgodności. Wewnętrzny model ryzyka służy do zaprojektowania kontroli ponad tym minimum i do rozróżnienia przypadków, których przepisy nie traktują identycznie operacyjnie.
 
-## AI Act wyznacza floor, nie cały operating model governance
+## AI Act wyznacza minimum prawne, nie cały model nadzoru
 
-Unijny AI Act wszedł w życie 1 sierpnia 2024 roku i zasadniczo zaczął obowiązywać 2 sierpnia 2026 roku, ale harmonogram pozostaje progresywny. Zakazane praktyki i obowiązki dotyczące AI literacy zaczęły obowiązywać wcześniej, a zasady governance i obowiązki dla modeli GPAI od 2 sierpnia 2025 roku.
+Unijny AI Act wszedł w życie 1 sierpnia 2024 roku i zasadniczo zaczął obowiązywać 2 sierpnia 2026 roku, ale harmonogram pozostaje progresywny. Zakazane praktyki i obowiązki dotyczące kompetencji w zakresie AI zaczęły obowiązywać wcześniej, a zasady nadzór i obowiązki dla modeli GPAI od 2 sierpnia 2025 roku.
 
-Po zmianach harmonogramu przepisy dotyczące przypadków high-risk z Annex III mają być stosowane od 2 grudnia 2027 roku, a dla systemów high-risk wbudowanych w regulowane produkty z Annex I — od 2 sierpnia 2028 roku.
+Po zmianach harmonogramu przepisy dotyczące przypadków wysokiego ryzyka z załącznika III mają być stosowane od 2 grudnia 2027 roku, a dla systemów wysokiego ryzyka wbudowanych w regulowane produkty z załącznika I – od 2 sierpnia 2028 roku.
 
-Dla operating modelu ważniejsza od samego kalendarza jest zasada: compliance floor nie zwalnia organizacji z zaprojektowania odpowiedzialności, dowodów i eskalacji adekwatnych do realnej ekspozycji.
+Dla modelu operacyjnego ważniejsza od samego kalendarza jest zasada: minimalne wymagania prawne nie zwalnia organizacji z zaprojektowania odpowiedzialności, dowodów i eskalacji adekwatnych do realnej ekspozycji.
 
 ## Governance powinien być częścią cyklu życia
 
-Jeżeli compliance pojawia się wyłącznie na końcu, organizacja tworzy konflikt między tempem i bezpieczeństwem. Lepszy model wbudowuje wymagania dotyczące danych, testów, nadzoru człowieka, monitoringu i eskalacji w cały cykl życia produktu.
+Jeżeli zgodność z przepisami pojawia się wyłącznie na końcu, organizacja tworzy konflikt między tempem i bezpieczeństwem. Lepszy model wbudowuje wymagania dotyczące danych, testów, nadzoru człowieka, monitorowania i eskalacji w cały cykl życia produktu.
 
-NIST AI Risk Management Framework 1.0 porządkuje tę logikę przez funkcje Govern, Map, Measure i Manage, przy czym governance działa przekrojowo, a nie jako ostatnia bramka. Warto przy tym pamiętać, że NIST informuje obecnie o trwającej rewizji wersji 1.0. Sam kierunek pozostaje użyteczny: pytanie brzmi nie „czy rozwiązanie przeszło review?”, lecz „jakie dowody muszą istnieć przy tym poziomie ekspozycji?”.
+NIST AI Risk Management Framework 1.0 porządkuje tę logikę przez funkcje Govern, Map, Measure i Manage, przy czym nadzór działa przekrojowo, a nie jako ostatnia bramka. Warto przy tym pamiętać, że NIST informuje obecnie o trwającej rewizji wersji 1.0. Sam kierunek pozostaje użyteczny: pytanie brzmi nie „czy rozwiązanie przeszło przegląd?”, lecz „jakie dowody muszą istnieć przy tym poziomie ekspozycji?”.
 
-## „Human in the loop” nie jest modelem governance
+## Sam udział człowieka nie wystarcza
 
 Raport McKinsey pokazuje, jak różne są obecne praktyki nadzoru. Wśród respondentów z organizacji używających generatywnej AI 27% deklarowało, że ludzie sprawdzają wszystkie wygenerowane treści przed użyciem, a podobna grupa mówiła, że weryfikowane jest 20% lub mniej.
 
-To nie mówi, który model jest właściwy. Pokazuje, dlaczego samo hasło „human in the loop” jest zbyt ogólne, żeby pełnić rolę kontroli.
+To nie mówi, który model jest właściwy. Pokazuje, dlaczego samo hasło „udział człowieka w procesie decyzyjnym (human in the loop, HITL)” jest zbyt ogólne, żeby pełnić rolę kontroli.
 
 Przegląd człowieka ma sens tylko wtedy, gdy wiadomo: które wyniki go wymagają, kiedy następuje, kto ma kompetencje i mandat, na jakich kryteriach pracuje oraz co dzieje się po przekroczeniu akceptowanego profilu ryzyka.
 
-Dla niskiej autonomii i łatwo odwracalnego skutku wystarczające mogą być próbkowanie i monitoring. Przy wysokiej autonomii, wysokiej konsekwencji albo trudno odwracalnym skutku potrzebne mogą być mocniejsze dowody przed uruchomieniem, obowiązkowy przegląd, ograniczenie działania albo jawne prawo do zatrzymania rozwiązania.
+Dla niskiej autonomii i łatwo odwracalnego skutku wystarczające mogą być próbkowanie i monitorowanie. Przy wysokiej autonomii, wysokiej konsekwencji albo trudno odwracalnym skutku potrzebne mogą być mocniejsze dowody przed uruchomieniem, obowiązkowy przegląd, ograniczenie działania albo jawne prawo do zatrzymania rozwiązania.
 
 ## Odpowiedzialność pozostaje po stronie organizacji
 
 AI może analizować, rekomendować albo automatyzować fragment pracy, ale odpowiedzialność organizacyjna nie znika. Governance powinien wskazywać właściciela efektu biznesowego, rozwiązania i ryzyka oraz sposób eskalacji, gdy dowody wychodzą poza przyjęty profil.
 
-W badaniu McKinsey 28% respondentów wskazało CEO, a 17% board jako poziom odpowiedzialny za nadzór nad AI governance. Nie znaczy to, że najwyższe kierownictwo powinno zatwierdzać każdy przypadek użycia. Odpowiada raczej za to, czy istnieje system, w którym decyzje są delegowane proporcjonalnie do ekspozycji, a odpowiedzialność nie znika wraz z automatyzacją.
+W badaniu McKinsey 28% respondentów wskazało prezesa (CEO), a 17% radę dyrektorów (board) jako poziom odpowiedzialny za nadzór nad nadzór nad AI. Nie znaczy to, że najwyższe kierownictwo powinno zatwierdzać każdy przypadek użycia. Odpowiada raczej za to, czy istnieje system, w którym decyzje są delegowane proporcjonalnie do ekspozycji, a odpowiedzialność nie znika wraz z automatyzacją.
 
-To ten sam balans autonomii i odpowiedzialności, który pojawia się w governance architektonicznym. Zbyt duża centralizacja zamienia eksperymentowanie w biurokrację. Zbyt luźne granice sprawiają, że odpowiedzialność staje się niejasna.
+To ten sam balans autonomii i odpowiedzialności, który pojawia się w nadzór architektonicznym. Zbyt duża centralizacja zamienia eksperymentowanie w biurokrację. Zbyt luźne granice sprawiają, że odpowiedzialność staje się niejasna.
 
 ## Przetestuj jeden działający przypadek użycia
 
@@ -98,4 +98,4 @@ Weź jedno istniejące zastosowanie AI i oceń je w trzech wymiarach: autonomia,
 
 Potem sprawdź, czy odpowiadają im mechanizmy kontroli: właściciel efektu biznesowego, monitorowane dowody, poziom wymaganej weryfikacji, warunek eskalacji i osoba uprawniona do wstrzymania użycia.
 
-Jeżeli kontrola rośnie wraz z ekspozycją, organizacja prawdopodobnie ma mechanizm governance. Jeżeli odpowiedzią jest jedynie „przeszło AI review”, może mieć tylko teatr kontroli.
+Jeżeli kontrola rośnie wraz z ekspozycją, organizacja prawdopodobnie ma mechanizm nadzór. Jeżeli odpowiedzią jest jedynie „przeszło przegląd rozwiązania AI”, może mieć tylko teatr kontroli.

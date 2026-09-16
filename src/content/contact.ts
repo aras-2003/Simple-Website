@@ -10,7 +10,7 @@ export const contact = { pl: {
   linkedin: 'Jeżeli wolisz krótszy kontakt, LinkedIn pozostaje najprostszą alternatywą.',
   formEyebrow: 'Wiadomość',
   formTitle: 'Opisz sytuację.',
-  formBody: 'Nie potrzebuję pełnego briefu. Przeczytam wiadomość i odpowiem e-mailem: ustalimy, czy i od jakiej rozmowy warto zacząć. Poufne szczegóły zostawmy na później.',
+  formBody: 'Wystarczy kilka zdań o sytuacji. Przeczytam wiadomość i odpowiem e-mailem. Wtedy ustalimy, czy i od jakiej rozmowy warto zacząć. Poufne szczegóły zostawmy na później.',
   privacy: 'Dane z formularza są używane wyłącznie do odpowiedzi na wiadomość.',
 }, en: {
   title: 'Contact – Arkadiusz Kamrowski',

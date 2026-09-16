@@ -7,16 +7,16 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || '/api/contact';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 const topics = pl
   ? [
-      ['diagnostic', 'Decyzja utknęła — potrzebujemy diagnozy'],
-      ['design', 'Kierunek wybrany — projektujemy zmianę'],
-      ['execution', 'Zmiana trwa — potrzebujemy niezależnej oceny'],
+      ['diagnostic', 'Decyzja utknęła – potrzebujemy diagnozy'],
+      ['design', 'Kierunek wybrany – projektujemy zmianę'],
+      ['execution', 'Zmiana trwa – potrzebujemy niezależnej oceny'],
       ['speaking', 'Wystąpienie / panel'],
       ['other', 'Inny temat'],
     ]
   : [
-      ['diagnostic', 'Decision stalled — we need a diagnostic'],
-      ['design', 'Direction chosen — we need to design the change'],
-      ['execution', 'Change under way — we need an independent view'],
+      ['diagnostic', 'Decision stalled – we need a diagnostic'],
+      ['design', 'Direction chosen – we need to design the change'],
+      ['execution', 'Change under way – we need an independent view'],
       ['speaking', 'Speaking / panel'],
       ['other', 'Other'],
     ];

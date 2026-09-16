@@ -155,8 +155,10 @@ for (const path of articleRoutes) {
   if (!footer.includes('/contact') || !/\/(?:advisory|wspolpraca)/.test(footer) || !/\/(?:perspective|perspektywa)\//.test(footer)) errors.push(`${path}: reader-intent next paths missing`);
 }
 
+const englishNotFound = await readFile(routeFile('/en/404'), 'utf8');
+if (!/<html[^>]+lang="en"/.test(englishNotFound) || !englishNotFound.includes('404 – Page not found')) errors.push('/en/404: missing localized error page');
 const privacyPl = await readFile(routeFile('/privacy'), 'utf8');
-for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Transfer poza EOG', 'Twoje prawa']) {
+for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Przekazywanie danych poza EOG', 'Twoje prawa']) {
   if (!privacyPl.includes(term)) errors.push(`/privacy: missing GDPR information layer ${term}`);
 }
 const privacyEn = await readFile(routeFile('/en/privacy'), 'utf8');
