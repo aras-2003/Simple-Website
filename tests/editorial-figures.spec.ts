@@ -39,7 +39,10 @@ for (const locale of ['pl', 'en']) {
     await figure.scrollIntoViewIfNeeded();
     await expect(figure).toBeVisible();
     await expect(figure.locator('li')).toHaveCount(3);
-    for (const label of ['Engineering performance', 'Delivery performance', 'Business outcomes']) {
+    const expectedLabels = locale === 'pl'
+      ? ['Sprawność inżynierska', 'Sprawność dostarczania rozwiązań', 'Efekty biznesowe']
+      : ['Engineering performance', 'Delivery performance', 'Business outcomes'];
+    for (const label of expectedLabels) {
       await expect(figure).toContainText(label);
     }
     await expect(figure.locator('img')).toHaveCount(0);
