@@ -17,9 +17,16 @@ for (const locale of ['pl', 'en']) {
       expect(await figure.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
       await figure.screenshot({ path: `artifacts/visual/editorial-${locale}-${slug}-${testInfo.project.name}.png` });
       // Exercise the fallback separately: a valid AVIF must not hide a broken WebP.
-      await figure.locator('img').evaluate(async (img: HTMLImageElement) => {
+      await figure.locator('img').evaluate((img: HTMLImageElement) => {
         img.parentElement?.querySelector('source')?.remove();
         img.removeAttribute('srcset');
+      });
+      // Source selection is asynchronous in Firefox. decode() can otherwise
+      // resolve for the previously selected AVIF before the WebP request starts.
+      await expect.poll(() => figure.locator('img').evaluate((img: HTMLImageElement) =>
+        img.currentSrc.endsWith('.webp') && img.complete
+      )).toBe(true);
+      await figure.locator('img').evaluate(async (img: HTMLImageElement) => {
         await img.decode();
         if (!img.naturalWidth || !img.currentSrc.endsWith('.webp')) throw new Error('Broken WebP fallback');
       });
