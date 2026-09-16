@@ -1,0 +1,36 @@
+name: One-time editorial migration
+on:
+  push:
+    branches: [fix/pl-editorial-en-dashes-404]
+permissions:
+  contents: write
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: true
+      - name: Apply editorial changes and remove one-time workflow
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/apply-editorial-fix.py')
+          s=p.read_text()
+          for line in s.splitlines(keepends=True):
+              if "('reklamowych trackerów', 'reklamowych narzędzi śledzących')" in line or "('cookies analitycznych', 'analitycznych plików cookie')" in line or "('„Human in the loop”', '„Udział człowieka" in line or "('„human in the loop”', '„udział człowieka" in line:
+                  s=s.replace(line,'')
+          s=s.replace(" ('## Sam udział człowieka nie wystarcza', '## Sam udział człowieka nie wystarcza'),", "")
+          s=s.replace(" ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),", " ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),\n ('samo hasło „human in the loop”', 'samo hasło „udział człowieka w procesie decyzyjnym (human in the loop, HITL)”'),")
+          p.write_text(s)
+          PY
+          python3 scripts/apply-editorial-fix.py
+          rm scripts/apply-editorial-fix.py .github/workflows/editorial-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Polish executive copy, normalize en dashes, and localize English 404'
+          git push origin HEAD:fix/pl-editorial-en-dashes-404
