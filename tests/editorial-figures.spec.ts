@@ -32,4 +32,19 @@ for (const locale of ['pl', 'en']) {
       });
     });
   }
+
+  test(`delivery essay ${locale} explains all three levels without a broken artwork placeholder`, async ({ page }, testInfo) => {
+    await page.goto(`/${locale === 'pl' ? 'perspektywa' : 'en/perspective'}/delivery-beyond-deployment`);
+    const figure = page.locator('.editorial-figure');
+    await figure.scrollIntoViewIfNeeded();
+    await expect(figure).toBeVisible();
+    await expect(figure.locator('li')).toHaveCount(3);
+    for (const label of ['Engineering performance', 'Delivery performance', 'Business outcomes']) {
+      await expect(figure).toContainText(label);
+    }
+    await expect(figure.locator('img')).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    expect(await figure.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+    await figure.screenshot({ path: `artifacts/visual/editorial-${locale}-delivery-beyond-deployment-${testInfo.project.name}.png` });
+  });
 }

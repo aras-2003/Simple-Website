@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
+const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model', 'delivery-beyond-deployment'];
 const plSharedSlugs = ['', 'about', 'oaf', 'wspolpraca', 'perspektywa', 'contact', 'privacy'];
 const enSharedSlugs = ['', 'about', 'oaf', 'advisory', 'perspective', 'contact', 'privacy'];
 const routes = [
