@@ -153,16 +153,16 @@ async function sendEmail(data, env) {
   if (!resendKey || !toEmail || !fromEmail) throw new Error('contact_not_configured');
 
   const label = topicLabels[data.topic] || 'Contact';
-  const subject = `[arkadiuszkamrowski.com] ${label} — ${data.name}`;
+  const subject = `[arkadiuszkamrowski.com] ${label} – ${data.name}`;
   const text = [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    `Organization: ${data.organization || '—'}`,
+    `Organization: ${data.organization || '–'}`,
     `Topic: ${label}`,
     '',
     data.message,
   ].join('\n');
-  const html = `<h2>New website message</h2><p><strong>Name:</strong> ${escapeHtml(data.name)}</p><p><strong>Email:</strong> ${escapeHtml(data.email)}</p><p><strong>Organization:</strong> ${escapeHtml(data.organization || '—')}</p><p><strong>Topic:</strong> ${escapeHtml(label)}</p><hr><p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`;
+  const html = `<h2>New website message</h2><p><strong>Name:</strong> ${escapeHtml(data.name)}</p><p><strong>Email:</strong> ${escapeHtml(data.email)}</p><p><strong>Organization:</strong> ${escapeHtml(data.organization || '–')}</p><p><strong>Topic:</strong> ${escapeHtml(label)}</p><hr><p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`;
 
   const response = await fetch(RESEND_API_URL, {
     method: 'POST',
@@ -355,6 +355,16 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
+    if (response.status === 404 && (url.pathname === '/en' || url.pathname.startsWith('/en/'))) {
+      const fallbackUrl = new URL('/en/404', request.url);
+      const englishPage = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+      if (englishPage.ok) {
+        const headers = new Headers(englishPage.headers);
+        headers.set('Cache-Control', 'no-store');
+        headers.set('X-Robots-Tag', 'noindex, nofollow');
+        return applyDeploymentHeaders(new Response(englishPage.body, { status: 404, headers }), env);
+      }
+    }
     return applyDeploymentHeaders(response, env);
   },
 };

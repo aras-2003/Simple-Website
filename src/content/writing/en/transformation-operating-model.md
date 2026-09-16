@@ -89,7 +89,7 @@ Poorly designed governance equates control with preserving the original plan. Th
 
 A better definition of control is traceability. The organization can show which assumption changed, which evidence triggered reconsideration, who had the mandate to decide and which consequence was accepted.
 
-This also creates a healthier role for a transformation office or PMO: not defending the baseline at any cost, but maintaining visibility of assumptions, evidence and decisions — while preventing triggers from becoming either dead rules or excuses for constantly resetting the plan.
+This also creates a healthier role for a transformation office or PMO: not defending the baseline at any cost, but maintaining visibility of assumptions, evidence and decisions – while preventing triggers from becoming either dead rules or excuses for constantly resetting the plan.
 
 ## Trace one decision from assumption to change
 
@@ -103,7 +103,7 @@ Instead of evaluating the entire transformation forum, pick one important decisi
 
 **Change condition.** Which condition allows the decision to be reopened?
 
-**Last decision.** What exactly changed — or was consciously left unchanged?
+**Last decision.** What exactly changed – or was consciously left unchanged?
 
 If that chain cannot be traced, the roadmap may describe the work, but the operating model is not managing adaptation.
 

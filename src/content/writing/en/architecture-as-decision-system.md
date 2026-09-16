@@ -2,7 +2,7 @@
 locale: en
 category: Decision systems and architecture
 title: Architecture as a decision system, not a document system
-dek: Architecture governance should not produce more control points. It should help organizations make better decisions faster — with clear ownership, criteria and consequences.
+dek: Architecture governance should not produce more control points. It should help organizations make better decisions faster – with clear ownership, criteria and consequences.
 modifiedAt: 2026-09-15T10:35:00+02:00
 order: 1
 publishedAt: 2026-09-04T00:00:00+02:00

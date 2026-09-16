@@ -36,7 +36,7 @@ I find it useful to connect three perspectives. The goal is not to create three 
 <li><span class="editorial-index" aria-hidden="true">02</span><strong>Delivery performance</strong><p>How effectively does a commitment move through the organization? Predictability, quality, cost, dependencies, and waiting time.</p></li>
 <li><span class="editorial-index" aria-hidden="true">03</span><strong>Business outcomes</strong><p>What changed for users and the organization? Availability, adoption, process cost, and realized benefits.</p></li>
 </ol>
-<p class="editorial-note">This is my way of linking technical measures, delivery accountability, and business outcomes — not an additional set of DORA metrics.</p>
+<p class="editorial-note">This is my way of linking technical measures, delivery accountability, and business outcomes – not an additional set of DORA metrics.</p>
 </figure>
 
 At the engineering level, the current [DORA model](https://dora.dev/guides/dora-metrics/) provides five measures: change lead time, deployment frequency, failed deployment recovery time, change fail rate, and deployment rework rate. The last measures the share of unplanned deployments resulting from a production incident; it is not a measure of every kind of project rework. These metrics are most useful in the context of a particular application or service, not as a context-free league table of teams.
@@ -49,7 +49,7 @@ Consider a **hypothetical** initiative in which test automation cuts the code-re
 
 The improvement is worthwhile, but it may barely move the end-to-end lead time. Another investment in the pipeline might improve reliability; it will not automatically resolve a decision bottleneck. The useful questions are **what are we waiting for, why, and who has the authority to decide?**
 
-Not every lengthy decision is waste. Risk, compliance, and genuine user needs can require careful analysis. The problem is waiting without an owner, criteria, or an expected decision date — or finding a critical dependency only after implementation is well underway.
+Not every lengthy decision is waste. Risk, compliance, and genuine user needs can require careful analysis. The problem is waiting without an owner, criteria, or an expected decision date – or finding a critical dependency only after implementation is well underway.
 
 DORA connects technical architecture and organizational design to a team's ability to test and deploy independently. Its practical measures include [the number of handoffs and the time spent waiting for reviews and approvals](https://dora.dev/capabilities/loosely-coupled-teams/). Not every delivery constraint can be removed by buying another engineering tool.
 
