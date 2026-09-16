@@ -23,6 +23,7 @@ jobs:
               if any(f'({chr(34)}{term}{chr(34)},' in line for term in ('reklamowych trackerów','cookies analitycznych')) or "('„Human in the loop”'," in line or "('„human in the loop”'," in line:
                   s=s.replace(line,'')
           s=s.replace(" ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),", " ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),\n ('samo hasło „human in the loop”', 'samo hasło „udział człowieka w procesie decyzyjnym (human in the loop, HITL)”'),")
+          s=s.replace("('kolejna inwestycja w pipeline'", "('Kolejna inwestycja w pipeline'")
           p.write_text(s)
           PY
           python3 scripts/apply-editorial-fix.py
