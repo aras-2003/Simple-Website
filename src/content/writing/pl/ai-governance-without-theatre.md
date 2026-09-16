@@ -41,9 +41,19 @@ W praktyce patrzę na trzy zmienne.
 
 **Odwracalność.** Jak łatwo organizacja może cofnąć skutek, gdy okaże się niepożądany?
 
-<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
-<img src="/images/writing/ai-governance-control-levels-pl.webp" alt="Trzy poziomy wykorzystania AI: wsparcie pracy, rekomendowanie decyzji i samodzielne działanie. Wraz ze wzrostem autonomii i konsekwencji rośnie intensywność kontroli." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nie kontrolujemy rozwiązania dlatego, że używa AI. Kontrola rośnie wraz z autonomią, konsekwencją i trudnością odwrócenia skutków.</figcaption>
+<figure class="editorial-figure editorial-figure--ai" aria-labelledby="ai-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Nadzór nad AI</span><h3 id="ai-figure-title">Kontrola proporcjonalna do ekspozycji.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/ai-768.avif 768w, /images/writing/ai-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/ai-1536.webp" srcset="/images/writing/ai-768.webp 768w, /images/writing/ai-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--3">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Wsparcie pracy</strong><p>Człowiek wykorzystuje wynik. Określ zasady użycia i sposób weryfikacji.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Rekomendowanie</strong><p>AI wspiera decyzję. Wskaż osobę zatwierdzającą i wymagane dowody.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Samodzielne działanie</strong><p>AI wywołuje skutki. Ustal granice, monitoring i prawo do zatrzymania.</p></li>
+</ol>
+
+<p class="editorial-note">Siłę kontroli dobieraj do autonomii, konsekwencji i trudności odwrócenia skutku. Sam tryb użycia AI nie określa ryzyka.</p>
 </figure>
 
 Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu governance potrzebujemy: lepszego evidence, monitoringu, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.

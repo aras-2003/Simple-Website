@@ -1,10 +1,25 @@
-# Editorial visual asset redirects
-# Legacy article image URLs are kept stable while the final rendered AVIF assets are served.
-/images/writing/architecture-decision-levels-pl.webp /images/writing/architecture-decision-levels-pl.avif 302
-/images/writing/portfolio-resource-choice-pl.webp /images/writing/portfolio-resource-choice-pl.avif 302
-/images/writing/transformation-decision-point-pl.webp /images/writing/transformation-decision-point-pl.avif 302
-/images/writing/ai-governance-control-levels-pl.webp /images/writing/ai-governance-control-levels-pl.avif 302
-/images/writing/architecture-decision-placement-en.svg /images/writing/architecture-decision-levels-en.avif 302
-/images/writing/portfolio-resource-donor-en.svg /images/writing/portfolio-resource-choice-en.avif 302
-/images/writing/transformation-adaptation-en.svg /images/writing/transformation-decision-point-en.avif 302
-/images/writing/ai-governance-exposure-en.svg /images/writing/ai-governance-control-levels-en.avif 302
+# Legacy artwork URLs redirect to valid, text-free artwork; current HTML uses picture directly.
+/images/writing/ai-governance-control-levels-en.avif /images/writing/ai-1536.webp 302
+/images/writing/ai-governance-control-levels-pl.avif /images/writing/ai-1536.webp 302
+/images/writing/ai-governance-control-levels-pl.webp /images/writing/ai-1536.webp 302
+/images/writing/ai-governance-exposure-en.svg /images/writing/ai-1536.webp 302
+/images/writing/ai-governance-exposure-pl.svg /images/writing/ai-1536.webp 302
+/images/writing/architecture-decision-levels-en.avif /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-levels-pl.avif /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-levels-pl.webp /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-en.svg /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-pl-q00.svg /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-pl-q01.svg /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-pl-q10.svg /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-pl-q11.svg /images/writing/architecture-1536.webp 302
+/images/writing/architecture-decision-placement-pl.svg /images/writing/architecture-1536.webp 302
+/images/writing/portfolio-resource-choice-en.avif /images/writing/portfolio-1536.webp 302
+/images/writing/portfolio-resource-choice-pl.avif /images/writing/portfolio-1536.webp 302
+/images/writing/portfolio-resource-choice-pl.webp /images/writing/portfolio-1536.webp 302
+/images/writing/portfolio-resource-donor-en.svg /images/writing/portfolio-1536.webp 302
+/images/writing/portfolio-resource-donor-pl.svg /images/writing/portfolio-1536.webp 302
+/images/writing/transformation-adaptation-en.svg /images/writing/transformation-1536.webp 302
+/images/writing/transformation-adaptation-pl.svg /images/writing/transformation-1536.webp 302
+/images/writing/transformation-decision-point-en.avif /images/writing/transformation-1536.webp 302
+/images/writing/transformation-decision-point-pl.avif /images/writing/transformation-1536.webp 302
+/images/writing/transformation-decision-point-pl.webp /images/writing/transformation-1536.webp 302

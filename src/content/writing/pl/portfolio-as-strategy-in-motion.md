@@ -45,9 +45,19 @@ Nic nie zostało spriorytetyzowane. Dodano czwarte zobowiązanie.
 
 Dla każdego nowego priorytetu używam prostego pytania: **które obecne zobowiązanie oddaje zasób potrzebny nowemu priorytetowi?** To mój Test dawcy zasobu. Tym zasobem może być zespół, specjalistyczna kompetencja, budżet albo uwaga sponsora.
 
-<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
-<img src="/images/writing/portfolio-resource-choice-pl.webp" alt="Istniejący portfel i nowy priorytet konkurują o ograniczone zasoby. Organizacja może zatrzymać nową inicjatywę, przesunąć istniejące zasoby albo świadomie zwiększyć ich pulę." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowy priorytet staje się realny dopiero wtedy, gdy wiadomo, skąd bierze ludzi, budżet lub uwagę.</figcaption>
+<figure class="editorial-figure editorial-figure--portfolio" aria-labelledby="portfolio-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Portfel</span><h3 id="portfolio-figure-title">Nowy priorytet potrzebuje zasobu.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/portfolio-768.avif 768w, /images/writing/portfolio-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/portfolio-1536.webp" srcset="/images/writing/portfolio-768.webp 768w, /images/writing/portfolio-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--3">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Zatrzymaj</strong><p>Nie uruchamiaj nowego priorytetu bez pokrycia w zasobach.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Przesuń zasoby</strong><p>Wskaż zobowiązanie, które oddaje ludzi, budżet lub uwagę.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Dodaj zasoby</strong><p>Zatwierdź zwiększenie pojemności i sfinansuj jego koszt.</p></li>
+</ol>
+
+<p class="editorial-note">Nowy priorytet staje się realny dopiero wtedy, gdy wiadomo, skąd bierze ludzi, budżet lub uwagę.</p>
 </figure>
 
 Test nie zakłada, że każdy portfel jest grą o sumie zerowej. Odpowiedź może być jedna z trzech: zatrzymujemy coś, realokujemy istniejącą pojemność albo świadomie zwiększamy pojemność i finansujemy koszt tej decyzji. Ważne jest, żeby trzecia opcja była prawdziwą decyzją inwestycyjną, a nie kolejnym „priorytetem” dopisanym do niezmienionej listy zobowiązań.
