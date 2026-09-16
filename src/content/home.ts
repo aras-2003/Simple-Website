@@ -19,7 +19,7 @@ export const home = {
       {title:'Technologia ma wykonać sprzeczne obietnice.',body:'Strategia, budżet i sposób działania wymagają różnych rzeczy. Potrzebna jest wspólna decyzja o zmianie.'}
     ],
     personTitle:'Widzę więcej niż jedną stronę tej decyzji.',
-    personBody:'Ponad 10 lat pracy od dostarczania technologii i cloud / DevSecOps, przez architekturę, po strategię, portfel i PMO. Ta droga ukształtowała mój sposób zadawania pytań.',personLink:'Poznaj moją perspektywę',
+    personBody:'Ponad 10 lat pracy od dostarczania technologii, rozwiązań chmurowych i DevSecOps, przez architekturę, po strategię, portfel inicjatyw i PMO. Ta droga ukształtowała mój sposób zadawania pytań.',personLink:'Poznaj moją perspektywę',
     method:'Za tym sposobem pracy stoi OAF: model sprawdzania, czy kierunek, organizacja, inwestycje i wykonanie wspierają się wzajemnie.',methodLink:'Poznaj model OAF'
   },
   en: {

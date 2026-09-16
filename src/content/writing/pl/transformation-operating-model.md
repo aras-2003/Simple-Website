@@ -1,8 +1,8 @@
 ---
 locale: pl
-category: Operating model i wykonanie
-title: Transformacja potrzebuje operating modelu, nie tylko roadmapy
-dek: "Roadmapa pokazuje kolejność. Operating model odpowiada na trudniejsze pytanie: kiedy wolno ją zmienić, kto może to zrobić i jakie dowody są wystarczające?"
+category: Model operacyjny i realizacja
+title: Transformacja potrzebuje modelu operacyjnego, nie tylko planu
+dek: "Plan pokazuje kolejność. Model operacyjny odpowiada na trudniejsze pytanie: kiedy wolno ją zmienić, kto może to zrobić i jakie dowody są wystarczające?"
 modifiedAt: 2026-09-15T14:15:00+02:00
 order: 4
 publishedAt: 2026-09-04T00:00:00+02:00
@@ -15,9 +15,9 @@ sources:
     href: https://cisr.mit.edu/publication/enterprise-architecture-as-strategy
 ---
 
-## Roadmapa jest hipotezą o wykonaniu
+## Plan transformacji jest hipotezą dotyczącą realizacji
 
-W złożonej transformacji nowe informacje pojawiają się szybciej niż można aktualizować centralny plan. To nie znaczy, że roadmapa jest zbędna. Znaczy, że opisuje najlepszą wiedzę organizacji w danym momencie — nie kontrakt z przyszłością.
+W złożonej transformacji nowe informacje pojawiają się szybciej niż można aktualizować centralny plan. To nie znaczy, że plan transformacji jest zbędny. Znaczy, że opisuje najlepszą wiedzę organizacji w danym momencie – nie kontrakt z przyszłością.
 
 BCG w analizie opublikowanej w 2024 roku wskazał, że tylko 26% transformacji korporacyjnych tworzyło wartość zarówno w krótkim, jak i długim terminie. Nie oznacza to, że pozostałe 74% było całkowitą porażką. Pokazuje jednak, jak trudno utrzymać wartość w całym horyzoncie transformacji.
 
@@ -27,15 +27,15 @@ BCG w analizie opublikowanej w 2024 roku wskazał, że tylko 26% transformacji k
 <p class="evidence-source"><a href="https://www.bcg.com/publications/2024/five-truths-and-a-lie-about-corporate-transformation">BCG · Five truths and a lie about corporate transformation</a></p>
 </aside>
 
-Typową odpowiedzią na rozjazd między planem i rzeczywistością jest dokładanie szczegółów do roadmapy: więcej kamieni milowych, zależności i raportowania. To zwiększa widoczność, ale nie mówi organizacji, **kiedy nowa informacja jest wystarczająco ważna, żeby zmienić wcześniejszą decyzję**.
+Typową odpowiedzią na rozjazd między planem i rzeczywistością jest dokładanie szczegółów do planu transformacji: więcej kamieni milowych, zależności i raportowania. To zwiększa widoczność, ale nie mówi organizacji, **kiedy nowa informacja jest wystarczająco ważna, żeby zmienić wcześniejszą decyzję**.
 
-Dlatego transformacja potrzebuje czegoś więcej niż planu. Potrzebuje operating modelu, który pozwala adaptować plan bez utraty odpowiedzialności.
+Dlatego transformacja potrzebuje czegoś więcej niż planu. Potrzebuje modelu operacyjnego (operating model), który pozwala adaptować plan bez utraty odpowiedzialności.
 
 ## Adaptacja potrzebuje reguł, nie ciągłego otwierania decyzji
 
-Nowe dane nie powinny automatycznie uruchamiać ponownej dyskusji o każdym wcześniejszym wyborze. Taki model szybko zamieniłby adaptacyjność w decision churn.
+Nowe dane nie powinny automatycznie uruchamiać ponownej dyskusji o każdym wcześniejszym wyborze. Taki model szybko zamieniłby adaptacyjność w ciągłe podważanie wcześniejszych decyzji.
 
-Dojrzały operating model rozdziela trzy rzeczy:
+Dojrzały model operacyjny rozdziela trzy rzeczy:
 
 **Dowód.** Co rzeczywiście zmieniło naszą wiedzę o wartości, ryzyku, zależności albo możliwości wykonania?
 
@@ -45,7 +45,7 @@ Dojrzały operating model rozdziela trzy rzeczy:
 
 Do tego potrzebny jest rytm. Część decyzji powinna reagować szybko, część tylko w określonych cyklach przeglądu. Adaptacyjność nie polega na ciągłym negocjowaniu planu. Polega na tym, że organizacja wie, **kiedy ma prawo go zmienić**.
 
-## Operating model to mechanizm adaptacji
+## Model operacyjny to mechanizm adaptacji
 
 W praktyce przydatny jest prosty ciąg:
 
@@ -62,34 +62,34 @@ W praktyce przydatny jest prosty ciąg:
 <li><span class="editorial-index" aria-hidden="true">04</span><strong>Decyzja</strong><p>Oceń potrzebę zmiany.</p></li>
 </ol>
 <div class="editorial-outcomes"><div><strong>Utrzymaj</strong><span>Kontynuuj zgodnie z planem.</span></div><div><strong>Zmień</strong><span>Skoryguj kierunek na podstawie dowodu.</span></div></div>
-<p class="editorial-note">Nowe informacje nie powinny automatycznie zmieniać roadmapy. Najpierw muszą prowadzić do świadomej decyzji.</p>
+<p class="editorial-note">Nowe informacje nie powinny automatycznie zmieniać planu transformacji. Najpierw muszą prowadzić do świadomej decyzji.</p>
 </figure>
 
-Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem operating model rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.
+Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem model operacyjny rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.
 
-W badaniu McKinsey z 2025 roku, obejmującym 2000 executive'ów z wielu branż, 63% respondentów stwierdziło, że redesign operating modelu spełnił większość celów i poprawił wyniki organizacji. W porównywalnym badaniu z 2014 roku było to 21%. Odsetek redesignów deklarowanych jako zakończone i wdrożone wzrósł z 51% do 79%.
+W badaniu McKinsey z 2025 roku, obejmującym 2000 osób na stanowiskach kierowniczych z wielu branż, 63% respondentów stwierdziło, że przebudowa modelu operacyjnego spełniła większość celów i poprawiła wyniki organizacji. W porównywalnym badaniu z 2014 roku było to 21%. Odsetek projektów przebudowy deklarowanych jako zakończone i wdrożone wzrósł z 51% do 79%.
 
-To wyniki ankietowe, nie obiektywny rejestr wszystkich redesignów. Najciekawsze jest jednak to, co stoi za tą zmianą: operating model coraz częściej obejmuje nie tylko strukturę, ale też przepływ pracy, uprawnienia decyzyjne i sposób współdziałania jednostek organizacji.
+To wyniki ankietowe, nie obiektywny rejestr wszystkich projektów przebudowy. Najciekawsze jest jednak to, co stoi za tą zmianą: model operacyjny coraz częściej obejmuje nie tylko strukturę, ale też przepływ pracy, uprawnienia decyzyjne i sposób współdziałania jednostek organizacji.
 
-Nowy steering committee, struktura PMO czy zestaw opisów ról mogą zmienić organizację na papierze, nie zmieniając sposobu adaptacji. Prawdziwy test brzmi: czy nowy dowód potrafi dotrzeć do miejsca, w którym rzeczywiście może zmienić decyzję?
+Nowy komitet sterujący, struktura PMO czy zestaw opisów ról mogą zmienić organizację na papierze, nie zmieniając sposobu adaptacji. Prawdziwy test brzmi: czy nowy dowód potrafi dotrzeć do miejsca, w którym rzeczywiście może zmienić decyzję?
 
 ## Jedna zależność potrafi zmienić cały plan
 
-Wyobraźmy sobie trzy inicjatywy zależne od tego samego zespołu platformowego. Roadmapa pokazuje trzy terminy. Wykonanie pokazuje, że wspólna zależność stała się rzeczywistym wąskim gardłem.
+Wyobraźmy sobie trzy inicjatywy zależne od tego samego zespołu platformowego. Plan transformacji pokazuje trzy terminy. Wykonanie pokazuje, że wspólna zależność stała się rzeczywistym wąskim gardłem.
 
-Dobry operating model nie odpowiada automatycznie „eskalujmy”. Najpierw rozstrzyga, jaki warunek zmiany został spełniony i kto ma mandat zmienić wcześniejszą decyzję.
+Dobry model operacyjny nie odpowiada automatycznie „eskalujmy”. Najpierw rozstrzyga, jaki warunek zmiany został spełniony i kto ma mandat zmienić wcześniejszą decyzję.
 
-Portfolio może zdecydować, który efekt ma pierwszeństwo. Właściwy właściciel może przesunąć zasoby. Architektura może sprawdzić, czy nowa kolejność nie tworzy kosztownej zależności długoterminowej. Zespoły dopasowują lokalne plany bez otwierania każdej odwracalnej decyzji.
+Osoby zarządzające portfelem inicjatyw mogą zdecydować, który efekt ma pierwszeństwo. Właściwy właściciel może przesunąć zasoby. Architektura może sprawdzić, czy nowa kolejność nie tworzy kosztownej zależności długoterminowej. Zespoły dopasowują lokalne plany bez otwierania każdej odwracalnej decyzji.
 
 Transformacja nie traci kontroli dlatego, że plan się zmienia. Traci kontrolę wtedy, gdy nie wiadomo, **dlaczego** się zmienił, **kto** podjął decyzję i **jaki dowód** miał znaczenie.
 
-## Śledzalność jest lepszą definicją kontroli niż zgodność z baseline'em
+## Śledzalność jest lepszą definicją kontroli niż zgodność z uzgodnionym planem bazowym
 
-Źle zaprojektowany governance utożsamia kontrolę z utrzymaniem pierwotnego planu. Powstaje wtedy zły bodziec: zespoły wiedzą coraz więcej, ale organizacja coraz mniej chce zmieniać kierunek, bo każda zmiana wygląda jak porażka.
+Źle zaprojektowany nadzór utożsamia kontrolę z utrzymaniem pierwotnego planu. Powstaje wtedy zły bodziec: zespoły wiedzą coraz więcej, ale organizacja coraz mniej chce zmieniać kierunek, bo każda zmiana wygląda jak porażka.
 
 Lepszą definicją kontroli jest śledzalność. Organizacja potrafi wskazać, które założenie się zmieniło, jaki dowód uruchomił warunek zmiany, kto miał mandat do decyzji i jaką konsekwencję zaakceptowano.
 
-To tworzy też zdrowszą rolę dla transformation office lub PMO: nie bronić baseline'u za wszelką cenę, lecz utrzymywać widoczność założeń, dowodów i decyzji — oraz pilnować, żeby warunek zmiany nie zamieniał się ani w martwą regułę, ani w pretekst do ciągłego resetowania planu.
+To tworzy też zdrowszą rolę dla biura transformacji lub PMO: nie bronić planu bazowego za wszelką cenę, lecz utrzymywać widoczność założeń, dowodów i decyzji – oraz pilnować, żeby warunek zmiany nie zamieniał się ani w martwą regułę, ani w pretekst do ciągłego resetowania planu.
 
 ## Prześledź jedną decyzję od założenia do zmiany
 
@@ -105,6 +105,6 @@ Zamiast oceniać całe forum transformacyjne, wybierz jedną ważną decyzję i 
 
 **Ostatnia decyzja.** Co konkretnie zmieniliśmy albo świadomie pozostawiliśmy bez zmian?
 
-Jeżeli nie da się przejść tego śladu, roadmapa opisuje pracę, ale operating model nie zarządza adaptacją.
+Jeżeli nie da się przejść tego śladu, plan transformacji opisuje pracę, ale model operacyjny nie zarządza adaptacją.
 
-Roadmapa mówi, co miało się wydarzyć. Operating model mówi, jak zachować odpowiedzialność, kiedy rzeczywistość dostarcza lepszych informacji.
+Plan transformacji mówi, co miało się wydarzyć. Model operacyjny mówi, jak zachować odpowiedzialność, kiedy rzeczywistość dostarcza lepszych informacji.

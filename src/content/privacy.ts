@@ -5,22 +5,22 @@ export const privacySections = { pl: [
   },
   {
     title: 'Zakres danych',
-    body: 'Przetwarzane są: imię i nazwisko, adres e-mail, opcjonalna organizacja, wybrany temat i treść wiadomości. Dla ochrony formularza i serwisu przed nadużyciami przetwarzane są również podstawowe dane techniczne, w szczególności adres IP, origin żądania, informacje niezbędne do limitowania prób oraz sygnały bezpieczeństwa wymagane przez Cloudflare i Turnstile do odróżniania legalnego ruchu od automatycznych nadużyć.',
+    body: 'Przetwarzane są: imię i nazwisko, adres e-mail, opcjonalna organizacja, wybrany temat i treść wiadomości. Dla ochrony formularza i serwisu przed nadużyciami przetwarzane są również podstawowe dane techniczne, w szczególności adres IP, pochodzenie żądania (nagłówek Origin), informacje niezbędne do limitowania prób oraz sygnały bezpieczeństwa wymagane przez Cloudflare i Turnstile do odróżniania legalnego ruchu od automatycznych nadużyć.',
   },
   {
     title: 'Cel i podstawa prawna',
-    body: 'Dane są używane do odebrania wiadomości, prowadzenia korespondencji i ochrony formularza. Podstawą jest prawnie uzasadniony interes polegający na obsłudze korespondencji i bezpieczeństwie serwisu (art. 6 ust. 1 lit. f RODO), a gdy kontakt zmierza do zawarcia lub wykonania umowy – działania na żądanie osoby przed zawarciem umowy lub wykonanie umowy (art. 6 ust. 1 lit. b RODO). Checkbox w formularzu potwierdza zapoznanie się z informacją o prywatności; nie jest zgodą marketingową.',
+    body: 'Dane są używane do odebrania wiadomości, prowadzenia korespondencji i ochrony formularza. Podstawą jest prawnie uzasadniony interes polegający na obsłudze korespondencji i bezpieczeństwie serwisu (art. 6 ust. 1 lit. f RODO), a gdy kontakt zmierza do zawarcia lub wykonania umowy – działania na żądanie osoby przed zawarciem umowy lub wykonanie umowy (art. 6 ust. 1 lit. b RODO). Pole wyboru w formularzu potwierdza zapoznanie się z informacją o prywatności; nie jest zgodą marketingową.',
   },
   {
-    title: 'Odbiorcy i procesorzy',
-    body: 'Dane i dane techniczne mogą być powierzane dostawcom niezbędnym do działania i ochrony serwisu: Cloudflare jako operatorowi DNS/CDN i warstwy bezpieczeństwa oraz Turnstile, usłudze transactional email Resend, dostawcy hostingu/infrastruktury i operatorowi skrzynki pocztowej. Dane z formularza nie są sprzedawane ani przekazywane do sieci reklamowych, newslettera lub automatycznego CRM.',
+    title: 'Odbiorcy i podmioty przetwarzające',
+    body: 'Dane i dane techniczne mogą być powierzane dostawcom niezbędnym do działania i ochrony serwisu: Cloudflare jako operatorowi DNS/CDN i warstwy bezpieczeństwa oraz Turnstile, usłudze wysyłki wiadomości transakcyjnych Resend, dostawcy usług utrzymania serwisu i infrastruktury i operatorowi skrzynki pocztowej. Dane z formularza nie są sprzedawane ani przekazywane do sieci reklamowych, biuletynu lub automatycznego CRM.',
   },
   {
-    title: 'Transfer poza EOG',
+    title: 'Przekazywanie danych poza EOG',
     body: 'Niektórzy dostawcy infrastruktury i bezpieczeństwa mogą przetwarzać dane poza EOG. Resend informuje, że jego podstawowe operacje przetwarzania i przechowywanie danych klientów odbywają się w Stanach Zjednoczonych; transfery z EOG opisuje w swoim DPA. Cloudflare publikuje aktualne zasady przetwarzania i transferów w swojej polityce prywatności oraz dodatku dotyczącym Turnstile. Aktualne warunki dostawców są dostępne w dokumentacji wskazanej poniżej.',
   },
   {
-    title: 'Retencja',
+    title: 'Okres przechowywania danych',
     body: 'Aplikacja formularza nie tworzy własnej bazy zgłoszeń. Wiadomość pozostaje w systemach pocztowych tylko przez okres potrzebny do obsługi korespondencji, a następnie przez okres niezbędny do ustalenia, dochodzenia lub obrony roszczeń. Logi techniczne są utrzymywane wyłącznie w zakresie i czasie potrzebnym do bezpieczeństwa oraz diagnostyki. Dostawcy infrastruktury i poczty stosują własne okresy retencji opisane w ich dokumentacji.',
   },
   {

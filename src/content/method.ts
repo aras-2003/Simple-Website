@@ -31,7 +31,7 @@ interface FrameworkGroup {
 export const method = {
   pl: {
     title: 'Cztery pytania. Jedna spójna odpowiedź.',
-    lead: 'OAF — Organizational Architecture Framework — to mój model pracy z relacjami między strategią, organizacją, inwestycjami i wykonaniem. Sprawdza, czy odpowiedzi poszczególnych obszarów mogą działać razem.',
+    lead: 'OAF (Organizational Architecture Framework) to mój autorski model łączenia strategii, organizacji, inwestycji i realizacji. Sprawdza, czy odpowiedzi poszczególnych obszarów mogą działać razem.',
     modelTitle: 'Każda odpowiedź zmienia warunki następnej.',
     questions: [
       { title: 'Dokąd zmierzamy?', body: 'Jaki efekt uzasadnia zmianę i z czego świadomie rezygnujemy?' },
@@ -48,14 +48,14 @@ export const method = {
     ],
     boundaryLabel: 'Granice modelu',
     boundary: 'OAF jest syntezą służącą diagnozie i projektowaniu połączeń. Nie zastępuje specjalistycznej architektury, analizy biznesowej, zarządzania usługami, zarządzania portfelem ani wiedzy branżowej. Nie wymaga wdrożenia nowej metodyki w całej organizacji.',
-    sourceLabel: 'Podstawy i relacje z innymi frameworkami',
+    sourceLabel: 'Podstawy i relacje z innymi modelami oraz standardami',
     frameworkIntro: 'OAF nie próbuje zastąpić dojrzałych metod. Traktuje je jako specjalistyczne soczewki i łączy ich wyniki tam, gdzie jedna decyzja przecina strategię, organizację, architekturę, analizę, inwestycje i wykonanie.',
     frameworkFocusLabel: 'Gdzie jest silny',
     frameworkRelationLabel: 'Rola OAF',
   },
   en: {
     title: 'Four questions. One coherent answer.',
-    lead: 'OAF — Organizational Architecture Framework — is my model for working with the relationships between strategy, organization, investment and execution. It tests whether answers from different functions can work together.',
+    lead: 'OAF – Organizational Architecture Framework – is my model for working with the relationships between strategy, organization, investment and execution. It tests whether answers from different functions can work together.',
     modelTitle: 'Each answer changes the conditions for the next.',
     questions: [
       { title: 'Where are we going?', body: 'What outcome justifies change, and what do we deliberately give up?' },
@@ -99,13 +99,13 @@ export const frameworkGroups = {
         {
           label: 'Burton & Obel · Organization design',
           href: 'https://link.springer.com/article/10.1186/s41469-018-0029-2',
-          focus: 'Fit i misfit: projekt organizacji zależny od kontekstu i konfiguracji.',
-          relation: 'OAF traktuje misfit jako napięcie między domenami, które trzeba nie tylko zdiagnozować, ale rozstrzygnąć decyzją.',
+          focus: 'Dopasowanie i niedopasowanie: projekt organizacji zależny od kontekstu i konfiguracji.',
+          relation: 'OAF traktuje niedopasowanie jako napięcie między domenami, które trzeba nie tylko zdiagnozować, ale rozstrzygnąć decyzją.',
         },
         {
           label: 'Ross, Weill & Robertson · Enterprise Architecture as Strategy',
           href: 'https://cisr.mit.edu/publication/enterprise-architecture-as-strategy',
-          focus: 'Operating model i enterprise architecture jako fundament wykonania strategii.',
+          focus: 'Model operacyjny (operating model) i architektura korporacyjna jako fundament wykonania strategii.',
           relation: 'OAF rozszerza most strategia–wykonanie o odpowiedzialność organizacyjną, wybory portfelowe i jawny mechanizm informacji zwrotnej.',
         },
       ],
@@ -116,8 +116,8 @@ export const frameworkGroups = {
         {
           label: 'TOGAF® Standard · Enterprise Architecture',
           href: 'https://www.opengroup.org/togaf',
-          focus: 'Metoda, praktyka i governance Enterprise Architecture, w tym rozwój i utrzymywanie architektury przedsiębiorstwa.',
-          relation: 'OAF nie zastępuje ADM ani produktów architektonicznych. Umieszcza warianty i ograniczenia architektury w tej samej decyzji co strategia, operating model, portfel i odpowiedzialność.',
+          focus: 'Metoda, praktyka i zasady nadzoru nad architekturą korporacyjną, w tym rozwój i utrzymywanie architektury przedsiębiorstwa.',
+          relation: 'OAF nie zastępuje ADM ani produktów architektonicznych. Umieszcza warianty i ograniczenia architektury w tej samej decyzji co strategia, model operacyjny, portfel i odpowiedzialność.',
         },
         {
           label: 'BABOK® Guide · Business Analysis',
@@ -128,8 +128,8 @@ export const frameworkGroups = {
         {
           label: 'ITIL® · Digital Product & Service Management',
           href: 'https://www.peoplecert.org/ITIL-4',
-          focus: 'Zarządzanie cyfrowymi produktami i usługami przez value system, governance, praktyki, value streams i continual improvement.',
-          relation: 'OAF wykorzystuje dowody z usług i wykonania jako pętlę zwrotną do wcześniejszych decyzji o finansowaniu, architekturze i odpowiedzialności. Nie zastępuje praktyk service management.',
+          focus: 'Zarządzanie cyfrowymi produktami i usługami przez system tworzenia wartości, nadzór, praktyki, strumienie wartości i ciągłe doskonalenie.',
+          relation: 'OAF wykorzystuje dowody z usług i wykonania jako pętlę zwrotną do wcześniejszych decyzji o finansowaniu, architekturze i odpowiedzialności. Nie zastępuje praktyk zarządzania usługami.',
         },
       ],
     },
