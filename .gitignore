@@ -2,6 +2,7 @@ node_modules/
 dist/
 .astro/
 artifacts/
+test-results/
 .DS_Store
 .env
 .env.*
@@ -14,3 +15,6 @@ artifacts/
 .k8s-port-forward.log
 rendered-k8s.yaml
 rendered-k8s-local.yaml
+
+# Full-resolution ImageGen originals are preserved with the generating conversation.
+design/writing/*.png

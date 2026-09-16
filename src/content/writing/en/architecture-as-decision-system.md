@@ -55,9 +55,20 @@ A mature model therefore asks more than whether a decision is â€œarchitecturalâ€
 
 Centralization therefore makes sense when the consequence is broad, long-lived or hard to reverse. It should not be the default mechanism for every technical choice.
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/architecture-decision-placement-en.svg" alt="Four decision levels: team, team within guardrails, organization and exception. Ownership broadens as impact and difficulty of reversal increase." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">The broader the consequence and the harder a decision is to reverse, the broader the mandate should be.</figcaption>
+<figure class="editorial-figure editorial-figure--architecture" aria-labelledby="architecture-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Architecture</span><h3 id="architecture-figure-title">The right decision at the right level.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/architecture-768.avif 768w, /images/writing/architecture-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/architecture-1536.webp" srcset="/images/writing/architecture-768.webp 768w, /images/writing/architecture-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--4">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Team</strong><p>Local decisions that are easy to reverse.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Team within guardrails</strong><p>Autonomy within agreed boundaries.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Organization</strong><p>Decisions with consequences beyond one team.</p></li>
+<li><span class="editorial-index" aria-hidden="true">04</span><strong>Exception</strong><p>Explicit authority to approve a departure from the rules.</p></li>
+</ol>
+
+<p class="editorial-note">Wider consequences and lower reversibility require broader authority. Exceptions follow an explicit approval path.</p>
 </figure>
 
 ## A good decision needs context

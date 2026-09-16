@@ -2,13 +2,14 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['**/accessibility.spec.ts', '**/browser-smoke.spec.ts'],
+  testMatch: ['**/accessibility.spec.ts', '**/browser-smoke.spec.ts', '**/editorial-figures.spec.ts'],
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI
     ? [['list'], ['html', { open: 'never', outputFolder: 'artifacts/playwright-report' }]]
     : 'list',
   use: {
+    launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE, args: ['--no-sandbox', '--disable-dev-shm-usage'] } : {},
     baseURL: 'http://127.0.0.1:4173',
     trace: 'retain-on-failure',
   },

@@ -55,9 +55,20 @@ Dojrzały model nie pyta więc wyłącznie, czy decyzja jest „architektoniczna
 
 Centralizacja ma więc sens tam, gdzie konsekwencja jest szeroka, długotrwała lub trudna do odwrócenia. Nie ma sensu jako domyślny mechanizm dla każdej decyzji technicznej.
 
-<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
-<img src="/images/writing/architecture-decision-levels-pl.webp" alt="Cztery poziomy podejmowania decyzji: zespół, zespół w ramach zasad, organizacja i wyjątek. Zakres odpowiedzialności rośnie wraz z wpływem i trudnością odwrócenia decyzji." width="1600" height="972" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Im szersza konsekwencja i trudniej odwracalna decyzja, tym szerszy powinien być mandat do jej podjęcia.</figcaption>
+<figure class="editorial-figure editorial-figure--architecture" aria-labelledby="architecture-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Architektura</span><h3 id="architecture-figure-title">Właściwa decyzja na właściwym poziomie.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/architecture-768.avif 768w, /images/writing/architecture-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/architecture-1536.webp" srcset="/images/writing/architecture-768.webp 768w, /images/writing/architecture-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--4">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Zespół</strong><p>Decyzje lokalne, łatwe do odwrócenia.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Zespół w ramach zasad</strong><p>Autonomia w uzgodnionych granicach.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Organizacja</strong><p>Decyzje o skutkach przekraczających jeden zespół.</p></li>
+<li><span class="editorial-index" aria-hidden="true">04</span><strong>Wyjątek</strong><p>Jawny mandat i akceptacja odstępstwa od zasad.</p></li>
+</ol>
+
+<p class="editorial-note">Szersze konsekwencje i mniejsza odwracalność wymagają szerszego mandatu. Wyjątek ma osobną ścieżkę zatwierdzenia.</p>
 </figure>
 
 ## Dobra decyzja potrzebuje kontekstu

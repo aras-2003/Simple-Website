@@ -49,9 +49,20 @@ Cadence matters as well. Some decisions should react quickly; others should move
 
 A useful sequence is simple:
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/transformation-adaptation-en.svg" alt="A plan moves through execution and evidence to a decision point. Only the decision leads to keeping the current course or changing it." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">New information does not change the plan automatically. It must first reach the right decision point.</figcaption>
+<figure class="editorial-figure editorial-figure--transformation" aria-labelledby="transformation-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Transformation</span><h3 id="transformation-figure-title">Evidence informs a deliberate decision.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/transformation-768.avif 768w, /images/writing/transformation-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/transformation-1536.webp" srcset="/images/writing/transformation-768.webp 768w, /images/writing/transformation-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--4">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Plan</strong><p>Set the direction.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Execution</strong><p>Take action.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Evidence</strong><p>Check what works.</p></li>
+<li><span class="editorial-index" aria-hidden="true">04</span><strong>Decision</strong><p>Assess whether to adapt.</p></li>
+</ol>
+<div class="editorial-outcomes"><div><strong>Continue</strong><span>Keep the current course.</span></div><div><strong>Adapt</strong><span>Change direction based on evidence.</span></div></div>
+<p class="editorial-note">New information should not automatically change the roadmap. It should first inform a deliberate decision.</p>
 </figure>
 
 Direction describes the outcome that justifies change. The assumption explains why a particular initiative, sequence or dependency should produce that outcome. Execution generates evidence. Only then does the operating model decide whether to preserve the choice or reopen it.
