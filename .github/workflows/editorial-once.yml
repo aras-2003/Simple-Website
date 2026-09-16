@@ -20,9 +20,8 @@ jobs:
           p=Path('scripts/apply-editorial-fix.py')
           s=p.read_text()
           for line in s.splitlines(keepends=True):
-              if "('reklamowych trackerów', 'reklamowych narzędzi śledzących')" in line or "('cookies analitycznych', 'analitycznych plików cookie')" in line or "('„Human in the loop”', '„Udział człowieka" in line or "('„human in the loop”', '„udział człowieka" in line:
+              if any(f'({chr(34)}{term}{chr(34)},' in line for term in ('reklamowych trackerów','cookies analitycznych')) or "('„Human in the loop”'," in line or "('„human in the loop”'," in line:
                   s=s.replace(line,'')
-          s=s.replace(" ('## Sam udział człowieka nie wystarcza', '## Sam udział człowieka nie wystarcza'),", "")
           s=s.replace(" ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),", " ('rollout generatywnej AI', 'wdrożenie generatywnej AI w skali organizacji'),\n ('samo hasło „human in the loop”', 'samo hasło „udział człowieka w procesie decyzyjnym (human in the loop, HITL)”'),")
           p.write_text(s)
           PY
