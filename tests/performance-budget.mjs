@@ -42,7 +42,9 @@ const KiB = 1024;
 const budgets = [
   // Four shared 2x artworks, two widths and AVIF/WebP fallbacks. A reader
   // downloads one derivative per essay, not all sixteen files in the artifact.
-  { label: 'total production artifact', actual: totalBytes, max: 1400 * KiB },
+  // Fifth bilingual essay adds two static HTML routes; allow 50 KiB of aggregate
+  // headroom only. Existing per-file, CSS, JS, home and artwork caps are unchanged.
+  { label: 'total production artifact', actual: totalBytes, max: 1450 * KiB },
   { label: 'all responsive editorial derivatives', actual: editorialBytes, max: 1100 * KiB },
   { label: 'largest non-editorial file', actual: nonEditorialLargest, max: 96 * KiB },
   { label: 'compiled CSS (raw)', actual: cssBytes, max: 96 * KiB },
