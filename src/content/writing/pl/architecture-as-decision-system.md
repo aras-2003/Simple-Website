@@ -91,6 +91,6 @@ Na najbliższym przeglądzie wybierz jedną zasadę architektoniczną. Zapytaj, 
 
 Potem sprawdź poziom decyzji: czy naprawdę wymaga perspektywy całej organizacji, czy może bezpiecznie pozostać lokalna w granicach istniejących zasad?
 
-Jeśli zasada nie zmienia żadnej dostępnej opcji, opisuje preferencję, a nie granicę decyzji. Jeśli każda istotna decyzja musi iść w górę, odpowiedzialność została zastąpiona eskalacją. Jeśli natomiast konsekwencja przekracza granice zespołu, a nikt nie ma mandatu jej rozstrzygnąć, autonomia została pomylona z brakiem nadzór.
+Jeśli zasada nie zmienia żadnej dostępnej opcji, opisuje preferencję, a nie granicę decyzji. Jeśli każda istotna decyzja musi iść w górę, odpowiedzialność została zastąpiona eskalacją. Jeśli natomiast konsekwencja przekracza granice zespołu, a nikt nie ma mandatu jej rozstrzygnąć, autonomia została pomylona z brakiem nadzoru.
 
 To moja praktyczna próba odróżnienia architektury, która pomaga zarządzać, od architektury, którą można jedynie zatwierdzić.

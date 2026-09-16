@@ -27,7 +27,7 @@ W badaniu McKinsey z 2024 roku, obejmującym 617 osób na stanowiskach kierownic
 <p class="evidence-source"><a href="https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/tying-short-term-decisions-to-long-term-strategy">McKinsey · Tying short-term decisions to long-term strategy</a></p>
 </aside>
 
-Portfel nie powinno być końcową tabelą powstałą po procesie strategicznym. Powinno być jednym z głównych miejsc, w których strategia jest testowana. Priorytet staje się operacyjny dopiero wtedy, gdy zmienia finansowanie, dostępność ludzi albo uwagę zarządu.
+Portfel nie powinien być końcową tabelą powstałą po procesie strategicznym. Powinien być jednym z głównych miejsc, w których strategia jest testowana. Priorytet staje się operacyjny dopiero wtedy, gdy zmienia finansowanie, dostępność ludzi albo uwagę zarządu.
 
 ## Priorytetyzacja oznacza również „nie”
 
@@ -35,7 +35,7 @@ Ranking stu inicjatyw od 1 do 100 nie rozwiązuje przeciążenia, jeżeli pierws
 
 BCG w badaniu transformacji z 2026 roku opisuje ten problem koncentracji bardzo wyraźnie: firmy mogą często uzyskać około 80% wartości transformacji, koncentrując się na około 20% inicjatyw. Nie traktowałbym tego jako uniwersalnego prawa Pareto. To raczej przypomnienie, że wartość w portfelu transformacji rzadko rozkłada się równomiernie, a ograniczeniami są nie tylko pieniądze, lecz także kompetencje, technologia i uwaga liderów.
 
-Dobra rozmowa portfel powinna więc zawierać decyzje o zatrzymaniu, rozpoczęciu i kontynuowaniu inicjatyw oraz jawnie pokazywać koszt alternatywny. Bez tego zarządzanie portfelem łatwo staje się negocjacją o zachowanie wszystkiego.
+Dobra rozmowa o portfelu powinna więc zawierać decyzje o zatrzymaniu, rozpoczęciu i kontynuowaniu inicjatyw oraz jawnie pokazywać koszt alternatywny. Bez tego zarządzanie portfelem łatwo staje się negocjacją o zachowanie wszystkiego.
 
 ## Nowy priorytet potrzebuje dawcy zasobu
 
@@ -62,7 +62,7 @@ Dla każdego nowego priorytetu używam prostego pytania: **które obecne zobowi�
 
 Test nie zakłada, że każdy portfel jest grą o sumie zerowej. Odpowiedź może być jedna z trzech: zatrzymujemy coś, realokujemy istniejącą pojemność albo świadomie zwiększamy pojemność i finansujemy koszt tej decyzji. Ważne jest, żeby trzecia opcja była prawdziwą decyzją inwestycyjną, a nie kolejnym „priorytetem” dopisanym do niezmienionej listy zobowiązań.
 
-Jeżeli nie potrafimy wskazać dawcy ani jawnie zatwierdzonego zwiększenia pojemności, portfel powinno pokazać nową pozycję jako dodatkowy popyt. Ranking sam nie rozwiązuje ograniczenia.
+Jeżeli nie potrafimy wskazać dawcy ani jawnie zatwierdzonego zwiększenia pojemności, portfel powinien pokazać nową pozycję jako dodatkowy popyt. Ranking sam nie rozwiązuje ograniczenia.
 
 ## Realokacja jest zdolnością, nie dorocznym wydarzeniem
 
@@ -82,6 +82,6 @@ Zatrzymanie pracy nie musi oznaczać porażki. Czasem jest dowodem, że zarządz
 
 Na najbliższym przeglądzie portfela wybierz jeden nowy priorytet i przeprowadź Test dawcy zasobu.
 
-Zapytaj: jakiej pojemności naprawdę potrzebuje, czy tę pojemność uzyskujemy przez stop, realokację czy jawne zwiększenie możliwości wykonawczych, kto bierze odpowiedzialność za kompromis i jakie dowody mogą później ponownie otworzyć decyzję.
+Zapytaj: jakiej pojemności naprawdę potrzebuje, czy tę pojemność uzyskujemy przez zatrzymanie inicjatywy, realokację czy jawne zwiększenie możliwości wykonawczych, kto bierze odpowiedzialność za kompromis i jakie dowody mogą później ponownie otworzyć decyzję.
 
 Jeżeli portfel potrafi odpowiedzieć tylko na pytanie o ranking, nadal jest mechanizmem raportowym. Jeżeli potrafi przesuwać zasoby, świadomie zwiększać pojemność i ponownie otwierać wcześniejsze wybory, staje się tym, czym powinno być: strategią w ruchu.

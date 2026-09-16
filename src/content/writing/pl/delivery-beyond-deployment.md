@@ -34,7 +34,7 @@ Przydatne jest połączenie trzech perspektyw. Nie chodzi o trzy oddzielne zesta
 <ol class="editorial-model editorial-model--3">
 <li><span class="editorial-index" aria-hidden="true">01</span><strong>Sprawność inżynierska</strong><p>Jak szybko i bezpiecznie zmieniamy oprogramowanie? Czas od zapisania zmiany w repozytorium do wdrożenia na produkcję, częstotliwość wdrożeń, stabilność i naprawy.</p></li>
 <li><span class="editorial-index" aria-hidden="true">02</span><strong>Sprawność dostarczania rozwiązań</strong><p>Jak sprawnie przeprowadzamy zobowiązanie przez organizację? Przewidywalność, jakość, koszt, zależności i czas oczekiwania.</p></li>
-<li><span class="editorial-index" aria-hidden="true">03</span><strong>Efekty biznesowe</strong><p>Co zmieniło się dla użytkownika i firmy? Dostępność rozwiązania, adopcja, koszt procesu oraz realizacja korzyści.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Efekty biznesowe</strong><p>Co zmieniło się dla użytkownika i firmy? Dostępność rozwiązania, rzeczywiste wykorzystanie, koszt procesu oraz realizacja korzyści.</p></li>
 </ol>
 <p class="editorial-note">To propozycja połączenia pomiaru technicznego, zarządzania dostarczeniem i wyniku biznesowego – nie kolejny zestaw metryk DORA.</p>
 </figure>
@@ -47,7 +47,7 @@ Istotne są granice zegara. Czas realizacji zmiany w modelu DORA liczy się od z
 
 Wyobraźmy sobie **hipotetyczny** projekt, w którym automatyzacja testów skraca etap od gotowego kodu do wydania o 30%. Zespół realnie poprawia wydajność tego odcinka. Tymczasem inicjatywa nadal czeka dwa miesiące na rozstrzygnięcie zakresu, wspólne środowisko lub decyzję o integracji.
 
-Usprawnienie ma wartość, ale nie musi istotnie zmienić czasu całego przepływu. kolejna inwestycja w automatyzację wdrożeń może poprawić niezawodność, lecz nie rozwiąże automatycznie problemu oczekiwania na decyzję. Potrzebna jest odpowiedź na trzy pytania: **na co czekamy, dlaczego i kto może to rozstrzygnąć?**
+Usprawnienie ma wartość, ale nie musi istotnie zmienić czasu całego przepływu. Kolejna inwestycja w automatyzację wdrożeń może poprawić niezawodność, lecz nie rozwiąże automatycznie problemu oczekiwania na decyzję. Potrzebna jest odpowiedź na trzy pytania: **na co czekamy, dlaczego i kto może to rozstrzygnąć?**
 
 Nie każda długa decyzja jest zbędna. Analiza ryzyka, zgodności albo rzeczywistych potrzeb użytkowników może wymagać czasu. Problemem jest oczekiwanie bez właściciela, kryteriów i terminu albo odkrywanie krytycznej zależności dopiero pod koniec realizacji.
 

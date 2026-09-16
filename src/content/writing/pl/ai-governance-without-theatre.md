@@ -19,7 +19,7 @@ sources:
 
 ## Wykorzystanie AI wyprzedza dojrzałość nadzoru
 
-nadzór nad AI nie jest już hipotetycznym problemem projektowym. W raporcie McKinsey opublikowanym w marcu 2025 roku, opartym na badaniu przeprowadzonym w 2024 roku, 78% respondentów deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. W uzupełniającym badaniu osób na stanowiskach kierowniczych tylko 1% określało wdrożenie generatywnej AI w skali organizacji jako dojrzały.
+Nadzór nad AI nie jest już hipotetycznym problemem projektowym. W raporcie McKinsey opublikowanym w marcu 2025 roku, opartym na badaniu przeprowadzonym w 2024 roku, 78% respondentów deklarowało wykorzystanie AI w co najmniej jednej funkcji biznesowej. W uzupełniającym badaniu osób na stanowiskach kierowniczych tylko 1% określało wdrożenie generatywnej AI w skali organizacji za dojrzałe.
 
 <aside class="evidence-callout" aria-label="Dane">
 <p class="evidence-number">362</p>
@@ -27,7 +27,7 @@ nadzór nad AI nie jest już hipotetycznym problemem projektowym. W raporcie McK
 <p class="evidence-source"><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report">Stanford · AI Index 2026</a></p>
 </aside>
 
-Sam poziom adopcji szybko się zmienia. Trwalszy jest inny problem: organizacje już wykorzystują AI, podczas gdy właściciele odpowiedzialności, standardy przeglądu i ścieżki eskalacji nadal dojrzewają.
+Sam poziom wykorzystania AI szybko się zmienia. Trwalszy jest inny problem: organizacje już wykorzystują AI, podczas gdy właściciele odpowiedzialności, standardy przeglądu i ścieżki eskalacji nadal dojrzewają.
 
 ## Siła kontroli powinna rosnąć wraz z ekspozycją
 
@@ -56,19 +56,19 @@ W praktyce patrzę na trzy zmienne.
 <p class="editorial-note">Siłę kontroli dobieraj do autonomii, konsekwencji i trudności odwrócenia skutku. Sam tryb użycia AI nie określa ryzyka.</p>
 </figure>
 
-Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu nadzór potrzebujemy: lepszych dowodów, monitorowania, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
+Im wyższa autonomia i konsekwencja oraz im niższa odwracalność, tym mocniejszego mechanizmu nadzoru potrzebujemy: lepszych dowodów, monitorowania, przeglądu, eskalacji albo prawa do zatrzymania rozwiązania.
 
 To nie jest alternatywa dla prawa. Regulacyjne kategorie i obowiązkowe wymagania wyznaczają minimalny poziom zgodności. Wewnętrzny model ryzyka służy do zaprojektowania kontroli ponad tym minimum i do rozróżnienia przypadków, których przepisy nie traktują identycznie operacyjnie.
 
 ## AI Act wyznacza minimum prawne, nie cały model nadzoru
 
-Unijny AI Act wszedł w życie 1 sierpnia 2024 roku i zasadniczo zaczął obowiązywać 2 sierpnia 2026 roku, ale harmonogram pozostaje progresywny. Zakazane praktyki i obowiązki dotyczące kompetencji w zakresie AI zaczęły obowiązywać wcześniej, a zasady nadzór i obowiązki dla modeli GPAI od 2 sierpnia 2025 roku.
+Unijny AI Act wszedł w życie 1 sierpnia 2024 roku i zasadniczo zaczął obowiązywać 2 sierpnia 2026 roku, ale harmonogram pozostaje progresywny. Zakazane praktyki i obowiązki dotyczące kompetencji w zakresie AI zaczęły obowiązywać wcześniej, a zasady nadzoru i obowiązki dla modeli GPAI od 2 sierpnia 2025 roku.
 
 Po zmianach harmonogramu przepisy dotyczące przypadków wysokiego ryzyka z załącznika III mają być stosowane od 2 grudnia 2027 roku, a dla systemów wysokiego ryzyka wbudowanych w regulowane produkty z załącznika I – od 2 sierpnia 2028 roku.
 
-Dla modelu operacyjnego ważniejsza od samego kalendarza jest zasada: minimalne wymagania prawne nie zwalnia organizacji z zaprojektowania odpowiedzialności, dowodów i eskalacji adekwatnych do realnej ekspozycji.
+Dla modelu operacyjnego ważniejsza od samego kalendarza jest zasada: spełnienie minimalnych wymagań prawnych nie zwalnia organizacji z zaprojektowania odpowiedzialności, dowodów i eskalacji adekwatnych do realnej ekspozycji.
 
-## Governance powinien być częścią cyklu życia
+## Nadzór powinien być częścią cyklu życia
 
 Jeżeli zgodność z przepisami pojawia się wyłącznie na końcu, organizacja tworzy konflikt między tempem i bezpieczeństwem. Lepszy model wbudowuje wymagania dotyczące danych, testów, nadzoru człowieka, monitorowania i eskalacji w cały cykl życia produktu.
 
@@ -86,11 +86,11 @@ Dla niskiej autonomii i łatwo odwracalnego skutku wystarczające mogą być pr�
 
 ## Odpowiedzialność pozostaje po stronie organizacji
 
-AI może analizować, rekomendować albo automatyzować fragment pracy, ale odpowiedzialność organizacyjna nie znika. Governance powinien wskazywać właściciela efektu biznesowego, rozwiązania i ryzyka oraz sposób eskalacji, gdy dowody wychodzą poza przyjęty profil.
+AI może analizować, rekomendować albo automatyzować fragment pracy, ale odpowiedzialność organizacyjna nie znika. System nadzoru powinien wskazywać właściciela efektu biznesowego, rozwiązania i ryzyka oraz sposób eskalacji, gdy dowody wychodzą poza przyjęty profil.
 
-W badaniu McKinsey 28% respondentów wskazało prezesa (CEO), a 17% radę dyrektorów (board) jako poziom odpowiedzialny za nadzór nad nadzór nad AI. Nie znaczy to, że najwyższe kierownictwo powinno zatwierdzać każdy przypadek użycia. Odpowiada raczej za to, czy istnieje system, w którym decyzje są delegowane proporcjonalnie do ekspozycji, a odpowiedzialność nie znika wraz z automatyzacją.
+W badaniu McKinsey 28% respondentów wskazało prezesa (CEO), a 17% radę dyrektorów (board) jako poziom odpowiedzialny za nadzór nad AI. Nie znaczy to, że najwyższe kierownictwo powinno zatwierdzać każdy przypadek użycia. Odpowiada raczej za to, czy istnieje system, w którym decyzje są delegowane proporcjonalnie do ekspozycji, a odpowiedzialność nie znika wraz z automatyzacją.
 
-To ten sam balans autonomii i odpowiedzialności, który pojawia się w nadzór architektonicznym. Zbyt duża centralizacja zamienia eksperymentowanie w biurokrację. Zbyt luźne granice sprawiają, że odpowiedzialność staje się niejasna.
+To ten sam balans autonomii i odpowiedzialności, który pojawia się w ładzie architektonicznym. Zbyt duża centralizacja zamienia eksperymentowanie w biurokrację. Zbyt luźne granice sprawiają, że odpowiedzialność staje się niejasna.
 
 ## Przetestuj jeden działający przypadek użycia
 
@@ -98,4 +98,4 @@ Weź jedno istniejące zastosowanie AI i oceń je w trzech wymiarach: autonomia,
 
 Potem sprawdź, czy odpowiadają im mechanizmy kontroli: właściciel efektu biznesowego, monitorowane dowody, poziom wymaganej weryfikacji, warunek eskalacji i osoba uprawniona do wstrzymania użycia.
 
-Jeżeli kontrola rośnie wraz z ekspozycją, organizacja prawdopodobnie ma mechanizm nadzór. Jeżeli odpowiedzią jest jedynie „przeszło przegląd rozwiązania AI”, może mieć tylko teatr kontroli.
+Jeżeli kontrola rośnie wraz z ekspozycją, organizacja prawdopodobnie ma mechanizm nadzoru. Jeżeli odpowiedzią jest jedynie „przeszło przegląd rozwiązania AI”, może mieć tylko teatr kontroli.
