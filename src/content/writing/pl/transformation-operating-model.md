@@ -49,9 +49,20 @@ Do tego potrzebny jest rytm. Część decyzji powinna reagować szybko, część
 
 W praktyce przydatny jest prosty ciąg:
 
-<figure style="width:min(62rem,calc(100vw - 3rem));max-width:none;margin:clamp(3rem,6vw,4.75rem) 0;">
-<img src="/images/writing/transformation-decision-point-pl.webp" alt="Plan transformacji prowadzi przez wykonanie i dowody do punktu decyzji, w którym organizacja świadomie utrzymuje albo zmienia kierunek." width="1438" height="1076" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.9rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">Nowe informacje nie powinny automatycznie zmieniać roadmapy. Najpierw muszą prowadzić do świadomej decyzji.</figcaption>
+<figure class="editorial-figure editorial-figure--transformation" aria-labelledby="transformation-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Transformacja</span><h3 id="transformation-figure-title">Dowód prowadzi do decyzji.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/transformation-768.avif 768w, /images/writing/transformation-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/transformation-1536.webp" srcset="/images/writing/transformation-768.webp 768w, /images/writing/transformation-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--4">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Plan</strong><p>Ustal kierunek.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Wykonanie</strong><p>Podejmij działanie.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Dowód</strong><p>Sprawdź, co działa.</p></li>
+<li><span class="editorial-index" aria-hidden="true">04</span><strong>Decyzja</strong><p>Oceń potrzebę zmiany.</p></li>
+</ol>
+<div class="editorial-outcomes"><div><strong>Utrzymaj</strong><span>Kontynuuj zgodnie z planem.</span></div><div><strong>Zmień</strong><span>Skoryguj kierunek na podstawie dowodu.</span></div></div>
+<p class="editorial-note">Nowe informacje nie powinny automatycznie zmieniać roadmapy. Najpierw muszą prowadzić do świadomej decyzji.</p>
 </figure>
 
 Kierunek mówi, jaki efekt uzasadnia zmianę. Założenie opisuje, dlaczego dana inicjatywa, sekwencja lub zależność ma do tego efektu prowadzić. Wykonanie dostarcza dowodów. Dopiero potem operating model rozstrzyga, czy decyzję utrzymać, czy ponownie otworzyć.

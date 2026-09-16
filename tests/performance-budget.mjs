@@ -34,15 +34,22 @@ const homePath = path.join(root, 'index.html');
 const homeBytes = fs.existsSync(homePath) ? bytes(homePath) : Number.POSITIVE_INFINITY;
 const largestFile = files.reduce((largest, file) => !largest || bytes(file) > bytes(largest) ? file : largest, null);
 const largestBytes = largestFile ? bytes(largestFile) : 0;
+const editorialFiles = files.filter((file) => rel(file).startsWith('images/writing/'));
+const editorialBytes = editorialFiles.reduce((sum, file) => sum + bytes(file), 0);
+const nonEditorialLargest = Math.max(...files.filter((file) => !editorialFiles.includes(file)).map(bytes));
 
 const KiB = 1024;
 const budgets = [
-  { label: 'total production artifact', actual: totalBytes, max: 700 * KiB },
+  // Four shared 2x artworks, two widths and AVIF/WebP fallbacks. A reader
+  // downloads one derivative per essay, not all sixteen files in the artifact.
+  { label: 'total production artifact', actual: totalBytes, max: 1400 * KiB },
+  { label: 'all responsive editorial derivatives', actual: editorialBytes, max: 1100 * KiB },
+  { label: 'largest non-editorial file', actual: nonEditorialLargest, max: 96 * KiB },
   { label: 'compiled CSS (raw)', actual: cssBytes, max: 96 * KiB },
   { label: 'compiled CSS (gzip)', actual: cssGzipBytes, max: 20 * KiB },
   { label: 'client JavaScript', actual: jsBytes, max: 8 * KiB },
   { label: 'home HTML', actual: homeBytes, max: 20 * KiB },
-  { label: `largest single file${largestFile ? ` (${rel(largestFile)})` : ''}`, actual: largestBytes, max: 96 * KiB },
+  { label: `largest single file${largestFile ? ` (${rel(largestFile)})` : ''}`, actual: largestBytes, max: 160 * KiB },
 ];
 
 const format = (value) => `${(value / KiB).toFixed(1)} KiB`;

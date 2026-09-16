@@ -41,9 +41,19 @@ I find three variables useful.
 
 **Reversibility.** How easily can the organization undo the effect if it proves undesirable?
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/ai-governance-exposure-en.svg" alt="Three AI use cases: work support, recommendation and autonomous action. As autonomy and consequence rise, control increases from monitoring to approval and stop authority." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">We do not control a solution simply because it uses AI. Control should increase with autonomy, consequence and difficulty of reversal.</figcaption>
+<figure class="editorial-figure editorial-figure--ai" aria-labelledby="ai-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">AI governance</span><h3 id="ai-figure-title">Control proportional to exposure.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/ai-768.avif 768w, /images/writing/ai-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/ai-1536.webp" srcset="/images/writing/ai-768.webp 768w, /images/writing/ai-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--3">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Assist</strong><p>A person uses the output. Define usage rules and how results are checked.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Recommend</strong><p>AI informs a decision. Name the approver and the evidence required.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Act autonomously</strong><p>AI takes action. Set boundaries, monitoring and the authority to stop it.</p></li>
+</ol>
+
+<p class="editorial-note">Match controls to autonomy, consequences and the difficulty of reversing an outcome. The mode of AI use alone does not determine risk.</p>
 </figure>
 
 As autonomy and consequence rise, and reversibility falls, governance should become stronger: better evidence, monitoring, review, escalation or explicit authority to stop the system.

@@ -45,9 +45,19 @@ Nothing has been prioritized. A fourth commitment has been added.
 
 For every new priority, I use one simple question: **which existing commitment gives up the resource the new priority needs?** I think of this as the Resource Donor Test. The resource may be a team, specialist capability, budget or sponsor attention.
 
-<figure style="width:min(56rem,calc(100vw - 4rem));max-width:none;margin:clamp(3rem,6vw,4.5rem) 0;">
-<img src="/images/writing/portfolio-resource-donor-en.svg" alt="The current portfolio feeds scarce resources into one of three choices: stop the new priority, reallocate resources, or explicitly add capacity." width="1200" height="760" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-<figcaption style="margin-top:.85rem;max-width:46rem;font-size:.8rem;line-height:1.55;color:var(--muted);">A new priority becomes real only when the organization can name where its people, budget or leadership attention will come from.</figcaption>
+<figure class="editorial-figure editorial-figure--portfolio" aria-labelledby="portfolio-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Portfolio</span><h3 id="portfolio-figure-title">A new priority needs real capacity.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/portfolio-768.avif 768w, /images/writing/portfolio-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/portfolio-1536.webp" srcset="/images/writing/portfolio-768.webp 768w, /images/writing/portfolio-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--3">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Stop</strong><p>Do not start the new priority without the capacity to deliver it.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Reallocate</strong><p>Name the commitment that releases people, budget or attention.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Add capacity</strong><p>Approve the increase in capacity and fund its cost.</p></li>
+</ol>
+
+<p class="editorial-note">A new priority becomes real only when the organization can name where its people, budget or leadership attention will come from.</p>
 </figure>
 
 The test does not assume every portfolio is zero-sum. There are three legitimate answers: stop something, reallocate existing capacity, or explicitly add capacity and fund the cost of that decision. The third option must be a real investment decision, not another “priority” added to an unchanged set of commitments.
