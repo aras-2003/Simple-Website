@@ -2,7 +2,7 @@
 
 ## Implemented · 2026-09-17
 
-The fifth artwork is now paired with a native, localized two-track diagram before the three-level measurement section. The upper path has code ready, testing and production; the lower has need, scope decision, implementation, availability, adoption and benefit. A thin vertical connector joins production and availability on desktop. On mobile, the lower journey reflows vertically and a localized sentence preserves the connection. The waiting segment is emphasized with a thicker ochre line and a prominent two-month callout. Both the 30% and two-month figures are explicitly marked hypothetical, never a project result; segment lengths are expressly not a time scale.
+The fifth artwork is paired with a compact, localized two-item comparison before the three-level measurement section: a technical stage shortened by 30%, and two months waiting for a scope decision. It ends with the question of whether time to value got shorter. Both figures are explicitly marked hypothetical, never project results. The original nine-node, two-track diagram was removed after user feedback about readability; the comparison stacks on mobile. The separate three-level measurement model remains in place.
 
 Original artwork: `delivery.png`, 1536 × 1024, generated with the built-in ImageGen tool and preserved with the conversation. Prompt: `delivery-prompt.txt`. Re-encode only this family with `node scripts/encode-editorial-art.mjs delivery`. Four derivatives pass the existing 48/160 KiB per-image caps. The artifact budget adds room for the fifth family, preserving CSS, JS and all individual asset limits. Current complete build is approximately 1.66 MiB; a visitor downloads one chosen image, 29–101 KiB in AVIF.
 
