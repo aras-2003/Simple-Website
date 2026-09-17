@@ -25,6 +25,23 @@ Both accounts can be true. Engineering has become faster, while the organization
 
 Deployment frequency is an important signal of technical capability. On its own, it cannot tell us whether we are delivering the right change, when someone can use it, or whether the intended benefit materialized. That is not a criticism of the metric. It is a reminder to **be precise about the question a metric answers**.
 
+<figure class="editorial-figure editorial-figure--delivery" aria-labelledby="delivery-art-title" aria-describedby="delivery-example">
+<figcaption class="editorial-heading"><span class="editorial-kicker">From deployment to value</span><h3 id="delivery-art-title">Two speeds. One change.</h3><p class="delivery-example" id="delivery-example">Hypothetical example. These figures are not project results.</p></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/delivery-768.avif 768w, /images/writing/delivery-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/delivery-1536.webp" srcset="/images/writing/delivery-768.webp 768w, /images/writing/delivery-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<div class="delivery-flow">
+<p class="delivery-metric">Technical stage shortened by 30%</p>
+<ol class="delivery-track delivery-track--technical" role="list" aria-label="Technical stage shortened by 30%"><li>Code ready</li><li>Testing</li><li>Production</li></ol>
+<div class="delivery-bridge"><div class="delivery-wait"><span class="editorial-kicker">The path to value</span><strong>2 months waiting</strong><span>For a scope decision</span></div></div>
+<ol class="delivery-track delivery-track--value" role="list" aria-label="The path to value"><li>Need</li><li>Scope decision</li><li>Implementation</li><li>Availability</li><li>Adoption</li><li>Benefit</li></ol>
+<p class="delivery-link-note">Production is a step towards availability, not the end of the path to value.</p>
+<p class="delivery-question">Did time to value get shorter?</p>
+</div>
+<p class="editorial-note">A faster technical stage does not automatically remove the constraint across the whole flow. Segment lengths are schematic, not a time scale.</p>
+</figure>
+
 ## Three measurement levels must describe the same change
 
 I find it useful to connect three perspectives. The goal is not to create three separate dashboards. It is to trace one initiative across the flow and identify where the outcomes diverge.
