@@ -12,7 +12,7 @@ for (const locale of ['pl', 'en']) {
         await img.decode();
         if (!img.naturalWidth) throw new Error('Empty artwork');
       });
-      await expect(figure.locator('li')).toHaveCount(slug === 'delivery-beyond-deployment' ? 9 : slug.startsWith('architecture') || slug.startsWith('transformation') ? 4 : 3);
+      await expect(figure.locator('li')).toHaveCount(slug === 'delivery-beyond-deployment' ? 2 : slug.startsWith('architecture') || slug.startsWith('transformation') ? 4 : 3);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       expect(await figure.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
       await figure.screenshot({ style: '.skip-link:not(:focus) { visibility: hidden; }', path: `artifacts/visual/editorial-${locale}-${slug}-${testInfo.project.name}.png` });
@@ -50,8 +50,7 @@ for (const locale of ['pl', 'en']) {
     await expect(art).toContainText(locale === 'pl' ? 'Przykład hipotetyczny' : 'Hypothetical example');
     await expect(art).toContainText('30%');
     await expect(art).toContainText(locale === 'pl' ? '2 miesiące oczekiwania' : '2 months waiting');
-    await expect(art.locator('.delivery-track--technical li')).toHaveCount(3);
-    await expect(art.locator('.delivery-track--value li')).toHaveCount(6);
+    await expect(art.locator('.delivery-summary li')).toHaveCount(2);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     expect(await figure.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
     await figure.screenshot({ style: '.skip-link:not(:focus) { visibility: hidden; }', path: `artifacts/visual/editorial-${locale}-delivery-levels-${testInfo.project.name}.png` });

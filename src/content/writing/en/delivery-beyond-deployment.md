@@ -31,15 +31,11 @@ Deployment frequency is an important signal of technical capability. On its own,
 <source type="image/avif" srcset="/images/writing/delivery-768.avif 768w, /images/writing/delivery-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
 <img src="/images/writing/delivery-1536.webp" srcset="/images/writing/delivery-768.webp 768w, /images/writing/delivery-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
 </picture>
-<div class="delivery-flow">
-<p class="delivery-metric">Technical stage shortened by 30%</p>
-<ol class="delivery-track delivery-track--technical" role="list" aria-label="Technical stage shortened by 30%"><li>Code ready</li><li>Testing</li><li>Production</li></ol>
-<div class="delivery-bridge"><div class="delivery-wait"><span class="editorial-kicker">The path to value</span><strong>2 months waiting</strong><span>For a scope decision</span></div></div>
-<ol class="delivery-track delivery-track--value" role="list" aria-label="The path to value"><li>Need</li><li>Scope decision</li><li>Implementation</li><li>Availability</li><li>Adoption</li><li>Benefit</li></ol>
-<p class="delivery-link-note">Production is a step towards availability, not the end of the path to value.</p>
+<ul class="delivery-summary" role="list">
+<li><strong>Technical stage shortened by 30%</strong></li>
+<li><strong>2 months waiting</strong><span>For a scope decision</span></li>
+</ul>
 <p class="delivery-question">Did time to value get shorter?</p>
-</div>
-<p class="editorial-note">A faster technical stage does not automatically remove the constraint across the whole flow. Segment lengths are schematic, not a time scale.</p>
 </figure>
 
 ## Three measurement levels must describe the same change
