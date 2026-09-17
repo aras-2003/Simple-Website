@@ -25,6 +25,23 @@ Obie perspektywy mogą być prawdziwe. Inżynieria rzeczywiście przyspieszyła,
 
 Częstotliwość wdrożeń (deployment frequency) jest ważnym sygnałem zdolności technicznej. Nie mówi jednak, czy dostarczamy właściwą zmianę, kiedy użytkownik może z niej skorzystać ani czy pojawiła się oczekiwana korzyść. To nie zarzut wobec metryki. To przypomnienie, że **trzeba wiedzieć, na jakie pytanie odpowiada**.
 
+<figure class="editorial-figure editorial-figure--delivery" aria-labelledby="delivery-art-title" aria-describedby="delivery-example">
+<figcaption class="editorial-heading"><span class="editorial-kicker">Od wdrożenia do wartości</span><h3 id="delivery-art-title">Dwie prędkości jednej zmiany</h3><p class="delivery-example" id="delivery-example">Przykład hipotetyczny. Liczby nie przedstawiają wyniku projektu.</p></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/delivery-768.avif 768w, /images/writing/delivery-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/delivery-1536.webp" srcset="/images/writing/delivery-768.webp 768w, /images/writing/delivery-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<div class="delivery-flow">
+<p class="delivery-metric">Etap techniczny krótszy o 30%</p>
+<ol class="delivery-track delivery-track--technical" role="list" aria-label="Etap techniczny krótszy o 30%"><li>Gotowy kod</li><li>Testy</li><li>Produkcja</li></ol>
+<div class="delivery-bridge"><div class="delivery-wait"><span class="editorial-kicker">Droga do wartości</span><strong>2 miesiące oczekiwania</strong><span>Na decyzję o zakresie</span></div></div>
+<ol class="delivery-track delivery-track--value" role="list" aria-label="Droga do wartości"><li>Potrzeba</li><li>Decyzja o zakresie</li><li>Realizacja</li><li>Udostęp&shy;nienie</li><li>Wykorzysta&shy;nie</li><li>Korzyść</li></ol>
+<p class="delivery-link-note">Produkcja jest krokiem do udostępnienia, nie końcem drogi do wartości.</p>
+<p class="delivery-question">Czy skrócił się czas do wartości?</p>
+</div>
+<p class="editorial-note">Sprawniejszy etap techniczny nie usuwa automatycznie ograniczenia w całym przepływie. Długości odcinków są schematyczne, nie stanowią skali czasu.</p>
+</figure>
+
 ## Trzy poziomy pomiaru muszą opisywać tę samą zmianę
 
 Przydatne jest połączenie trzech perspektyw. Nie chodzi o trzy oddzielne zestawienia wskaźników, lecz o możliwość prześledzenia jednej inicjatywy przez cały przepływ i zrozumienia, gdzie wynik się rozjeżdża.

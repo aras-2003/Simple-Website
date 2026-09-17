@@ -1,5 +1,13 @@
 # Editorial art brief — Delivery beyond deployment
 
+## Implemented · 2026-09-17
+
+The fifth artwork is now paired with a native, localized two-track diagram before the three-level measurement section. The upper path has code ready, testing and production; the lower has need, scope decision, implementation, availability, adoption and benefit. A thin vertical connector joins production and availability on desktop. On mobile, the lower journey reflows vertically and a localized sentence preserves the connection. The waiting segment is emphasized with a thicker ochre line and a prominent two-month callout. Both the 30% and two-month figures are explicitly marked hypothetical, never a project result; segment lengths are expressly not a time scale.
+
+Original artwork: `delivery.png`, 1536 × 1024, generated with the built-in ImageGen tool and preserved with the conversation. Prompt: `delivery-prompt.txt`. Re-encode only this family with `node scripts/encode-editorial-art.mjs delivery`. Four derivatives pass the existing 48/160 KiB per-image caps. The artifact budget adds room for the fifth family, preserving CSS, JS and all individual asset limits. Current complete build is approximately 1.66 MiB; a visitor downloads one chosen image, 29–101 KiB in AVIF.
+
+Local validation: production build, full image decoding, static/SEO/internal-link checks, Worker tests, PL/EN desktop/mobile figure and fallback tests, WCAG checks, keyboard navigation and 320 px reflow. Visual review covers both layouts. Release CI must pass before main and staging promotion.
+
 ## Purpose and placement
 
 Article (PL/EN): `src/content/writing/{pl,en}/delivery-beyond-deployment.md`. Conceptual artwork illustrating the gap between a faster technical deployment stage and an unchanged end-to-end path to customer value. Place its responsive `<picture>` in the article **after the opening section, before “Trzy poziomy pomiaru...” / “Three measurement levels...”**. The article already has a semantic three-level HTML model below; retain that model. The new artwork is a visual metaphor, not the source of facts.
