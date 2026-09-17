@@ -2,7 +2,7 @@
 import sharp from 'sharp';
 import { readFile, stat } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-for (const name of ['architecture', 'portfolio', 'transformation', 'ai']) {
+for (const name of ['architecture', 'portfolio', 'transformation', 'ai', 'delivery']) {
   for (const width of [768, 1536]) {
     for (const format of ['avif', 'webp']) {
       const file = `public/images/writing/${name}-${width}.${format}`;
@@ -14,4 +14,4 @@ for (const name of ['architecture', 'portfolio', 'transformation', 'ai']) {
     }
   }
 }
-console.log('PASS: all 16 editorial derivatives fully decode, have exact dimensions and meet transfer budgets.');
+console.log('PASS: all 20 editorial derivatives fully decode, have exact dimensions and meet transfer budgets.');
