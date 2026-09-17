@@ -5,7 +5,7 @@ export const privacySections = { pl: [
   },
   {
     title: 'Zakres danych',
-    body: 'Przetwarzane są: imię i nazwisko, adres e-mail, opcjonalna organizacja, wybrany temat i treść wiadomości. Dla ochrony formularza i serwisu przed nadużyciami przetwarzane są również podstawowe dane techniczne, w szczególności adres IP, pochodzenie żądania (nagłówek Origin), informacje niezbędne do limitowania prób oraz sygnały bezpieczeństwa wymagane przez Cloudflare i Turnstile do odróżniania legalnego ruchu od automatycznych nadużyć.',
+    body: 'Przetwarzane są: imię i nazwisko, adres e-mail, opcjonalna organizacja, wybrany temat i treść wiadomości. Podanie danych jest dobrowolne; nie jest wymogiem ustawowym ani umownym, ani warunkiem zawarcia umowy. Imię i nazwisko, adres e-mail, temat oraz treść wiadomości są wymagane do wysłania formularza i udzielenia odpowiedzi tą drogą. Bez nich nie wyślesz formularza ani nie otrzymasz odpowiedzi za jego pośrednictwem. Organizacja jest opcjonalna. Dla ochrony formularza i serwisu przed nadużyciami przetwarzane są również podstawowe dane techniczne, w szczególności adres IP, pochodzenie żądania (nagłówek Origin), informacje niezbędne do limitowania prób oraz sygnały bezpieczeństwa wymagane przez Cloudflare i Turnstile do odróżniania legalnego ruchu od automatycznych nadużyć.',
   },
   {
     title: 'Cel i podstawa prawna',
@@ -38,7 +38,7 @@ export const privacySections = { pl: [
   },
   {
     title: 'Data processed',
-    body: 'The form processes your name, email address, optional organization, selected topic and message content. Basic technical data is also processed to protect the form and service from abuse, including the IP address, request origin, information necessary to enforce submission limits and security signals required by Cloudflare and Turnstile to distinguish legitimate traffic from automated abuse.',
+    body: 'The form processes your name, email address, optional organization, selected topic and message content. Providing this information is voluntary; it is not a statutory or contractual requirement or a condition for entering into a contract. Name, email address, topic and message are required to submit the form and receive a reply through it. Without them, you cannot submit the form or receive a reply via that channel. Organization is optional. Basic technical data is also processed to protect the form and service from abuse, including the IP address, request origin, information necessary to enforce submission limits and security signals required by Cloudflare and Turnstile to distinguish legitimate traffic from automated abuse.',
   },
   {
     title: 'Purpose and legal basis',
