@@ -14,12 +14,16 @@ for (const [locale, path, label, disclosure] of [
     await expect(contact).toContainText('contact@arkadiuszkamrowski.com');
     await expect(page.locator('.privacy-grid article').nth(1)).toContainText(disclosure);
 
+    if (testInfo.project.name === 'desktop-chromium') {
+      await page.screenshot({ path: `artifacts/visual/privacy-${locale}-desktop-chromium.png`, fullPage: true });
+    }
+
     await page.setViewportSize({ width: 320, height: 740 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
     await expect(contact).toBeVisible();
 
-    if (['desktop-chromium', 'mobile-chromium'].includes(testInfo.project.name)) {
-      await page.screenshot({ path: `artifacts/visual/privacy-${locale}-${testInfo.project.name}.png`, fullPage: true });
+    if (testInfo.project.name === 'mobile-chromium') {
+      await page.screenshot({ path: `artifacts/visual/privacy-${locale}-mobile-chromium.png`, fullPage: true });
     }
   });
 }
