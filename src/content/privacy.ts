@@ -1,7 +1,7 @@
 export const privacySections = { pl: [
   {
     title: 'Administrator danych',
-    body: 'Administratorem danych przekazywanych przez formularz jest Arkadiusz Kamrowski. W sprawach dotyczących danych możesz skontaktować się przez formularz kontaktowy na tej stronie. Formularz służy wyłącznie do korespondencji związanej z wiadomością, którą inicjujesz.',
+    body: 'Administratorem danych przekazywanych przez formularz jest Arkadiusz Kamrowski. W sprawach dotyczących danych możesz napisać na podany poniżej adres e-mail albo skorzystać z formularza kontaktowego na tej stronie. Formularz służy wyłącznie do korespondencji związanej z wiadomością, którą inicjujesz.',
   },
   {
     title: 'Zakres danych',
@@ -34,7 +34,7 @@ export const privacySections = { pl: [
 ], en: [
   {
     title: 'Data controller',
-    body: 'Arkadiusz Kamrowski is the controller of personal data submitted through the form. For data-related matters you can use the contact form on this website. The form is used only for correspondence connected with the message you initiate.',
+    body: 'Arkadiusz Kamrowski is the controller of personal data submitted through the form. For data-related matters you can email the address below or use the contact form on this website. The form is used only for correspondence connected with the message you initiate.',
   },
   {
     title: 'Data processed',
