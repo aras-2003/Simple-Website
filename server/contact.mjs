@@ -162,8 +162,7 @@ async function sendEmail(data) {
   });
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => '');
-    console.error('contact_delivery_failed', response.status, detail.slice(0, 300));
+    console.error('contact_delivery_failed', response.status);
     throw new Error('delivery_failed');
   }
   return response.json();
@@ -242,18 +241,18 @@ const server = http.createServer(async (req, res) => {
     const turnstileOk = await verifyTurnstile(data.turnstileToken, ip);
     if (!turnstileOk) return json(res, 403, { error: 'turnstile_failed' }, origin);
 
-    const result = await sendEmail(data);
+    await sendEmail(data);
     console.log(JSON.stringify({
       event: 'contact_sent',
       topic: data.topic,
       dryRun,
-      id: result?.id || null,
       at: new Date().toISOString(),
     }));
     return json(res, 202, { ok: true }, origin);
   } catch (error) {
-    const code = error?.message || 'unknown';
-    console.error('contact_error', code);
+    const code = error instanceof Error ? error.message : 'unknown';
+    // Provider bodies, IDs and exception messages can contain contact data.
+    console.error('contact_error', ['turnstile_not_configured', 'turnstile_unavailable', 'contact_not_configured', 'delivery_failed'].includes(code) ? code : 'upstream_failed');
     if (code === 'turnstile_not_configured' || code === 'turnstile_unavailable') {
       return json(res, 503, { error: 'turnstile_unavailable' }, origin);
     }

@@ -105,7 +105,7 @@ Staging is non-indexable by construction:
 - `wrangler.staging.jsonc` sends all requests through Worker code so the noindex policy cannot be bypassed by direct Static Asset handling;
 - Cloudflare Access protects the staging Worker and its associated hostnames.
 
-Current staging setup already includes the dedicated Turnstile site key/secret and owner-only Cloudflare Access. Resend/contact-delivery secrets remain pending.
+The dated [prelaunch acceptance record](PRELAUNCH_ACCEPTANCE_2026-09-17.md) records dedicated staging Turnstile and owner-only Access, plus an owner-tested Resend delivery with received email and verified Reply-To on 2026-09-17. The earlier “Resend pending” note is superseded. This is attributed historical evidence, not a fresh inspection of account settings or secrets.
 
 ### Production
 
