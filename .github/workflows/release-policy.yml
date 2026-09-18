@@ -1,0 +1,50 @@
+name: Release Policy
+
+on:
+  pull_request:
+    branches: [main, staging, production]
+    types: [opened, reopened, synchronize, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-promotion-path:
+    name: validate promotion path
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR source and target
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "Validating promotion path: ${HEAD_REF} -> ${BASE_REF}"
+
+          case "$BASE_REF" in
+            main)
+              if [ "$HEAD_REF" = "staging" ] || [ "$HEAD_REF" = "production" ]; then
+                echo "ERROR: release branches must not be merged back into main via PR."
+                exit 1
+              fi
+              ;;
+
+            staging)
+              if [ "$HEAD_REF" != "main" ]; then
+                echo "ERROR: staging accepts promotions only from main."
+                exit 1
+              fi
+              ;;
+
+            production)
+              if [ "$HEAD_REF" != "staging" ]; then
+                echo "ERROR: production accepts promotions only from staging."
+                exit 1
+              fi
+              ;;
+
+            *)
+              echo "No release policy applies to target branch: $BASE_REF"
+              ;;
+          esac
+
+          echo "Release policy passed."

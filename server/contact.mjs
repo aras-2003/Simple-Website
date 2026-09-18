@@ -23,10 +23,9 @@ const buckets = new Map();
 let rateChecks = 0;
 
 const topicLabels = {
-  architecture: 'Enterprise Architecture',
-  strategy: 'Strategy & Transformation',
-  portfolio: 'PMO & Portfolio',
-  ai: 'AI & Technology',
+  diagnostic: 'Decision diagnostic',
+  design: 'Operating / change design',
+  execution: 'Execution advisory',
   speaking: 'Speaking / Panel',
   other: 'Other',
 };
@@ -163,8 +162,7 @@ async function sendEmail(data) {
   });
 
   if (!response.ok) {
-    const detail = await response.text().catch(() => '');
-    console.error('contact_delivery_failed', response.status, detail.slice(0, 300));
+    console.error('contact_delivery_failed', response.status);
     throw new Error('delivery_failed');
   }
   return response.json();
@@ -211,6 +209,8 @@ const server = http.createServer(async (req, res) => {
     return json(res, 400, { error: 'invalid_json' }, origin);
   }
 
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) return json(res, 400, { error: 'invalid_json' }, origin);
+
   const data = {
     name: clean(body.name),
     email: clean(body.email),
@@ -230,7 +230,7 @@ const server = http.createServer(async (req, res) => {
   if (data.name.length < 2 || data.name.length > 120) return json(res, 400, { error: 'invalid_name' }, origin);
   if (!validEmail(data.email)) return json(res, 400, { error: 'invalid_email' }, origin);
   if (data.organization.length > 140) return json(res, 400, { error: 'invalid_organization' }, origin);
-  if (!(data.topic in topicLabels)) return json(res, 400, { error: 'invalid_topic' }, origin);
+  if (!Object.hasOwn(topicLabels, data.topic)) return json(res, 400, { error: 'invalid_topic' }, origin);
   if (data.message.length < 20 || data.message.length > 4000) return json(res, 400, { error: 'invalid_message' }, origin);
   // The timestamp is only a low-cost bot signal. An upper bound caused valid
   // submissions from long-lived tabs to be rejected and provided no security value.
@@ -241,18 +241,18 @@ const server = http.createServer(async (req, res) => {
     const turnstileOk = await verifyTurnstile(data.turnstileToken, ip);
     if (!turnstileOk) return json(res, 403, { error: 'turnstile_failed' }, origin);
 
-    const result = await sendEmail(data);
+    await sendEmail(data);
     console.log(JSON.stringify({
       event: 'contact_sent',
       topic: data.topic,
       dryRun,
-      id: result?.id || null,
       at: new Date().toISOString(),
     }));
     return json(res, 202, { ok: true }, origin);
   } catch (error) {
-    const code = error?.message || 'unknown';
-    console.error('contact_error', code);
+    const code = error instanceof Error ? error.message : 'unknown';
+    // Provider bodies, IDs and exception messages can contain contact data.
+    console.error('contact_error', ['turnstile_not_configured', 'turnstile_unavailable', 'contact_not_configured', 'delivery_failed'].includes(code) ? code : 'upstream_failed');
     if (code === 'turnstile_not_configured' || code === 'turnstile_unavailable') {
       return json(res, 503, { error: 'turnstile_unavailable' }, origin);
     }

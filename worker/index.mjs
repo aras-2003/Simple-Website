@@ -1,13 +1,14 @@
+import { handleMeasurement } from './measurement.mjs';
+
 const MAX_BODY_BYTES = 32 * 1024;
 const MAX_TURNSTILE_TOKEN = 2048;
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const RESEND_API_URL = 'https://api.resend.com/emails';
 
 const topicLabels = {
-  architecture: 'Enterprise Architecture',
-  strategy: 'Strategy & Transformation',
-  portfolio: 'PMO & Portfolio',
-  ai: 'AI & Technology',
+  diagnostic: 'Decision diagnostic',
+  design: 'Operating / change design',
+  execution: 'Execution advisory',
   speaking: 'Speaking / Panel',
   other: 'Other',
 };
@@ -20,6 +21,13 @@ const SECURITY_HEADERS = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
   'Content-Security-Policy': "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; manifest-src 'self'",
 };
+
+const LEGACY_ROUTE_PREFIXES = [
+  ['/en/writing', '/en/perspective'],
+  ['/en/work', '/en/advisory'],
+  ['/writing', '/perspektywa'],
+  ['/work', '/wspolpraca'],
+];
 
 function json(status, body, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
@@ -84,6 +92,15 @@ function applyDeploymentHeaders(response, env) {
   });
 }
 
+function legacyCanonicalPath(pathname) {
+  for (const [legacy, canonical] of LEGACY_ROUTE_PREFIXES) {
+    if (pathname === legacy || pathname.startsWith(`${legacy}/`)) {
+      return `${canonical}${pathname.slice(legacy.length)}`;
+    }
+  }
+  return null;
+}
+
 function clientIp(request) {
   return clean(request.headers.get('CF-Connecting-IP')) || 'unknown';
 }
@@ -136,16 +153,16 @@ async function sendEmail(data, env) {
   if (!resendKey || !toEmail || !fromEmail) throw new Error('contact_not_configured');
 
   const label = topicLabels[data.topic] || 'Contact';
-  const subject = `[arkadiuszkamrowski.com] ${label} — ${data.name}`;
+  const subject = `[arkadiuszkamrowski.com] ${label} – ${data.name}`;
   const text = [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    `Organization: ${data.organization || '—'}`,
+    `Organization: ${data.organization || '–'}`,
     `Topic: ${label}`,
     '',
     data.message,
   ].join('\n');
-  const html = `<h2>New website message</h2><p><strong>Name:</strong> ${escapeHtml(data.name)}</p><p><strong>Email:</strong> ${escapeHtml(data.email)}</p><p><strong>Organization:</strong> ${escapeHtml(data.organization || '—')}</p><p><strong>Topic:</strong> ${escapeHtml(label)}</p><hr><p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`;
+  const html = `<h2>New website message</h2><p><strong>Name:</strong> ${escapeHtml(data.name)}</p><p><strong>Email:</strong> ${escapeHtml(data.email)}</p><p><strong>Organization:</strong> ${escapeHtml(data.organization || '–')}</p><p><strong>Topic:</strong> ${escapeHtml(label)}</p><hr><p>${escapeHtml(data.message).replace(/\n/g, '<br>')}</p>`;
 
   const response = await fetch(RESEND_API_URL, {
     method: 'POST',
@@ -179,6 +196,35 @@ async function rateLimit(request, env) {
   return success;
 }
 
+// Stop consuming undeclared/chunked payloads as soon as they exceed the ceiling.
+async function readContactBody(request) {
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error('invalid_json');
+  const chunks = [];
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_BODY_BYTES) {
+        await reader.cancel().catch(() => {});
+        throw new Error('payload_too_large');
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return new TextDecoder().decode(bytes);
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 async function handleContact(request, env) {
   const origin = clean(request.headers.get('Origin'));
   if (request.method === 'OPTIONS') {
@@ -209,15 +255,15 @@ async function handleContact(request, env) {
     return json(413, { error: 'payload_too_large' });
   }
 
-  const raw = await request.text();
-  if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return json(413, { error: 'payload_too_large' });
-
   let body;
   try {
-    body = JSON.parse(raw);
-  } catch {
+    body = JSON.parse(await readContactBody(request));
+  } catch (error) {
+    if (error instanceof Error && error.message === 'payload_too_large') return json(413, { error: 'payload_too_large' });
     return json(400, { error: 'invalid_json' });
   }
+
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) return json(400, { error: 'invalid_json' });
 
   const data = {
     name: clean(body.name),
@@ -238,7 +284,7 @@ async function handleContact(request, env) {
   if (data.name.length < 2 || data.name.length > 120) return json(400, { error: 'invalid_name' });
   if (!validEmail(data.email)) return json(400, { error: 'invalid_email' });
   if (data.organization.length > 140) return json(400, { error: 'invalid_organization' });
-  if (!(data.topic in topicLabels)) return json(400, { error: 'invalid_topic' });
+  if (!Object.hasOwn(topicLabels, data.topic)) return json(400, { error: 'invalid_topic' });
   if (data.message.length < 20 || data.message.length > 4000) return json(400, { error: 'invalid_message' });
   if (!Number.isFinite(elapsed) || elapsed < 1200) return json(400, { error: 'invalid_timing' });
   if (env.TURNSTILE_REQUIRED !== '0' && !data.turnstileToken) return json(403, { error: 'turnstile_required' });
@@ -249,17 +295,18 @@ async function handleContact(request, env) {
       return json(403, { error: 'turnstile_failed' });
     }
 
-    const result = await sendEmail(data, env);
+    await sendEmail(data, env);
     console.log(JSON.stringify({
       event: 'contact_sent',
       topic: data.topic,
-      id: result?.id || null,
+      locale: data.locale,
       at: new Date().toISOString(),
     }));
     return json(202, { ok: true });
   } catch (error) {
     const code = error instanceof Error ? error.message : 'unknown';
-    console.error('contact_error', code);
+    // Provider/network exceptions may contain response text; log fixed categories only.
+    console.error('contact_error', ['turnstile_not_configured', 'turnstile_unavailable', 'contact_not_configured', 'delivery_failed'].includes(code) ? code : 'upstream_failed');
     if (code === 'turnstile_not_configured' || code === 'turnstile_unavailable') {
       return json(503, { error: 'turnstile_unavailable' });
     }
@@ -274,7 +321,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/contact') return handleContact(request, env);
+    if (url.pathname === '/api/events') return applyDeploymentHeaders(await handleMeasurement(request, env), env);
+    if (url.pathname === '/api/contact') return applyDeploymentHeaders(await handleContact(request, env), env);
     if (url.pathname.startsWith('/api/')) return json(404, { error: 'not_found' });
 
     if (isNonProduction(env) && url.pathname === '/robots.txt') {
@@ -289,6 +337,15 @@ export default {
       });
     }
 
+    const canonicalLegacyPath = legacyCanonicalPath(url.pathname);
+    if (canonicalLegacyPath) {
+      url.pathname = canonicalLegacyPath;
+      return new Response(null, {
+        status: 308,
+        headers: { Location: url.toString(), ...SECURITY_HEADERS, ...nonProductionHeaders(env) },
+      });
+    }
+
     if (url.pathname.length > 1 && url.pathname.endsWith('/')) {
       url.pathname = url.pathname.replace(/\/+$/, '');
       return new Response(null, {
@@ -298,6 +355,16 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
+    if (response.status === 404 && (url.pathname === '/en' || url.pathname.startsWith('/en/'))) {
+      const fallbackUrl = new URL('/en/404', request.url);
+      const englishPage = await env.ASSETS.fetch(new Request(fallbackUrl, request));
+      if (englishPage.ok) {
+        const headers = new Headers(englishPage.headers);
+        headers.set('Cache-Control', 'no-store');
+        headers.set('X-Robots-Tag', 'noindex, nofollow');
+        return applyDeploymentHeaders(new Response(englishPage.body, { status: 404, headers }), env);
+      }
+    }
     return applyDeploymentHeaders(response, env);
   },
 };

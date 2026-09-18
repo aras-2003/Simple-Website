@@ -1,37 +1,101 @@
 ---
 locale: en
-category: "AI & Governance"
+category: Autonomy, risk and governance
 title: AI governance without control theatre
-dek: Mature governance does not try to stop experimentation. It designs boundaries, accountability and evidence in proportion to risk.
-readTime: 6
+dek: Mature AI governance does not stop experimentation. It increases the strength of control when system autonomy, consequence and difficulty of reversal increase.
+modifiedAt: 2026-09-15T10:35:00+02:00
 order: 3
 publishedAt: 2026-09-04T00:00:00+02:00
-modifiedAt: 2026-09-05T00:00:00+02:00
 sources:
   - label: NIST · AI Risk Management Framework 1.0
     href: https://www.nist.gov/itl/ai-risk-management-framework
-  - label: European Commission · AI Act · risk-based approach
+  - label: European Commission · AI Act regulatory framework
     href: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
-  - label: MIT CISR · Enterprise Architecture
-    href: https://cisr.mit.edu/content/classic-topics-enterprise-architecture
-  - label: BCG · Agile Operating Model · 2024
-    href: https://www.bcg.com/publications/2024/why-companies-get-agile-right-wrong
+  - label: Stanford · AI Index 2026
+    href: https://hai.stanford.edu/ai-index/2026-ai-index-report
+  - label: McKinsey · The state of AI · March 2025 report
+    href: https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value
 ---
 
-## One policy for every use case does not work
+## Adoption is outpacing governance maturity
 
-The risk of a tool helping edit an internal note is different from the risk of a system influencing a decision about a citizen, customer or employee. Governance that treats them identically will be too heavy for low risk and too shallow for high risk.
+AI governance is no longer a hypothetical design problem. In McKinsey's March 2025 report, based on research conducted in 2024, 78% of respondents said their organizations used AI in at least one business function. In a supplementary survey of executives, only 1% described their generative AI rollout as mature.
 
-The starting point should be the use case, data, system autonomy, decision impact and reversibility. Guardrails come after that assessment. That direction is consistent with both continuous risk management in the NIST AI RMF and the proportionate, risk-based approach of the EU AI Act.
+<aside class="evidence-callout" aria-label="Evidence">
+<p class="evidence-number">362</p>
+<p class="evidence-copy">documented AI incidents were recorded for 2025 in Stanford's AI Index 2026, up from 233 a year earlier.</p>
+<p class="evidence-source"><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report">Stanford · AI Index 2026</a></p>
+</aside>
 
-## Control should be part of delivery
+Adoption rates will keep changing. The more durable problem is that organizations are already using AI while ownership, review standards and escalation paths are still maturing.
 
-When compliance appears only at the end, the organization creates a conflict between speed and safety. A better model embeds data, testing, human oversight and monitoring expectations into the product lifecycle.
+## Control should strengthen with exposure
 
-That does not mean more gates. It means a clear standard of evidence: what must a team show before a use case moves to a higher level of exposure?
+One policy for every AI use case is rarely enough. A tool that helps draft an internal note creates a different exposure from a system that independently triggers an action affecting a customer, employee or critical business process.
 
-## The core question is who owns the decision
+I find three variables useful.
 
-AI may support analysis, recommend or automate, but organizational accountability does not disappear. Governance should name the owner of the outcome, the model and the risk, together with an escalation path when evidence leaves the expected profile.
+**Autonomy.** How much can the system do without another human decision?
 
-Without that, it is easy to create an impressive policy set that cannot answer the basic question: who can say “stop”, and on what basis?
+**Consequence.** How significant could the impact of a wrong decision or output be?
+
+**Reversibility.** How easily can the organization undo the effect if it proves undesirable?
+
+<figure class="editorial-figure editorial-figure--ai" aria-labelledby="ai-figure-title">
+<figcaption class="editorial-heading"><span class="editorial-kicker">AI governance</span><h3 id="ai-figure-title">Control proportional to exposure.</h3></figcaption>
+<picture class="editorial-art">
+<source type="image/avif" srcset="/images/writing/ai-768.avif 768w, /images/writing/ai-1536.avif 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" />
+<img src="/images/writing/ai-1536.webp" srcset="/images/writing/ai-768.webp 768w, /images/writing/ai-1536.webp 1536w" sizes="(max-width: 800px) calc(100vw - 48px), 748px" alt="" width="1536" height="1024" loading="lazy" decoding="async" />
+</picture>
+<ol class="editorial-model editorial-model--3">
+<li><span class="editorial-index" aria-hidden="true">01</span><strong>Assist</strong><p>A person uses the output. Define usage rules and how results are checked.</p></li>
+<li><span class="editorial-index" aria-hidden="true">02</span><strong>Recommend</strong><p>AI informs a decision. Name the approver and the evidence required.</p></li>
+<li><span class="editorial-index" aria-hidden="true">03</span><strong>Act autonomously</strong><p>AI takes action. Set boundaries, monitoring and the authority to stop it.</p></li>
+</ol>
+
+<p class="editorial-note">Match controls to autonomy, consequences and the difficulty of reversing an outcome. The mode of AI use alone does not determine risk.</p>
+</figure>
+
+As autonomy and consequence rise, and reversibility falls, governance should become stronger: better evidence, monitoring, review, escalation or explicit authority to stop the system.
+
+This is not an alternative to law. Regulatory categories and mandatory requirements establish a compliance floor. An internal risk model helps design controls above that floor and distinguish cases that may look similar from a technology perspective but create very different operational exposure.
+
+## The AI Act sets a floor, not the whole governance operating model
+
+The EU AI Act entered into force on 1 August 2024 and became broadly applicable on 2 August 2026, with important exceptions. Prohibited practices and AI literacy obligations started earlier, while governance rules and obligations for GPAI models became applicable from 2 August 2025.
+
+Following changes to the implementation timeline, rules for Annex III high-risk use cases are scheduled to apply from 2 December 2027, while rules for high-risk systems embedded in regulated products under Annex I apply from 2 August 2028.
+
+For the operating model, the more important principle is that a compliance floor does not remove the need to design accountability, evidence and escalation in proportion to the organization's actual exposure.
+
+## Governance belongs in the lifecycle
+
+When compliance appears only at the end, the organization creates a conflict between speed and safety. A better model embeds requirements for data, testing, human oversight, monitoring and escalation throughout the product lifecycle.
+
+NIST AI Risk Management Framework 1.0 organizes this logic through Govern, Map, Measure and Manage, with governance operating across the framework rather than as a final gate. NIST also states that version 1.0 is currently being revised. The underlying operating principle remains useful: the question is not “did this solution pass review?” but “what evidence must exist at this level of exposure?”.
+
+## “Human in the loop” is not a governance model
+
+McKinsey's research shows how different current oversight practices are. Among respondents from organizations using generative AI, 27% said humans review all generated content before use, while a similar share said 20% or less is reviewed.
+
+That does not tell us which model is correct. It shows why “human in the loop” is too vague to function as a control.
+
+Human review is meaningful only when the organization knows which outputs require it, when it occurs, who has the capability and mandate to perform it, which criteria apply, and what happens when the result moves outside the accepted risk profile.
+
+For low-autonomy, easily reversible use cases, sampling and monitoring may be enough. With high autonomy, high consequence or hard-to-reverse effects, stronger pre-deployment evidence, mandatory review, action limits or explicit stop authority may be necessary.
+
+## Accountability remains with the organization
+
+AI can analyze, recommend or automate parts of work, but organizational accountability does not disappear. Governance should identify the owner of the business outcome, the solution and the risk, as well as the escalation path when evidence moves outside the accepted profile.
+
+In McKinsey's survey, 28% of respondents identified the CEO and 17% the board as the level responsible for AI governance oversight. That does not mean senior leadership should approve every use case. It means leadership is accountable for whether a system exists in which decisions are delegated in proportion to exposure and responsibility does not disappear with automation.
+
+The same tension between autonomy and accountability appears in architecture governance. Too much centralization turns experimentation into bureaucracy. Boundaries that are too loose make accountability ambiguous.
+
+## Test one live AI use case
+
+Take one AI use case already in operation and assess it across three dimensions: autonomy, consequence and reversibility.
+
+Then check whether the controls match that exposure: business outcome owner, monitored evidence, required level of verification, escalation condition and the person authorized to stop use.
+
+If control strength rises with exposure, the organization probably has a governance mechanism. If the answer is only “it passed AI review”, it may have control theatre instead.

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://arkadiuszkamrowski.com/sitemap-index.xml

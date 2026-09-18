@@ -38,7 +38,7 @@ smoke-production:
 
 # Manual preview is intentionally isolated from both release environments.
 worker-preview: build
-	npx --yes wrangler@$(WRANGLER_VERSION) deploy --config wrangler.jsonc
+	npx --yes wrangler@$(WRANGLER_VERSION) deploy --config wrangler.preview.jsonc
 
 # Staging uses its own Worker, custom domain, secrets and Turnstile widget.
 worker-deploy-staging:

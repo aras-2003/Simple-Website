@@ -10,6 +10,8 @@ const validationErrors = new Set([
   'json_required',
   'payload_too_large',
 ]);
+// Covers both provider calls (8 s each) plus network time; retry stays user-controlled.
+const REQUEST_TIMEOUT_MS = 25000;
 
 let turnstileLoader;
 function loadTurnstile() {
@@ -57,7 +59,11 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!form.reportValidity()) return;
+    if (submit instanceof HTMLButtonElement && submit.disabled) return;
+    if (!form.reportValidity()) {
+      form.dispatchEvent(new Event('form_error'));
+      return;
+    }
     if (!(submit instanceof HTMLButtonElement) || !(status instanceof HTMLElement)) return;
 
     const data = new FormData(form);
@@ -65,6 +71,8 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
     if (turnstileContainer && !turnstileToken) {
       status.dataset.state = 'error';
       status.textContent = form.dataset.turnstile || form.dataset.error || 'Security check required.';
+      status.focus();
+      form.dispatchEvent(new Event('form_error'));
       return;
     }
 
@@ -88,25 +96,32 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
       turnstileToken,
     };
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
       const response = await fetch(form.dataset.endpoint || '/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
       const body = await response.json().catch(() => ({}));
-      if (!response.ok) {
+      if (!response.ok || body?.ok !== true) {
         const code = typeof body?.error === 'string' ? body.error : 'request_failed';
         throw new Error(code);
       }
+      form.dispatchEvent(new Event('form_success'));
       form.reset();
       form.dataset.startedAt = String(Date.now());
       status.dataset.state = 'success';
       status.textContent = form.dataset.success || 'Sent.';
     } catch (error) {
+      form.dispatchEvent(new Event('form_error'));
       const code = error instanceof Error ? error.message : 'request_failed';
       status.dataset.state = 'error';
-      if (code === 'rate_limited') {
+      if (controller.signal.aborted) {
+        status.textContent = form.dataset.timeout || form.dataset.error || 'No confirmation received. Please retry.';
+      } else if (code === 'rate_limited') {
         status.textContent = form.dataset.rateLimit || form.dataset.error || 'Could not send.';
       } else if (code === 'delivery_unavailable') {
         status.textContent = form.dataset.delivery || form.dataset.error || 'Could not send.';
@@ -117,11 +132,13 @@ for (const form of document.querySelectorAll('[data-contact-form]')) {
       } else {
         status.textContent = form.dataset.error || 'Could not send.';
       }
+      status.focus();
     } finally {
-      if (turnstileWidgetId !== null && window.turnstile) window.turnstile.reset(turnstileWidgetId);
+      clearTimeout(timeout);
       submit.disabled = false;
       submit.removeAttribute('aria-busy');
       submit.innerHTML = original;
+      if (turnstileWidgetId !== null && window.turnstile) window.turnstile.reset(turnstileWidgetId);
     }
   });
 }

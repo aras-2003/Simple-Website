@@ -1,115 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { editorial } from '../content/editorial';
-import { platform } from '../content/platform';
-import { route, type Locale } from '../lib/site';
-
-interface Props { locale: Locale; }
-const { locale } = Astro.props;
-const ia = editorial[locale];
-const x = platform[locale].about;
-const td = (value: string) => value.replaceAll('—', '–');
-const trajectory = x.trajectory.map((item, index) => index === x.trajectory.length - 1
-  ? locale === 'pl'
-    ? { ...item, stage: 'Synteza', title: 'Jeden profil ponad silosami', body: 'Najbardziej interesuje mnie projektowanie połączeń pomiędzy kierunkiem, architekturą, portfelem, ładem decyzyjnym i wykonaniem. To właśnie z tej syntezy wyrasta moja marka i sposób pracy.' }
-    : { ...item, stage: 'Synthesis', title: 'One profile across silos', body: 'I am most interested in designing the connections between direction, architecture, portfolio, governance and execution. That synthesis is the foundation of my professional brand and operating approach.' }
-  : item);
-const pageTitle = locale === 'pl' ? 'O mnie – Arkadiusz Kamrowski' : 'About – Arkadiusz Kamrowski';
-const pageDescription = locale === 'pl'
-  ? 'Profil Arkadiusza Kamrowskiego: architektura organizacyjna i korporacyjna, strategia, transformacja, portfel, PMO i technologia.'
-  : 'Arkadiusz Kamrowski profile: organizational and enterprise architecture, strategy, transformation, portfolio, PMO and technology.';
-const brand = locale === 'pl'
-  ? {
-      eyebrow: 'Profil / rola marki',
-      title: 'Strategia, architektura, portfel i technologia jako jeden profil.',
-      body: 'Nie definiuję tej marki nazwą funkcji w konkretnej organizacji. Łączę perspektywę strategiczną, architekturę organizacyjną i korporacyjną, portfolio i PMO oraz technologię po to, żeby pracować nad jakością decyzji w złożonych systemach. Punkt ciężkości to spójność: czy kierunek, model organizacji, inwestycje i wykonanie rzeczywiście wzajemnie się wspierają.',
-    }
-  : {
-      eyebrow: 'Profile / brand role',
-      title: 'Strategy, architecture, portfolio and technology as one profile.',
-      body: 'I do not define this brand through a function name in a particular organization. I connect strategy, organizational and enterprise architecture, portfolio and PMO, and technology to work on decision quality in complex systems. The center of gravity is coherence: whether direction, organizational design, investment and execution actually reinforce one another.',
-    };
+import StartConversation from './StartConversation.astro';
+import { about } from '../content/about';
+import type { Locale } from '../lib/site';
+interface Props {locale:Locale;}
+const {locale}=Astro.props; const x=about[locale];
 ---
-<BaseLayout locale={locale} routeKey="about" title={pageTitle} description={pageDescription}>
-  <section class="about-hero about-hero-brand" aria-labelledby="about-title">
-    <div class="about-hero-copy">
-      <p class="eyebrow">{td(x.hero.eyebrow)}</p>
-      <h1 id="about-title">{td(x.hero.title)}</h1>
-      <p class="page-lead">{td(x.hero.lead)}</p>
-    </div>
-    <figure class="about-portrait about-portrait-primary">
-      <img src="/assets/arkadiusz-kamrowski-square-v2.webp" alt={locale === 'pl' ? 'Portret Arkadiusza Kamrowskiego' : 'Portrait of Arkadiusz Kamrowski'} width="750" height="750" loading="eager" fetchpriority="high" decoding="async" />
-    </figure>
-  </section>
-
-  <section class="section personal-story" aria-labelledby="personal-story-title">
-    <div>
-      <p class="eyebrow">{locale === 'pl' ? 'Droga / rozwój perspektywy' : 'Trajectory / evolution of perspective'}</p>
-      <h2 id="personal-story-title">{td(x.personal.title)}</h2>
-    </div>
-    <div class="personal-story-copy">
-      {x.personal.paragraphs.map((paragraph) => <p>{td(paragraph)}</p>)}
-    </div>
-  </section>
-
-  <section class="section brand-profile" aria-labelledby="brand-profile-title">
-    <div>
-      <p class="eyebrow">{brand.eyebrow}</p>
-      <h2 id="brand-profile-title">{brand.title}</h2>
-    </div>
-    <p class="content-lead">{brand.body}</p>
-  </section>
-
-  <section class="section trajectory-section" aria-labelledby="trajectory-title">
-    <div class="section-intro section-intro-wide">
-      <p class="eyebrow">{locale === 'pl' ? 'Trajektoria / rosnący poziom problemu' : 'Trajectory / increasing level of problem'}</p>
-      <h2 id="trajectory-title">{locale === 'pl' ? 'Każdy etap dołożył nową warstwę do tego samego pytania: jak organizacja przekłada decyzję na działanie?' : 'Each stage added a new layer to the same question: how does an organization turn a decision into action?'}</h2>
-    </div>
-    <div class="career-river">
-      {trajectory.map((item) => (
-        <article>
-          <div class="career-marker" aria-hidden="true"></div>
-          <p class="micro-label">{td(item.stage)}</p>
-          <h3>{td(item.title)}</h3>
-          <p>{td(item.body)}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="section personal-principles" aria-labelledby="personal-principles-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{locale === 'pl' ? 'Sposób pracy / zasady' : 'Operating approach / principles'}</p>
-        <h2 id="personal-principles-title">{locale === 'pl' ? 'Pięć filtrów, które pomagają oddzielić ruch od postępu.' : 'Five filters that help separate motion from progress.'}</h2>
-      </div>
-      <p class="content-lead">{locale === 'pl' ? 'Nie traktuję ich jako wartości na ścianę. Każda ma wpływać na sposób definiowania problemu, prowadzenia ładu decyzyjnego i oceny decyzji.' : 'I do not treat these as values on a wall. Each should influence how a problem is framed, governance is designed and a decision is judged.'}</p>
-    </div>
-    <div class="principle-editorial-list">
-      {x.principles.map((item) => <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>)}
-    </div>
-  </section>
-
-  <section class="section credentials-section" aria-labelledby="credentials-title">
-    <div class="section-intro section-intro-split">
-      <div>
-        <p class="eyebrow">{td(x.credentials.eyebrow)}</p>
-        <h2 id="credentials-title">{td(x.credentials.title)}</h2>
-      </div>
-      <div class="credentials-list">
-        {x.credentials.items.map((item) => <article><h3>{td(item.title)}</h3><p>{td(item.body)}</p></article>)}
-      </div>
-    </div>
-  </section>
-
-  <section class="section about-next" aria-labelledby="about-next-title">
-    <div>
-      <p class="eyebrow">{locale === 'pl' ? 'Dalej' : 'Next'}</p>
-      <h2 id="about-next-title">{locale === 'pl' ? 'Jeżeli interesuje Cię przede wszystkim sposób myślenia, wróć do Perspektywy. Jeżeli masz konkretny problem, napisz.' : 'If you are mainly interested in the thinking, return to Perspective. If you have a concrete problem, get in touch.'}</h2>
-    </div>
-    <div class="next-paths">
-      <a class="button button-primary" href={route(locale, 'writing')}>{ia.nav.writing}<span aria-hidden="true">→</span></a>
-      <a class="text-link" href={route(locale, 'contact')}>{ia.nav.contact}<span aria-hidden="true">→</span></a>
-    </div>
-  </section>
+<BaseLayout locale={locale} routeKey="about" title={`${locale==='pl'?'O mnie':'About'} – Arkadiusz Kamrowski`} description={x.lead}>
+<section class="about-hero"><div><p class="eyebrow">{locale==='pl'?'O mnie':'About'}</p><h1>{x.title}</h1><p class="page-lead">{x.lead}</p></div><img src="/assets/arkadiusz-kamrowski-square-v2.webp" alt="Arkadiusz Kamrowski" width="400" height="400" fetchpriority="high" decoding="async"/></section>
+<section class="section trajectory"><h2>{x.trajectoryTitle}</h2><div class="tension-list">{x.trajectory.map((item,index)=><article><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
+<section class="section convictions"><blockquote><p>“{x.quote}”</p><cite>Arkadiusz Kamrowski</cite></blockquote><div>{x.convictions.map(item=><article><h2>{item.title}</h2><p>{item.body}</p></article>)}</div></section>
+<section class="section credentials-section"><h2>{x.credentialsTitle}</h2><ul>{x.credentials.map(item=><li>{item}</li>)}</ul></section>
+<StartConversation locale={locale}/>
 </BaseLayout>

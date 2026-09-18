@@ -4,18 +4,20 @@ import { fileURLToPath } from 'node:url';
 
 const distUrl = new URL('../dist/', import.meta.url);
 const dist = fileURLToPath(distUrl);
-const productionOrigin = 'https://arkadiuszkamrowski.com';
+const siteOrigin = new URL(process.env.SITE_BASE_URL || 'https://arkadiuszkamrowski.com').origin;
+const escapedSiteOrigin = siteOrigin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const noteSlugs = ['architecture-as-decision-system', 'portfolio-as-strategy-in-motion', 'ai-governance-without-theatre', 'transformation-operating-model'];
-const sharedSlugs = ['', 'about', 'oaf', 'work', 'writing', 'contact', 'privacy'];
+const plSharedSlugs = ['', 'about', 'oaf', 'wspolpraca', 'perspektywa', 'contact', 'privacy'];
+const enSharedSlugs = ['', 'about', 'oaf', 'advisory', 'perspective', 'contact', 'privacy'];
 const requiredRoutes = [
-  ...sharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
-  ...noteSlugs.map((slug) => `/writing/${slug}`),
-  ...sharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
-  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+  ...plSharedSlugs.map((slug) => slug ? `/${slug}` : '/'),
+  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
+  ...enSharedSlugs.map((slug) => slug ? `/en/${slug}` : '/en'),
+  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ];
 const articleRoutes = new Set([
-  ...noteSlugs.map((slug) => `/writing/${slug}`),
-  ...noteSlugs.map((slug) => `/en/writing/${slug}`),
+  ...noteSlugs.map((slug) => `/perspektywa/${slug}`),
+  ...noteSlugs.map((slug) => `/en/perspective/${slug}`),
 ]);
 const forbiddenPlUi = ['Conversation', 'Working model', 'Context first', 'Cross-system leverage', 'System view', 'Direct message'];
 const portraitAsset = /\/assets\/arkadiusz-kamrowski[^"'<> ]*\.(?:webp|png|jpe?g)/;
@@ -52,6 +54,18 @@ async function localTargetExists(urlPath) {
   return false;
 }
 
+function requireOrderedClasses(html, route, classes, label) {
+  const positions = classes.map((token) => html.indexOf(token));
+  classes.forEach((token, index) => {
+    if (positions[index] < 0) errors.push(`${route}: missing ${label} ${token}`);
+  });
+  for (let i = 1; i < positions.length; i++) {
+    if (positions[i - 1] >= 0 && positions[i] >= 0 && positions[i] <= positions[i - 1]) {
+      errors.push(`${route}: ${label} order is incorrect`);
+    }
+  }
+}
+
 let errors = [];
 for (const route of requiredRoutes) {
   const file = routeFile(route);
@@ -59,18 +73,18 @@ for (const route of requiredRoutes) {
   try { html = await readFile(file, 'utf8'); }
   catch { errors.push(`${route}: missing generated HTML`); continue; }
   const expectedLang = route.startsWith('/en') ? 'en' : 'pl';
-  const expectedCanonical = `${productionOrigin}${route === '/' ? '/' : route}`;
+  const expectedCanonical = `${siteOrigin}${route === '/' ? '/' : route}`;
   const checks = [
     [new RegExp(`<html[^>]+lang=["']${expectedLang}["']`), 'correct html lang'],
     [/<title>[^<]+<\/title>/, 'title'],
     [/<meta name="description" content="[^"]+"/, 'meta description'],
-    [new RegExp(`<link rel="canonical" href="${expectedCanonical.replaceAll('.', '\\.')}"`), 'production canonical'],
+    [new RegExp(`<link rel="canonical" href="${expectedCanonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), 'canonical'],
     [/<link rel="alternate" hreflang="pl"/, 'PL hreflang'],
     [/<link rel="alternate" hreflang="en"/, 'EN hreflang'],
     [/<main id="main"/, 'main landmark'],
     [/class="skip-link"/, 'skip link'],
     [/<nav[^>]+aria-label=/, 'labelled navigation'],
-    [/<meta property="og:image" content="https:\/\/arkadiuszkamrowski\.com\/assets\/og-card\.png"/, 'raster OG image'],
+    [new RegExp(`<meta property="og:image" content="${escapedSiteOrigin}/assets/og-card\\.png"`), 'raster OG image'],
     [/<meta property="og:image:width" content="1200"/, 'OG image width'],
     [/<meta property="og:image:height" content="630"/, 'OG image height'],
     [/<meta property="og:image:alt" content="[^"]+"/, 'OG image alt'],
@@ -82,7 +96,21 @@ for (const route of requiredRoutes) {
   if (h1s !== 1) errors.push(`${route}: expected one h1, found ${h1s}`);
   if (/target="_blank"(?![^>]*rel="[^"]*noopener)/.test(html)) errors.push(`${route}: target=_blank without noopener`);
   if (/\{\{[A-Z0-9_]+\}\}/.test(html)) errors.push(`${route}: unresolved build token`);
-  if (/<script(?![^>]*\bsrc=)[^>]*>/.test(html)) errors.push(`${route}: inline script found; CSP requires external scripts`);
+  if (/<script(?![^>]*\bsrc=)(?![^>]*type="application\/ld\+json")[^>]*>/.test(html)) errors.push(`${route}: inline script found; CSP requires external scripts`);
+
+  // JSON-LD is inert data, never a CSP exemption for executable inline scripts.
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  if (blocks.length !== 1) errors.push(`${route}: exactly one JSON-LD graph required`);
+  for (const [,text] of blocks) {
+    try {
+      const graph = JSON.parse(text);
+      const person = graph['@graph'].find(node => node['@type'] === 'Person');
+      const page = graph['@graph'].find(node => node.url === expectedCanonical && node['@type'] !== 'Person');
+      if (graph['@context'] !== 'https://schema.org' || person?.name !== 'Arkadiusz Kamrowski' || !page) throw new Error('identity/canonical mismatch');
+      if (route.endsWith('/about') && (page['@type'] !== 'ProfilePage' || page.mainEntity?.['@id'] !== person['@id'])) throw new Error('profile mismatch');
+      if (articleRoutes.has(route) && (page['@type'] !== 'Article' || page.author?.['@id'] !== person['@id'] || !page.datePublished || !page.dateModified)) throw new Error('article mismatch');
+    } catch (error) { errors.push(`${route}: invalid JSON-LD (${error.message})`); }
+  }
 
   if (articleRoutes.has(route)) {
     if (!/<meta property="og:type" content="article"/.test(html)) errors.push(`${route}: article OG type expected`);
@@ -97,42 +125,40 @@ for (const route of requiredRoutes) {
   }
 }
 
-const home = await readFile(routeFile('/'), 'utf8');
-if (portraitAsset.test(home)) errors.push('/: portrait must not appear on Home');
-if (home.includes('Dyrektor Departamentu')) errors.push('/: employment title must not appear on Home');
-if (home.includes('Kozminski University')) errors.push('/: credentials must not appear on Home');
-for (const cls of ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths']) {
-  if (!home.includes(cls)) errors.push(`/: missing lightweight narrative section ${cls}`);
+// Buyer-path contracts apply in both languages; visual class counts are not the product.
+for (const locale of ['pl', 'en']) {
+  const prefix = locale === 'pl' ? '' : '/en';
+  const home = await readFile(routeFile(prefix || '/'), 'utf8');
+  const nav = home.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  if (/href="[^"]*\/oaf"/.test(nav)) errors.push(`${prefix}: OAF must be secondary navigation`);
+  if (!portraitAsset.test(home)) errors.push(`${prefix}: Home must identify the person with a portrait`);
+  if (!home.includes('signature-choices')) errors.push(`${prefix}: signature choice visual missing`);
+  const hero = home.match(/<div class="hero-actions">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  if (!hero.includes(`href="${prefix}/contact"`)) errors.push(`${prefix}: direct contact path missing from hero`);
+  const work = await readFile(routeFile(locale === 'pl' ? '/wspolpraca' : '/en/advisory'), 'utf8');
+  if ((work.match(/class="engagement"/g) || []).length !== 3) errors.push(`${prefix}: expected three engagement containers`);
+  const engagements = [...work.matchAll(/<article class="engagement">([\s\S]*?)<\/article>/g)];
+  for (const [,engagement] of engagements) if ((engagement.match(/<dt>/g)||[]).length !== 5) errors.push(`${prefix}: incomplete engagement decision/process/input/output/change`);
+  if (!work.includes('decision-brief')) errors.push(`${prefix}: illustrative decision artifact missing`);
+  const about = await readFile(routeFile(`${prefix}/about`), 'utf8');
+  if (!portraitAsset.test(about) || !about.includes('trajectory')) errors.push(`${prefix}: human trajectory missing`);
+  const writing = await readFile(routeFile(locale === 'pl' ? '/perspektywa' : '/en/perspective'), 'utf8');
+  if (writing.includes('publishing-standard') || writing.includes('benchmark-signal')) errors.push(`${prefix}: meta-content must not precede writing`);
+  const oaf = await readFile(routeFile(`${prefix}/oaf`), 'utf8');
+  if ((oaf.match(/<details>/g)||[]).length !== 2) errors.push(`${prefix}: expected two method disclosures`);
+  const form = await readFile(routeFile(`${prefix}/contact`), 'utf8');
+  if (!/<form[^>]*method="post"/.test(form) || !form.includes('<noscript>')) errors.push(`${prefix}: no-JS contact fallback missing`);
 }
-for (const removed of ['thesis-section', 'perspective-teaser', 'practice-teaser', 'author-teaser']) {
-  if (home.includes(removed)) errors.push(`/: legacy heavy section ${removed} must stay off Home`);
-}
-const homeOrder = ['problem-section', 'evidence-section-home', 'oaf-teaser-home', 'deeper-paths'].map((token) => home.indexOf(token));
-for (let i = 1; i < homeOrder.length; i++) if (homeOrder[i] <= homeOrder[i - 1]) errors.push('/: lightweight narrative order is incorrect');
-
-const about = await readFile(routeFile('/about'), 'utf8');
-if (!portraitAsset.test(about)) errors.push('/about: portrait expected on About');
-if (!about.includes('career-river')) errors.push('/about: career trajectory expected');
-if (!about.includes('brand-profile')) errors.push('/about: brand profile expected');
-if (about.includes('Dyrektor Departamentu') || about.includes('Director of Enterprise Architecture, Strategy & PMO')) errors.push('/about: employment title must not define the brand profile');
-
-const perspective = await readFile(routeFile('/writing'), 'utf8');
-if (!perspective.includes('evidence-ledger')) errors.push('/writing: evidence ledger expected');
-if (!perspective.includes('publishing-standard')) errors.push('/writing: publishing standard expected');
-if (/\b\d+\s+min\b/.test(perspective)) errors.push('/writing: reading-time metadata should not be shown in the library');
-
-const practice = await readFile(routeFile('/work'), 'utf8');
-if (!practice.includes('case-study-list')) errors.push('/work: case studies expected');
-const caseCount = (practice.match(/class="case-study-item"/g) || []).length;
-if (caseCount !== 6) errors.push(`/work: expected 6 case studies, found ${caseCount}`);
-
-const oaf = await readFile(routeFile('/oaf'), 'utf8');
-for (const cls of ['lineage-river', 'convergence-map', 'oaf-orbit', 'misfit-grid', 'decision-contract-section', 'boundary-list', 'oaf-use-section-polished']) {
-  if (!oaf.includes(cls)) errors.push(`/oaf: missing depth layer ${cls}`);
+for (const path of articleRoutes) {
+  const html = await readFile(routeFile(path), 'utf8');
+  const footer = html.match(/<footer class="note-footer[\s\S]*?<\/footer>/)?.[0] ?? '';
+  if (!footer.includes('/contact') || !/\/(?:advisory|wspolpraca)/.test(footer) || !/\/(?:perspective|perspektywa)\//.test(footer)) errors.push(`${path}: reader-intent next paths missing`);
 }
 
+const englishNotFound = await readFile(routeFile('/en/404'), 'utf8');
+if (!/<html[^>]+lang="en"/.test(englishNotFound) || !englishNotFound.includes('404 – Page not found')) errors.push('/en/404: missing localized error page');
 const privacyPl = await readFile(routeFile('/privacy'), 'utf8');
-for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Transfer poza EOG', 'Twoje prawa']) {
+for (const term of ['Administrator danych', 'Cel i podstawa prawna', 'Przekazywanie danych poza EOG', 'Twoje prawa']) {
   if (!privacyPl.includes(term)) errors.push(`/privacy: missing GDPR information layer ${term}`);
 }
 const privacyEn = await readFile(routeFile('/en/privacy'), 'utf8');
@@ -143,14 +169,14 @@ for (const term of ['Data controller', 'Purpose and legal basis', 'Transfers out
 try {
   const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
   if (!robots.includes('User-agent: *')) errors.push('robots.txt: missing crawler policy');
-  if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
+  if (!robots.includes(`Sitemap: ${siteOrigin}/sitemap-index.xml`)) errors.push('robots.txt: missing canonical sitemap declaration');
 } catch {
   errors.push('robots.txt: missing generated public file');
 }
 
 try {
   const sitemapIndex = await readFile(join(dist, 'sitemap-index.xml'), 'utf8');
-  if (!sitemapIndex.includes(productionOrigin)) errors.push('sitemap-index.xml: production origin expected');
+  if (!sitemapIndex.includes(siteOrigin)) errors.push('sitemap-index.xml: configured origin expected');
   if (sitemapIndex.includes('localhost')) errors.push('sitemap-index.xml: localhost URL leaked');
 } catch {
   errors.push('sitemap-index.xml: missing generated sitemap index');
@@ -175,4 +201,4 @@ if (errors.length) {
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
-console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + SEO/social/privacy/internal-link/robots/sitemap gates`);
+console.log(`STATIC VALIDATION PASS · ${requiredRoutes.length} translated routes + executive narrative/visual/SEO/privacy/internal-link/robots/sitemap gates · ${siteOrigin}`);
