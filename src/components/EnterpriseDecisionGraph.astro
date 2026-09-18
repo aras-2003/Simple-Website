@@ -30,18 +30,18 @@ const words = pl ? {
     {label:'Technology & delivery',title:'Technology works in context.',body:'Platforms and data enable a specific way of working. Deployment alone is not adoption or business value.'},
   ],
 };
-const nodes = [
+const nodes: {x:number;y:number}[] = [
   {x:240,y:95},{x:490,y:95},{x:750,y:95},
   {x:240,y:218},{x:490,y:218},{x:750,y:218},
   {x:240,y:341},{x:490,y:341},{x:750,y:341},
   {x:240,y:464},{x:490,y:464},{x:750,y:464},
 ];
-const connections = [[0,3],[0,4],[1,4],[1,5],[2,4],[2,5],[3,6],[3,7],[4,6],[4,7],[4,8],[5,7],[5,8],[6,9],[6,10],[7,9],[7,10],[8,10],[8,11],[9,11],[10,11]];
-const routes = [[1,5,8,11],[2,4,6,9],[0,3,7,10]];
+const connections: [number,number][] = [[0,3],[0,4],[1,4],[1,5],[2,4],[2,5],[3,6],[3,7],[4,6],[4,7],[4,8],[5,7],[5,8],[6,9],[6,10],[7,9],[7,10],[8,10],[8,11],[9,11],[10,11]];
+const routes: number[][] = [[1,5,8,11],[2,4,6,9],[0,3,7,10]];
 const routePath = (indices:number[]) => indices.map((id,i)=>{
-  const point = nodes[id];
+  const point = nodes[id]!;
   if (i === 0) return `M${point.x} ${point.y}`;
-  const prev = nodes[indices[i-1]];
+  const prev = nodes[indices[i-1]!]!;
   const mid = (prev.y+point.y)/2;
   return `C${prev.x} ${mid} ${point.x} ${mid} ${point.x} ${point.y}`;
 }).join(' ');
@@ -51,6 +51,11 @@ const mesh = Array.from({length:31},(_,i)=>{
   const y=267+offset;
   return `M${283-half} ${y} C${283-half*.38} ${y-33} ${283+half*.38} ${y+33} ${283+half} ${y}`;
 });
+const mobileRoutes = [
+  'M185 40 C185 100 275 140 275 200 S275 260 275 280',
+  'M275 40 C275 100 185 140 95 200 S95 260 95 280',
+  'M95 40 C95 100 95 140 185 200 S185 260 185 280',
+];
 ---
 {mode === 'hero' ? (
   <div class="edg-hero" role="img" aria-label={words.hero}>
@@ -96,15 +101,15 @@ const mesh = Array.from({length:31},(_,i)=>{
           <div class="edg-figure-top" aria-hidden="true"><span>ENTERPRISE / DEPENDENCY MAP</span><span data-edg-counter>01 / 03</span></div>
           <svg class="edg-map-desktop" viewBox="0 0 900 540" aria-hidden="true" focusable="false">
             <g class="edg-gridlines">{words.layers.map((label,i)=><g><path d={`M167 ${95+i*123} H860`}/><text x="10" y={89+i*123}>{`0${i+1} / ${label}`}</text></g>)}</g>
-            <g class="edg-connections" fill="none">{connections.map(([a,b])=>{const p=nodes[a],q=nodes[b],mid=(p.y+q.y)/2;return <path d={`M${p.x} ${p.y} C${p.x} ${mid} ${q.x} ${mid} ${q.x} ${q.y}`}/>;})}</g>
+            <g class="edg-connections" fill="none">{connections.map(([a,b])=>{const p=nodes[a]!,q=nodes[b]!,mid=(p.y+q.y)/2;return <path d={`M${p.x} ${p.y} C${p.x} ${mid} ${q.x} ${mid} ${q.x} ${q.y}`}/>;})}</g>
             <g class="edg-nodes">{nodes.map((node,i)=><g><circle cx={node.x} cy={node.y} r="4"/><text x={node.x+12} y={node.y-13}>{words.nodes[i]}</text></g>)}</g>
-            {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={routePath(route)}/><path class="edg-route-line" d={routePath(route)}/>{route.map(id=><g><circle class="edg-route-ring" cx={nodes[id].x} cy={nodes[id].y} r="13"/><circle class="edg-route-point" cx={nodes[id].x} cy={nodes[id].y} r="5"/></g>)}</g>)}
+            {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={routePath(route)}/><path class="edg-route-line" d={routePath(route)}/>{route.map(id=>{const node=nodes[id]!;return <g><circle class="edg-route-ring" cx={node.x} cy={node.y} r="13"/><circle class="edg-route-point" cx={node.x} cy={node.y} r="5"/></g>;})}</g>)}
             <g class="edg-axis"><path d="M167 513 H860"/><text x="168" y="532">STRATEGY → EXECUTION</text><text x="859" y="532" text-anchor="end">NOT TO SCALE / CONCEPTUAL MODEL</text></g>
           </svg>
           <svg class="edg-map-mobile" viewBox="0 0 370 330" aria-hidden="true" focusable="false">
             <g class="edg-mobile-guides">{words.layers.map((label,i)=><g><path d={`M15 ${40+i*80} H355`}/><text x="16" y={27+i*80}>{`0${i+1} / ${label}`}</text></g>)}</g>
             <g class="edg-mobile-tracks" fill="none" stroke="#456358">{[95,185,275].map(x=><path d={`M${x} 40V280`}/>)}</g>
-            {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={i===0?'M185 40 C185 100 275 140 275 200 S275 260 275 280':i===1?'M275 40 C275 100 185 140 95 200 S95 260 95 280':'M95 40 C95 100 95 140 185 200 S185 260 185 280'}/><path class="edg-route-line" d={i===0?'M185 40 C185 100 275 140 275 200 S275 260 275 280':i===1?'M275 40 C275 100 185 140 95 200 S95 260 95 280':'M95 40 C95 100 95 140 185 200 S185 260 185 280'}/>{[40,120,200,280].map((y,j)=>{const x=i===0?[185,230,275,275][j]:i===1?[275,230,95,95][j]:[95,95,185,185][j];return <circle class="edg-route-point" cx={x} cy={y} r="5"/>;})}</g>)}
+            {mobileRoutes.map((path,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={path}/><path class="edg-route-line" d={path}/>{[40,120,200,280].map((y,j)=>{const x=i===0?[185,230,275,275][j]:i===1?[275,230,95,95][j]:[95,95,185,185][j];return <circle class="edg-route-point" cx={x} cy={y} r="5"/>;})}</g>)}
             <g class="edg-mobile-labels">{[1,4,8,11].map((id,j)=><text x="16" y={58+j*80}>{words.nodes[id]}</text>)}</g>
           </svg>
           <figcaption class="edg-figure-caption">{pl?'Zależności koncepcyjne, nie metryki organizacji.':'Conceptual dependencies, not organizational metrics.'}</figcaption>
