@@ -1,0 +1,69 @@
+---
+import type { Locale } from '../lib/site';
+interface Props { locale: Locale; mode: 'hero' | 'system'; }
+const { locale, mode } = Astro.props;
+const pl = locale === 'pl';
+const views = pl ? [
+  { title: 'Strategia staje się wyborem.', detail: 'Łączymy kierunek z portfelem inicjatyw. Widać, co finansować, co zatrzymać i jakie kompromisy zaakceptować.', label: 'Strategia i inwestycje' },
+  { title: 'Decyzja ma właściciela.', detail: 'Łączymy uprawnienia decyzyjne z odpowiedzialnością za zmianę. Mniej decyzji, które wracają na kolejne spotkanie.', label: 'Odpowiedzialność' },
+  { title: 'Technologia służy wykonaniu.', detail: 'Łączymy możliwości organizacji, dane i platformy z realnym sposobem pracy — bez obiecywania wyniku, którego jeszcze nie zmierzono.', label: 'Technologia i realizacja' },
+] : [
+  { title: 'Strategy becomes a choice.', detail: 'Connect direction to the initiative portfolio. Make funding, stopping and trade-offs explicit.', label: 'Strategy and investment' },
+  { title: 'A decision has an owner.', detail: 'Connect decision rights with accountability for change. Fewer decisions returning to another meeting.', label: 'Accountability' },
+  { title: 'Technology enables execution.', detail: 'Connect organizational capabilities, data and platforms to how work actually happens — without claiming outcomes not yet measured.', label: 'Technology and delivery' },
+];
+const layers = pl ? ['STRATEGIA', 'ORGANIZACJA', 'TECHNOLOGIA', 'REALIZACJA'] : ['STRATEGY', 'ORGANIZATION', 'TECHNOLOGY', 'EXECUTION'];
+---
+{mode === 'hero' ? (
+  <div class="edg-hero" role="img" aria-label={pl ? 'Cztery warstwy: strategia, organizacja, technologia i realizacja. Jedna ścieżka decyzji łączy je ze sobą.' : 'Four layers: strategy, organization, technology and execution. One decision path connects them.'}>
+    <svg viewBox="0 0 480 460" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="edg-hero-surface" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#faf9f3"/><stop offset="1" stop-color="#e0e7db"/></linearGradient></defs>
+      <g class="edg-hero-planes" fill="url(#edg-hero-surface)" stroke="#9fac9f" stroke-width="1">
+        <path d="M240 46 424 127 240 208 56 127Z"/><path d="M240 110 424 191 240 272 56 191Z"/><path d="M240 174 424 255 240 336 56 255Z"/><path d="M240 238 424 319 240 400 56 319Z"/>
+      </g>
+      <path class="edg-hero-route" d="M240 103 C238 135 261 144 245 182 S222 225 243 255 S263 299 240 353" fill="none" stroke="#355d4e" stroke-width="2.5" stroke-linecap="round"/>
+      <g fill="#355d4e" stroke="#f5f1e9" stroke-width="3"><circle cx="240" cy="103" r="5"/><circle cx="245" cy="182" r="5"/><circle cx="243" cy="255" r="5"/><circle cx="240" cy="353" r="6"/></g>
+      <g fill="#355d4e" font-size="10" font-family="system-ui,sans-serif" letter-spacing="1.2"><text x="245" y="31" text-anchor="middle">{layers[0]}</text><text x="30" y="205">{layers[1]}</text><text x="337" y="295">{layers[2]}</text><text x="246" y="427" text-anchor="middle">{layers[3]}</text></g>
+    </svg>
+  </div>
+) : (
+  <section class="edg-system" aria-labelledby="edg-system-title" data-edg-system data-view="0">
+    <div class="edg-system-head"><p class="edg-kicker">02 / {pl ? 'ORGANIZACJA JAKO SYSTEM' : 'THE ORGANIZATION AS A SYSTEM'}</p><span class="edg-index" aria-hidden="true">01 — 03</span></div>
+    <div class="edg-system-grid">
+      <div class="edg-intro"><h2 id="edg-system-title">{pl ? <>Organizacje są złożone.<br/><em>Decyzje łączą elementy.</em></> : <>Organizations are complex.<br/><em>Decisions connect the dots.</em></>}</h2><p>{pl ? 'Zobacz, jak strategia, odpowiedzialność i technologia muszą współgrać, żeby zmiana mogła się wydarzyć.' : 'Explore how strategy, accountability and technology must work together to make change executable.'}</p>
+        <div class="edg-controls" role="group" aria-label={pl ? 'Wybierz perspektywę mapy organizacji' : 'Choose an organizational map perspective'}>{views.map((view, index) => <button type="button" class="edg-control" data-edg-control={index} aria-pressed={index === 0} aria-controls={`edg-panel-${locale}-${index}`}><span class="edg-control-dot" aria-hidden="true"></span>{view.label}</button>)}</div>
+      </div>
+      <div class="edg-visual" role="img" aria-label={pl ? 'Cztery warstwy architektury organizacji. Wybrana ścieżka pokazuje zależność od strategii, przez organizację i technologię, do realizacji.' : 'Four layers of organizational architecture. The selected route connects strategy through organization and technology to execution.'}>
+        <svg viewBox="0 0 440 450" aria-hidden="true" focusable="false">
+          <defs><linearGradient id="edg-system-plane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#37584b" stop-opacity=".27"/><stop offset="1" stop-color="#8ea99c" stop-opacity=".04"/></linearGradient></defs>
+          <g fill="url(#edg-system-plane)" stroke="#789084" stroke-opacity=".56" stroke-width="1"><path d="M220 44 401 113 220 182 39 113Z"/><path d="M220 113 401 182 220 251 39 182Z"/><path d="M220 182 401 251 220 320 39 251Z"/><path d="M220 251 401 320 220 389 39 320Z"/></g>
+          <g class="edg-tracks" fill="none" stroke-linecap="round" stroke-width="2.5"><path data-edg-track="0" d="M220 88 C215 123 261 146 221 180 S188 224 224 249 S255 292 223 355"/><path data-edg-track="1" d="M220 88 C268 122 300 137 266 180 S152 215 187 251 S241 307 223 355"/><path data-edg-track="2" d="M220 88 C189 134 155 148 182 181 S299 226 271 252 S193 320 223 355"/></g>
+          <g fill="#c4e4b0" stroke="#122923" stroke-width="3"><circle cx="220" cy="88" r="5"/><circle cx="223" cy="355" r="6"/></g>
+          <g fill="#c4d5c9" font-size="9" font-family="system-ui,sans-serif" letter-spacing="1"><text x="220" y="26" text-anchor="middle">{layers[0]}</text><text x="8" y="203">{layers[1]}</text><text x="310" y="273">{layers[2]}</text><text x="220" y="414" text-anchor="middle">{layers[3]}</text></g>
+        </svg>
+      </div>
+      <div class="edg-explanation" aria-live="polite" aria-atomic="true"><span class="edg-counter" aria-hidden="true" data-edg-counter>01 / 03</span>{views.map((view,index) => <div id={`edg-panel-${locale}-${index}`} data-edg-panel={index} hidden={index !== 0}><h3>{view.title}</h3><p>{view.detail}</p></div>)}<a class="edg-next" href={pl ? '/wspolpraca' : '/en/advisory'}>{pl ? 'Zobacz, jak pracuję' : 'Explore how I work'} <span aria-hidden="true">↗</span></a></div>
+    </div>
+    <p class="edg-footnote">TAK / NIE / KTO <span aria-hidden="true">—</span> {pl ? 'Kierunek. Wybór. Odpowiedzialność.' : 'Direction. Choice. Accountability.'}</p>
+  </section>
+)}
+<style>
+  .edg-hero{width:100%;max-width:490px;margin-inline:auto;isolation:isolate}.edg-hero svg,.edg-visual svg{display:block;width:100%;height:auto;overflow:visible}.edg-hero-planes{opacity:.86}.edg-hero-route{stroke-dasharray:330;stroke-dashoffset:330;animation:edg-draw 1.3s cubic-bezier(.2,.75,.25,1) .15s both}@keyframes edg-draw{to{stroke-dashoffset:0}}
+  .edg-system{background:#122923;color:#f5f1e9;padding:clamp(2rem,5vw,4.5rem);margin:0 calc(50% - 50vw);width:100vw;position:relative}.edg-system-head,.edg-system-grid,.edg-footnote{max-width:1200px;margin-inline:auto}.edg-system-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}.edg-kicker,.edg-index,.edg-counter,.edg-footnote{font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.14em;color:#bad0be}.edg-system-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.15fr) minmax(0,.7fr);gap:clamp(1.2rem,3vw,3.5rem);align-items:center;min-height:550px}.edg-intro h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);line-height:1.13;letter-spacing:-.045em;max-width:15ch}.edg-intro h2 em{color:#bed3af;font-weight:400;font-style:normal}.edg-intro>p{color:#c9d8cd;font-size:15px;max-width:35ch;margin-top:1.5rem;line-height:1.65}.edg-controls{display:grid;gap:.25rem;margin-top:2.6rem}.edg-control{border:0;border-left:1px solid #5c796b;background:transparent;color:#b6cabe;text-align:left;display:flex;align-items:center;gap:1rem;min-height:44px;padding:.5rem .8rem;font:500 13px/1.4 system-ui,sans-serif;cursor:pointer}.edg-control[aria-pressed=true]{border-left:2px solid #c0e1a9;color:#fff}.edg-control-dot{width:6px;height:6px;border-radius:50%;background:#729081;flex:none}.edg-control[aria-pressed=true] .edg-control-dot{background:#c0e1a9;box-shadow:0 0 0 5px #c0e1a91a}.edg-control:focus-visible,.edg-next:focus-visible{outline:2px solid #c0e1a9;outline-offset:4px}.edg-visual{min-width:0}.edg-tracks path{stroke:#c0e1a9;opacity:0;transition:opacity .35s ease;stroke-dasharray:4 0}.edg-system[data-view="0"] [data-edg-track="0"],.edg-system[data-view="1"] [data-edg-track="1"],.edg-system[data-view="2"] [data-edg-track="2"]{opacity:1}.edg-explanation{align-self:center;min-width:0}.edg-counter{display:block;margin-bottom:2rem}.edg-explanation [hidden]{display:none!important}.edg-explanation h3{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;font-size:clamp(1.45rem,2vw,2rem);line-height:1.18;color:#f5f1e9}.edg-explanation p{font-size:14px;color:#c9d8cd;line-height:1.7;margin-top:1.2rem}.edg-next{display:inline-flex;align-items:center;gap:1rem;min-height:44px;border:1px solid #97aea0;padding:.65rem .9rem;font-size:13px;text-decoration:none;margin-top:2rem;color:#fff}.edg-next:hover{background:#254338}.edg-footnote{border-top:1px solid #456153;padding-top:1.5rem;margin-top:1rem}
+  @media(max-width:980px){.edg-system-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem}.edg-intro{grid-column:1/-1}.edg-intro h2{max-width:25ch}.edg-controls{display:flex;flex-wrap:wrap;margin-top:1.5rem}.edg-visual{max-width:420px}.edg-explanation{max-width:32rem}}
+  @media(max-width:620px){.edg-system{padding:2.5rem max(24px,calc((100vw - 100%)/2))}.edg-system-grid{grid-template-columns:minmax(0,1fr);min-height:0;gap:0}.edg-intro h2{font-size:clamp(2rem,9vw,2.8rem)}.edg-controls{display:grid;grid-template-columns:1fr;margin-top:1.4rem}.edg-visual{width:min(100%,340px);margin:1rem auto 0}.edg-explanation{margin-top:-.5rem;min-height:190px}.edg-counter{margin-bottom:1rem}.edg-next{margin-top:1rem}.edg-footnote{margin-top:2rem}.edg-hero{max-width:340px}}
+  @media(prefers-reduced-motion:reduce){.edg-hero-route{animation:none;stroke-dashoffset:0}.edg-tracks path{transition:none}}
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-edg-system]').forEach((system) => {
+    const controls = [...system.querySelectorAll<HTMLButtonElement>('[data-edg-control]')];
+    const panels = [...system.querySelectorAll<HTMLElement>('[data-edg-panel]')];
+    const counter = system.querySelector<HTMLElement>('[data-edg-counter]');
+    controls.forEach((control, index) => control.addEventListener('click', () => {
+      system.dataset.view = String(index);
+      controls.forEach((item, n) => item.setAttribute('aria-pressed', String(n === index)));
+      panels.forEach((panel, n) => { panel.hidden = n !== index; });
+      if (counter) counter.textContent = `0${index + 1} / 03`;
+    }));
+  });
+</script>
