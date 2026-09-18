@@ -14,7 +14,7 @@ const x=home[locale];
  <section class="executive-hero executive-hero--graph" aria-labelledby="hero-title">
   <div class="executive-hero-copy"><p class="eyebrow">{x.audience}</p><h1 id="hero-title">{x.title} <em>{x.emphasis}</em></h1><p class="hero-lead">{x.lead}</p><div class="hero-actions"><a class="button button-primary" href={route(locale,'contact')}>{journey[locale].cta}<span aria-hidden="true">↗</span></a><a class="text-link" href={route(locale,'work')}>{x.advisory}</a></div></div>
   <EnterpriseDecisionGraph locale={locale} mode="hero" />
-  <div class="signature-choices signature-choices--compact" aria-label={locale === 'pl' ? 'Trzy pytania: tak, nie, kto' : 'Three questions: yes, no, who'}>{x.signature.map(item => <span class="signature-choice"><strong>{item.word}</strong><span>{item.meaning}</span></span>)}</div>
+  <div class="signature-choices signature-choices--compact" aria-label={locale === 'pl' ? 'Trzy pytania: tak, nie, kto' : 'Three questions: yes, no, who'}>{x.signature.map(item => <span class="signature-choice"><strong>{item.word}</strong></span>)}</div>
  </section>
  <EnterpriseDecisionGraph locale={locale} mode="system" />
  <section class="section tension-section" aria-labelledby="tension-title"><h2 id="tension-title">{x.tensionsTitle}</h2><div class="tension-list">{x.tensions.map((item,index)=><article><span class="item-number" aria-hidden="true">0{index+1}</span><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
@@ -31,9 +31,8 @@ const x=home[locale];
   .executive-hero--graph .hero-lead{max-width:34rem;font-size:clamp(1.05rem,1.35vw,1.2rem)}
   .executive-hero--graph .edg-hero{align-self:center}
   .executive-hero--graph .signature-choices--compact{grid-column:1/-1;background:none;color:var(--green);padding:1rem 0 0;transform:none;box-shadow:none;display:flex;gap:clamp(1.2rem,3vw,3rem);flex-wrap:wrap;margin:2rem 0 0;border-top:1px solid var(--line)}
-  .executive-hero--graph .signature-choices--compact .signature-choice{display:flex;flex-direction:row;align-items:baseline;gap:.6rem;border:0;padding:0;min-width:0}
+  .executive-hero--graph .signature-choices--compact .signature-choice{display:flex;align-items:baseline;gap:.6rem;border:0;padding:0;min-width:0}
   .executive-hero--graph .signature-choices--compact .signature-choice strong{font:700 11px/1.4 var(--sans);letter-spacing:.11em;color:var(--green)}
   .executive-hero--graph .signature-choices--compact .signature-choice:nth-child(2) strong{font-style:normal;color:var(--green)}
-  .executive-hero--graph .signature-choices--compact .signature-choice>span:last-child{font-size:12px;line-height:1.4;color:var(--muted)}
   @media(max-width:760px){.executive-hero--graph{grid-template-columns:minmax(0,1fr);min-height:0;gap:0;padding-block:3.4rem 2.5rem}.executive-hero--graph h1{font-size:clamp(3rem,10vw,4.8rem)}.executive-hero--graph .edg-hero{width:min(100%,440px);margin:2.5rem auto 0}.executive-hero--graph .signature-choices--compact{margin-top:1.5rem;gap:.9rem 1.5rem}}
 </style>
