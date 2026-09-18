@@ -19,6 +19,10 @@ try {
   for (const bad of [null, [], 1, '{', {...data,email:'private@example.com'}, {...data,page:'/contact?email=private'}, {...data,source:'private.example.com'}, {...data,event:'private message'}, {...data,event:'form_success',page:'home'}, {...data,event:'advisory_intent',page:'about'}]) {
     assert.equal((await worker.fetch(request(bad === null ? 'null' : bad), env)).status,400);
   }
+  for (const [field, marker] of Object.entries({ name:'PRIVATE_NAME_MARKER', email:'private-marker@example.invalid', organization:'PRIVATE_ORG_MARKER', message:'PRIVATE_MESSAGE_MARKER', turnstileToken:'PRIVATE_TOKEN_MARKER' })) {
+    assert.equal((await worker.fetch(request({...data,[field]:marker}),env)).status,400);
+    for (const dimension of ['event','page','locale','source']) assert.equal((await worker.fetch(request({...data,[dimension]:marker}),env)).status,400);
+  }
   assert.equal(logs.length,0,'rejected payloads must never enter product logs');
   // Cross-origin injection, oversized streaming bodies and exhausted limits must fail closed.
   assert.equal((await worker.fetch(request(data,{Origin:'https://evil.example'}),env)).status,403);

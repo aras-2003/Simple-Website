@@ -53,7 +53,7 @@ for (const locale of ['pl', 'en']) {
     await page.route('**/api/events', async route => {
       const event = route.request().postDataJSON();
       expect(Object.keys(event).sort()).toEqual(['event','locale','page','source']);
-      expect(JSON.stringify(event)).not.toMatch(/Zażółć|private|example\.com/);
+      expect(JSON.stringify(event)).not.toMatch(/Zażółć|private|Private|example\.com|test-token|SyntheticOrg/);
       events.push(event);
       await route.fulfill({status:204});
     });
@@ -62,6 +62,7 @@ for (const locale of ['pl', 'en']) {
     await page.goto(path);
     await page.locator('input[name="name"]').fill('Private Person');
     await page.locator('input[name="email"]').fill('private@example.com');
+    await page.locator('input[name="organization"]').fill('SyntheticOrg');
     await page.locator('select[name="topic"]').selectOption('diagnostic');
     const message = 'Zażółć gęślą jaźń.\nA private decision to discuss.';
     await page.locator('textarea').fill(message);
