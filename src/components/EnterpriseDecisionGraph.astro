@@ -3,67 +3,134 @@ import type { Locale } from '../lib/site';
 interface Props { locale: Locale; mode: 'hero' | 'system'; }
 const { locale, mode } = Astro.props;
 const pl = locale === 'pl';
-const views = pl ? [
-  { title: 'Strategia staje się wyborem.', detail: 'Łączymy kierunek z portfelem inicjatyw. Widać, co finansować, co zatrzymać i jakie kompromisy zaakceptować.', label: 'Strategia i inwestycje' },
-  { title: 'Decyzja ma właściciela.', detail: 'Łączymy uprawnienia decyzyjne z odpowiedzialnością za zmianę. Mniej decyzji, które wracają na kolejne spotkanie.', label: 'Odpowiedzialność' },
-  { title: 'Technologia służy wykonaniu.', detail: 'Łączymy możliwości organizacji, dane i platformy z realnym sposobem pracy — bez obiecywania wyniku, którego jeszcze nie zmierzono.', label: 'Technologia i realizacja' },
-] : [
-  { title: 'Strategy becomes a choice.', detail: 'Connect direction to the initiative portfolio. Make funding, stopping and trade-offs explicit.', label: 'Strategy and investment' },
-  { title: 'A decision has an owner.', detail: 'Connect decision rights with accountability for change. Fewer decisions returning to another meeting.', label: 'Accountability' },
-  { title: 'Technology enables execution.', detail: 'Connect organizational capabilities, data and platforms to how work actually happens — without claiming outcomes not yet measured.', label: 'Technology and delivery' },
+const words = pl ? {
+  layers: ['STRATEGIA', 'ORGANIZACJA', 'TECHNOLOGIA', 'REALIZACJA'],
+  heading: 'Organizacja to system.', emphasis: 'Decyzja zmienia całość.',
+  intro: 'Zobacz, jak wybory strategiczne wpływają na odpowiedzialność, możliwości technologiczne i sposób realizacji.',
+  kicker: '02 / ARCHITEKTURA DECYZJI', choose: 'Wybierz perspektywę', next: 'Zobacz, jak pracuję',
+  diagram: 'Mapa zależności strategii, modelu działania, technologii i realizacji. Zmiana perspektywy wyróżnia inną drogę decyzji.',
+  hero: 'Abstrakcyjne pole decyzji łączące strategię, organizację, technologię i realizację.',
+  nodes: ['Kierunek', 'Portfel', 'Kompromisy', 'Prawa decyzji', 'Właściciel', 'Strumienie wartości', 'Capabilities', 'Dane', 'Platformy', 'Dostarczenie', 'Adopcja', 'Wartość'],
+  views: [
+    {label:'Strategia i inwestycje',title:'Wybór zmienia portfel.',body:'Priorytet strategiczny przekłada się na inwestycje, odpowiedzialność i możliwości potrzebne do dostarczenia zmiany.'},
+    {label:'Odpowiedzialność',title:'Decyzja potrzebuje właściciela.',body:'Kompromisy, uprawnienia i kompetencje muszą spotkać się w jednym modelu działania. Inaczej decyzja wraca na kolejne spotkanie.'},
+    {label:'Technologia i realizacja',title:'Technologia działa w kontekście.',body:'Platformy i dane wspierają konkretny sposób pracy. Samo wdrożenie nie jest jeszcze wykorzystaniem ani wartością biznesową.'},
+  ],
+} : {
+  layers: ['STRATEGY', 'ORGANIZATION', 'TECHNOLOGY', 'EXECUTION'],
+  heading: 'An organization is a system.', emphasis: 'A decision changes the whole.',
+  intro: 'See how strategic choices shape accountability, technological capabilities and the way change is delivered.',
+  kicker: '02 / DECISION ARCHITECTURE', choose: 'Choose a perspective', next: 'Explore how I work',
+  diagram: 'An enterprise dependency map linking strategy, operating model, technology and execution. Each perspective highlights a different decision path.',
+  hero: 'An abstract decision field connecting strategy, organization, technology and execution.',
+  nodes: ['Direction', 'Portfolio', 'Trade-offs', 'Decision rights', 'Ownership', 'Value streams', 'Capabilities', 'Data', 'Platforms', 'Delivery', 'Adoption', 'Value'],
+  views: [
+    {label:'Strategy & investment',title:'A choice reshapes the portfolio.',body:'Strategic priorities translate into investments, accountability and the capabilities required to deliver change.'},
+    {label:'Accountability',title:'A decision needs an owner.',body:'Trade-offs, decision rights and capabilities must meet in one operating model. Otherwise decisions return to another meeting.'},
+    {label:'Technology & delivery',title:'Technology works in context.',body:'Platforms and data enable a specific way of working. Deployment alone is not adoption or business value.'},
+  ],
+};
+const nodes = [
+  {x:240,y:95},{x:490,y:95},{x:750,y:95},
+  {x:240,y:218},{x:490,y:218},{x:750,y:218},
+  {x:240,y:341},{x:490,y:341},{x:750,y:341},
+  {x:240,y:464},{x:490,y:464},{x:750,y:464},
 ];
-const layers = pl ? ['STRATEGIA', 'ORGANIZACJA', 'TECHNOLOGIA', 'REALIZACJA'] : ['STRATEGY', 'ORGANIZATION', 'TECHNOLOGY', 'EXECUTION'];
+const connections = [[0,3],[0,4],[1,4],[1,5],[2,4],[2,5],[3,6],[3,7],[4,6],[4,7],[4,8],[5,7],[5,8],[6,9],[6,10],[7,9],[7,10],[8,10],[8,11],[9,11],[10,11]];
+const routes = [[1,5,8,11],[2,4,6,9],[0,3,7,10]];
+const routePath = (indices:number[]) => indices.map((id,i)=>{
+  const point = nodes[id];
+  if (i === 0) return `M${point.x} ${point.y}`;
+  const prev = nodes[indices[i-1]];
+  const mid = (prev.y+point.y)/2;
+  return `C${prev.x} ${mid} ${point.x} ${mid} ${point.x} ${point.y}`;
+}).join(' ');
+const mesh = Array.from({length:31},(_,i)=>{
+  const offset=(i-15)*9.2;
+  const half=172*Math.sqrt(1-(offset/180)**2);
+  const y=267+offset;
+  return `M${283-half} ${y} C${283-half*.38} ${y-33} ${283+half*.38} ${y+33} ${283+half} ${y}`;
+});
 ---
 {mode === 'hero' ? (
-  <div class="edg-hero" role="img" aria-label={pl ? 'Cztery warstwy: strategia, organizacja, technologia i realizacja. Jedna ścieżka decyzji łączy je ze sobą.' : 'Four layers: strategy, organization, technology and execution. One decision path connects them.'}>
-    <svg viewBox="0 0 480 460" aria-hidden="true" focusable="false">
-      <defs><linearGradient id="edg-hero-surface" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#faf9f3"/><stop offset="1" stop-color="#e0e7db"/></linearGradient></defs>
-      <g class="edg-hero-planes" fill="url(#edg-hero-surface)" stroke="#9fac9f" stroke-width="1">
-        <path d="M240 46 424 127 240 208 56 127Z"/><path d="M240 110 424 191 240 272 56 191Z"/><path d="M240 174 424 255 240 336 56 255Z"/><path d="M240 238 424 319 240 400 56 319Z"/>
+  <div class="edg-hero" role="img" aria-label={words.hero}>
+    <svg viewBox="0 0 570 540" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="edg-field" cx="38%" cy="31%" r="76%"><stop stop-color="#f7f7ee"/><stop offset=".51" stop-color="#dce3d7"/><stop offset="1" stop-color="#adbdb0"/></radialGradient>
+        <linearGradient id="edg-ink" x1="0" x2="1"><stop stop-color="#173f35" stop-opacity=".07"/><stop offset=".52" stop-color="#173f35" stop-opacity=".63"/><stop offset="1" stop-color="#173f35" stop-opacity=".06"/></linearGradient>
+      </defs>
+      <circle cx="283" cy="267" r="178" fill="url(#edg-field)" opacity=".9"/>
+      <circle cx="283" cy="267" r="178" fill="none" stroke="#b6c5b8" stroke-width=".65"/>
+      <g fill="none" stroke="url(#edg-ink)" stroke-width=".85" opacity=".68">{mesh.map(d=><path d={d}/>)}</g>
+      <g fill="none" stroke="#355d4e" stroke-opacity=".39" stroke-width=".8">
+        <ellipse cx="283" cy="267" rx="218" ry="65" transform="rotate(-28 283 267)"/>
+        <ellipse cx="283" cy="267" rx="205" ry="124" transform="rotate(32 283 267)" stroke-opacity=".16"/>
+        <path d="M283 59V475 M77 267H488" stroke-opacity=".12" stroke-dasharray="2 6"/>
       </g>
-      <path class="edg-hero-route" d="M240 103 C238 135 261 144 245 182 S222 225 243 255 S263 299 240 353" fill="none" stroke="#355d4e" stroke-width="2.5" stroke-linecap="round"/>
-      <g fill="#355d4e" stroke="#f5f1e9" stroke-width="3"><circle cx="240" cy="103" r="5"/><circle cx="245" cy="182" r="5"/><circle cx="243" cy="255" r="5"/><circle cx="240" cy="353" r="6"/></g>
-      <g fill="#355d4e" font-size="10" font-family="system-ui,sans-serif" letter-spacing="1.2"><text x="245" y="31" text-anchor="middle">{layers[0]}</text><text x="30" y="205">{layers[1]}</text><text x="337" y="295">{layers[2]}</text><text x="246" y="427" text-anchor="middle">{layers[3]}</text></g>
+      <path class="edg-hero-orbit" d="M94 349 C143 310 211 281 282 267 S410 222 473 175" fill="none" stroke="#355d4e" stroke-width="1.8" stroke-linecap="round"/>
+      <g fill="#355d4e" stroke="#f5f1e9" stroke-width="3"><circle cx="127" cy="325" r="5"/><circle cx="282" cy="267" r="6"/><circle cx="449" cy="193" r="5"/></g>
+      <g fill="none" stroke="#63796d" stroke-width=".8" stroke-opacity=".67"><path d="M283 89V44 H366"/><path d="M112 221H31 V192"/><path d="M455 321H541 V340"/><path d="M283 445V496H368"/></g>
+      <g fill="#254b3f" font-family="system-ui,sans-serif" font-size="10" font-weight="600" letter-spacing="1.6"><text x="374" y="47">{words.layers[0]}</text><text x="30" y="185">{words.layers[1]}</text><text x="539" y="356" text-anchor="end">{words.layers[2]}</text><text x="375" y="499">{words.layers[3]}</text></g>
+      <g fill="#355d4e"><circle cx="283" cy="89" r="2"/><circle cx="112" cy="221" r="2"/><circle cx="455" cy="321" r="2"/><circle cx="283" cy="445" r="2"/></g>
     </svg>
+    <p class="edg-hero-caption" aria-hidden="true"><span>01 — 04</span><span>{pl?'JEDEN SYSTEM / WIELE ZALEŻNOŚCI':'ONE SYSTEM / MANY DEPENDENCIES'}</span></p>
   </div>
 ) : (
   <section class="edg-system" aria-labelledby="edg-system-title" data-edg-system data-view="0">
-    <div class="edg-system-head"><p class="edg-kicker">02 / {pl ? 'ORGANIZACJA JAKO SYSTEM' : 'THE ORGANIZATION AS A SYSTEM'}</p><span class="edg-index" aria-hidden="true">01 — 03</span></div>
-    <div class="edg-system-grid">
-      <div class="edg-intro"><h2 id="edg-system-title">{pl ? <>Organizacje są złożone.<br/><em>Decyzje łączą elementy.</em></> : <>Organizations are complex.<br/><em>Decisions connect the dots.</em></>}</h2><p>{pl ? 'Zobacz, jak strategia, odpowiedzialność i technologia muszą współgrać, żeby zmiana mogła się wydarzyć.' : 'Explore how strategy, accountability and technology must work together to make change executable.'}</p>
-        <div class="edg-controls" role="group" aria-label={pl ? 'Wybierz perspektywę mapy organizacji' : 'Choose an organizational map perspective'}>{views.map((view, index) => <button type="button" class="edg-control" data-edg-control={index} aria-pressed={index === 0} aria-controls={`edg-panel-${locale}-${index}`}><span class="edg-control-dot" aria-hidden="true"></span>{view.label}</button>)}</div>
+    <div class="edg-shell">
+      <div class="edg-section-top"><p class="edg-kicker">{words.kicker}</p><span class="edg-section-id" aria-hidden="true">EDG / 001</span></div>
+      <h2 id="edg-system-title">{words.heading}<br/><em>{words.emphasis}</em></h2>
+      <div class="edg-system-grid">
+        <div class="edg-narrative">
+          <p class="edg-intro">{words.intro}</p>
+          <p class="edg-label">{words.choose}</p>
+          <div class="edg-controls" role="group" aria-label={words.choose}>
+            {words.views.map((view,i)=><button type="button" class="edg-control" data-edg-control={i} aria-pressed={i===0} aria-controls={`edg-panel-${locale}-${i}`}><span class="edg-control-index" aria-hidden="true">0{i+1}</span><span>{view.label}</span><span class="edg-control-arrow" aria-hidden="true">↗</span></button>)}
+          </div>
+          <div class="edg-description" aria-live="polite" aria-atomic="true">
+            {words.views.map((view,i)=><div id={`edg-panel-${locale}-${i}`} data-edg-panel={i} hidden={i!==0}><h3>{view.title}</h3><p>{view.body}</p></div>)}
+          </div>
+          <a class="edg-next" href={pl?'/wspolpraca':'/en/advisory'}>{words.next}<span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="edg-topology" role="img" aria-label={words.diagram}>
+          <div class="edg-figure-top" aria-hidden="true"><span>ENTERPRISE / DEPENDENCY MAP</span><span data-edg-counter>01 / 03</span></div>
+          <svg class="edg-map-desktop" viewBox="0 0 900 540" aria-hidden="true" focusable="false">
+            <g class="edg-gridlines">{words.layers.map((label,i)=><g><path d={`M167 ${95+i*123} H860`}/><text x="10" y={89+i*123}>{`0${i+1} / ${label}`}</text></g>)}</g>
+            <g class="edg-connections" fill="none">{connections.map(([a,b])=>{const p=nodes[a],q=nodes[b],mid=(p.y+q.y)/2;return <path d={`M${p.x} ${p.y} C${p.x} ${mid} ${q.x} ${mid} ${q.x} ${q.y}`}/>;})}</g>
+            <g class="edg-nodes">{nodes.map((node,i)=><g><circle cx={node.x} cy={node.y} r="4"/><text x={node.x+12} y={node.y-13}>{words.nodes[i]}</text></g>)}</g>
+            {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={routePath(route)}/><path class="edg-route-line" d={routePath(route)}/>{route.map(id=><g><circle class="edg-route-ring" cx={nodes[id].x} cy={nodes[id].y} r="13"/><circle class="edg-route-point" cx={nodes[id].x} cy={nodes[id].y} r="5"/></g>)}</g>)}
+            <g class="edg-axis"><path d="M167 513 H860"/><text x="168" y="532">STRATEGY → EXECUTION</text><text x="859" y="532" text-anchor="end">NOT TO SCALE / CONCEPTUAL MODEL</text></g>
+          </svg>
+          <svg class="edg-map-mobile" viewBox="0 0 370 330" aria-hidden="true" focusable="false">
+            <g class="edg-mobile-guides">{words.layers.map((label,i)=><g><path d={`M15 ${40+i*80} H355`}/><text x="16" y={27+i*80}>{`0${i+1} / ${label}`}</text></g>)}</g>
+            <g class="edg-mobile-tracks" fill="none" stroke="#456358">{[95,185,275].map(x=><path d={`M${x} 40V280`}/>)}</g>
+            {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={i===0?'M185 40 C185 100 275 140 275 200 S275 260 275 280':i===1?'M275 40 C275 100 185 140 95 200 S95 260 95 280':'M95 40 C95 100 95 140 185 200 S185 260 185 280'}/><path class="edg-route-line" d={i===0?'M185 40 C185 100 275 140 275 200 S275 260 275 280':i===1?'M275 40 C275 100 185 140 95 200 S95 260 95 280':'M95 40 C95 100 95 140 185 200 S185 260 185 280'}/>{[40,120,200,280].map((y,j)=>{const x=i===0?[185,230,275,275][j]:i===1?[275,230,95,95][j]:[95,95,185,185][j];return <circle class="edg-route-point" cx={x} cy={y} r="5"/>;})}</g>)}
+            <g class="edg-mobile-labels">{[1,4,8,11].map((id,j)=><text x="16" y={58+j*80}>{words.nodes[id]}</text>)}</g>
+          </svg>
+          <figcaption class="edg-figure-caption">{pl?'Zależności koncepcyjne, nie metryki organizacji.':'Conceptual dependencies, not organizational metrics.'}</figcaption>
+        </figure>
       </div>
-      <div class="edg-visual" role="img" aria-label={pl ? 'Cztery warstwy architektury organizacji. Wybrana ścieżka pokazuje zależność od strategii, przez organizację i technologię, do realizacji.' : 'Four layers of organizational architecture. The selected route connects strategy through organization and technology to execution.'}>
-        <svg viewBox="0 0 440 450" aria-hidden="true" focusable="false">
-          <defs><linearGradient id="edg-system-plane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#37584b" stop-opacity=".27"/><stop offset="1" stop-color="#8ea99c" stop-opacity=".04"/></linearGradient></defs>
-          <g fill="url(#edg-system-plane)" stroke="#789084" stroke-opacity=".56" stroke-width="1"><path d="M220 44 401 113 220 182 39 113Z"/><path d="M220 113 401 182 220 251 39 182Z"/><path d="M220 182 401 251 220 320 39 251Z"/><path d="M220 251 401 320 220 389 39 320Z"/></g>
-          <g class="edg-tracks" fill="none" stroke-linecap="round" stroke-width="2.5"><path data-edg-track="0" d="M220 88 C215 123 261 146 221 180 S188 224 224 249 S255 292 223 355"/><path data-edg-track="1" d="M220 88 C268 122 300 137 266 180 S152 215 187 251 S241 307 223 355"/><path data-edg-track="2" d="M220 88 C189 134 155 148 182 181 S299 226 271 252 S193 320 223 355"/></g>
-          <g fill="#c4e4b0" stroke="#122923" stroke-width="3"><circle cx="220" cy="88" r="5"/><circle cx="223" cy="355" r="6"/></g>
-          <g fill="#c4d5c9" font-size="9" font-family="system-ui,sans-serif" letter-spacing="1"><text x="220" y="26" text-anchor="middle">{layers[0]}</text><text x="8" y="203">{layers[1]}</text><text x="310" y="273">{layers[2]}</text><text x="220" y="414" text-anchor="middle">{layers[3]}</text></g>
-        </svg>
-      </div>
-      <div class="edg-explanation" aria-live="polite" aria-atomic="true"><span class="edg-counter" aria-hidden="true" data-edg-counter>01 / 03</span>{views.map((view,index) => <div id={`edg-panel-${locale}-${index}`} data-edg-panel={index} hidden={index !== 0}><h3>{view.title}</h3><p>{view.detail}</p></div>)}<a class="edg-next" href={pl ? '/wspolpraca' : '/en/advisory'}>{pl ? 'Zobacz, jak pracuję' : 'Explore how I work'} <span aria-hidden="true">↗</span></a></div>
+      <div class="edg-bottom"><span>TAK / NIE / KTO</span><span>{pl?'KIERUNEK · WYBÓR · ODPOWIEDZIALNOŚĆ':'DIRECTION · CHOICE · ACCOUNTABILITY'}</span></div>
     </div>
-    <p class="edg-footnote">TAK / NIE / KTO <span aria-hidden="true">—</span> {pl ? 'Kierunek. Wybór. Odpowiedzialność.' : 'Direction. Choice. Accountability.'}</p>
   </section>
 )}
 <style>
-  .edg-hero{width:100%;max-width:490px;margin-inline:auto;isolation:isolate}.edg-hero svg,.edg-visual svg{display:block;width:100%;height:auto;overflow:visible}.edg-hero-planes{opacity:.86}.edg-hero-route{stroke-dasharray:330;stroke-dashoffset:330;animation:edg-draw 1.3s cubic-bezier(.2,.75,.25,1) .15s both}@keyframes edg-draw{to{stroke-dashoffset:0}}
-  .edg-system{background:#122923;color:#f5f1e9;padding:clamp(2rem,5vw,4.5rem);margin:0 calc(50% - 50vw);width:100vw;position:relative}.edg-system-head,.edg-system-grid,.edg-footnote{max-width:1200px;margin-inline:auto}.edg-system-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}.edg-kicker,.edg-index,.edg-counter,.edg-footnote{font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.14em;color:#bad0be}.edg-system-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.15fr) minmax(0,.7fr);gap:clamp(1.2rem,3vw,3.5rem);align-items:center;min-height:550px}.edg-intro h2{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);line-height:1.13;letter-spacing:-.045em;max-width:15ch}.edg-intro h2 em{color:#bed3af;font-weight:400;font-style:normal}.edg-intro>p{color:#c9d8cd;font-size:15px;max-width:35ch;margin-top:1.5rem;line-height:1.65}.edg-controls{display:grid;gap:.25rem;margin-top:2.6rem}.edg-control{border:0;border-left:1px solid #5c796b;background:transparent;color:#b6cabe;text-align:left;display:flex;align-items:center;gap:1rem;min-height:44px;padding:.5rem .8rem;font:500 13px/1.4 system-ui,sans-serif;cursor:pointer}.edg-control[aria-pressed=true]{border-left:2px solid #c0e1a9;color:#fff}.edg-control-dot{width:6px;height:6px;border-radius:50%;background:#729081;flex:none}.edg-control[aria-pressed=true] .edg-control-dot{background:#c0e1a9;box-shadow:0 0 0 5px #c0e1a91a}.edg-control:focus-visible,.edg-next:focus-visible{outline:2px solid #c0e1a9;outline-offset:4px}.edg-visual{min-width:0}.edg-tracks path{stroke:#c0e1a9;opacity:0;transition:opacity .35s ease;stroke-dasharray:4 0}.edg-system[data-view="0"] [data-edg-track="0"],.edg-system[data-view="1"] [data-edg-track="1"],.edg-system[data-view="2"] [data-edg-track="2"]{opacity:1}.edg-explanation{align-self:center;min-width:0}.edg-counter{display:block;margin-bottom:2rem}.edg-explanation [hidden]{display:none!important}.edg-explanation h3{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;font-size:clamp(1.45rem,2vw,2rem);line-height:1.18;color:#f5f1e9}.edg-explanation p{font-size:14px;color:#c9d8cd;line-height:1.7;margin-top:1.2rem}.edg-next{display:inline-flex;align-items:center;gap:1rem;min-height:44px;border:1px solid #97aea0;padding:.65rem .9rem;font-size:13px;text-decoration:none;margin-top:2rem;color:#fff}.edg-next:hover{background:#254338}.edg-footnote{border-top:1px solid #456153;padding-top:1.5rem;margin-top:1rem}
-  @media(max-width:980px){.edg-system-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem}.edg-intro{grid-column:1/-1}.edg-intro h2{max-width:25ch}.edg-controls{display:flex;flex-wrap:wrap;margin-top:1.5rem}.edg-visual{max-width:420px}.edg-explanation{max-width:32rem}}
-  @media(max-width:620px){.edg-system{padding:2.5rem max(24px,calc((100vw - 100%)/2))}.edg-system-grid{grid-template-columns:minmax(0,1fr);min-height:0;gap:0}.edg-intro h2{font-size:clamp(2rem,9vw,2.8rem)}.edg-controls{display:grid;grid-template-columns:1fr;margin-top:1.4rem}.edg-visual{width:min(100%,340px);margin:1rem auto 0}.edg-explanation{margin-top:-.5rem;min-height:190px}.edg-counter{margin-bottom:1rem}.edg-next{margin-top:1rem}.edg-footnote{margin-top:2rem}.edg-hero{max-width:340px}}
-  @media(prefers-reduced-motion:reduce){.edg-hero-route{animation:none;stroke-dashoffset:0}.edg-tracks path{transition:none}}
+  .edg-hero{width:100%;max-width:610px;margin:auto;min-width:0}.edg-hero svg{width:100%;height:auto;display:block;overflow:visible}.edg-hero-caption{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #d4dbd0;margin:0 1.4rem;padding-top:.65rem;color:#53675a;font:600 9px/1.4 var(--sans);letter-spacing:.13em}.edg-hero-orbit{stroke-dasharray:530;stroke-dashoffset:530;animation:edg-orbit 1.65s cubic-bezier(.22,1,.36,1) .18s forwards}@keyframes edg-orbit{to{stroke-dashoffset:0}}
+  .edg-system{position:relative;width:100vw;margin-inline:calc(50% - 50vw);padding:clamp(4rem,7vw,7rem) clamp(24px,5vw,80px) 2rem;background:#102721;color:#f5f1e9;overflow:hidden}.edg-shell{max-width:1320px;margin:auto}.edg-section-top,.edg-bottom,.edg-figure-top{display:flex;align-items:center;justify-content:space-between;gap:1rem}.edg-kicker,.edg-section-id,.edg-label,.edg-figure-top,.edg-bottom,.edg-figure-caption{font:600 10px/1.5 var(--sans);letter-spacing:.15em}.edg-kicker,.edg-section-id{color:#c4d5c6}.edg-system h2{font-family:var(--serif);font-size:clamp(2.8rem,5vw,5.5rem);font-weight:400;line-height:1.06;letter-spacing:-.05em;margin:clamp(2rem,4vw,4rem) 0 clamp(3rem,5vw,5rem);max-width:24ch}.edg-system h2 em{color:#c7dba9;font-style:normal;font-weight:400}.edg-system-grid{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.55fr);gap:clamp(1.5rem,4vw,5rem);align-items:start}.edg-intro{max-width:31ch;color:#c9d6cd;font:400 clamp(15px,1.4vw,17px)/1.7 var(--sans)}.edg-label{color:#a8bfae;margin:clamp(2rem,4vw,3.5rem) 0 .8rem}.edg-controls{display:grid;border-top:1px solid #3a574a}.edg-control{min-height:62px;display:grid;grid-template-columns:28px 1fr 20px;align-items:center;gap:.7rem;text-align:left;background:none;color:#aebfb4;border:0;border-bottom:1px solid #3a574a;padding:.75rem .15rem;font:500 14px/1.4 var(--sans);cursor:pointer}.edg-control-index{font-size:11px;letter-spacing:.1em;color:#9eb7a4}.edg-control-arrow{opacity:0;font-size:18px;transition:opacity .25s}.edg-control[aria-pressed=true]{color:#f5f1e9}.edg-control[aria-pressed=true] .edg-control-index{color:#d3e7af}.edg-control[aria-pressed=true] .edg-control-arrow{opacity:1;color:#d3e7af}.edg-control:hover{color:white}.edg-control:focus-visible,.edg-next:focus-visible{outline:2px solid #d3e7af;outline-offset:3px}.edg-description{min-height:146px;margin-top:2rem}.edg-description [hidden]{display:none!important}.edg-description h3{font:400 clamp(1.6rem,2.4vw,2.3rem)/1.1 var(--serif);letter-spacing:-.035em;color:#f5f1e9}.edg-description p{color:#b8c9bb;font:400 14px/1.7 var(--sans);margin-top:.8rem;max-width:37ch}.edg-next{display:inline-flex;gap:1.5rem;align-items:center;justify-content:space-between;min-height:44px;border-bottom:1px solid #a1b9a6;text-decoration:none;font:600 13px var(--sans);color:#f5f1e9;padding:.5rem 0}.edg-next:hover{color:#d3e7af}.edg-topology{margin:0;min-width:0;align-self:center}.edg-figure-top{color:#a5baab;padding-bottom:1.2rem;border-bottom:1px solid #355244}.edg-map-desktop{width:100%;height:auto;display:block;overflow:visible;margin-top:1rem}.edg-gridlines path,.edg-axis path{stroke:#294b3e;stroke-width:1;fill:none}.edg-gridlines text,.edg-axis text{font:600 10px var(--sans);fill:#8ea99a;letter-spacing:1.2px}.edg-connections path{stroke:#426251;stroke-width:1;opacity:.52}.edg-nodes circle{fill:#a4b9a3}.edg-nodes text{fill:#b8cbbd;font:500 12px var(--sans)}.edg-active-route{opacity:0;transition:opacity .4s ease}.edg-system[data-view="0"] [data-edg-route="0"],.edg-system[data-view="1"] [data-edg-route="1"],.edg-system[data-view="2"] [data-edg-route="2"]{opacity:1}.edg-route-halo{fill:none;stroke:#bfe0aa;stroke-width:8;opacity:.11}.edg-route-line{fill:none;stroke:#d0e9ad;stroke-width:2.5;stroke-linecap:round}.edg-route-ring{fill:none;stroke:#c9e4a7;stroke-width:1;opacity:.4}.edg-route-point{fill:#d8efb5;stroke:#102721;stroke-width:2}.edg-figure-caption{color:#91a899;letter-spacing:.02em;font-weight:400;margin:0 0 1rem;text-align:right}.edg-bottom{border-top:1px solid #365447;margin-top:clamp(3rem,6vw,6rem);padding-top:1.3rem;color:#bacabb}.edg-bottom span:first-child{color:#d2e5af}.edg-map-mobile{display:none}
+  @media(max-width:950px){.edg-system-grid{grid-template-columns:1fr;gap:2rem}.edg-narrative{display:grid;grid-template-columns:1fr 1fr;gap:0 2rem}.edg-intro{grid-column:1/-1;max-width:60ch}.edg-label{grid-column:1/-1}.edg-controls{grid-row:3/6}.edg-description{margin-top:0;min-height:130px}.edg-next{justify-self:start;align-self:start}.edg-topology{width:100%;max-width:850px;margin:auto}.edg-system h2{max-width:none}}
+  @media(max-width:620px){.edg-system{padding:3.5rem 24px 2rem}.edg-system h2{font-size:clamp(2.5rem,10vw,3.4rem);margin:2rem 0 2.4rem}.edg-narrative{display:block}.edg-label{margin-top:2.3rem}.edg-control{min-height:54px}.edg-description{min-height:0;margin-top:1.7rem}.edg-next{margin-top:1.2rem}.edg-map-desktop{display:none}.edg-map-mobile{display:block;width:100%;height:auto;margin:1rem auto 0;max-width:420px}.edg-mobile-guides path{stroke:#355648;stroke-width:1}.edg-mobile-guides text,.edg-mobile-labels text{fill:#aec8b4;font:600 10px var(--sans);letter-spacing:.5px}.edg-mobile-labels text{font-weight:400}.edg-mobile-tracks{stroke-width:1;stroke-opacity:.4}.edg-figure-top{font-size:9px}.edg-bottom{flex-wrap:wrap;font-size:9px;margin-top:2rem}.edg-hero{max-width:450px}.edg-hero-caption{margin-inline:.5rem}}
+  @media(prefers-reduced-motion:reduce){.edg-hero-orbit{animation:none;stroke-dashoffset:0}.edg-active-route,.edg-control-arrow{transition:none}}
 </style>
 <script>
-  document.querySelectorAll<HTMLElement>('[data-edg-system]').forEach((system) => {
-    const controls = [...system.querySelectorAll<HTMLButtonElement>('[data-edg-control]')];
-    const panels = [...system.querySelectorAll<HTMLElement>('[data-edg-panel]')];
-    const counter = system.querySelector<HTMLElement>('[data-edg-counter]');
-    controls.forEach((control, index) => control.addEventListener('click', () => {
-      system.dataset.view = String(index);
-      controls.forEach((item, n) => item.setAttribute('aria-pressed', String(n === index)));
-      panels.forEach((panel, n) => { panel.hidden = n !== index; });
-      if (counter) counter.textContent = `0${index + 1} / 03`;
+  document.querySelectorAll<HTMLElement>('[data-edg-system]').forEach(system=>{
+    const buttons=[...system.querySelectorAll<HTMLButtonElement>('[data-edg-control]')];
+    const panels=[...system.querySelectorAll<HTMLElement>('[data-edg-panel]')];
+    const counter=system.querySelector<HTMLElement>('[data-edg-counter]');
+    buttons.forEach((button,index)=>button.addEventListener('click',()=>{
+      system.dataset.view=String(index);
+      buttons.forEach((item,i)=>item.setAttribute('aria-pressed',String(i===index)));
+      panels.forEach((panel,i)=>{panel.hidden=i!==index;});
+      if(counter)counter.textContent=`0${index+1} / 03`;
     }));
   });
 </script>
