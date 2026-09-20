@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['**/accessibility.spec.ts', '**/browser-smoke.spec.ts', '**/editorial-figures.spec.ts', '**/privacy.spec.ts'],
+  testMatch: ['**/accessibility.spec.ts', '**/browser-smoke.spec.ts', '**/editorial-figures.spec.ts', '**/privacy.spec.ts', '**/decision-theatre.spec.ts'],
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI
