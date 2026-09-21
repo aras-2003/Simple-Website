@@ -11,6 +11,10 @@ test('Decision Theatre: perspectives, keyboard, pause and WCAG', async ({ page }
   for (const selector of ['.dt-kicker.dt-enter', '#dt-title', '.dt-lead', '.dt-intro']) {
     await expect(page.locator(selector)).toHaveCSS('opacity', '1');
   }
+  // Offscreen entrances must never strand the spatial model in a faded state.
+  for (const solid of await page.locator('.dt-system .dt-solid').all()) {
+    await expect(solid).toHaveCSS('opacity', '1');
+  }
   for (let i = 0; i < 3; i++) {
     if (i) await page.keyboard.press('ArrowRight');
     await expect(controls.nth(i)).toBeFocused();
@@ -34,7 +38,7 @@ test('Decision Theatre: reduced motion and 320px reflow', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto('/lab/decision-theatre');
-  await expect(page.locator('h1')).toHaveText('Strategię widaćw wyborach.');
+  await expect(page.locator('h1')).toHaveText('Strategię widać w wyborach.');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(await page.locator('.dt-hero-signal').evaluate(el => getComputedStyle(el).display)).toBe('none');
   expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);

@@ -5,33 +5,36 @@ Base: `545d873` (main)
 Route: `/lab/decision-theatre`  
 Scope: two sections, PL-first. No merge, staging promotion or production deployment.
 
-## Creative direction
+## Creative direction — 02 / Oś decyzji
 
-**Ślad decyzji / The trace of a decision.** The earlier Enterprise Decision Graph
-made relationships legible but lacked a strong focal point. This prototype gives
-the brand's TAK / NIE / KTO signature dimensional presence, then follows a single
-decision through six organizational layers. The organization stays recognizable
-when its interpretation changes.
+The second direction follows the visual review: simple rectangular solids,
+precise depth, translucent pine surfaces and light that connects the layers.
+The organic ribbons and curved topology from the first version have been removed.
+The visual impact now comes from material, perspective, occlusion and motion.
 
-Warm ivory, pine and one pale signal color retain the current brand. Georgia and
-the system sans stack avoid new font requests. Curved fields suggest overlapping
-responsibilities, rather than buildings, server racks or a dashboard. The broad
-dark stage and editorial typography provide the main visual contrast.
+The hero presents TAK / NIE / KTO as three thin rectangular solids. Over a quiet
+17-second cycle they separate and register onto a shared decision axis. Real CSS
+3D transforms expose the front and side faces. Lighting stays consistent with
+the material; the camera changes angle only slightly.
+
+The dark System shows six organizational layers. Selecting a perspective moves
+the same planes, adjusts the camera and redraws a rectilinear route through the
+relevant decision points. A flat directory keeps layer names and selected nodes
+readable independently of perspective. The map is a conceptual organization,
+not a model of a building.
 
 ## Experience
 
-- Hero: thesis, short buyer-oriented explanation, direct **Opisz problem** CTA,
-  in-page **Zobacz system** link, layered signature and continuous signal.
-- System: three views of strategy/investment, ownership/decision rights, and
-  technology/execution. Selected nodes, route, explanation and ordered text trace
-  change together. Technology explicitly passes through deployment and adoption.
-- Mobile: dedicated portrait topology, vertical controls, native wrapping copy;
-  it does not scale down the desktop map.
-- Motion: staggered entrance, path drawing, sparse flow signal, restrained depth
-  transitions and hover. No automatic mode changes or scroll hijacking.
-- Accessibility: native pressed buttons, arrow/Home/End navigation, live
-  explanation, textual equivalent of each path, focus styles, motion pause,
-  reduced-motion support and readable no-JS details.
+- Hero: existing thesis and CTA logic, typographic hierarchy, three solids and
+  a single axis connecting direction, focus and responsibility.
+- System: strategy/investment, ownership/decision rights, technology/execution.
+  Planes, signal path, selected nodes, directory and explanation change together.
+- Mobile: 3D hero, dedicated SVG cross-section of straight rectangular prisms,
+  vertical controls and a concise text trace. No scaled-down desktop system.
+- Motion: staged entrance, 17-second alignment cycle, depth changes, path drawing,
+  controlled signals and a restrained hover response. No scroll hijacking.
+- Accessibility: keyboard navigation, visible focus, motion pause, reduced motion,
+  native pressed buttons, text equivalents and a readable no-JS fallback.
 
 ## Implementation boundaries
 
@@ -81,7 +84,7 @@ It is a review artifact, not a deployed production route.
 | Loading budget | PASS | Approximately 1.7 KiB lab JS, no new dependencies or font/image requests |
 | Prototype indexing | PASS | Noindex and sitemap exclusion |
 | Forms / analytics | PASS | No new forms or analytics; existing CTA routes preserved |
-| Cross-browser release validation | FIX before production | Chromium inspected locally; Firefox/WebKit matrix is included in CI |
+| Cross-browser matrix | CI gate | Chromium, Firefox, WebKit and mobile Chromium; see the current PR checks for the latest result |
 | Real-device motion / Core Web Vitals | FIX before production | Local functional checks are not field CWV or physical iPhone/Safari validation |
 | Deployment | PASS | Review branch only; no release or environment promotion |
 
@@ -93,12 +96,15 @@ It is a review artifact, not a deployed production route.
   in a faded frame. All text entrances now use translation at full opacity. This also prevents
   rapid keyboard navigation from freezing offscreen hero text at low contrast.
   CI includes an immediate-focus opacity regression check.
+- **P2 / spatial rendering:** clipped model corners and an offscreen material
+  entrance could obscure the model. The scene now fits its bounds and system
+  entrances preserve full material opacity. CI asserts this after immediate focus.
 - **P2 / explanatory clarity:** the technology route originally looked too close
   to the strategy route. It now includes both data/platforms and deployment/adoption.
 
 ### Next review decision
 
-Compare the standalone prototype with the existing home at desktop and mobile
+Compare the new rectilinear standalone prototype with the existing home at desktop and mobile
 sizes. Validate that TAK / NIE / KTO is understood within five seconds and that
 each selected path helps explain a real executive decision. If approved, tune
 the chosen visual language, complete EN, validate physical Safari/reduced motion,

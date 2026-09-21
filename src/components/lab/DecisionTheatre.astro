@@ -10,13 +10,13 @@ const c = theatre[locale];
   <header class="dt-header dt-shell">
     <a class="dt-brand" href={route(locale, 'home')} aria-label="Arkadiusz Kamrowski — strona główna"><span class="dt-monogram" aria-hidden="true">AK<span>.</span></span><span>Arkadiusz<br/>Kamrowski</span></a>
     <span class="dt-edition">STRATEGIA / ARCHITEKTURA / WYKONANIE</span>
-    <span class="dt-lab">LAB / 01 <span>PL</span></span>
+    <span class="dt-lab">LAB / 02 <span>PL</span></span>
   </header>
   <main id="main" tabindex="-1">
     <section class="dt-hero dt-shell" aria-labelledby="dt-title" data-scene>
       <div class="dt-hero-copy">
         <p class="dt-kicker dt-enter">DORADZTWO DLA ZARZĄDÓW I LIDERÓW TECHNOLOGII</p>
-        <h1 id="dt-title" class="dt-enter">Strategię widać<br/><em>w wyborach.</em></h1>
+        <h1 id="dt-title" class="dt-enter">Strategię widać<br/> <em>w wyborach.</em></h1>
         <p class="dt-lead dt-enter">Co finansować. Z czego zrezygnować.<br/>Kto bierze odpowiedzialność.</p>
         <p class="dt-intro dt-enter">Łączę strategię, organizację i technologię,<br class="dt-desktop-break"/> żeby decyzje przekładały się na działanie.</p>
         <div class="dt-actions dt-enter"><a class="dt-cta" href={route(locale, 'contact')}>Opisz problem <span aria-hidden="true">↗</span></a><a class="dt-text-link" href="#system">Zobacz system <span aria-hidden="true">↓</span></a></div>
@@ -27,12 +27,12 @@ const c = theatre[locale];
     <section id="system" class="dt-system" aria-labelledby="dt-system-title" data-system data-mode="0" data-scene>
       <div class="dt-shell">
         <div class="dt-section-meta"><p class="dt-kicker">01 / ARCHITEKTURA DECYZJI</p><button class="dt-motion" type="button" data-motion-toggle aria-pressed="false" hidden><span class="dt-pause-icon" aria-hidden="true">Ⅱ</span><span data-motion-label>Wstrzymaj ruch</span></button></div>
-        <div class="dt-system-heading"><h2 id="dt-system-title">Organizacja to system.<br/><em>Decyzja zmienia całość.</em></h2><p>Ten sam układ. Trzy perspektywy. <br/>Prześledź drogę od strategicznego<br class="dt-desktop-break"/> wyboru do wartości.</p></div>
+        <div class="dt-system-heading"><h2 id="dt-system-title">Jeden kierunek.<br/><em>Cała organizacja.</em></h2><p>Ten sam układ. Trzy perspektywy. <br/>Prześledź drogę od strategicznego<br class="dt-desktop-break"/> wyboru do wartości.</p></div>
         <div class="dt-modes" role="group" aria-label="Perspektywa organizacji">
           {c.modes.map((mode, i) => <button type="button" data-mode-button={i} data-path={mode.path.join(',')} aria-pressed={i === 0} aria-controls={`dt-story-${i}`} disabled><span class="dt-mode-number">0{i + 1}</span><span>{mode.name}</span><span class="dt-mode-arrow" aria-hidden="true">↗</span></button>)}
         </div>
         <div class="dt-system-stage">
-          <div class="dt-stage-note"><span>ŚLAD DECYZJI</span><span data-mode-count>01 / 03</span></div>
+          <div class="dt-stage-note"><span>OŚ DECYZJI</span><span data-mode-count>01 / 03</span></div>
           <DecisionField kind="system"/>
           <div class="dt-stage-legend"><span><i aria-hidden="true"></i> Aktywna droga decyzji</span><span>Model koncepcyjny</span></div>
         </div>
@@ -44,6 +44,6 @@ const c = theatre[locale];
       </div>
     </section>
   </main>
-  <footer class="dt-footer dt-shell"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><span>Decision Theatre · prototyp PL</span></footer>
+  <footer class="dt-footer dt-shell"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><span>Decision Theatre / 02 · prototyp PL</span></footer>
 </div>
 <script>import '../../scripts/decision-theatre';</script>
