@@ -5,36 +5,35 @@ Base: `545d873` (main)
 Route: `/lab/decision-theatre`  
 Scope: two sections, PL-first. No merge, staging promotion or production deployment.
 
-## Creative direction — 02 / Oś decyzji
+## Creative direction — 03 / Zobacz konsekwencję
 
-The second direction follows the visual review: simple rectangular solids,
-precise depth, translucent pine surfaces and light that connects the layers.
-The organic ribbons and curved topology from the first version have been removed.
-The visual impact now comes from material, perspective, occlusion and motion.
-
-The hero presents TAK / NIE / KTO as three thin rectangular solids. Over a quiet
-17-second cycle they separate and register onto a shared decision axis. Real CSS
-3D transforms expose the front and side faces. Lighting stays consistent with
-the material; the camera changes angle only slightly.
-
-The dark System shows six organizational layers. Selecting a perspective moves
-the same planes, adjusts the camera and redraws a rectilinear route through the
-relevant decision points. A flat directory keeps layer names and selected nodes
-readable independently of perspective. The map is a conceptual organization,
-not a model of a building.
+The approved rectilinear direction is retained. This iteration makes the scene
+interactive and much easier to read: **Cel → Właściciel → Wynik**. The six
+organizational layers remain the underlying structure, grouped into three
+plain-language stages. Only the active route is shown.
 
 ## Experience
 
-- Hero: existing thesis and CTA logic, typographic hierarchy, three solids and
-  a single axis connecting direction, focus and responsibility.
-- System: strategy/investment, ownership/decision rights, technology/execution.
-  Planes, signal path, selected nodes, directory and explanation change together.
-- Mobile: 3D hero, dedicated SVG cross-section of straight rectangular prisms,
-  vertical controls and a concise text trace. No scaled-down desktop system.
-- Motion: staged entrance, 17-second alignment cycle, depth changes, path drawing,
-  controlled signals and a restrained hover response. No scroll hijacking.
-- Accessibility: keyboard navigation, visible focus, motion pause, reduced motion,
-  native pressed buttons, text equivalents and a readable no-JS fallback.
+- **Hero choices:** selecting TAK / NIE / KTO brings that solid through the other,
+  now translucent layers and reveals a one-sentence consequence. The large native
+  controls work with touch, keyboard and pointer. The decorative solids mirror
+  the same actions for pointer users.
+- **Three questions:** Co wybieramy? Kto odpowiada? Jak dowozimy? Each changes the
+  same organization and its route. A short explanation appears above the scene.
+- **Choose a stage:** Cel, Właściciel or Wynik highlights a pair of layers and
+  explains its role in the current perspective. Changing perspective restores
+  the full context.
+- **Join / separate:** Połącz warstwy compresses the depth of the entire model,
+  including its connectors. Transparent materials expose the overlaps. The action
+  is reversible, with stable layout and no scroll manipulation.
+- **Mobile:** the SVG cross-section has its own compact joined geometry; labels
+  keep their size and are never squashed with the model. The phase controls sit
+  above it.
+- **Accessibility:** native pressed buttons, arrow/Home/End navigation in all
+  three control groups, visible focus, live explanations, motion pause and
+  reduced motion. Without JS the diagram remains static and readable.
+- **Clarity:** inactive nodes and small point labels are hidden; the perspective
+  text, simple stage labels and plain-language explanations carry the meaning.
 
 ## Implementation boundaries
 
@@ -80,8 +79,8 @@ It is a review artifact, not a deployed production route.
 | Accessible modes | PASS | All three modes, desktop and mobile; zero automated axe WCAG A/AA violations |
 | Keyboard and focus | PASS | Arrow keys, Home/End, native activation; visible focus |
 | Motion controls | PASS | Pause/resume, reduced motion, offscreen/background suspension |
-| No JavaScript | PASS | Initial system and explanatory details remain readable; unavailable controls disabled |
-| Loading budget | PASS | Approximately 1.7 KiB lab JS, no new dependencies or font/image requests |
+| No JavaScript | PASS | Static initial system and explanations remain readable; unavailable controls disabled |
+| Loading budget | PASS | Approximately 2.7 KiB lab JS, no new dependencies or font/image requests |
 | Prototype indexing | PASS | Noindex and sitemap exclusion |
 | Forms / analytics | PASS | No new forms or analytics; existing CTA routes preserved |
 | Cross-browser matrix | CI gate | Chromium, Firefox, WebKit and mobile Chromium; see the current PR checks for the latest result |
@@ -102,10 +101,17 @@ It is a review artifact, not a deployed production route.
 - **P2 / explanatory clarity:** the technology route originally looked too close
   to the strategy route. It now includes both data/platforms and deployment/adoption.
 
+- **P2 / progressive enhancement:** without JS, continuous decorative motion had
+  no in-page pause control. The server-rendered state now disables all animation;
+  JS enables motion only once the controls are ready.
+- **P2 / clarity:** explanatory text followed a dense map. The explanation now
+  precedes a simplified route; selecting a stage provides one relevant detail.
+
 ### Next review decision
 
 Compare the new rectilinear standalone prototype with the existing home at desktop and mobile
-sizes. Validate that TAK / NIE / KTO is understood within five seconds and that
-each selected path helps explain a real executive decision. If approved, tune
+sizes. Validate that visitors can explain TAK / NIE / KTO and Cel / Właściciel / Wynik
+within five seconds, then use the controls without instruction. Check that the
+joined state helps explain interdependence. If approved, tune
 the chosen visual language, complete EN, validate physical Safari/reduced motion,
 and plan a separate home integration. Do not merge this lab as a home redesign.

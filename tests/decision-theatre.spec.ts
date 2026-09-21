@@ -56,5 +56,48 @@ test('Decision Theatre: complete readable fallback without JavaScript', async ({
   await expect(page.locator('.dt-nojs')).toBeVisible();
   await expect(page.locator('[data-mode-button="0"]')).toBeDisabled();
   await expect(page.locator('[data-motion-toggle]')).toBeHidden();
+  expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+  await expect(page.locator('[data-hero-choice]').first()).toBeDisabled();
+  await expect(page.locator('[data-connect]')).toBeDisabled();
   await context.close();
+});
+
+
+test('Decision Theatre: direct choices, phase focus and joining layers', async ({ page }) => {
+  await page.goto('/lab/decision-theatre');
+  const hero = page.locator('[data-hero-choice]');
+  await hero.first().focus();
+  for (let i = 0; i < 3; i++) {
+    if (i) await page.keyboard.press('ArrowRight');
+    else await page.keyboard.press('Enter');
+    await expect(hero.nth(i)).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator(`[data-hero-story="${i}"]`)).toBeVisible();
+    await expect(page.locator('[data-hero]')).toHaveAttribute('data-hero', String(i));
+  }
+  const phase = page.locator('[data-phase]');
+  await phase.first().focus();
+  await page.keyboard.press('End');
+  await expect(phase.nth(2)).toBeFocused();
+  await expect(page.locator('[data-system]')).toHaveAttribute('data-focus', '2');
+  await expect(page.locator('[data-phase-copy="0-2"]')).toBeVisible();
+  await page.locator('[data-mode-button="2"]').click();
+  await expect(page.locator('[data-system]')).toHaveAttribute('data-focus', 'all');
+  await phase.nth(1).click();
+  await expect(page.locator('[data-phase-copy="2-1"]')).toBeVisible();
+  const before = await page.locator('.dt-system-world').evaluate(el => getComputedStyle(el).transform);
+  await page.getByRole('button', { name: 'Połącz warstwy' }).click();
+  await expect(page.locator('[data-system]')).toHaveAttribute('data-view', 'joined');
+  await expect(page.locator('[data-connect]')).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(() => page.locator('.dt-system-world').evaluate(el => getComputedStyle(el).transform)).not.toBe(before);
+  if (page.viewportSize()!.width < 760) {
+    await page.locator('.dt-map-mobile').evaluate(async el => {
+      await Promise.all(el.getAnimations({ subtree: true }).filter(a => a instanceof CSSTransition).map(a => a.finished));
+    });
+    const positions = await page.locator('.dt-mobile-slab').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().y));
+    for (let i = 1; i < positions.length; i++) expect(positions[i]! - positions[i-1]!).toBeGreaterThan(20);
+  }
+  const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(audit.violations).toEqual([]);
+  await page.getByRole('button', { name: 'Rozdziel warstwy' }).click();
+  await expect(page.locator('[data-system]')).toHaveAttribute('data-view', 'separate');
 });
