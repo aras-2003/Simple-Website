@@ -67,7 +67,7 @@ The downloadable standalone review HTML embeds the compiled CSS and JS. It keeps
 in-page navigation local and sends contact/advisory links to the existing site.
 It is a review artifact, not a deployed production route.
 
-## Quality audit — 2026-09-20
+## Quality audit — 2026-09-21
 
 | Check | Result | Evidence / boundary |
 | --- | --- | --- |
@@ -90,7 +90,9 @@ It is a review artifact, not a deployed production route.
 - **P2 / readability:** hidden mobile line break joined two sentences. Added a
   real whitespace separator in the copy.
 - **P2 / progressive rendering:** offscreen animation could pause an explanation
-  in a faded frame. Initial stories now render fully before the scene enters.
+  in a faded frame. All text entrances now use translation at full opacity. This also prevents
+  rapid keyboard navigation from freezing offscreen hero text at low contrast.
+  CI includes an immediate-focus opacity regression check.
 - **P2 / explanatory clarity:** the technology route originally looked too close
   to the strategy route. It now includes both data/platforms and deployment/adoption.
 

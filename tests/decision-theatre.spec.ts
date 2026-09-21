@@ -6,6 +6,11 @@ test('Decision Theatre: perspectives, keyboard, pause and WCAG', async ({ page }
   const controls = page.locator('[data-mode-button]');
   await expect(controls).toHaveCount(3);
   await controls.nth(0).focus();
+  // Moving directly to the system must not freeze the hero text below full
+  // opacity while its entrance is still running outside the viewport.
+  for (const selector of ['.dt-kicker.dt-enter', '#dt-title', '.dt-lead', '.dt-intro']) {
+    await expect(page.locator(selector)).toHaveCSS('opacity', '1');
+  }
   for (let i = 0; i < 3; i++) {
     if (i) await page.keyboard.press('ArrowRight');
     await expect(controls.nth(i)).toBeFocused();
