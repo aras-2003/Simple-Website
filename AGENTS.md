@@ -88,6 +88,8 @@ For significant visual work:
 5. evaluate visual quality,
 6. iterate if the result feels generic, ordinary or disconnected from the content.
 
+The agent may perform up to 3 implementation/visual-QA iterations autonomously before presenting the result. Stop earlier when the quality bar is clearly met. Do not continue beyond 3 iterations without explicit owner approval.
+
 Do not implement multiple variants unless comparison would materially improve the decision.
 
 ## Performance
@@ -132,6 +134,10 @@ For significant visual work:
 - inspect console/runtime errors,
 - run relevant automated tests,
 - inspect the final diff.
+
+A screenshot or passing test suite is not sufficient evidence for a major visual change.
+
+Before merging a significant visual feature to `main`, provide a real browser-accessible preview when the repository tooling supports it. Use the repository's isolated preview/staging capabilities rather than production. Owner visual acceptance is required for material visual changes before release promotion.
 
 Do not assess visual quality only from source code.
 
