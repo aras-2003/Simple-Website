@@ -52,7 +52,8 @@ const budgets = [
   { label: 'compiled CSS (raw)', actual: cssBytes, max: 96 * KiB },
   { label: 'compiled CSS (gzip)', actual: cssGzipBytes, max: 20 * KiB },
   { label: 'production client JavaScript', actual: jsBytes - labJsBytes, max: 8 * KiB },
-  { label: 'isolated Decision Theatre JavaScript', actual: labJsBytes, max: 3 * KiB },
+  // Native scroll interpolation and attached 3D paths; production JS budget is unchanged.
+  { label: 'isolated Decision Theatre JavaScript', actual: labJsBytes, max: 4 * KiB },
   { label: 'home HTML', actual: homeBytes, max: 20 * KiB },
   { label: `largest single file${largestFile ? ` (${rel(largestFile)})` : ''}`, actual: largestBytes, max: 160 * KiB },
 ];

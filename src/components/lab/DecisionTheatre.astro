@@ -1,49 +1,45 @@
 ---
 import DecisionField from './DecisionField.astro';
-import { theatre, type TheatreLocale } from '../../content/decision-theatre';
-import { route } from '../../lib/site';
-interface Props { locale?: TheatreLocale; }
-const { locale = 'pl' } = Astro.props;
-const c = theatre[locale];
+import { perspectives } from '../../content/decision-theatre';
 ---
 <div class="dt" data-theatre data-motion="static">
   <header class="dt-header dt-shell">
-    <a class="dt-brand" href={route(locale, 'home')} aria-label="Arkadiusz Kamrowski — strona główna"><span class="dt-monogram" aria-hidden="true">AK<span>.</span></span><span>Arkadiusz<br/>Kamrowski</span></a>
-    <span class="dt-edition">STRATEGIA / ARCHITEKTURA / WYKONANIE</span>
-    <span class="dt-lab">LAB / 03 <span>PL</span></span>
+    <a class="dt-brand" href="/" aria-label="Arkadiusz Kamrowski — strona główna"><span class="dt-monogram">AK<span>.</span></span><span>Arkadiusz<br/>Kamrowski</span></a>
+    <span class="dt-edition">STRATEGIA · ORGANIZACJA · TECHNOLOGIA</span>
+    <span class="dt-lab">DECISION THEATRE <span>/ 04</span></span>
   </header>
   <main id="main" tabindex="-1">
     <section class="dt-hero dt-shell" aria-labelledby="dt-title" data-scene>
       <div class="dt-hero-copy">
-        <p class="dt-kicker dt-enter">DORADZTWO DLA ZARZĄDÓW I LIDERÓW TECHNOLOGII</p>
-        <h1 id="dt-title" class="dt-enter">Strategię widać<br/> <em>w wyborach.</em></h1>
-        <p class="dt-lead dt-enter">Co finansować. Z czego zrezygnować.<br/>Kto bierze odpowiedzialność.</p>
+        <p class="dt-kicker dt-enter">DLA ZARZĄDÓW I LIDERÓW TECHNOLOGII</p>
+        <h1 id="dt-title" class="dt-enter">Strategię widać<br/><em>w wyborach.</em></h1>
+        <p class="dt-lead dt-enter">Co finansować. Kto decyduje.<br/>Jak zamienić zamiar w wynik.</p>
         <p class="dt-intro dt-enter">Łączę strategię, organizację i technologię,<br class="dt-desktop-break"/> żeby decyzje przekładały się na działanie.</p>
-        <div class="dt-actions dt-enter"><a class="dt-cta" href={route(locale, 'contact')}>Opisz problem <span aria-hidden="true">↗</span></a><a class="dt-text-link" href="#system">Zobacz system <span aria-hidden="true">↓</span></a></div>
+        <div class="dt-actions dt-enter"><a class="dt-cta" href="/contact">Porozmawiajmy <span aria-hidden="true">↗</span></a><a class="dt-text-link" href="#system">Odkryj system <span aria-hidden="true">↓</span></a></div>
       </div>
-      <DecisionField kind="hero"/>
-      <div class="dt-hero-bottom"><span>JEDNA DECYZJA. WIELE KONSEKWENCJI.</span><a href="#system" aria-label="Przejdź do architektury decyzji"><span aria-hidden="true">↓</span> Odkryj powiązania</a></div>
+      <figure class="dt-hero-object"><DecisionField kind="hero"/><figcaption><span>01—09 / ELEMENTY ORGANIZACJI</span><span>JEDEN KIERUNEK <i aria-hidden="true"></i></span></figcaption></figure>
+      <div class="dt-hero-bottom"><span>ARCHITEKTURA ORGANIZACJI. WIDOCZNA W DECYZJACH.</span><a href="#system">Przewiń, by zobaczyć powiązania <span aria-hidden="true">↓</span></a></div>
     </section>
-    <section id="system" class="dt-system" aria-labelledby="dt-system-title" data-system data-mode="0" data-focus="all" data-view="separate" data-scene>
-      <div class="dt-shell">
-        <div class="dt-section-meta"><p class="dt-kicker">01 / ARCHITEKTURA DECYZJI</p><button class="dt-motion" type="button" data-motion-toggle aria-pressed="false" hidden><span class="dt-pause-icon" aria-hidden="true">Ⅱ</span><span data-motion-label>Wstrzymaj ruch</span></button></div>
-        <div class="dt-system-heading"><h2 id="dt-system-title">Jeden kierunek.<br/><em>Cała organizacja.</em></h2><p>Wybierz pytanie. Zobacz, jak decyzja<br class="dt-desktop-break"/> przechodzi przez organizację.</p></div>
+    <section id="system" class="dt-system" aria-labelledby="dt-system-title" data-system data-mode="0" data-scene>
+      <div class="dt-system-sticky"><div class="dt-shell">
+        <div class="dt-section-meta"><p class="dt-kicker">01 / THE SYSTEM</p><button class="dt-motion" type="button" data-motion-toggle aria-pressed="false" hidden><span aria-hidden="true">Ⅱ</span><span data-motion-label>Wstrzymaj ruch</span></button></div>
+        <div class="dt-system-heading"><h2 id="dt-system-title">Jedna organizacja.<br/><em>Trzy perspektywy.</em></h2><p>Cel. Odpowiedzialność. Wykonanie.<br/>Wartość powstaje między nimi.</p></div>
+        <div class="dt-essay">
+          <div class="dt-narrative">
+            <div class="dt-stories" aria-live="off">
+              {perspectives.map((mode,i)=><article class="dt-story" data-story={i} id={`dt-story-${i}`} hidden={i!==0}><p class="dt-story-label"><span>0{i+1}</span> {mode.label}</p><h3>{mode.title.split('\n').map((line,j)=><>{j>0&&<br/>}{line}</>)}</h3><p class="dt-story-body">{mode.body}</p><p class="dt-principle">{mode.principle}</p><ol class="dt-trace">{mode.trace.map(item=><li>{item}</li>)}</ol></article>)}
+            </div>
+            <p class="dt-scroll-note"><span aria-hidden="true">↓</span> <span data-scroll-hint>Przewijaj lub wybierz perspektywę</span></p>
+          </div>
+          <figure class="dt-system-object"><DecisionField kind="system"/><figcaption>{perspectives.map((mode,i)=><span data-caption={i} hidden={i!==0}>{mode.caption}</span>)}</figcaption></figure>
+        </div>
         <div class="dt-modes" role="group" aria-label="Perspektywa organizacji">
-          {c.modes.map((mode, i) => <button type="button" data-mode-button={i} data-path={mode.path.join(',')} aria-pressed={i === 0} aria-controls={`dt-story-${i}`} disabled><span class="dt-mode-number">0{i + 1}</span><span>{mode.name}</span><span class="dt-mode-arrow" aria-hidden="true">↗</span></button>)}
+          {perspectives.map((mode,i)=><button type="button" data-mode-button={i} aria-pressed={i===0} aria-controls={`dt-story-${i}`} disabled><span class="dt-mode-number">0{i+1}</span><span>{mode.name}</span><span class="dt-mode-arrow" aria-hidden="true">↗</span></button>)}
         </div>
-        <div class="dt-stories" aria-live="polite" aria-atomic="true">
-          {c.modes.map((mode, i) => <div class="dt-story" id={`dt-story-${i}`} data-story={i} hidden={i !== 0}><div><p class="dt-story-question">{mode.question}</p><h3>{mode.title}</h3></div><div><p class="dt-story-body">{mode.body}</p></div></div>)}
-        </div>
-        <div class="dt-system-stage">
-          <div class="dt-stage-toolbar"><div class="dt-stage-note"><span>CEL → WŁAŚCICIEL → WYNIK</span></div><button class="dt-connect" type="button" data-connect aria-pressed="false" disabled><span aria-hidden="true">⇄</span> <span data-connect-label>Połącz warstwy</span></button></div>
-          <DecisionField kind="system"/>
-          <div class="dt-stage-legend"><span><i aria-hidden="true"></i> Aktywna droga decyzji</span><span>Jeden system. Wspólny wynik.</span></div>
-        </div>
-        <noscript><p class="dt-nojs">Widok: strategia i inwestycje. Zmiana perspektywy wymaga JavaScript.</p>{c.modes.slice(1).map(mode => <details><summary>{mode.name}</summary><p>{mode.body}</p><p>{mode.trace.join(' → ')}</p></details>)}</noscript>
-        <div class="dt-system-bottom"><p>TAK <span>/</span> NIE <span>/</span> KTO</p><a class="dt-text-link" href={route(locale, 'work')}>Zobacz, jak pracuję <span aria-hidden="true">↗</span></a></div>
-      </div>
+        <noscript><p class="dt-nojs">Widok statyczny: strategia i inwestycje.</p>{perspectives.slice(1).map(mode=><details><summary>{mode.label}</summary><p>{mode.body}</p><p>{mode.principle}</p></details>)}</noscript>
+      </div></div>
     </section>
   </main>
-  <footer class="dt-footer dt-shell"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><span>Decision Theatre / 03 · prototyp PL</span></footer>
+  <footer class="dt-footer dt-shell"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><a href="/contact">Porozmawiajmy o Twojej organizacji ↗</a><span>LAB / PROTOTYP 04</span></footer>
 </div>
 <script>import '../../scripts/decision-theatre';</script>

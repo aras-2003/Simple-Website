@@ -1,20 +1,14 @@
-// Lab copy is intentionally PL-first. Keep locale-specific content out of the scene.
-// Node order: strategy → structure → responsibility → technology → execution → outcome.
-export const theatre = {
-  pl: {
-    modes: [
-      { name: 'Co wybieramy?', question: 'Strategia i inwestycje', title: 'Jeden cel. Wspólny kierunek.', body: 'Wybierasz priorytet. Budżet, ludzie i technologia pracują na ten sam wynik.', steps: ['Wybierz cel. Finansuj to, co go wspiera.', 'Wskaż osobę, która połączy ludzi i zasoby.', 'Sprawdź, czy klient odczuwa zmianę.'], trace: ['Kierunek', 'Portfel', 'Właściciel', 'Platformy', 'Adopcja', 'Wartość'], path: [0, 2, 5, 7, 9, 10] },
-      { name: 'Kto odpowiada?', question: 'Odpowiedzialność i decyzje', title: 'Jedna osoba odpowiada za wynik.', body: 'Właściciel zna cel, ma prawo decydować i może usunąć przeszkody.', steps: ['Ustal, za jaki wynik odpowiada właściciel.', 'Daj mu prawo do podejmowania decyzji.', 'Rozliczaj efekt, nie samą listę zadań.'], trace: ['Kierunek', 'Model działania', 'Mandat', 'Dane', 'Adopcja', 'Wartość'], path: [0, 3, 4, 6, 9, 10] },
-      { name: 'Jak dowozimy?', question: 'Technologia i realizacja', title: 'Zmiana działa w codziennej pracy.', body: 'Łączysz ludzi, procesy i technologię. Wartość pojawia się, gdy rozwiązanie jest używane.', steps: ['Zacznij od potrzeby, nie od narzędzia.', 'Połącz odpowiedzialność z technologią.', 'Doprowadź zmianę do codziennego użycia.'], trace: ['Kierunek', 'Model działania', 'Właściciel', 'Dane', 'Platformy', 'Wdrożenie', 'Adopcja', 'Wartość'], path: [0, 3, 5, 6, 7, 8, 9, 10] },
-    ],
-    hero: [
-      {word: 'TAK', title: 'Wybierasz priorytet.', body: 'Na nim skupiasz budżet i uwagę.'},
-      {word: 'NIE', title: 'Uwalniasz zasoby.', body: 'Odkładasz to, co nie wspiera celu.'},
-      {word: 'KTO', title: 'Wskazujesz właściciela.', body: 'Jedna osoba odpowiada za wynik.'},
-    ],
-    phases: ['Cel', 'Właściciel', 'Wynik'],
-    layers: ['Cel', 'Priorytety', 'Właściciel', 'Narzędzia', 'Działanie', 'Wynik'],
-    nodes: ['Kierunek', 'Opcje', 'Portfel', 'Model działania', 'Mandat', 'Właściciel', 'Dane', 'Platformy', 'Wdrożenie', 'Adopcja', 'Wartość'],
-  },
-};
-export type TheatreLocale = keyof typeof theatre;
+export const perspectives = [
+  { name: 'Kierunek', label: 'Strategia i inwestycje', title: 'Każda inwestycja.\nTen sam kierunek.', body: 'Strategia staje się realna, gdy budżet, ludzie i technologia wspierają ten sam priorytet. Reszta może poczekać.', principle: 'Finansuj to, co prowadzi do celu.', trace: ['Priorytet', 'Inwestycje', 'Wartość'], caption: 'Wspólny cel porządkuje niezależne inicjatywy.' },
+  { name: 'Odpowiedzialność', label: 'Właściciele i prawa decyzyjne', title: 'Jasny mandat.\nMniej zawieszeń.', body: 'Odpowiedzialność wymaga prawa do decyzji. Właściciel wyniku łączy zespoły i rozstrzyga to, co zatrzymuje zmianę.', principle: 'Połącz odpowiedzialność z mandatem.', trace: ['Wynik', 'Właściciel', 'Decyzja'], caption: 'Właściciel łączy zespoły, zachowując ich autonomię.' },
+  { name: 'Wykonanie', label: 'Technologia i przepływ wykonania', title: 'Od decyzji\ndo działania.', body: 'Dane, platformy i zespoły tworzą drogę do wyniku. Wdrożenie ma sens, gdy zmiana działa w codziennej pracy.', principle: 'Sprawdzaj efekt, nie tylko wdrożenie.', trace: ['Decyzja', 'Wdrożenie', 'Adopcja'], caption: 'Przepływ łączy technologię z użyciem i efektem.' },
+];
+
+// Same nine modules, three organizational relationships. Units are scene pixels.
+export function modulePosition(state: number, index: number): [number, number, number] {
+  const row = Math.floor(index / 3), col = index % 3;
+  if (state === 1) return [(col - 1) * 116, (row - 1) * 116, index === 4 ? 96 : 0];
+  if (state === 2) return [(col - 1) * 112, (row - 1) * 87, (col - 1) * 36 + (row === 1 ? 18 : 0)];
+  return [(col - 1) * 82, (row - 1) * 82, 0];
+}
+export const decisionPaths = [[0, 1, 4, 7, 8], [0, 4, 2, 4, 8, 4, 6], [0, 1, 2, 5, 4, 3, 6, 7, 8]];
