@@ -1,6 +1,6 @@
 # Product — canonical current state
 
-Verified baseline: 2026-09-11. This document supersedes historical product/IA/architecture claims elsewhere. Release evidence belongs in [PROOF_RELEASE.md](PROOF_RELEASE.md); environment controls in [ENVIRONMENTS.md](ENVIRONMENTS.md).
+Product direction updated: 2026-09-22. Release-state evidence remains separately dated. This document supersedes historical product/IA/architecture claims elsewhere. Release evidence belongs in [PROOF_RELEASE.md](PROOF_RELEASE.md); environment controls in [ENVIRONMENTS.md](ENVIRONMENTS.md).
 
 ## Positioning and audience
 Arkadiusz Kamrowski is an executive technology/transformation leader. The decision-led advisory narrative serves boards, CEOs, CIOs and transformation sponsors who must reconcile strategy, investment, accountability and technology. Executive recruitment remains supported through About and direct contact. This is a personal executive brand, not a framework vendor or an agency.
@@ -21,7 +21,15 @@ Preserved assets: **Strategię widać w wyborach. / Strategy shows up in choices
 Primary navigation: Advisory, Perspective, About, Contact; language switch alongside it. OAF and Privacy are footer routes. Existing localized URLs and legacy redirects remain stable.
 
 ## Creative direction and design system
-Preserve the calm editorial/architectural composition, green/cream palette, serif headlines and system sans-serif text, original portrait and TAK/NIE/KTO visual. New proof uses typography and output-led rows. No new image, font, framework or motion dependency. Native `details` compress deeper mechanics on both desktop and mobile and work with JavaScript disabled.
+Current visual direction: [DESIGN_PRINCIPLES.md](DESIGN_PRINCIPLES.md). Implementation language: [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+
+Preserve executive clarity, architectural discipline, the green/cream material palette, original portrait and TAK/NIE/KTO visual while evolving the experience toward a richer interactive and spatial language. The site should not read as a static executive CV or conventional portfolio.
+
+Meaningful motion, contextual background animation, depth, spatial transitions, interactive diagrams and scroll-linked progression are explicitly allowed when they reinforce the content and remain appropriate for an executive audience.
+
+Prefer native CSS, SVG and browser APIs first. New visual or motion dependencies require explicit technical justification, but are allowed when they materially improve the experience and the same result would be disproportionately complex or brittle with the existing stack.
+
+Native `details` remains appropriate where progressive disclosure improves comprehension on desktop and mobile and preserves functionality without JavaScript.
 
 Observation → impact → fix: five always-visible engagement fields made mobile comparison lengthy. Decision and enabled change now remain visible; process, team input and retained outputs are one keyboard-operable disclosure. Proof summaries link to full context and personal contribution. The existing illustrative brief remains explicitly distinct from client evidence.
 
@@ -43,4 +51,6 @@ Short-lived branch → PR + full CI → main → PR + full CI → staging → Cl
 
 Baseline main: `083ffbe70325a04bada510dee6a088f5469b1d35`; staging: `0c98ad88d25c023ee68ae9c7ace3bb328c353cc0`; production branch: `a00ee1e81b182d5fd1dc6317dbe7127cfeacb9cd`. The staging branch already contained all baseline main changes and had a successful Workers Build. Production branch SHA is not evidence of a live deployed version.
 
-At baseline, staging returned the Cloudflare Access login redirect. Real contact delivery and production provisioning could not yet be verified. Earlier configuration records say Resend/destination are pending; treat those as the last documented status, not fresh account inspection. Public launch requires authenticated staging acceptance, actual sender/delivery readiness and production smoke. Do not delay for more articles or visual polish.
+At the documented baseline, staging returned the Cloudflare Access login redirect. Real contact delivery and production provisioning could not yet be verified. Earlier configuration records say Resend/destination are pending; treat those as the last documented status, not fresh account inspection. Public launch requires authenticated staging acceptance, actual sender/delivery readiness and production smoke.
+
+Visual work is not a launch blocker unless it introduces a regression, but visual quality is a first-class product concern for subsequent iterations.
