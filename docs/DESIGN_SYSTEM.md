@@ -1,10 +1,10 @@
-> **Historical decision/source record.** Claims and instructions below describe an earlier checkpoint, not current branch, runtime or launch state. The refactor is merged. Current truth: [PRODUCT.md](PRODUCT.md), [PROOF_RELEASE.md](PROOF_RELEASE.md), [PROOF_SOURCES.md](PROOF_SOURCES.md).
+> **Current implementation language.** Product direction is defined in [PRODUCT.md](PRODUCT.md) and current creative principles in [DESIGN_PRINCIPLES.md](DESIGN_PRINCIPLES.md). Historical visual records remain context only.
 
 # Design System
 
 ## Visual direction
 
-**Quiet authority + executive systems storytelling.**
+**Quiet authority + premium interactive executive systems storytelling.**
 
 The system combines warm editorial minimalism with precise diagrams, rails and decision maps. It should feel like a senior executive publication crossed with a system blueprint — never like a SaaS dashboard, generic consulting template or architecture repository.
 
@@ -67,10 +67,11 @@ Uses:
 - compact mode on Advisory.
 
 Motion:
-- subtle flow along connections;
-- small pulse on handoff/risk points;
-- CSS-only;
-- disabled with `prefers-reduced-motion`.
+- meaningful flow along connections;
+- handoff/risk emphasis;
+- state transitions that clarify system relationships;
+- native CSS/SVG/Web APIs preferred, but not mandated when a justified dependency materially improves the experience;
+- reduced or disabled appropriately with `prefers-reduced-motion`.
 
 ### OutcomeBlueprint
 
@@ -134,13 +135,28 @@ Avoid generic executive stock imagery.
 
 ## Motion
 
-- purpose-driven diagram flow and hover/focus transitions only;
-- no opacity-dependent readable text animation;
+Motion is a first-class design material, not a decorative afterthought.
+
+Allowed where meaningful:
+- diagram flow and state transformation;
+- contextual background motion;
+- layered spatial movement;
+- scroll-linked progression;
+- controlled parallax and depth;
+- hover/focus/proximity response;
+- transitions that connect sections or conceptual states.
+
+Rules:
+- motion must reinforce meaning, hierarchy, atmosphere or spatial relationships;
+- readable content must not depend on opacity/reveal animation to become accessible;
 - no scroll hijacking;
-- no custom cursor;
-- no essential parallax;
-- no heavy animation library;
-- `prefers-reduced-motion` disables non-essential motion and smooth scrolling.
+- no custom cursor unless a future approved concept demonstrates a clear interaction benefit;
+- no random particles, gratuitous 3D, bouncing or high-energy motion inappropriate for an executive audience;
+- prefer native CSS, SVG and Web APIs;
+- a motion/graphics library may be added only when it materially improves an approved experience and avoids disproportionate implementation complexity;
+- `prefers-reduced-motion` must provide a coherent reduced-motion experience, not a broken or empty composition.
+
+Mobile should preserve the visual concept with reduced density, layer count or motion amplitude rather than removing the experience entirely.
 
 ## Accessibility states
 
