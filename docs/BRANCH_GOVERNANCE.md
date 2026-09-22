@@ -1,24 +1,60 @@
-# Branch governance — required owner setting
+# Branch governance — current enforced state
 
-Verified 2026-09-13 through repository API: `main`, `staging`, `production` each report `protected: false`; `/rulesets` returns `[]`. This is an enforcement gap, not a passing control. The connected GitHub integration does not expose administration writes. CI and our PR promotion procedure do not substitute for protected branches.
+Verified 2026-09-22 through the repository API.
 
-## Apply in GitHub
+The repository now has active branch rulesets for:
+- `main`,
+- `staging`,
+- `production`.
 
-Open [repository branch settings](https://github.com/aras-2003/Simple-Website/settings/branches). Create one classic branch protection rule for each exact branch name: `main`, `staging`, `production`.
+The earlier enforcement gap documented on 2026-09-13 has been closed.
 
-For all three rules:
+## Current controls
 
-- Enable **Require a pull request before merging**.
-- Leave approving reviews optional (zero required), because this is a single-owner repository.
-- Enable **Require status checks to pass before merging**. Select `quality` and `validate promotion path`, with GitHub Actions as the expected source.
-- Enable **Do not allow bypassing the above settings**, including administrators.
-- Leave **Allow force pushes** and **Allow deletions** disabled.
-- Do not require linear history: the approved promotion path uses merge commits.
+All three protected branches:
+- require pull requests before merging;
+- block branch deletion;
+- block non-fast-forward updates;
+- require the GitHub Actions checks `quality` and `validate promotion path`;
+- have no configured bypass actors.
 
-For `main`, require the branch to be up to date before merging. For `staging` and `production`, leave that option off: merging release branches back into their source would contradict the approved one-way promotion history. Instead require the PR's successful merge-result CI, verify the expected head SHA at merge, then check exact destination-branch CI. The `validate promotion path` workflow enforces only `main → staging` and `staging → production` once its check is mandatory.
+`main` additionally requires strict/up-to-date status checks before merge.
 
-Do not require the Cloudflare staging deployment check before merging: that check runs after the staging push. Publication is complete only after the exact staging commit's Workers Build succeeds. Production deployment remains guarded and manual.
+`staging` and `production` intentionally do not require strict up-to-date checks because the approved release model is one-way promotion:
+`main → staging → production`.
 
-Verify after saving: all three branch API results must report `protected: true`, and inspect each rule to confirm both required check names and the bypass/force-push/deletion settings. An empty rulesets list can be valid if classic branch protection is used. Record the verification date and evidence in the release ledger.
+The rulesets are the current enforcement mechanism. Do not replace them with classic branch-protection rules unless there is a deliberate governance decision to do so.
 
-GitHub Free supports protection for **public** repositories; no plan upgrade is needed here. Source: [GitHub branch protection documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule), checked 2026-09-13.
+## Release flow
+
+```text
+feature/*
+   ↓ PR + CI
+main
+   ↓ PR / promote
+staging
+   ↓ Cloudflare staging + acceptance
+production
+   ↓ guarded manual Cloudflare production workflow
+```
+
+Do not merge feature branches directly into `staging` or `production`.
+
+Do not require the Cloudflare staging deployment check before the staging merge: deployment occurs after the branch update. Publication is complete only after the exact staging commit's Workers Build succeeds and staging acceptance is complete.
+
+Production deployment remains guarded and manual.
+
+## Verification
+
+When governance is reviewed, verify:
+- all three rulesets remain active;
+- branch include patterns still target the exact intended branches;
+- deletion and non-fast-forward protections remain enabled;
+- PR requirement remains enabled;
+- required checks remain `quality` and `validate promotion path`;
+- bypass actors remain empty unless explicitly approved;
+- `main` remains strict and release branches remain compatible with one-way promotion.
+
+Record material governance changes in release evidence.
+
+GitHub rulesets are the source of enforcement truth; this document describes the intended policy and the last verified state.
