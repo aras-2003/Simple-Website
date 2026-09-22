@@ -2,7 +2,7 @@
 
 Personal executive / thought-leadership site built with **Astro SSG + TypeScript**, complete Polish and English routes, a small Cloudflare Worker contact API, and a WCAG 2.2 AA accessibility target.
 
-Current product/source of truth: [docs/PRODUCT.md](docs/PRODUCT.md). Release evidence: [docs/PROOF_RELEASE.md](docs/PROOF_RELEASE.md).
+Agent execution rules: [AGENTS.md](AGENTS.md). Current product/source of truth: [docs/PRODUCT.md](docs/PRODUCT.md). Current visual direction: [docs/DESIGN_PRINCIPLES.md](docs/DESIGN_PRINCIPLES.md). Design implementation language: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md). Release evidence: [docs/PROOF_RELEASE.md](docs/PROOF_RELEASE.md).
 
 ## Architecture
 
