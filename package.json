@@ -17,7 +17,7 @@
     "test:predeploy": "python3 tests/predeploy_check.py",
     "test:performance": "node tests/performance-budget.mjs",
     "test:a11y": "playwright test tests/accessibility.spec.ts --project=desktop-chromium --project=mobile-chromium",
-    "test:browsers": "playwright test tests/browser-smoke.spec.ts tests/editorial-figures.spec.ts tests/privacy.spec.ts --project=desktop-chromium --project=desktop-firefox --project=desktop-webkit --project=mobile-chromium",
+    "test:browsers": "playwright test tests/browser-smoke.spec.ts tests/editorial-figures.spec.ts tests/privacy.spec.ts tests/decision-theatre.spec.ts --project=desktop-chromium --project=desktop-firefox --project=desktop-webkit --project=mobile-chromium",
     "test:runtime": "node tests/container-e2e.mjs",
     "test": "npm run test:static && npm run test:performance && npm run test:a11y && npm run test:browsers",
     "contact:dev": "CONTACT_DRY_RUN=${CONTACT_DRY_RUN:-1} node server/contact.mjs",

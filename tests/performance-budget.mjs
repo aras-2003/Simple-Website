@@ -30,6 +30,10 @@ const totalBytes = files.reduce((sum, file) => sum + bytes(file), 0);
 const cssBytes = sumByExt('.css');
 const cssGzipBytes = gzipByExt('.css');
 const jsBytes = sumByExt('.js');
+// The isolated lab route never loads on production pages. Retain the existing
+// production budget and give its optional prototype bundle a separate ceiling.
+const labJsBytes = files.filter((file) => /\/DecisionTheatre\.[^/]+\.js$/.test(file))
+  .reduce((sum, file) => sum + bytes(file), 0);
 const homePath = path.join(root, 'index.html');
 const homeBytes = fs.existsSync(homePath) ? bytes(homePath) : Number.POSITIVE_INFINITY;
 const largestFile = files.reduce((largest, file) => !largest || bytes(file) > bytes(largest) ? file : largest, null);
@@ -47,13 +51,22 @@ const budgets = [
   { label: 'largest non-editorial file', actual: nonEditorialLargest, max: 96 * KiB },
   { label: 'compiled CSS (raw)', actual: cssBytes, max: 96 * KiB },
   { label: 'compiled CSS (gzip)', actual: cssGzipBytes, max: 20 * KiB },
-  { label: 'client JavaScript', actual: jsBytes, max: 8 * KiB },
+  { label: 'production client JavaScript', actual: jsBytes - labJsBytes, max: 8 * KiB },
+  // Native scroll interpolation and attached 3D paths; production JS budget is unchanged.
+  { label: 'isolated Decision Theatre JavaScript', actual: labJsBytes, max: 4 * KiB },
   { label: 'home HTML', actual: homeBytes, max: 20 * KiB },
   { label: `largest single file${largestFile ? ` (${rel(largestFile)})` : ''}`, actual: largestBytes, max: 160 * KiB },
 ];
 
 const format = (value) => `${(value / KiB).toFixed(1)} KiB`;
 let failed = false;
+
+for (const file of files.filter((file) => file.endsWith('.html') && !rel(file).startsWith('lab/'))) {
+  if (/DecisionTheatre\.[^"']+\.js/.test(fs.readFileSync(file, 'utf8'))) {
+    failed = true;
+    console.error(`FAIL  lab script leaked into production route: ${rel(file)}`);
+  }
+}
 
 console.log('Production performance budget');
 for (const budget of budgets) {
