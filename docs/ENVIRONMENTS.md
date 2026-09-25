@@ -21,6 +21,14 @@ Build variables: `SITE_BASE_URL=https://staging.arkadiuszkamrowski.com`, `SITE_P
 
 Staging config uses `DEPLOYMENT_ENV=staging`, strict Origin and expected Turnstile hostname, `PRODUCT_MEASUREMENT=1`, separate contact and measurement limiters, `observability.enabled=true` and `logs.invocation_logs=false` in `wrangler.staging.jsonc`. Cloudflare still attaches technical metadata to app events.
 
+### Automated agent access
+
+Private staging may be inspected by automation without becoming public. Preferred access is Cloudflare Access `Service Auth` with a dedicated Service Token for clients that can send custom headers.
+
+If a required external crawler cannot send Cloudflare Access headers, use the separate signed agent-preview gateway defined in [CLOUDFLARE.md](CLOUDFLARE.md). The gateway must authenticate requests, forward internally through a Service Binding, remain non-indexable and be independently disableable. Do not add an `Everyone` Access bypass and do not expose the staging hostname anonymously.
+
+Automated inspection is supplementary evidence. Release acceptance still requires the repository browser/mobile/accessibility checks and owner review for material visual changes.
+
 ## Production
 
 Target Worker `arkadiuszkamrowski`, `wrangler.production.jsonc`, domain `arkadiuszkamrowski.com`, Access OFF only when publicly launched, `workers.dev` OFF, preview URLs OFF. Production exists as a prelaunch Worker; **the website is not deployed or publicly attached**. The production config contains the apex Custom Domain: running deploy is a public launch.
