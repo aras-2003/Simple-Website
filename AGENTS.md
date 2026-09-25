@@ -35,7 +35,8 @@ Priority by task:
 3. **Firecrawl connector** — external website/reference research, structured extraction from design references, documentation crawling and reference-library maintenance. Prefer compact structured extraction over repeatedly loading full pages into model context. Do not treat Firecrawl as evidence of private staging availability unless authenticated access is explicitly configured.
 4. **Runway connector** — image/video generation or editing for production visual assets when generated media materially improves the approved concept. Do not generate decorative assets without a content or conversion role.
 5. **GSC Wizard** — Search Console / GA4 analysis, indexing diagnostics, query/page performance, content decay, CTR and post-launch SEO learning. Prefer server-side aggregated analyses over importing raw analytics rows. Use only after the relevant property is connected and data exists.
-6. **Web research** — current vendor documentation, standards and public facts when repository/plugin data is insufficient or freshness matters.
+6. **Motion tooling** — follow `docs/MOTION_SYSTEM.md`. Use Theatre.js as the preferred visual motion-authoring layer for high-fidelity sequences, GSAP as the preferred production animation runtime when native CSS/SVG is insufficient, and Three.js only for concepts that genuinely require a 3D scene/camera. Runway is for rendered media assets, not the runtime for interactive page motion.
+7. **Web research** — current vendor documentation, standards and public facts when repository/plugin data is insufficient or freshness matters.
 
 Tool use must reduce uncertainty or execution cost. Do not call multiple overlapping tools by default. Do not add another builder/hosting abstraction (for example Webflow, Lovable, Replit or Base44) when the current Astro + GitHub + Cloudflare architecture already supports the task.
 
