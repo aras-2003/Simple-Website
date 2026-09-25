@@ -107,6 +107,35 @@ Staging is non-indexable by construction:
 
 The dated [prelaunch acceptance record](PRELAUNCH_ACCEPTANCE_2026-09-17.md) records dedicated staging Turnstile and owner-only Access, plus an owner-tested Resend delivery with received email and verified Reply-To on 2026-09-17. The earlier “Resend pending” note is superseded. This is attributed historical evidence, not a fresh inspection of account settings or secrets.
 
+## 4A. Private machine access for agents and automated QA
+
+Staging remains private. Do not disable Cloudflare Access or create an `Everyone` bypass simply to let an external crawler or AI tool inspect the release candidate.
+
+Preferred machine-to-machine pattern:
+
+1. create a dedicated Cloudflare Access **Service Token** for the automation;
+2. add a **Service Auth** policy scoped to that token for the staging application;
+3. have the client send `CF-Access-Client-Id` and `CF-Access-Client-Secret` headers (or the configured single-header equivalent);
+4. keep the human owner Access policy in parallel;
+5. use a short token lifetime where practical, rotate/revoke independently, and never commit the secret.
+
+This is the default for clients that support custom HTTP headers.
+
+Some third-party crawlers do not expose arbitrary request headers. Do **not** solve that by opening staging publicly. If crawler access is materially useful, use a separate, narrowly scoped **agent preview gateway**:
+
+- dedicated hostname/Worker, separate from the normal staging hostname;
+- gateway authenticates each request with a short-lived signed URL or equivalent secret-backed proof;
+- signature is HMAC-verified, time-bounded and bound to the requested path;
+- valid requests are forwarded internally to the staging Worker through a Cloudflare **Service Binding** rather than making staging public;
+- invalid/expired requests return 401/403 without revealing staging content;
+- no directory listing, token-generation endpoint or reusable long-lived secret is exposed publicly;
+- gateway stays `noindex` and is disabled when not needed;
+- logs must not record full signed query strings or credentials.
+
+A random unguessable URL by itself is not an authentication mechanism. A permanent Access `Bypass` policy for the gateway or staging is not acceptable.
+
+Current connector note (2026-09-25): the Firecrawl integration available to the project can crawl public pages but does not expose arbitrary request headers in its scrape call. Direct Cloudflare Access Service Token authentication therefore cannot currently be passed through that connector. Use the signed agent-gateway pattern if automated Firecrawl inspection of private staging becomes necessary, or keep visual QA on authenticated browser/local preview until Firecrawl supports suitable authentication.
+
 ### Production
 
 Production is public and indexable. Its Worker only runs first for `/api/*` and trailing-slash canonicalization; normal static pages stay on the optimized Static Assets path.
