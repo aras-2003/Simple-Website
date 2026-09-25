@@ -68,7 +68,7 @@ if (root) {
     }));
     gsap.set(decision, { opacity: 0, x: -280, rotateY: 90 });
     gsap.set(flow, { opacity: 0 });
-    lanes.forEach((lane, i) => gsap.set(lane, { y: alignedY[i], z: -20 + i * 10, rotateZ: 0 }));
+    lanes.forEach((lane, i) => gsap.set(lane, { y: alignedY[i]!, z: -20 + i * 10, rotateZ: 0 }));
     dots.forEach(dot => gsap.set(dot, { x: 0 }));
     gsap.set(darkField, { yPercent: 104 });
     gsap.set(hero, { opacity: 1, yPercent: 0 });
@@ -98,7 +98,7 @@ if (root) {
     // Act I — friction resolves into a coherent stack.
     tl.to(layers, {
       x: 0,
-      y: (i:number) => alignedY[i],
+      y: (i:number) => alignedY[i]!,
       z: 0,
       rotateZ: 0,
       rotateY: 0,
@@ -109,11 +109,11 @@ if (root) {
     .to(hero, { opacity: .25, yPercent: -8, duration: .5 }, .92)
     .to(hero, { opacity: 0, yPercent: -18, duration: .45 }, 1.18)
     .to(darkField, { yPercent: 0, duration: 1.05, ease: 'power4.inOut' }, 1.05)
-    .to(stories[1], { autoAlpha: 1, opacity: 1, y: 0, duration: .55 }, 1.5);
+    .to(stories[1]!, { autoAlpha: 1, opacity: 1, y: 0, duration: .55 }, 1.5);
 
     // Act II — a single decision plane crosses every organizational layer.
-    tl.to(stories[1], { autoAlpha: 0, opacity: 0, y: -20, duration: .35 }, 2.25)
-    .to(stories[2], { autoAlpha: 1, opacity: 1, y: 0, duration: .5 }, 2.43)
+    tl.to(stories[1]!, { autoAlpha: 0, opacity: 0, y: -20, duration: .35 }, 2.25)
+    .to(stories[2]!, { autoAlpha: 1, opacity: 1, y: 0, duration: .5 }, 2.43)
     .to(decision, { opacity: 1, x: 0, rotateY: 0, duration: .85, ease: 'power4.out' }, 2.35)
     .to(layers, {
       x: (i:number) => i === 2 ? 0 : (i % 2 ? 26 : -26),
@@ -124,12 +124,12 @@ if (root) {
     .to(rig, { rotateX: 54, rotateZ: -19, duration: .9 }, 2.42);
 
     // Act III — the stack opens into five execution lanes.
-    tl.to(stories[2], { autoAlpha: 0, opacity: 0, y: -20, duration: .35 }, 3.55)
-    .to(stories[3], { autoAlpha: 1, opacity: 1, y: 0, duration: .5 }, 3.73)
+    tl.to(stories[2]!, { autoAlpha: 0, opacity: 0, y: -20, duration: .35 }, 3.55)
+    .to(stories[3]!, { autoAlpha: 1, opacity: 1, y: 0, duration: .5 }, 3.73)
     .to(decision, { opacity: .26, z: -70, scaleY: 1.15, duration: .75 }, 3.63)
     .to(layers, {
       x: (i:number) => (i - 2) * 96,
-      y: (i:number) => alignedY[i] * .46,
+      y: (i:number) => alignedY[i]! * .46,
       z: (i:number) => i * 12,
       rotateZ: (i:number) => (i - 2) * 1.4,
       scaleX: .72,
@@ -139,7 +139,7 @@ if (root) {
     .to(flow, { opacity: 1, duration: .5 }, 3.88)
     .to(lanes, {
       x: (i:number) => (i - 2) * 96,
-      y: (i:number) => alignedY[i] * .46,
+      y: (i:number) => alignedY[i]! * .46,
       rotateZ: -19,
       duration: .8,
     }, 3.78)
