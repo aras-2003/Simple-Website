@@ -24,6 +24,25 @@ Priority:
 
 Documents explicitly marked as historical are context, not current instructions.
 
+## Tool routing
+
+Use the narrowest capable tool and prefer direct integrations over manual context transfer.
+
+Priority by task:
+
+1. **GitHub connector** — repository truth, branches, files, diffs, PRs, CI/release state and code/documentation changes. Read the repository directly instead of asking for pasted files when access is available.
+2. **Figma connector** — design-system inspection, visual exploration, layout/component work, design variables and design-to-code tasks. Use it when a Figma source exists or when composition should be resolved before implementation. Do not introduce a Figma round-trip for trivial code-only changes.
+3. **Firecrawl connector** — external website/reference research, structured extraction from design references, documentation crawling and reference-library maintenance. Prefer compact structured extraction over repeatedly loading full pages into model context. Do not treat Firecrawl as evidence of private staging availability unless authenticated access is explicitly configured.
+4. **Runway connector** — image/video generation or editing for production visual assets when generated media materially improves the approved concept. Do not generate decorative assets without a content or conversion role.
+5. **GSC Wizard** — Search Console / GA4 analysis, indexing diagnostics, query/page performance, content decay, CTR and post-launch SEO learning. Prefer server-side aggregated analyses over importing raw analytics rows. Use only after the relevant property is connected and data exists.
+6. **Web research** — current vendor documentation, standards and public facts when repository/plugin data is insufficient or freshness matters.
+
+Tool use must reduce uncertainty or execution cost. Do not call multiple overlapping tools by default. Do not add another builder/hosting abstraction (for example Webflow, Lovable, Replit or Base44) when the current Astro + GitHub + Cloudflare architecture already supports the task.
+
+For design-reference work, extract reusable mechanisms (composition, motion, interaction, typography, depth, transitions) rather than copying brand-specific shapes, colors or content.
+
+For significant visual implementation, use the repository preview/staging path for real-browser QA. External crawlers may only access staging through an explicitly approved machine-authenticated path described in `docs/CLOUDFLARE.md`; never weaken staging Access globally for crawler convenience.
+
 ## Product standard
 
 The site must not feel like a static executive CV or conventional portfolio.
