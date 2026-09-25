@@ -1,6 +1,6 @@
 WRANGLER_VERSION ?= 4.129.0
 
-.PHONY: install build check test test-a11y test-contact test-worker test-predeploy audit predeploy smoke-production dev contact-dev contact-api mac-demo mac-stop browser-test worker-preview worker-deploy-staging worker-deploy-production portability-docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
+.PHONY: install build check test test-a11y test-contact test-worker test-predeploy audit predeploy smoke-production dev motion-v2 contact-dev contact-api mac-demo mac-stop browser-test worker-preview worker-deploy-staging worker-deploy-production portability-docker-build docker-run mac-docker docker-down k8s-local k8s-local-down k8s-render clean
 
 install:
 	npm install --no-audit --no-fund
@@ -60,6 +60,10 @@ audit: test test-a11y
 
 dev:
 	bash scripts/dev.sh
+
+motion-v2:
+	@printf "\nDecision Theatre V2 → http://127.0.0.1:4321/lab/decision-theatre-v2\n\n"
+	npm run dev
 
 contact-dev:
 	npm run contact:dev
