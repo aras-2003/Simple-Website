@@ -69,6 +69,39 @@ make dev
 
 The local Astro flow keeps the legacy Node adapter for fast development compatibility. The production contract is always the Worker implementation in `worker/index.mjs` and its dedicated tests.
 
+
+## Decision Theatre V2 — local technical preview
+
+This branch includes the isolated motion prototype at:
+
+```text
+/lab/decision-theatre-v2
+```
+
+Fastest local run:
+
+```bash
+git fetch origin
+git switch feature/decision-theatre-v2-local
+npm ci
+make motion-v2
+```
+
+Open:
+
+```text
+http://127.0.0.1:4321/lab/decision-theatre-v2
+```
+
+The prototype is intentionally isolated from the production homepage. It uses GSAP + ScrollTrigger only on the lab route. Mobile and `prefers-reduced-motion` use a non-pinned fallback.
+
+To run the full local quality gate:
+
+```bash
+npm run build
+npm run test:performance
+```
+
 ## Cloudflare environments
 
 Wrangler is intentionally invoked at a pinned version from the Makefile; it is not added to the application dependency graph.
