@@ -1,0 +1,54 @@
+---
+const layers = [
+  { id: 'direction', index: '01', label: 'Kierunek', detail: 'Strategy' },
+  { id: 'ownership', index: '02', label: 'Odpowiedzialność', detail: 'Ownership' },
+  { id: 'architecture', index: '03', label: 'Architektura', detail: 'Architecture' },
+  { id: 'portfolio', index: '04', label: 'Portfel', detail: 'Portfolio' },
+  { id: 'execution', index: '05', label: 'Wykonanie', detail: 'Execution' },
+];
+---
+<div class="dv-spine" data-spine aria-hidden="true">
+  <div class="dv-scene">
+    <div class="dv-aura"></div>
+    <div class="dv-shadow"></div>
+
+    <div class="dv-rig" data-rig>
+      <div class="dv-axis" data-axis>
+        <span class="dv-axis-cap dv-axis-cap--top"></span>
+        <span class="dv-axis-line"></span>
+        <span class="dv-axis-cap dv-axis-cap--bottom"></span>
+      </div>
+
+      <div class="dv-layers">
+        {layers.map((layer, i) => (
+          <div class="dv-layer" data-layer={i} data-layer-id={layer.id}>
+            <div class="dv-layer-face">
+              <span class="dv-layer-index">{layer.index}</span>
+              <span class="dv-layer-name">{layer.label}</span>
+              <span class="dv-layer-detail">{layer.detail}</span>
+              <span class="dv-layer-port"></span>
+            </div>
+            <div class="dv-layer-edge"></div>
+          </div>
+        ))}
+      </div>
+
+      <div class="dv-decision-plane" data-decision-plane>
+        <span>YES / NO / WHO</span>
+        <i></i>
+      </div>
+
+      <div class="dv-flow" data-flow>
+        {Array.from({ length: 5 }, (_, i) => (
+          <div class="dv-flow-lane" data-flow-lane={i}>
+            <span class="dv-flow-dot"></span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="dv-object-note dv-object-note--a"><span>01</span> ALIGNMENT</div>
+    <div class="dv-object-note dv-object-note--b"><span>02</span> DECISION</div>
+    <div class="dv-object-note dv-object-note--c"><span>03</span> FLOW</div>
+  </div>
+</div>
