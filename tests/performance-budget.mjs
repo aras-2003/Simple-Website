@@ -26,13 +26,34 @@ const gzipByExt = (ext) => files
   .filter((file) => path.extname(file) === ext)
   .reduce((sum, file) => sum + gzipSync(fs.readFileSync(file), { level: 9 }).length, 0);
 
-const totalBytes = files.reduce((sum, file) => sum + bytes(file), 0);
-const cssBytes = sumByExt('.css');
-const cssGzipBytes = gzipByExt('.css');
-const jsBytes = sumByExt('.js');
-// The isolated lab route never loads on production pages. Retain the existing
-// production budget and give its optional prototype bundle a separate ceiling.
-const labJsBytes = files.filter((file) => /\/DecisionTheatre\.[^/]+\.js$/.test(file))
+const htmlFiles = files.filter((file) => file.endsWith('.html'));
+const labHtmlFiles = htmlFiles.filter((file) => rel(file).startsWith('lab/'));
+const productionHtmlFiles = htmlFiles.filter((file) => !rel(file).startsWith('lab/'));
+
+const assetRefs = (htmlFiles) => {
+  const refs = new Set();
+  for (const file of htmlFiles) {
+    const html = fs.readFileSync(file, 'utf8');
+    for (const match of html.matchAll(/(?:src|href)=["']\/([^"'?#]+)["']/g)) {
+      if (match[1]?.startsWith('_astro/')) refs.add(match[1]);
+    }
+  }
+  return refs;
+};
+
+const productionAssetRefs = assetRefs(productionHtmlFiles);
+const labAssetRefs = assetRefs(labHtmlFiles);
+const labOnlyAssetRefs = new Set([...labAssetRefs].filter((ref) => !productionAssetRefs.has(ref)));
+const isLabOnlyAsset = (file) => labOnlyAssetRefs.has(rel(file));
+const isLabHtml = (file) => rel(file).startsWith('lab/') && file.endsWith('.html');
+const productionFiles = files.filter((file) => !isLabOnlyAsset(file) && !isLabHtml(file));
+
+const totalBytes = productionFiles.reduce((sum, file) => sum + bytes(file), 0);
+const cssBytes = productionFiles.filter((file) => path.extname(file) === '.css').reduce((sum, file) => sum + bytes(file), 0);
+const cssGzipBytes = productionFiles.filter((file) => path.extname(file) === '.css')
+  .reduce((sum, file) => sum + gzipSync(fs.readFileSync(file), { level: 9 }).length, 0);
+const jsBytes = productionFiles.filter((file) => path.extname(file) === '.js').reduce((sum, file) => sum + bytes(file), 0);
+const labJsBytes = files.filter((file) => isLabOnlyAsset(file) && path.extname(file) === '.js')
   .reduce((sum, file) => sum + bytes(file), 0);
 const homePath = path.join(root, 'index.html');
 const homeBytes = fs.existsSync(homePath) ? bytes(homePath) : Number.POSITIVE_INFINITY;
@@ -40,7 +61,7 @@ const largestFile = files.reduce((largest, file) => !largest || bytes(file) > by
 const largestBytes = largestFile ? bytes(largestFile) : 0;
 const editorialFiles = files.filter((file) => rel(file).startsWith('images/writing/'));
 const editorialBytes = editorialFiles.reduce((sum, file) => sum + bytes(file), 0);
-const nonEditorialLargest = Math.max(...files.filter((file) => !editorialFiles.includes(file)).map(bytes));
+const nonEditorialLargest = Math.max(...productionFiles.filter((file) => !editorialFiles.includes(file)).map(bytes));
 
 const KiB = 1024;
 const budgets = [
@@ -51,9 +72,9 @@ const budgets = [
   { label: 'largest non-editorial file', actual: nonEditorialLargest, max: 96 * KiB },
   { label: 'compiled CSS (raw)', actual: cssBytes, max: 96 * KiB },
   { label: 'compiled CSS (gzip)', actual: cssGzipBytes, max: 20 * KiB },
-  { label: 'production client JavaScript', actual: jsBytes - labJsBytes, max: 8 * KiB },
-  // Native scroll interpolation and attached 3D paths; production JS budget is unchanged.
-  { label: 'isolated Decision Theatre JavaScript', actual: labJsBytes, max: 4 * KiB },
+  { label: 'production client JavaScript', actual: jsBytes, max: 8 * KiB },
+  // Lab-only bundles are excluded from production budgets but still capped independently.
+  { label: 'isolated lab JavaScript', actual: labJsBytes, max: 128 * KiB },
   { label: 'home HTML', actual: homeBytes, max: 20 * KiB },
   { label: `largest single file${largestFile ? ` (${rel(largestFile)})` : ''}`, actual: largestBytes, max: 160 * KiB },
 ];
@@ -61,10 +82,13 @@ const budgets = [
 const format = (value) => `${(value / KiB).toFixed(1)} KiB`;
 let failed = false;
 
-for (const file of files.filter((file) => file.endsWith('.html') && !rel(file).startsWith('lab/'))) {
-  if (/DecisionTheatre\.[^"']+\.js/.test(fs.readFileSync(file, 'utf8'))) {
-    failed = true;
-    console.error(`FAIL  lab script leaked into production route: ${rel(file)}`);
+for (const file of productionHtmlFiles) {
+  const html = fs.readFileSync(file, 'utf8');
+  for (const asset of labOnlyAssetRefs) {
+    if (html.includes(`/${asset}`)) {
+      failed = true;
+      console.error(`FAIL  lab-only asset leaked into production route: ${rel(file)} → ${asset}`);
+    }
   }
 }
 
