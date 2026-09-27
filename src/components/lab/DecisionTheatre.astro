@@ -1,0 +1,45 @@
+---
+import DecisionField from './DecisionField.astro';
+import { perspectives } from '../../content/decision-theatre';
+---
+<div class="dt" data-theatre data-motion="static">
+  <header class="dt-header dt-shell">
+    <a class="dt-brand" href="/" aria-label="Arkadiusz Kamrowski — strona główna"><span class="dt-monogram">AK<span>.</span></span><span>Arkadiusz<br/>Kamrowski</span></a>
+    <span class="dt-edition">STRATEGIA · ORGANIZACJA · TECHNOLOGIA</span>
+    <span class="dt-lab">DECISION THEATRE <span>/ 04</span></span>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="dt-hero dt-shell" aria-labelledby="dt-title" data-scene>
+      <div class="dt-hero-copy">
+        <p class="dt-kicker dt-enter">DLA ZARZĄDÓW I LIDERÓW TECHNOLOGII</p>
+        <h1 id="dt-title" class="dt-enter">Strategię widać<br/><em>w wyborach.</em></h1>
+        <p class="dt-lead dt-enter">Co finansować. Kto decyduje.<br/>Jak zamienić zamiar w wynik.</p>
+        <p class="dt-intro dt-enter">Łączę strategię, organizację i technologię,<br class="dt-desktop-break"/> żeby decyzje przekładały się na działanie.</p>
+        <div class="dt-actions dt-enter"><a class="dt-cta" href="/contact">Porozmawiajmy <span aria-hidden="true">↗</span></a><a class="dt-text-link" href="#system">Odkryj system <span aria-hidden="true">↓</span></a></div>
+      </div>
+      <figure class="dt-hero-object"><DecisionField kind="hero"/><figcaption><span>01—09 / ELEMENTY ORGANIZACJI</span><span>JEDEN KIERUNEK <i aria-hidden="true"></i></span></figcaption></figure>
+      <div class="dt-hero-bottom"><span>ARCHITEKTURA ORGANIZACJI. WIDOCZNA W DECYZJACH.</span><a href="#system">Przewiń, by zobaczyć powiązania <span aria-hidden="true">↓</span></a></div>
+    </section>
+    <section id="system" class="dt-system" aria-labelledby="dt-system-title" data-system data-mode="0" data-scene>
+      <div class="dt-system-sticky"><div class="dt-shell">
+        <div class="dt-section-meta"><p class="dt-kicker">01 / THE SYSTEM</p><button class="dt-motion" type="button" data-motion-toggle aria-pressed="false" hidden><span aria-hidden="true">Ⅱ</span><span data-motion-label>Wstrzymaj ruch</span></button></div>
+        <div class="dt-system-heading"><h2 id="dt-system-title">Jedna organizacja.<br/><em>Trzy perspektywy.</em></h2><p>Cel. Odpowiedzialność. Wykonanie.<br/>Wartość powstaje między nimi.</p></div>
+        <div class="dt-essay">
+          <div class="dt-narrative">
+            <div class="dt-stories" aria-live="off">
+              {perspectives.map((mode,i)=><article class="dt-story" data-story={i} id={`dt-story-${i}`} hidden={i!==0}><p class="dt-story-label"><span>0{i+1}</span> {mode.label}</p><h3>{mode.title.split('\n').map((line,j)=><>{j>0&&<br/>}{line}</>)}</h3><p class="dt-story-body">{mode.body}</p><p class="dt-principle">{mode.principle}</p><ol class="dt-trace">{mode.trace.map(item=><li>{item}</li>)}</ol></article>)}
+            </div>
+            <p class="dt-scroll-note"><span aria-hidden="true">↓</span> <span data-scroll-hint>Przewijaj lub wybierz perspektywę</span></p>
+          </div>
+          <figure class="dt-system-object"><DecisionField kind="system"/><figcaption>{perspectives.map((mode,i)=><span data-caption={i} hidden={i!==0}>{mode.caption}</span>)}</figcaption></figure>
+        </div>
+        <div class="dt-modes" role="group" aria-label="Perspektywa organizacji">
+          {perspectives.map((mode,i)=><button type="button" data-mode-button={i} aria-pressed={i===0} aria-controls={`dt-story-${i}`} disabled><span class="dt-mode-number">0{i+1}</span><span>{mode.name}</span><span class="dt-mode-arrow" aria-hidden="true">↗</span></button>)}
+        </div>
+        <noscript><p class="dt-nojs">Widok statyczny: strategia i inwestycje.</p>{perspectives.slice(1).map(mode=><details><summary>{mode.label}</summary><p>{mode.body}</p><p>{mode.principle}</p></details>)}</noscript>
+      </div></div>
+    </section>
+  </main>
+  <footer class="dt-footer dt-shell"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><a href="/contact">Porozmawiajmy o Twojej organizacji ↗</a><span>LAB / PROTOTYP 04</span></footer>
+</div>
+<script>import '../../scripts/decision-theatre';</script>

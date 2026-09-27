@@ -1,0 +1,18 @@
+---
+import { modulePosition } from '../../content/decision-theatre';
+interface Props { kind: 'hero' | 'system'; }
+const { kind } = Astro.props;
+---
+<div class={`dt-sculpture dt-sculpture-${kind}`} data-sculpture={kind} aria-hidden="true">
+  <div class="dt-object-shadow"></div>
+  <div class="dt-camera"><div class="dt-world">
+    {Array.from({length:9}, (_,i) => {const [x,y,z] = modulePosition(0,i);return (
+      <div class:list={['dt-cube',{'dt-core':i===4}]} data-cube={i} style={`transform:translate3d(${x}px,${y}px,${z}px);--order:${i}`}>
+        <div class="dt-cube-top"><span class="dt-serial">{String(i+1).padStart(2,'0')}</span><i class="dt-port"></i>{i===4 && <span class="dt-core-mark">↗</span>}</div>
+        <div class="dt-cube-front"></div><div class="dt-cube-right"></div><div class="dt-cube-back"></div><div class="dt-cube-left"></div><div class="dt-cube-bottom"></div>
+      </div>
+    );})}
+    <div class="dt-wires">{Array.from({length:8}, ()=><div class="dt-wire"><i class="dt-signal"></i></div>)}</div>
+  </div></div>
+  <span class="dt-cross dt-cross-one">+</span><span class="dt-cross dt-cross-two">+</span>
+</div>
