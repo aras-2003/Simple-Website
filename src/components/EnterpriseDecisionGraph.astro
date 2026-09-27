@@ -1,0 +1,110 @@
+---
+import type { Locale } from '../lib/site';
+interface Props { locale: Locale; mode: 'hero' | 'system'; }
+const { locale, mode } = Astro.props;
+const pl = locale === 'pl';
+const words = pl ? {
+  layers: ['STRATEGIA', 'ORGANIZACJA', 'TECHNOLOGIA', 'REALIZACJA'],
+  heading: 'Organizacja to system.', emphasis: 'Decyzja zmienia całość.',
+  intro: 'Zobacz, jak wybory strategiczne wpływają na odpowiedzialność, możliwości technologiczne i sposób realizacji.',
+  kicker: '02 / ARCHITEKTURA DECYZJI', choose: 'Wybierz perspektywę', next: 'Zobacz, jak pracuję',
+  diagram: 'Mapa zależności strategii, modelu działania, technologii i realizacji. Zmiana perspektywy wyróżnia inną drogę decyzji.',
+  hero: 'Abstrakcyjne pole decyzji łączące strategię, organizację, technologię i realizację.',
+  nodes: ['Kierunek', 'Portfel', 'Kompromisy', 'Prawa decyzji', 'Właściciel', 'Strumienie wartości', 'Zdolności', 'Dane', 'Platformy', 'Dostarczenie', 'Adopcja', 'Wartość'],
+  views: [
+    {label:'Strategia i inwestycje',title:'Wybór zmienia portfel.',body:'Priorytet strategiczny przekłada się na inwestycje, odpowiedzialność i możliwości potrzebne do dostarczenia zmiany.'},
+    {label:'Odpowiedzialność',title:'Decyzja potrzebuje właściciela.',body:'Kompromisy, uprawnienia i kompetencje muszą spotkać się w jednym modelu działania. Inaczej decyzja wraca na kolejne spotkanie.'},
+    {label:'Technologia i realizacja',title:'Technologia działa w kontekście.',body:'Platformy i dane wspierają konkretny sposób pracy. Samo wdrożenie nie jest jeszcze wykorzystaniem ani wartością biznesową.'},
+  ],
+} : {
+  layers: ['STRATEGY', 'ORGANIZATION', 'TECHNOLOGY', 'EXECUTION'],
+  heading: 'An organization is a system.', emphasis: 'A decision changes the whole.',
+  intro: 'See how strategic choices shape accountability, technological capabilities and the way change is delivered.',
+  kicker: '02 / DECISION ARCHITECTURE', choose: 'Choose a perspective', next: 'Explore how I work',
+  diagram: 'An enterprise dependency map linking strategy, operating model, technology and execution. Each perspective highlights a different decision path.',
+  hero: 'An abstract decision field connecting strategy, organization, technology and execution.',
+  nodes: ['Direction', 'Portfolio', 'Trade-offs', 'Decision rights', 'Ownership', 'Value streams', 'Capabilities', 'Data', 'Platforms', 'Delivery', 'Adoption', 'Value'],
+  views: [
+    {label:'Strategy & investment',title:'A choice reshapes the portfolio.',body:'Strategic priorities translate into investments, accountability and the capabilities required to deliver change.'},
+    {label:'Accountability',title:'A decision needs an owner.',body:'Trade-offs, decision rights and capabilities must meet in one operating model. Otherwise decisions return to another meeting.'},
+    {label:'Technology & delivery',title:'Technology works in context.',body:'Platforms and data enable a specific way of working. Deployment alone is not adoption or business value.'},
+  ],
+};
+const nodes: {x:number;y:number}[] = [
+  {x:240,y:95},{x:490,y:95},{x:750,y:95},
+  {x:240,y:218},{x:490,y:218},{x:750,y:218},
+  {x:240,y:341},{x:490,y:341},{x:750,y:341},
+  {x:240,y:464},{x:490,y:464},{x:750,y:464},
+];
+const routes: number[][] = [[1,5,8,11],[2,4,6,9],[0,3,7,10]];
+const routePath = (indices:number[]) => indices.map((id,i)=>{
+  const point = nodes[id]!;
+  if (i === 0) return `M${point.x} ${point.y}`;
+  const prev = nodes[indices[i-1]!]!;
+  const mid = (prev.y+point.y)/2;
+  return `C${prev.x} ${mid} ${point.x} ${mid} ${point.x} ${point.y}`;
+}).join(' ');
+---
+{mode === 'hero' ? (
+  <div class="edg-hero">
+    <img src={`/assets/edg-decision-field-${locale}.svg`} alt={words.hero} width="570" height="540" loading="eager" decoding="async" fetchpriority="high"/>
+    <p class="edg-hero-caption" aria-hidden="true"><span>01 — 04</span><span>{pl?'JEDEN SYSTEM / WIELE ZALEŻNOŚCI':'ONE SYSTEM / MANY DEPENDENCIES'}</span></p>
+  </div>
+) : (
+  <section class="edg-system" aria-labelledby="edg-system-title" data-edg-system data-view="0">
+    <div class="edg-shell">
+      <div class="edg-section-top"><p class="edg-kicker">{words.kicker}</p><span class="edg-section-id" aria-hidden="true">EDG / 001</span></div>
+      <h2 id="edg-system-title">{words.heading}<br/><em>{words.emphasis}</em></h2>
+      <div class="edg-system-grid">
+        <div class="edg-narrative">
+          <p class="edg-intro">{words.intro}</p>
+          <p class="edg-label">{words.choose}</p>
+          <div class="edg-controls" role="group" aria-label={words.choose}>
+            {words.views.map((view,i)=><button type="button" class="edg-control" data-edg-control={i} aria-pressed={i===0} aria-controls={`edg-panel-${locale}-${i}`}><span class="edg-control-index" aria-hidden="true">0{i+1}</span><span>{view.label}</span><span class="edg-control-arrow" aria-hidden="true">↗</span></button>)}
+          </div>
+          <div class="edg-description" aria-live="polite" aria-atomic="true">
+            {words.views.map((view,i)=><div id={`edg-panel-${locale}-${i}`} data-edg-panel={i} hidden={i!==0}><h3>{view.title}</h3><p>{view.body}</p></div>)}
+          </div>
+          <a class="edg-next" href={pl?'/wspolpraca':'/en/advisory'}>{words.next}<span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="edg-topology" role="img" aria-label={words.diagram}>
+          <div class="edg-figure-top" aria-hidden="true"><span>ENTERPRISE / DEPENDENCY MAP</span><span data-edg-counter>01 / 03</span></div>
+          <div class="edg-map-composite">
+            <img class="edg-map-base" src="/assets/edg-topology-base.svg" alt="" width="900" height="540" loading="lazy" decoding="async"/>
+            <svg class="edg-map-overlay" viewBox="0 0 900 540" aria-hidden="true" focusable="false">
+              <g class="edg-gridlines">{words.layers.map((label,i)=><text x="10" y={89+i*123}>{`0${i+1} / ${label}`}</text>)}</g>
+              <g class="edg-nodes">{nodes.map((node,i)=><g class:list={['edg-node',{'is-active':[1,5,8,11].includes(i)}]} data-edg-node={i}><circle cx={node.x} cy={node.y} r="4"/><text x={node.x+12} y={node.y-13}>{words.nodes[i]}</text></g>)}</g>
+              {routes.map((route,i)=><g class="edg-active-route" data-edg-route={i}><path class="edg-route-halo" d={routePath(route)}/><path class="edg-route-line" d={routePath(route)}/></g>)}
+              <g class="edg-axis"><text x="168" y="532">STRATEGY → EXECUTION</text><text x="859" y="532" text-anchor="end">CONCEPTUAL MODEL / NOT TO SCALE</text></g>
+            </svg>
+          </div>
+          <div class="edg-mobile-flow">{routes.map((route,i)=><ol data-edg-mobile-view={i}>{route.map((id,j)=><li><span>0{j+1} / {words.layers[j]}</span><strong>{words.nodes[id]}</strong></li>)}</ol>)}</div>
+          <figcaption class="edg-figure-caption">{pl?'Zależności koncepcyjne, nie metryki organizacji.':'Conceptual dependencies, not organizational metrics.'}</figcaption>
+        </figure>
+      </div>
+      <div class="edg-bottom"><span>TAK / NIE / KTO</span><span>{pl?'KIERUNEK · WYBÓR · ODPOWIEDZIALNOŚĆ':'DIRECTION · CHOICE · ACCOUNTABILITY'}</span></div>
+    </div>
+  </section>
+)}
+<style>
+  .edg-hero{width:100%;max-width:610px;margin:auto;min-width:0}.edg-hero img{width:100%;height:auto;display:block}.edg-hero-caption{display:flex;justify-content:space-between;gap:1rem;border-top:1px solid #d4dbd0;margin:0 1.4rem;padding-top:.65rem;color:#53675a;font:600 9px/1.4 var(--sans);letter-spacing:.13em}
+  .edg-system{position:relative;width:100vw;margin-inline:calc(50% - 50vw);padding:clamp(4rem,7vw,7rem) clamp(24px,5vw,80px) 2rem;background:#102721;color:#f5f1e9;overflow:hidden}.edg-shell{max-width:1320px;margin:auto}.edg-section-top,.edg-bottom,.edg-figure-top{display:flex;align-items:center;justify-content:space-between;gap:1rem}.edg-kicker,.edg-section-id,.edg-label,.edg-figure-top,.edg-bottom,.edg-figure-caption{font:600 10px/1.5 var(--sans);letter-spacing:.15em}.edg-kicker,.edg-section-id{color:#c4d5c6}.edg-system h2{font-family:var(--serif);font-size:clamp(2.8rem,5vw,5.5rem);font-weight:400;line-height:1.06;letter-spacing:-.05em;margin:clamp(2rem,4vw,4rem) 0 clamp(3rem,5vw,5rem);max-width:24ch}.edg-system h2 em{color:#c7dba9;font-style:normal;font-weight:400}.edg-system-grid{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.55fr);gap:clamp(1.5rem,4vw,5rem);align-items:start}.edg-intro{max-width:31ch;color:#c9d6cd;font:400 clamp(15px,1.4vw,17px)/1.7 var(--sans)}.edg-label{color:#a8bfae;margin:clamp(2rem,4vw,3.5rem) 0 .8rem}.edg-controls{display:grid;border-top:1px solid #3a574a}.edg-control{min-height:62px;display:grid;grid-template-columns:28px 1fr 20px;align-items:center;gap:.7rem;text-align:left;background:none;color:#aebfb4;border:0;border-bottom:1px solid #3a574a;padding:.75rem .15rem;font:500 14px/1.4 var(--sans);cursor:pointer}.edg-control-index{font-size:11px;letter-spacing:.1em;color:#9eb7a4}.edg-control-arrow{opacity:0;font-size:18px;transition:opacity .25s}.edg-control[aria-pressed=true]{color:#f5f1e9}.edg-control[aria-pressed=true] .edg-control-index{color:#d3e7af}.edg-control[aria-pressed=true] .edg-control-arrow{opacity:1;color:#d3e7af}.edg-control:hover{color:white}.edg-control:focus-visible,.edg-next:focus-visible{outline:2px solid #d3e7af;outline-offset:3px}.edg-description{min-height:146px;margin-top:2rem}.edg-description [hidden]{display:none!important}.edg-description h3{font:400 clamp(1.6rem,2.4vw,2.3rem)/1.1 var(--serif);letter-spacing:-.035em;color:#f5f1e9}.edg-description p{color:#b8c9bb;font:400 14px/1.7 var(--sans);margin-top:.8rem;max-width:37ch}.edg-next{display:inline-flex;gap:1.5rem;align-items:center;justify-content:space-between;min-height:44px;border-bottom:1px solid #a1b9a6;text-decoration:none;font:600 13px var(--sans);color:#f5f1e9;padding:.5rem 0}.edg-next:hover{color:#d3e7af}.edg-topology{margin:0;min-width:0;align-self:center}.edg-figure-top{color:#a5baab;padding-bottom:1.2rem;border-bottom:1px solid #355244}.edg-map-composite{position:relative;margin-top:1rem}.edg-map-base,.edg-map-overlay{display:block;width:100%;height:auto}.edg-map-overlay{position:absolute;inset:0;height:100%}.edg-gridlines text,.edg-axis text{font:600 10px var(--sans);fill:#8ea99a;letter-spacing:1.2px}.edg-nodes circle{fill:#a4b9a3}.edg-nodes text{fill:#b8cbbd;font:500 12px var(--sans)}.edg-node.is-active circle{fill:#d8efb5;stroke:#102721;stroke-width:2;filter:drop-shadow(0 0 4px #c8dfad)}.edg-node.is-active text{fill:#f5f1e9}.edg-active-route{opacity:0;transition:opacity .4s ease}.edg-system[data-view="0"] [data-edg-route="0"],.edg-system[data-view="1"] [data-edg-route="1"],.edg-system[data-view="2"] [data-edg-route="2"]{opacity:1}.edg-route-halo{fill:none;stroke:#bfe0aa;stroke-width:8;opacity:.11}.edg-route-line{fill:none;stroke:#d0e9ad;stroke-width:2.5;stroke-linecap:round}.edg-figure-caption{color:#91a899;letter-spacing:.02em;font-weight:400;margin:0 0 1rem;text-align:right}.edg-bottom{border-top:1px solid #365447;margin-top:clamp(3rem,6vw,6rem);padding-top:1.3rem;color:#bacabb}.edg-bottom span:first-child{color:#d2e5af}.edg-mobile-flow{display:none}
+  @media(max-width:950px){.edg-system-grid{grid-template-columns:1fr;gap:2rem}.edg-narrative{display:grid;grid-template-columns:1fr 1fr;gap:0 2rem}.edg-intro{grid-column:1/-1;max-width:60ch}.edg-label{grid-column:1/-1}.edg-controls{grid-row:3/6}.edg-description{margin-top:0;min-height:130px}.edg-next{justify-self:start;align-self:start}.edg-topology{width:100%;max-width:850px;margin:auto}.edg-system h2{max-width:none}}
+  @media(max-width:620px){.edg-system{padding:3.5rem 24px 2rem}.edg-system h2{font-size:clamp(2.5rem,10vw,3.4rem);margin:2rem 0 2.4rem}.edg-narrative{display:block}.edg-label{margin-top:2.3rem}.edg-control{min-height:54px}.edg-description{min-height:0;margin-top:1.7rem}.edg-next{margin-top:1.2rem}.edg-map-composite{display:none}.edg-mobile-flow{display:block;margin-top:1.4rem}.edg-mobile-flow ol{display:none;list-style:none;padding:0;margin:0;border-left:1px solid #567263}.edg-system[data-view="0"] [data-edg-mobile-view="0"],.edg-system[data-view="1"] [data-edg-mobile-view="1"],.edg-system[data-view="2"] [data-edg-mobile-view="2"]{display:block}.edg-mobile-flow li{position:relative;min-height:65px;margin:0;padding:0 0 0 1.5rem}.edg-mobile-flow li:before{content:"";position:absolute;left:-5px;top:5px;width:9px;height:9px;background:#d0e9ad;border-radius:50%;box-shadow:0 0 0 4px #244637}.edg-mobile-flow li span{display:block;color:#a6bcaa;font:600 10px var(--sans);letter-spacing:.09em}.edg-mobile-flow li strong{display:block;color:#f5f1e9;font:400 21px/1.3 var(--serif);margin-top:.3rem}.edg-figure-top{font-size:9px}.edg-bottom{flex-wrap:wrap;font-size:9px;margin-top:2rem}.edg-hero{max-width:450px}.edg-hero-caption{margin-inline:.5rem}}
+  @media(prefers-reduced-motion:reduce){.edg-active-route,.edg-control-arrow{transition:none}}
+</style>
+<script>
+  const paths=[[1,5,8,11],[2,4,6,9],[0,3,7,10]];
+  document.querySelectorAll<HTMLElement>('[data-edg-system]').forEach(system=>{
+    const buttons=[...system.querySelectorAll<HTMLButtonElement>('[data-edg-control]')];
+    const panels=[...system.querySelectorAll<HTMLElement>('[data-edg-panel]')];
+    const counter=system.querySelector<HTMLElement>('[data-edg-counter]');
+    buttons.forEach((button,index)=>button.addEventListener('click',()=>{
+      system.dataset.view=String(index);
+      buttons.forEach((item,i)=>item.setAttribute('aria-pressed',String(i===index)));
+      panels.forEach((panel,i)=>{panel.hidden=i!==index;});
+      system.querySelectorAll<HTMLElement>('[data-edg-node]').forEach(node=>node.classList.toggle('is-active',paths[index]!.includes(Number(node.dataset.edgNode))));
+      if(counter)counter.textContent=`0${index+1} / 03`;
+    }));
+  });
+</script>
