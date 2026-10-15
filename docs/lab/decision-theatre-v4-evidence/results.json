@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-15T10:22:46.506Z",
+  "errors": [],
+  "measurements": [
+    {
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "direct",
+        "detail": false
+      },
+      "framesMs": [
+        1.400000000372529,
+        0.8999999994412065,
+        1.2999999998137355,
+        1.300000000745058
+      ],
+      "environmentSetupCpuMs": 0,
+      "renderInfo": {
+        "geometries": 11,
+        "textures": 4,
+        "calls": 26,
+        "triangles": 13406
+      },
+      "environment": null,
+      "reflectionTarget": null,
+      "nativeGPUPerformance": "NOT VERIFIED",
+      "navigationToReadyMs": 1451.206702
+    },
+    {
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "studio",
+        "detail": false
+      },
+      "framesMs": [
+        3.2000000001862645,
+        2.900000000372529,
+        2.3999999994412065,
+        3.400000000372529
+      ],
+      "environmentSetupCpuMs": 98.6000000005588,
+      "renderInfo": {
+        "geometries": 17,
+        "textures": 6,
+        "calls": 41,
+        "triangles": 20118
+      },
+      "environment": {
+        "width": 768,
+        "height": 1024,
+        "type": "half-float"
+      },
+      "reflectionTarget": [
+        768,
+        768
+      ],
+      "nativeGPUPerformance": "NOT VERIFIED",
+      "navigationToReadyMs": 6354.413246000001
+    }
+  ],
+  "captures": [
+    "incision-complexity-studio.png",
+    "incision-transformation-studio.png",
+    "incision-coherence-studio.png",
+    "compression-complexity-studio.png",
+    "compression-transformation-studio.png",
+    "compression-coherence-studio.png",
+    "lighting-direct.png",
+    "lighting-studio.png",
+    "material-detail.png",
+    "desktop-ui.png",
+    "mobile-ui.png",
+    "mobile-render.png"
+  ],
+  "backend": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36"
+  },
+  "measurementConditions": "Fresh pages measured sequentially after other browser jobs completed; four gl.finish samples per mode; navigation-to-ready includes networkidle wait. Software WebGL only."
+}

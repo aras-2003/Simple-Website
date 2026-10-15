@@ -24,7 +24,9 @@
     "test:contact": "node tests/contact-api.mjs",
     "test:editorial": "node tests/editorial-assets.mjs && node tests/editorial-language.mjs",
     "test:decision-theatre": "playwright test tests/decision-theatre.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2",
-    "capture:decision-theatre": "node scripts/decision-theatre-capture.mjs"
+    "capture:decision-theatre": "node scripts/decision-theatre-capture.mjs",
+    "test:decision-theatre-v4": "playwright test tests/decision-theatre-v4.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2",
+    "capture:decision-theatre-v4": "node scripts/decision-theatre-v4-capture.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
