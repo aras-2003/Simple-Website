@@ -1,0 +1,109 @@
+{
+  "method": "Real Chromium screenshots / synchronous Three.js canvas export; lossless WebP conversion verified by decoded RGBA pixel equality",
+  "images": [
+    {
+      "filename": "compression-coherence-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "d5094d2bca40f5ca2c56e0916ece3f1b796ef0013de5d1c15d773a50abc483f4",
+      "originalPngSha256": "ec8386f344705600ca6019a6e371a17523ad2d1d0dda7ec88bea1d8419a698f8"
+    },
+    {
+      "filename": "compression-complexity-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "d263dfde58438670173ad2dff91640ad911af3f78d9b6185129b918a3ecfbf3a",
+      "originalPngSha256": "a392ecc69eb3203e546c5d93d87b5f9c1fed0f1f66093c19e47e1d0c4d0ffe1d"
+    },
+    {
+      "filename": "compression-transformation-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "7e7f144568aa2e1f1cc028fe456418bf9cae41b551cadcdac4d690d3eb4d1d7e",
+      "originalPngSha256": "84d36ff6371e8a1b1571e2e44df671250e092b8ea6eff7beb20e7154bb49ff28"
+    },
+    {
+      "filename": "contact-sheet.webp",
+      "width": 1800,
+      "height": 1680,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "f3375bb1254f641b6683ed1cdfe0b9cf6a517db63cf5a2da28685faa7c3a9c11",
+      "originalPngSha256": "4576204b43740a209fb34ad46715acfeda18ff96af426b2d89de70093d91b2b2"
+    },
+    {
+      "filename": "desktop-ui.webp",
+      "width": 1600,
+      "height": 1100,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "68994a1ba92bad55ad0bc89e1a72d514ced55e52c360d15a7a7c97406aa9de47",
+      "originalPngSha256": "72ef6b37e4b702be00eb806ba6be5d98f4013b213092837745cfbcc3a39f2783"
+    },
+    {
+      "filename": "incision-coherence-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "3d114935be671d6f2b475244083e4153bf490f8628bf66692ebf9fda979283d8",
+      "originalPngSha256": "a128b2b22af7563cadbcac787a5acceaa21fca0bdb095f08a9b871ead07a9a38"
+    },
+    {
+      "filename": "incision-complexity-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "cc1271663997fa82c3e5a873a44f8ad681e91fffe4c9c87d1bfb743a59f1d78f",
+      "originalPngSha256": "f3b19adbd8da3e1a8e4374ea33e6aef4b259b5be5557de59fd2937be3a0a03cd"
+    },
+    {
+      "filename": "incision-transformation-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "6c5dfe775fb40ef0cfb88f6d327ffd6fa346cb322cf8c1f3b255f842290e0d3c",
+      "originalPngSha256": "78b3e5200da81bc0b3b1d54bb063fb0d386b3ae27fbd3e7600477fb64e162d05"
+    },
+    {
+      "filename": "lighting-direct.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "ff1eed8fb83734648afdddc9a9a722581dcd351b65b18c7c2617303d315d1342",
+      "originalPngSha256": "b4c54024653a65457d04df0ce7fb29ce169d1ab4ccb38a19fbd1cc368263def7"
+    },
+    {
+      "filename": "lighting-studio.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "cc1271663997fa82c3e5a873a44f8ad681e91fffe4c9c87d1bfb743a59f1d78f",
+      "originalPngSha256": "f3b19adbd8da3e1a8e4374ea33e6aef4b259b5be5557de59fd2937be3a0a03cd"
+    },
+    {
+      "filename": "material-detail.webp",
+      "width": 1600,
+      "height": 849,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "7d6d564fa9db6bad00ff71d89703d46c409b9cf927339ff7c025d25626f7a8e4",
+      "originalPngSha256": "d9fe2ab783f0eb14c38790a0dfa7358878b3cda6388de8e78bb5a288a36a09b3"
+    },
+    {
+      "filename": "mobile-render.webp",
+      "width": 390,
+      "height": 759,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "6f95705720b1e4cf27dfc68ef400ea74ba91ac00fe7d1d0f064987f59c8fe58b",
+      "originalPngSha256": "4075dc2aeadaa6c40ec49b01bfa572ad7f7340d7abd577859eccc2d31f7c021b"
+    },
+    {
+      "filename": "mobile-ui.webp",
+      "width": 390,
+      "height": 844,
+      "losslessRgbaPixelsVerified": true,
+      "webpSha256": "f5fe8995bb4420d16aa726185030c8bdff03f8c7ff685f67ef3dcfcf604c4f06",
+      "originalPngSha256": "76c87e2c8b26ea2d74baac0f783b7b10d994139131b1e582368a4da99889a7dc"
+    }
+  ]
+}
