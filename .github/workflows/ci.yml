@@ -67,6 +67,9 @@ jobs:
       - name: Chromium Firefox WebKit smoke matrix
         run: npm run test:browsers
 
+      - name: Decision Theatre prototype
+        run: npm run test:decision-theatre
+
       - name: Upload static artifact
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

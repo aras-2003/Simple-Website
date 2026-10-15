@@ -30,7 +30,7 @@ export default defineConfig({
   site,
   output: 'static',
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !new URL(page).pathname.includes('/lab/') })],
   i18n: {
     locales: ['pl', 'en'],
     defaultLocale: 'pl',
