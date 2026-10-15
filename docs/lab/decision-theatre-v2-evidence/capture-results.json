@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-15T09:14:23.844Z",
+  "errors": [],
+  "idleRenderingStopped": true,
+  "captures": [
+    "hero-desktop-en.png",
+    "transformation-000.png",
+    "transformation-025.png",
+    "transformation-050.png",
+    "transformation-075.png",
+    "transformation-100.png",
+    "reverse-000.png",
+    "final-cta.png",
+    "hero-desktop-pl.png",
+    "hero-mobile.png",
+    "mobile-0.png",
+    "mobile-50.png",
+    "mobile-100.png",
+    "reduced-motion.png",
+    "webgl-fallback.png"
+  ],
+  "originalCaptureDirectory": "artifacts/decision-theatre",
+  "reviewCaptures": [
+    "hero-desktop-en.webp",
+    "transformation-000.webp",
+    "transformation-025.webp",
+    "transformation-050.webp",
+    "transformation-075.webp",
+    "transformation-100.webp",
+    "reverse-000.webp",
+    "final-cta.webp",
+    "hero-desktop-pl.webp",
+    "hero-mobile.webp",
+    "mobile-0.webp",
+    "mobile-50.webp",
+    "mobile-100.webp",
+    "reduced-motion.webp",
+    "webgl-fallback.webp"
+  ]
+}

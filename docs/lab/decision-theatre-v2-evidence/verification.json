@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-15",
+  "runtime": {
+    "node": "24.19.0",
+    "astro": "7.3.1",
+    "playwright": "1.62.1",
+    "chromium": "154.0.8037.57"
+  },
+  "staticWorkflow": "passed",
+  "performanceBudgets": "passed",
+  "artifactScopeRegression": {
+    "passed": 1,
+    "failed": 0
+  },
+  "chromiumDesktopMobile": {
+    "passed": 265,
+    "skipped": 1,
+    "failed": 0,
+    "selected": 266
+  },
+  "prototypeTestsIncluded": 18,
+  "screenshots": 15,
+  "browserErrorsCollected": 0,
+  "publicJavaScriptRawKiB": 7.0,
+  "labJavaScriptGzipKiB": 173.3,
+  "labExclusiveArtifactKiB": 674.1,
+  "nativeGPUPerformance": "NOT VERIFIED",
+  "firefoxWebkit": "NOT RUN LOCALLY",
+  "deployed": false
+}

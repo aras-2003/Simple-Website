@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { artifactScopes } from './artifact-scope.mjs';
 
 const root = path.resolve('dist');
 
@@ -9,15 +10,16 @@ if (!fs.existsSync(root)) {
   process.exit(2);
 }
 
-const files = [];
+const allFiles = [];
 const walk = (dir) => {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(fullPath);
-    else files.push(fullPath);
+    else allFiles.push(fullPath);
   }
 };
 walk(root);
+const { mainFiles: files, labFiles } = artifactScopes(root, allFiles);
 
 const rel = (file) => path.relative(root, file).replaceAll(path.sep, '/');
 const bytes = (file) => fs.statSync(file).size;
@@ -62,7 +64,7 @@ for (const budget of budgets) {
   console.log(`${pass ? 'PASS' : 'FAIL'}  ${budget.label}: ${format(budget.actual)} / ${format(budget.max)}`);
 }
 
-const sourceMaps = files.filter((file) => file.endsWith('.map'));
+const sourceMaps = allFiles.filter((file) => file.endsWith('.map'));
 if (sourceMaps.length > 0) {
   failed = true;
   console.error(`FAIL  source maps shipped in production: ${sourceMaps.map(rel).join(', ')}`);
@@ -70,4 +72,18 @@ if (sourceMaps.length > 0) {
   console.log('PASS  no source maps shipped in production');
 }
 
+// The isolated prototype does not relax any existing public-route limit above.
+if (labFiles.length) {
+  const labJs = labFiles.filter(file => file.endsWith('.js'));
+  const labGzip = labJs.reduce((sum, file) => sum + gzipSync(fs.readFileSync(file), {level:9}).length, 0);
+  const labRaw = labFiles.reduce((sum, file) => sum + bytes(file), 0);
+  for (const budget of [
+    {label:'isolated Decision Theatre JS (gzip)', actual:labGzip, max:240 * KiB},
+    {label:'isolated Decision Theatre artifact', actual:labRaw, max:1000 * KiB},
+  ]) {
+    const pass = budget.actual <= budget.max;
+    failed ||= !pass;
+    console.log(`${pass ? 'PASS' : 'FAIL'}  ${budget.label}: ${format(budget.actual)} / ${format(budget.max)}`);
+  }
+}
 if (failed) process.exit(1);

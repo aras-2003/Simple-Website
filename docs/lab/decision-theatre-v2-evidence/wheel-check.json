@@ -1,0 +1,11 @@
+{
+  "nativeWheelForward": 0.29968,
+  "nativeWheelReverse": 0.10148,
+  "passed": true,
+  "nativeGPUPerformance": "NOT VERIFIED",
+  "renderer": "SwiftShader",
+  "pixelRatioCap": {
+    "desktop": 1.5,
+    "mobile": 1.25
+  }
+}
