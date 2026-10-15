@@ -1,5 +1,7 @@
 # Decision Theatre 2.0
 
+Historical V2 implementation and evidence. Superseded by [Decision Theatre V3](DECISION_THEATRE_V3.md) after owner feedback rejected the fixed-copy presentation model.
+
 Prototype: `/lab/decision-theatre-v2` (PL), `/en/lab/decision-theatre-v2` (EN).
 Branch: `feature/decision-theatre-gsap-three`. No merge or deployment is part of this delivery.
 

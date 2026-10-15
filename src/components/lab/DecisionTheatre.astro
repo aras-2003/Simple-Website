@@ -8,41 +8,33 @@ const path = en ? `/en${base}` : base;
 const c = en ? {
   title: 'Strategy shows up in choices.', line1: 'Strategy shows up', line2: 'in choices.',
   intro: 'Not in the number of initiatives. In the decisions that make them work together.',
-  discipline: 'Strategy · Architecture · Transformation', enter: 'Explore the system', read: 'Read without motion',
-  label: 'An exploration of executive clarity', scroll: 'Scroll to bring the system into focus',
-  back: 'Main website', skip: 'Skip to content', diagram: 'One system. Four conditions.',
-  states: [
-    { name: 'Fragmentation', short: 'Many priorities. No shared direction.', detail: 'Each initiative makes sense on its own. Together, they pull the organisation apart.', question: 'What are we actually choosing?', decision: 'Make the competing priorities visible.' },
-    { name: 'Tension', short: 'Every yes has a consequence.', detail: 'Resources are finite. Ambition is not. Progress begins when the trade-offs become explicit.', question: 'What must we say no to?', decision: 'Name the trade-off. Accept the consequence.' },
-    { name: 'Alignment', short: 'A decision needs an owner.', detail: 'Strategy, architecture and investment begin to share a direction. Responsibility makes it actionable.', question: 'Who can make this decision stick?', decision: 'Connect authority with accountability.' },
-    { name: 'Coherence', short: 'Different parts. One intent.', detail: 'Not everything moves in the same way. Everything contributes to the same choice. This is strategy in motion.', question: 'What changes when the system agrees?', decision: 'Turn a shared direction into execution.' },
-  ],
-  yes: 'YES', no: 'NO', who: 'WHO', yesText: 'Choose a direction.', noText: 'Protect the focus.', whoText: 'Own the consequence.',
-  reading: 'The thinking behind the transformation', readingIntro: 'Clarity is not the absence of complexity. It is the ability to make a choice inside it.',
+  discipline: 'Strategy · Architecture · Transformation', enter: 'Explore the system',
+  back: 'Main website', skip: 'Skip to content',
   finalLabel: 'From the system to your situation', final1: 'Which decision', final2: 'is holding you back?',
   finalCopy: 'A difficult trade-off. An investment without a shared direction. A transformation that needs an owner. Start there.',
   contact: 'Let’s talk about the decision', note: 'A visual thinking model, not a client case or a promise of business results.',
-  footer: 'Independent judgment. Shared direction.', static: 'Static system view', pause: 'Pause motion', resume: 'Resume motion',
+  footer: 'Independent judgment. Shared direction.', pause: 'Pause motion', resume: 'Resume motion',
 } : {
   title: 'Strategię widać w wyborach.', line1: 'Strategię widać', line2: 'w wyborach.',
   intro: 'Nie w liczbie inicjatyw. W decyzjach, dzięki którym zaczynają działać razem.',
-  discipline: 'Strategia · Architektura · Transformacja', enter: 'Zobacz, jak działa system', read: 'Przeczytaj bez animacji',
-  label: 'O klarowności decyzji przywódczych', scroll: 'Przewiń, aby zobaczyć wspólny kierunek',
-  back: 'Strona główna', skip: 'Przejdź do treści', diagram: 'Jeden system. Cztery stany.',
-  states: [
-    { name: 'Fragmentacja', short: 'Wiele priorytetów. Brak wspólnego kierunku.', detail: 'Każda inicjatywa ma sens osobno. Razem ciągną organizację w różne strony.', question: 'Co tak naprawdę wybieramy?', decision: 'Pokaż konkurujące priorytety.' },
-    { name: 'Napięcie', short: 'Każde tak ma konsekwencje.', detail: 'Zasoby są skończone. Ambicje nie. Postęp zaczyna się od nazwania kompromisów.', question: 'Z czego musimy zrezygnować?', decision: 'Nazwij kompromis. Przyjmij konsekwencję.' },
-    { name: 'Zestrojenie', short: 'Decyzja potrzebuje właściciela.', detail: 'Strategia, architektura i inwestycje zyskują wspólny kierunek. Odpowiedzialność pozwala przejść do działania.', question: 'Kto nada tej decyzji bieg?', decision: 'Połącz uprawnienia z odpowiedzialnością.' },
-    { name: 'Spójność', short: 'Różne części. Wspólny zamysł.', detail: 'Nie wszystko porusza się tak samo. Wszystko służy temu samemu wyborowi. To strategia w działaniu.', question: 'Co zmienia wspólny kierunek?', decision: 'Przełóż wspólny kierunek na realizację.' },
-  ],
-  yes: 'TAK', no: 'NIE', who: 'KTO', yesText: 'Wybierz kierunek.', noText: 'Chroń priorytety.', whoText: 'Weź odpowiedzialność.',
-  reading: 'Myślenie, które porządkuje system', readingIntro: 'Klarowność nie oznacza braku złożoności. To zdolność dokonania wyboru w jej środku.',
+  discipline: 'Strategia · Architektura · Transformacja', enter: 'Zobacz, jak działa system',
+  back: 'Strona główna', skip: 'Przejdź do treści',
   finalLabel: 'Od modelu do Twojej sytuacji', final1: 'Która decyzja', final2: 'zatrzymuje zmianę?',
   finalCopy: 'Trudny kompromis. Inwestycja bez wspólnego kierunku. Transformacja, która potrzebuje właściciela. Zacznijmy od tego.',
   contact: 'Porozmawiajmy o decyzji', note: 'Wizualny model myślenia, nie opis klienta ani obietnica wyników biznesowych.',
-  footer: 'Niezależny osąd. Wspólny kierunek.', static: 'Statyczny widok systemu', pause: 'Wstrzymaj ruch', resume: 'Wznów ruch',
+  footer: 'Niezależny osąd. Wspólny kierunek.', pause: 'Wstrzymaj ruch', resume: 'Wznów ruch',
 };
-const stateKeys = ['fragmentation', 'tension', 'alignment', 'coherence'];
+const chapters = en ? [
+  { key: 'complexity', index: '01', label: 'Complexity', title: 'The parts work.\nThe whole doesn’t.', intro: 'A portfolio of good initiatives is not yet a strategy.', body: 'Technology, investment and organisational change rarely fail in isolation. They lose direction at the boundaries: competing priorities, inherited dependencies and decisions that belong to everyone, until nobody makes them.', takeaway: 'Start by making the relationships visible.', items: [['Priorities', 'Local progress. Competing definitions of success.'], ['Dependencies', 'One team’s choice becomes another team’s constraint.']] },
+  { key: 'decisions', index: '02', label: 'Decisions', title: 'Clarity has\na consequence.', intro: 'You cannot align everything without choosing something.', body: 'A strategic decision creates a boundary. It says what deserves investment, what must stop and who has the authority to act. The difficult part is making those choices hold across the organisation.', takeaway: 'A choice becomes useful when its consequences are owned.', items: [['YES', 'Choose what moves the strategy forward.'], ['NO', 'Protect the capacity to deliver it.'], ['WHO', 'Give the decision an accountable owner.']] },
+  { key: 'alignment', index: '03', label: 'Alignment', title: 'One direction.\nRoom to move.', intro: 'Alignment is a relationship, not a rigid blueprint.', body: 'Enterprise architecture connects strategic intent to the way the organisation operates. Responsibilities, technology and investment begin to reinforce one another. Different teams can move differently because the choices underneath them are coherent.', takeaway: 'The same parts. A different ability to act.', quote: 'Coherence gives people the freedom to move without pulling the organisation apart.' },
+  { key: 'execution', index: '04', label: 'Execution', title: 'Strategy becomes\nwhat happens next.', intro: 'A coherent system still needs judgment.', body: 'Execution is where a decision meets reality. Keep the direction explicit, the ownership visible and the feedback close. When evidence changes, revisit the choice instead of protecting the plan.', takeaway: 'Direction → responsibility → evidence → the next decision.', items: [['Direction', 'A choice clear enough to guide investment.'], ['Responsibility', 'Authority close enough to enable action.'], ['Evidence', 'Feedback strong enough to change course.']] },
+] : [
+  { key: 'complexity', index: '01', label: 'Złożoność', title: 'Części działają.\nCałość nie.', intro: 'Zbiór dobrych inicjatyw to jeszcze nie strategia.', body: 'Technologia, inwestycje i zmiana organizacyjna rzadko zawodzą w izolacji. Kierunek gubi się na styku: konkurujących priorytetów, odziedziczonych zależności i decyzji, które należą do wszystkich, dopóki nikt ich nie podejmie.', takeaway: 'Zacznij od pokazania zależności.', items: [['Priorytety', 'Lokalny postęp. Różne definicje sukcesu.'], ['Zależności', 'Wybór jednego zespołu staje się ograniczeniem drugiego.']] },
+  { key: 'decisions', index: '02', label: 'Decyzje', title: 'Klarowność ma\nkonsekwencje.', intro: 'Nie da się zestroić wszystkiego bez dokonania wyboru.', body: 'Decyzja strategiczna wyznacza granicę. Mówi, co zasługuje na inwestycję, co trzeba zatrzymać i kto ma prawo działać. Trudność polega na tym, by te wybory obowiązywały w całej organizacji.', takeaway: 'Wybór staje się użyteczny, gdy ktoś odpowiada za jego konsekwencje.', items: [['TAK', 'Wybierz to, co realizuje strategię.'], ['NIE', 'Chroń zdolność do jej wykonania.'], ['KTO', 'Przypisz decyzji odpowiedzialnego właściciela.']] },
+  { key: 'alignment', index: '03', label: 'Zestrojenie', title: 'Jeden kierunek.\nPrzestrzeń do działania.', intro: 'Zestrojenie to relacja, nie sztywny schemat.', body: 'Architektura organizacji łączy zamysł strategiczny ze sposobem działania. Odpowiedzialność, technologia i inwestycje zaczynają się wzajemnie wzmacniać. Zespoły mogą działać różnie, bo stojące za nimi wybory są spójne.', takeaway: 'Te same części. Inna zdolność do działania.', quote: 'Spójność daje ludziom swobodę działania bez ciągnięcia organizacji w różne strony.' },
+  { key: 'execution', index: '04', label: 'Realizacja', title: 'Strategia to to,\nco wydarzy się dalej.', intro: 'Spójny system nadal potrzebuje osądu.', body: 'W realizacji decyzja spotyka się z rzeczywistością. Kierunek musi być jasny, odpowiedzialność widoczna, a informacja zwrotna blisko. Gdy zmieniają się fakty, wróć do wyboru zamiast bronić planu.', takeaway: 'Kierunek → odpowiedzialność → fakty → kolejna decyzja.', items: [['Kierunek', 'Wybór wystarczająco jasny, by prowadzić inwestycje.'], ['Odpowiedzialność', 'Uprawnienia wystarczająco blisko działania.'], ['Fakty', 'Informacja zwrotna, która pozwala zmienić kurs.']] },
+];
 ---
 <!doctype html>
 <html lang={locale}>
@@ -52,7 +44,7 @@ const stateKeys = ['fragmentation', 'tension', 'alignment', 'coherence'];
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#f4f0e7" />
     <meta name="description" content={c.intro} />
-    <title>Decision Theatre 2.0 · {c.title} · Arkadiusz Kamrowski</title>
+    <title>Decision Theatre V3 · {c.title} · Arkadiusz Kamrowski</title>
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="alternate" hreflang="pl" href={new URL(base, Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(`/en${base}`, Astro.site)} />
@@ -62,7 +54,7 @@ const stateKeys = ['fragmentation', 'tension', 'alignment', 'coherence'];
     <a class="dt-skip" href="#main">{c.skip}</a>
     <header class="dt-header">
       <a class="dt-brand" href={en ? '/en' : '/'} aria-label="Arkadiusz Kamrowski"><span class="dt-monogram">ak<span>·</span></span><span>Arkadiusz<br />Kamrowski</span></a>
-      <span class="dt-edition">Independent thinking <span>/</span> Decision Theatre <sup>02</sup></span>
+      <span class="dt-edition">Independent thinking <span>/</span> Decision Theatre <sup>03</sup></span>
       <nav aria-label={en ? 'Language and website' : 'Język i strona główna'}>
         <a href={base} lang="pl" aria-current={!en ? 'page' : undefined}>PL</a>
         <span aria-hidden="true">/</span>
@@ -70,68 +62,57 @@ const stateKeys = ['fragmentation', 'tension', 'alignment', 'coherence'];
         <a class="dt-back" href={en ? '/en' : '/'}>{c.back} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a>
       </nav>
     </header>
-    <main id="main">
-      <section class="dt-experience" data-theatre data-locale={locale} data-state="hero" aria-label="Decision Theatre">
-        <div class="dt-stage">
-          <div class="dt-register" aria-hidden="true"><span>AK / DT—02</span><span>CHOICE IS A STRUCTURAL ACT</span></div>
-          <div class="dt-scene" data-scene aria-hidden="true">
-            <div class="dt-crosshair dt-crosshair-a"></div><div class="dt-crosshair dt-crosshair-b"></div>
-            <div class="dt-orbit dt-orbit-one"></div><div class="dt-orbit dt-orbit-two"></div>
-            <svg class="dt-fallback" viewBox="0 0 600 600" fill="none">
-              <g stroke="#52634b" stroke-width="1.4" transform="translate(300 300)">
-                {Array.from({ length: 8 }, (_, i) => <g transform={`translate(${(i - 3.5) * 18} ${(i - 3.5) * -10})`}>
-                  <path d="M-120-65 60-160 160-100-20-5Z" fill="#c5c9b5" fill-opacity=".65" />
-                  <path d="M-120-65V85L-20 145V-5M-20 145 160 50V-100" />
-                </g>)}
-              </g>
-            </svg>
-            <div class="dt-canvas" data-canvas></div>
-            <div class="dt-object-label dt-label-top"><span class="dt-dot"></span> {c.diagram}</div>
-            <div class="dt-axis-labels"><span>{en ? 'Strategy' : 'Strategia'}</span><span>{en ? 'Architecture' : 'Architektura'}</span><span>{en ? 'Execution' : 'Realizacja'}</span></div>
-            <div class="dt-object-label dt-label-bottom"><span data-scene-label>01 — {c.states[0]!.name}</span><span class="dt-coordinate">x / y / z</span></div>
-          </div>
-          <div class="dt-hero" data-hero>
-            <p class="dt-kicker">Decision Theatre <span>Vol. 02</span></p>
-            <h1>{c.line1}<br /><em>{c.line2}</em></h1>
-            <p class="dt-hero-lead">{c.intro}</p>
-            <div class="dt-hero-actions"><a class="dt-link" href="#reading" data-enter>{c.enter} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 5 19 19M5 19h14V5" /></svg></a><a class="dt-quiet" href="#reading">{c.read}</a></div>
-            <p class="dt-discipline">{c.discipline}</p>
-          </div>
-          <div class="dt-state-copy" data-state-copy hidden>
-            {c.states.map((state, i) => <article class="dt-state" data-state={i} hidden>
-              <p class="dt-kicker"><span class="dt-state-number">0{i + 1}</span> / 04 <span>{stateKeys[i]}</span></p>
-              <h2>{state.name}<span>.</span></h2>
-              <p class="dt-state-short">{state.short}</p>
-              <p class="dt-state-detail">{state.detail}</p>
-              <p class="dt-question"><svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 4v12h14M14 11l5 5-5 5" /></svg> {state.question}</p>
-            </article>)}
-          </div>
-          <div class="dt-stage-bottom">
-            <p class="dt-scroll-hint" data-scroll-hint><svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3v18M5 14l7 7 7-7" /></svg> {c.scroll}</p>
-            <div class="dt-progress" data-progress hidden>
-              <span class="dt-progress-title">{c.label}</span>
-              <nav aria-label={en ? 'Transformation states' : 'Stany transformacji'}>
-                {c.states.map((state, i) => <button type="button" data-jump={i} aria-label={state.name}><span class="dt-step-index">0{i + 1}</span><span>{state.name}</span><span class="dt-step-line"></span></button>)}
-              </nav>
-            </div>
-            <button class="dt-motion" type="button" data-motion hidden data-pause-label={c.pause} data-resume-label={c.resume} aria-pressed="false">{c.pause} <span aria-hidden="true">Ⅱ</span></button>
-            <span class="dt-static-label">{c.static}</span>
-          </div>
+    <main id="main" data-theatre data-locale={locale} data-render-mode="fallback">
+      <div class="dt-world-layer" aria-hidden="true">
+        <div class="dt-scene" data-scene>
+          <div class="dt-field-grid"></div>
+          <div class="dt-scene-meta"><span>AK / DT—03</span><span>{en ? 'A continuous system' : 'Ciągły system'}</span></div>
+          <svg class="dt-fallback" viewBox="0 0 600 600" fill="none">
+            <g stroke="#52634b" stroke-width="1.4" transform="translate(290 300)">
+              <path d="M-155-55 15-145 150-75-20 20Z" fill="#c5c9b5" fill-opacity=".7" />
+              <path d="M-155-55V70L-20 140V20M-20 140 150 50V-75" />
+              <path d="M-110-88 30-160 120-110-20-35ZM-110-88V20L-20 70V-35M-20 70 120-5V-110" transform="translate(40 45)" />
+              <path d="M-210 170H210M-210 170V-170" stroke="#b2b7a8" />
+            </g>
+          </svg>
+          <div class="dt-canvas" data-canvas></div>
+          <div class="dt-scene-caption"><span data-scene-label>{en ? 'Complexity into clarity' : 'Od złożoności do klarowności'}</span><span>STRATEGY / ARCHITECTURE / EXECUTION</span></div>
+        </div>
+      </div>
+      <section class="dt-beat dt-hero" id="opening" data-beat="hero" data-beat-label={en ? 'Complexity into clarity' : 'Od złożoności do klarowności'} aria-labelledby="hero-title">
+        <div class="dt-copy">
+          <p class="dt-kicker">Decision Theatre <span>{en ? 'An editorial exploration' : 'Opowieść o decyzjach'}</span></p>
+          <h1 id="hero-title">{c.line1}<br /><em>{c.line2}</em></h1>
+          <p class="dt-hero-lead">{c.intro}</p>
+          <div class="dt-hero-actions"><a class="dt-link" href="#complexity">{c.enter} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a><a class="dt-quiet" href="#contact">{c.contact}</a></div>
+          <p class="dt-discipline">{c.discipline}</p>
+        </div>
+        <p class="dt-margin-note">{en ? 'Enterprise architecture. Technology strategy. Transformation leadership.' : 'Architektura organizacji. Strategia technologiczna. Przywództwo w transformacji.'}</p>
+      </section>
+      {chapters.map((chapter) => <section class={`dt-beat dt-${chapter.key}`} id={chapter.key} data-beat={chapter.key} data-beat-label={chapter.label} aria-labelledby={`${chapter.key}-title`}>
+        <div class="dt-copy">
+          <p class="dt-kicker"><span class="dt-chapter-index">{chapter.index}</span> {chapter.label}</p>
+          <h2 id={`${chapter.key}-title`}>{chapter.title.split('\n').map((line, i) => <Fragment>{i > 0 && <br />}{line}</Fragment>)}</h2>
+          <p class="dt-standfirst">{chapter.intro}</p>
+          <p class="dt-body">{chapter.body}</p>
+          {chapter.items && <dl class={`dt-principles ${chapter.key === 'decisions' ? 'dt-principles-choices' : ''}`}>
+            {chapter.items.map(([term, definition]) => <div><dt>{term}</dt><dd>{definition}</dd></div>)}
+          </dl>}
+          {chapter.quote && <blockquote><p>{chapter.quote}</p></blockquote>}
+          <p class="dt-takeaway">{chapter.takeaway}</p>
+        </div>
+      </section>)}
+      <section class="dt-beat dt-cta" id="contact" data-beat="contact" data-beat-label={en ? 'The next conversation' : 'Kolejna rozmowa'} aria-labelledby="cta-title">
+        <div class="dt-copy">
+          <p class="dt-kicker">{c.finalLabel}</p><h2 id="cta-title">{c.final1}<br /><em>{c.final2}</em></h2>
+          <p class="dt-body">{c.finalCopy}</p><a class="dt-link" href={en ? '/en/contact' : '/contact'}>{c.contact} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a>
+          <p class="dt-model-note">{c.note}</p>
         </div>
       </section>
-      <section class="dt-reading" id="reading" aria-labelledby="reading-title">
-        <div class="dt-reading-intro"><p class="dt-kicker">01 — 04 / {en ? 'The decision sequence' : 'Sekwencja decyzji'}</p><h2 id="reading-title">{c.reading}</h2><p>{c.readingIntro}</p></div>
-        <ol class="dt-reading-list">{c.states.map((state, i) => <li><span class="dt-reading-index">0{i + 1}</span><div><h3>{state.name}</h3><p>{state.detail}</p><strong>{state.decision}</strong></div><svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></li>)}</ol>
-      </section>
-      <section class="dt-choices" aria-label={en ? 'Three executive choices' : 'Trzy wybory przywódcze'}>
-        {[[c.yes,c.yesText],[c.no,c.noText],[c.who,c.whoText]].map(([word, text], i) => <div><span class="dt-kicker">0{i + 1} /</span><strong>{word}<span>.</span></strong><p>{text}</p></div>)}
-      </section>
-      <section class="dt-cta" aria-labelledby="cta-title">
-        <p class="dt-kicker">{c.finalLabel}</p><h2 id="cta-title">{c.final1}<br /><em>{c.final2}</em></h2><p>{c.finalCopy}</p><a class="dt-link" href={en ? '/en/contact' : '/contact'}>{c.contact} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a>
-        <p class="dt-model-note">{c.note}</p>
-      </section>
     </main>
-    <footer class="dt-footer"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><span>{c.footer}</span><a href={en ? '/en/privacy' : '/privacy'}>{en ? 'Privacy' : 'Prywatność'} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a></footer>
+    <footer class="dt-footer"><span>© {new Date().getFullYear()} Arkadiusz Kamrowski</span><span>{c.footer}</span><a href={en ? '/en/privacy' : '/privacy'}>{en ? 'Privacy' : 'Prywatność'} <svg class="dt-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 19 19 5M5 5h14v14" /></svg></a>
+      <button class="dt-motion" type="button" data-motion data-pause-label={c.pause} data-resume-label={c.resume} aria-pressed="false">{c.pause}</button>
+    </footer>
     <script>import '../../scripts/lab/decision-theatre';</script>
   </body>
 </html>

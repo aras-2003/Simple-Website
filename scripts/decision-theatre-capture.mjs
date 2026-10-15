@@ -3,67 +3,68 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const output = path.resolve('artifacts/decision-theatre');
+const output = path.resolve('artifacts/decision-theatre-v3');
 await fs.mkdir(output, {recursive:true});
 const browser = await chromium.launch({
-  executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || '/usr/bin/chromium',
+  executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || '/usr/bin/chromium',
   args:['--no-sandbox','--disable-dev-shm-usage'], headless:true,
 });
-const base = process.env.PREVIEW_BASE_URL || 'http://127.0.0.1:4173';
-const errors=[];
-const captures=[];
-const page = await browser.newPage({viewport:{width:1440,height:1000}, deviceScaleFactor:1});
-page.on('pageerror',error=>errors.push(error.message));
-page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
+const base=process.env.PREVIEW_BASE_URL || 'http://127.0.0.1:4173';
+const errors=[],captures=[];
+function observe(page){
+ page.on('pageerror',e=>errors.push(e.message));
+ page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+}
+async function settle(page){
+ await page.waitForFunction(()=>{
+  const d=document.querySelector('[data-theatre]').dataset;
+  return Math.abs(Number(d.progress)-Number(d.targetProgress))<.0001;
+ });
+ await page.waitForTimeout(350);
+}
+async function ready(page,route='/en/lab/decision-theatre-v2'){
+ observe(page);
+ await page.goto(base+route,{waitUntil:'networkidle'});
+ await page.waitForFunction(()=>document.querySelector('[data-theatre]').dataset.renderMode==='webgl');
+ await settle(page);
+}
+async function seek(page,from,to=from,fraction=0){
+ await page.evaluate(({from,to,fraction})=>{
+  const anchors=JSON.parse(document.querySelector('[data-theatre]').dataset.anchors);
+  window.scrollTo(0,anchors[from]+(anchors[to]-anchors[from])*fraction);
+ },{from,to,fraction});
+ await settle(page);
+}
 async function capture(page,name){
  const file=path.join(output,`${name}.png`);
  await page.screenshot({path:file});
  captures.push({name,file});
 }
-async function ready(page,route='/en/lab/decision-theatre-v2'){
- await page.goto(base+route,{waitUntil:'networkidle'});
- await page.waitForFunction(()=>document.querySelector('[data-theatre]')?.getAttribute('data-render-mode')==='webgl');
- await page.evaluate(()=>document.fonts.ready);
-}
-async function seek(page,p){
- await page.evaluate(p=>{
-  const el=document.querySelector('[data-theatre]');
-  const start=window.scrollY+el.getBoundingClientRect().top;
-  window.scrollTo(0,start+(el.offsetHeight-innerHeight)*(.14+p*.86));
- },p);
- await page.waitForFunction(p=>Math.abs(Number(document.querySelector('[data-theatre]').getAttribute('data-progress'))-p)<.002,p);
- await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-}
 try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
  await ready(page);
  await capture(page,'hero-desktop-en');
- for(const percent of [0,25,50,75,100]){
-  await seek(page,percent/100);
-  await capture(page,`transformation-${String(percent).padStart(3,'0')}`);
+ for(const [name,from,to,t] of [
+  ['hero-to-complexity',0,1,.6],['complexity',1,1,0],['complexity-to-decisions',1,2,.55],
+  ['decisions',2,2,0],['alignment-entry',2,3,.3],['alignment-midpoint',2,3,.6],
+  ['alignment',3,3,0],['execution-entry',3,4,.55],['execution',4,4,0],['contact',5,5,0],
+ ]){await seek(page,from,to,t);await capture(page,name);}
+ await seek(page,2,3,.6);await capture(page,'reverse-alignment-midpoint');
+ await seek(page,1);await capture(page,'reverse-complexity');
+ const renders=await page.locator('[data-theatre]').getAttribute('data-renders');
+ await page.waitForTimeout(450);
+ const idle=renders===await page.locator('[data-theatre]').getAttribute('data-renders');
+ await ready(page,'/lab/decision-theatre-v2');await capture(page,'hero-desktop-pl');
+ const phone=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+ await ready(phone);await capture(phone,'hero-mobile');
+ for(const [name,from,to,t] of [['mobile-first-transition',0,1,.65],['mobile-complexity',1,1,0],['mobile-alignment-transition',2,3,.6],['mobile-execution',4,4,0],['mobile-contact',5,5,0]]){
+  await seek(phone,from,to,t);await capture(phone,name);
  }
- const finalHash=await page.locator('[data-theatre]').getAttribute('data-renders');
- await page.waitForTimeout(400);
- const idleHash=await page.locator('[data-theatre]').getAttribute('data-renders');
- console.log('Idle rendering stopped:',finalHash===idleHash);
- for(const p of [0.75,0.5,0.25,0])await seek(page,p);
- await capture(page,'reverse-000');
- await page.locator('.dt-cta').scrollIntoViewIfNeeded();
- await capture(page,'final-cta');
- await ready(page,'/lab/decision-theatre-v2');
- await capture(page,'hero-desktop-pl');
- const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
- await ready(mobile);
- await capture(mobile,'hero-mobile');
- for(const p of [0,0.5,1]){await seek(mobile,p);await capture(mobile,`mobile-${p*100}`);}
  const reduced=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
- await reduced.goto(base+'/en/lab/decision-theatre-v2',{waitUntil:'networkidle'});
- await capture(reduced,'reduced-motion');
- const fallback=await browser.newPage({viewport:{width:1440,height:1000}});
- await fallback.addInitScript(()=>{const getContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){if(type==='webgl2'||type==='webgl')return null;return getContext.call(this,type,...args);};});
- await fallback.goto(base+'/en/lab/decision-theatre-v2',{waitUntil:'networkidle'});
- await capture(fallback,'webgl-fallback');
- await fs.writeFile(path.join(output,'capture-results.json'),JSON.stringify({date:new Date().toISOString(),errors,idleRenderingStopped:finalHash===idleHash,captures:captures.map(c=>path.basename(c.file))},null,2));
- // A labeled, inspectable sheet. Original captures remain full resolution.
+ await reduced.goto(base+'/en/lab/decision-theatre-v2',{waitUntil:'networkidle'});await capture(reduced,'reduced-motion');
+ const fallback=await browser.newPage({viewport:{width:1440,height:1000},javaScriptEnabled:false});
+ await fallback.goto(base+'/en/lab/decision-theatre-v2');await capture(fallback,'no-javascript');
+ await fs.writeFile(path.join(output,'capture-results.json'),JSON.stringify({version:3,date:new Date().toISOString(),errors,idleRenderingStopped:idle,captures:captures.map(c=>path.basename(c.file))},null,2)+'\n');
  const cellW=480,cellH=370,columns=3;
  const tiles=await Promise.all(captures.map(async(c,i)=>{
   const image=await sharp(c.file).resize(cellW,cellH-32,{fit:'contain',background:'#e3e1d8'}).png().toBuffer();
@@ -71,6 +72,6 @@ try{
   return [{input:label,left:(i%columns)*cellW,top:Math.floor(i/columns)*cellH},{input:image,left:(i%columns)*cellW,top:Math.floor(i/columns)*cellH+32}];
  }));
  await sharp({create:{width:columns*cellW,height:Math.ceil(captures.length/columns)*cellH,channels:3,background:'#e3e1d8'}}).composite(tiles.flat()).png().toFile(path.join(output,'contact-sheet.png'));
- console.log(JSON.stringify({output,captures:captures.length,errors}));
- if(errors.length)process.exitCode=1;
-}finally{await browser.close()}
+ console.log(JSON.stringify({output,captures:captures.length,idleRenderingStopped:idle,errors}));
+ if(errors.length||!idle)process.exitCode=1;
+}finally{await browser.close();}
