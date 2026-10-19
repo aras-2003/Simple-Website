@@ -1,0 +1,18 @@
+
+Running 9 tests using 1 worker
+
+(node:13514) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /oaf has no detectable WCAG 2.2 A/AA violations (5.2s)
+  ✓  2 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /contact exposes keyboard-first navigation (2.4s)
+  ✓  3 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport (1.5s)
+  ✓  4 [desktop-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (24.1s)
+  ✓  5 [desktop-chromium] › tests/decision-theatre.spec.ts:153:1 › WebGL denial and context loss preserve every editorial section (2.7s)
+  ✓  6 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system (1.4s)
+  ✓  7 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model (1.4s)
+  ✓  8 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment (1.2s)
+(node:13788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  9 [mobile-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (15.3s)
+
+  9 passed (1.3m)

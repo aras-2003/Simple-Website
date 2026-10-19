@@ -1,0 +1,558 @@
+
+Running 270 tests using 2 workers
+
+(node:8399) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8398) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › / exposes keyboard-first navigation (19.1s)
+  ✓    2 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › / has no detectable WCAG 2.2 A/AA violations (23.0s)
+  ✓    3 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › / reflows at the WCAG-equivalent 320px / 400% viewport (6.2s)
+  ✓    5 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /about exposes keyboard-first navigation (11.2s)
+  ✓    6 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /about reflows at the WCAG-equivalent 320px / 400% viewport (4.1s)
+  ✓    4 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /about has no detectable WCAG 2.2 A/AA violations (30.1s)
+  ✓    8 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /oaf exposes keyboard-first navigation (22.2s)
+  ✓    9 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /oaf reflows at the WCAG-equivalent 320px / 400% viewport (7.6s)
+  ✓   10 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /wspolpraca has no detectable WCAG 2.2 A/AA violations (12.7s)
+  ✘    7 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /oaf has no detectable WCAG 2.2 A/AA violations (35.9s)
+  ✓   11 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /wspolpraca exposes keyboard-first navigation (6.4s)
+(node:8812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   12 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa has no detectable WCAG 2.2 A/AA violations (9.5s)
+  ✓   14 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa exposes keyboard-first navigation (5.1s)
+  ✓   15 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa reflows at the WCAG-equivalent 320px / 400% viewport (4.9s)
+  ✓   13 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /wspolpraca reflows at the WCAG-equivalent 320px / 400% viewport (10.6s)
+  ✓   16 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /contact has no detectable WCAG 2.2 A/AA violations (13.7s)
+  ✓   18 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /contact reflows at the WCAG-equivalent 320px / 400% viewport (3.9s)
+  ✓   19 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /privacy has no detectable WCAG 2.2 A/AA violations (5.4s)
+  ✓   20 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /privacy exposes keyboard-first navigation (4.6s)
+  ✓   21 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /privacy reflows at the WCAG-equivalent 320px / 400% viewport (4.4s)
+  ✘   17 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /contact exposes keyboard-first navigation (10.9s)
+(node:9050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   22 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/architecture-as-decision-system has no detectable WCAG 2.2 A/AA violations (6.3s)
+  ✓   23 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/architecture-as-decision-system exposes keyboard-first navigation (7.9s)
+  ✓   25 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/portfolio-as-strategy-in-motion has no detectable WCAG 2.2 A/AA violations (6.2s)
+  ✘   24 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport (2.7s)
+  ✓   26 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/portfolio-as-strategy-in-motion exposes keyboard-first navigation (3.4s)
+(node:9140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   27 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/ai-governance-without-theatre has no detectable WCAG 2.2 A/AA violations (6.3s)
+  ✓   29 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/ai-governance-without-theatre exposes keyboard-first navigation (3.0s)
+  ✓   28 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/portfolio-as-strategy-in-motion reflows at the WCAG-equivalent 320px / 400% viewport (5.9s)
+  ✓   30 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/ai-governance-without-theatre reflows at the WCAG-equivalent 320px / 400% viewport (3.7s)
+  ✓   32 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/transformation-operating-model exposes keyboard-first navigation (3.6s)
+  ✓   33 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/transformation-operating-model reflows at the WCAG-equivalent 320px / 400% viewport (2.4s)
+  ✓   31 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/transformation-operating-model has no detectable WCAG 2.2 A/AA violations (7.4s)
+  ✓   35 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/delivery-beyond-deployment exposes keyboard-first navigation (3.9s)
+  ✓   34 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/delivery-beyond-deployment has no detectable WCAG 2.2 A/AA violations (5.4s)
+  ✓   36 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/delivery-beyond-deployment reflows at the WCAG-equivalent 320px / 400% viewport (3.4s)
+  ✓   37 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en has no detectable WCAG 2.2 A/AA violations (5.3s)
+  ✓   38 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en exposes keyboard-first navigation (3.9s)
+  ✓   39 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en reflows at the WCAG-equivalent 320px / 400% viewport (2.6s)
+  ✓   41 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/about exposes keyboard-first navigation (4.5s)
+  ✓   40 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/about has no detectable WCAG 2.2 A/AA violations (5.7s)
+  ✓   42 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/about reflows at the WCAG-equivalent 320px / 400% viewport (2.1s)
+  ✓   44 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/oaf exposes keyboard-first navigation (2.9s)
+  ✓   43 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/oaf has no detectable WCAG 2.2 A/AA violations (7.1s)
+  ✓   45 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/oaf reflows at the WCAG-equivalent 320px / 400% viewport (2.7s)
+  ✓   47 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/advisory exposes keyboard-first navigation (2.8s)
+  ✓   48 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/advisory reflows at the WCAG-equivalent 320px / 400% viewport (2.0s)
+  ✓   49 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective has no detectable WCAG 2.2 A/AA violations (3.3s)
+  ✓   46 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/advisory has no detectable WCAG 2.2 A/AA violations (10.7s)
+  ✓   50 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective exposes keyboard-first navigation (2.3s)
+  ✓   51 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective reflows at the WCAG-equivalent 320px / 400% viewport (3.5s)
+  ✓   52 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/contact has no detectable WCAG 2.2 A/AA violations (5.1s)
+  ✓   53 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/contact exposes keyboard-first navigation (3.7s)
+  ✓   54 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/contact reflows at the WCAG-equivalent 320px / 400% viewport (2.5s)
+  ✓   56 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/privacy exposes keyboard-first navigation (3.4s)
+  ✓   57 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/privacy reflows at the WCAG-equivalent 320px / 400% viewport (3.0s)
+  ✓   55 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/privacy has no detectable WCAG 2.2 A/AA violations (6.8s)
+  ✓   59 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/architecture-as-decision-system exposes keyboard-first navigation (3.8s)
+  ✓   58 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/architecture-as-decision-system has no detectable WCAG 2.2 A/AA violations (5.0s)
+  ✓   60 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport (5.3s)
+  ✓   62 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/portfolio-as-strategy-in-motion exposes keyboard-first navigation (4.9s)
+  ✓   61 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/portfolio-as-strategy-in-motion has no detectable WCAG 2.2 A/AA violations (12.4s)
+  ✓   63 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/portfolio-as-strategy-in-motion reflows at the WCAG-equivalent 320px / 400% viewport (3.2s)
+  ✓   65 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/ai-governance-without-theatre exposes keyboard-first navigation (4.3s)
+  ✓   64 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/ai-governance-without-theatre has no detectable WCAG 2.2 A/AA violations (6.6s)
+  ✓   66 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/ai-governance-without-theatre reflows at the WCAG-equivalent 320px / 400% viewport (5.2s)
+  ✓   68 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/transformation-operating-model exposes keyboard-first navigation (4.4s)
+  ✓   67 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/transformation-operating-model has no detectable WCAG 2.2 A/AA violations (10.6s)
+  ✓   69 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/transformation-operating-model reflows at the WCAG-equivalent 320px / 400% viewport (7.5s)
+  ✓   70 [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/delivery-beyond-deployment has no detectable WCAG 2.2 A/AA violations (12.6s)
+  ✓   71 [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/delivery-beyond-deployment exposes keyboard-first navigation (5.8s)
+  ✓   72 [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/delivery-beyond-deployment reflows at the WCAG-equivalent 320px / 400% viewport (5.2s)
+  ✓   73 [desktop-chromium] › tests/accessibility.spec.ts:42:1 › home honors prefers-reduced-motion (6.5s)
+  ✓   74 [desktop-chromium] › tests/browser-smoke.spec.ts:14:1 › social preview decodes at its declared dimensions (6.8s)
+  ✓   75 [desktop-chromium] › tests/browser-smoke.spec.ts:25:3 › pl contact guidance precedes input at narrow widths (9.3s)
+  ✓   76 [desktop-chromium] › tests/browser-smoke.spec.ts:36:3 › pl contact timeout restores retry, focus and Turnstile without leaking content (9.9s)
+  ✓   77 [desktop-chromium] › tests/browser-smoke.spec.ts:25:3 › en contact guidance precedes input at narrow widths (6.8s)
+  ✓   79 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › / renders core experience without browser-specific breakage (6.4s)
+  ✓   78 [desktop-chromium] › tests/browser-smoke.spec.ts:36:3 › en contact timeout restores retry, focus and Turnstile without leaking content (9.3s)
+  ✓   80 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /perspektywa renders core experience without browser-specific breakage (6.0s)
+  ✓   81 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /oaf renders core experience without browser-specific breakage (4.8s)
+  ✓   82 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /wspolpraca renders core experience without browser-specific breakage (5.3s)
+  ✓   83 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /about renders core experience without browser-specific breakage (6.6s)
+  ✓   84 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /contact renders core experience without browser-specific breakage (6.0s)
+  ✓   85 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /privacy renders core experience without browser-specific breakage (5.0s)
+  ✓   87 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/perspective renders core experience without browser-specific breakage (5.6s)
+  ✓   86 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en renders core experience without browser-specific breakage (7.1s)
+  ✓   88 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/oaf renders core experience without browser-specific breakage (4.1s)
+  ✓   89 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/advisory renders core experience without browser-specific breakage (4.8s)
+  ✓   90 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/about renders core experience without browser-specific breakage (3.8s)
+  ✓   91 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/contact renders core experience without browser-specific breakage (4.5s)
+  ✓   92 [desktop-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/privacy renders core experience without browser-specific breakage (3.5s)
+  ✓   93 [desktop-chromium] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (2.7s)
+  ✓   94 [desktop-chromium] › tests/browser-smoke.spec.ts:119:1 › Perspective begins with essays and offers relevant next paths (4.8s)
+  ✓   95 [desktop-chromium] › tests/browser-smoke.spec.ts:126:1 › OAF preserves four questions and discloses method boundaries (4.6s)
+  ✓   96 [desktop-chromium] › tests/browser-smoke.spec.ts:132:1 › advisory explains decision, process, participation and outputs (3.2s)
+  ✓   97 [desktop-chromium] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (10.5s)
+  ✓   98 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › home critical surface can be visually audited (8.5s)
+  ✓   99 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › perspective critical surface can be visually audited (7.8s)
+  ✓  100 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › oaf critical surface can be visually audited (10.0s)
+  ✓  102 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › about critical surface can be visually audited (7.6s)
+  ✓  101 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › advisory critical surface can be visually audited (8.8s)
+  -  104 [desktop-chromium] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes
+  ✓  103 [desktop-chromium] › tests/browser-smoke.spec.ts:156:3 › contact critical surface can be visually audited (7.2s)
+  ✓  105 [desktop-chromium] › tests/browser-smoke.spec.ts:178:1 › advisory gives a short scan and reveals the working mechanics by keyboard (10.3s)
+  ✓  106 [desktop-chromium] › tests/browser-smoke.spec.ts:190:1 › measurement observes intent and form outcomes without contact content or URL parameters (15.2s)
+  ✓  107 [desktop-chromium] › tests/browser-smoke.spec.ts:220:3 › measurement honours doNotTrack without using browser storage (9.1s)
+  ✓  108 [desktop-chromium] › tests/browser-smoke.spec.ts:220:3 › measurement honours globalPrivacyControl without using browser storage (5.2s)
+  ✓  109 [desktop-chromium] › tests/decision-theatre.spec.ts:34:3 › /lab/decision-theatre-v2 has accessible narrative, localised copy and a functional CTA (17.1s)
+  ✓  110 [desktop-chromium] › tests/decision-theatre.spec.ts:34:3 › /en/lab/decision-theatre-v2 has accessible narrative, localised copy and a functional CTA (16.3s)
+  ✓  111 [desktop-chromium] › tests/decision-theatre.spec.ts:46:1 › copy travels with native scroll; adjacent sections coexist without replacement (28.6s)
+  ✓  113 [desktop-chromium] › tests/decision-theatre.spec.ts:96:1 › anchors remeasure when editorial content changes instead of using a synthetic scroll quota (11.4s)
+  ✓  114 [desktop-chromium] › tests/decision-theatre.spec.ts:106:1 › keyboard anchors and pause affect the world without freezing the editorial document (8.7s)
+  ✓  115 [desktop-chromium] › tests/decision-theatre.spec.ts:123:1 › responsive composition retains readable copy, bounded scene and fewer mobile modules (18.4s)
+  ✘  112 [desktop-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (37.8s)
+  ✓  116 [desktop-chromium] › tests/decision-theatre.spec.ts:137:1 › reduced motion preserves normal-flow content and skips the graphics runtime (23.9s)
+(node:10538) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  117 [desktop-chromium] › tests/decision-theatre.spec.ts:169:1 › JavaScript unavailable still exposes the entire narrative and contact path (25.4s)
+  ✓  119 [desktop-chromium] › tests/decision-theatre.spec.ts:177:1 › lab scripts and pages stay isolated from public routes and sitemap (11.6s)
+  ✘  118 [desktop-chromium] › tests/decision-theatre.spec.ts:153:1 › WebGL denial and context loss preserve every editorial section (18.9s)
+(node:10757) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  120 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system (32.2s)
+(node:10825) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  121 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/portfolio-as-strategy-in-motion (13.1s)
+  ✓  123 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/ai-governance-without-theatre (19.7s)
+  ✘  124 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment (32.7s)
+  ✘  122 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model (41.1s)
+(node:11136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11163) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  125 [desktop-chromium] › tests/editorial-figures.spec.ts:36:3 › delivery essay pl preserves the three measurement levels alongside the new artwork (17.5s)
+  ✓  126 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/architecture-as-decision-system (18.1s)
+  ✓  128 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/transformation-operating-model (25.0s)
+  ✓  127 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/portfolio-as-strategy-in-motion (26.5s)
+  ✓  129 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/ai-governance-without-theatre (21.4s)
+  ✓  130 [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/delivery-beyond-deployment (21.7s)
+  ✓  131 [desktop-chromium] › tests/editorial-figures.spec.ts:36:3 › delivery essay en preserves the three measurement levels alongside the new artwork (12.8s)
+  ✓  132 [desktop-chromium] › tests/privacy.spec.ts:7:3 › pl privacy notice offers accessible email and explains required data (12.2s)
+  ✓  133 [desktop-chromium] › tests/privacy.spec.ts:7:3 › en privacy notice offers accessible email and explains required data (9.5s)
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:15:08.824Z"}
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:15:08.946Z"}
+  ✓  134 [desktop-chromium] › tests/privacy.spec.ts:37:3 › pl form, payload, Worker and notice share the data contract (11.9s)
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:15:12.958Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:15:13.019Z"}
+  ✓  135 [desktop-chromium] › tests/privacy.spec.ts:37:3 › en form, payload, Worker and notice share the data contract (5.5s)
+(node:11530) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  136 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › / exposes keyboard-first navigation (11.8s)
+  ✓  137 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › / has no detectable WCAG 2.2 A/AA violations (15.7s)
+  ✓  138 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › / reflows at the WCAG-equivalent 320px / 400% viewport (4.8s)
+  ✓  140 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /about exposes keyboard-first navigation (4.1s)
+  ✓  139 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /about has no detectable WCAG 2.2 A/AA violations (6.9s)
+  ✓  141 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /about reflows at the WCAG-equivalent 320px / 400% viewport (6.8s)
+  ✓  142 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /oaf has no detectable WCAG 2.2 A/AA violations (8.8s)
+  ✓  143 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /oaf exposes keyboard-first navigation (2.8s)
+  ✓  144 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /oaf reflows at the WCAG-equivalent 320px / 400% viewport (4.3s)
+  ✓  146 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /wspolpraca exposes keyboard-first navigation (4.1s)
+  ✓  145 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /wspolpraca has no detectable WCAG 2.2 A/AA violations (8.6s)
+  ✓  147 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /wspolpraca reflows at the WCAG-equivalent 320px / 400% viewport (4.1s)
+  ✓  148 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa has no detectable WCAG 2.2 A/AA violations (9.1s)
+  ✓  149 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa exposes keyboard-first navigation (4.5s)
+  ✓  150 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa reflows at the WCAG-equivalent 320px / 400% viewport (2.7s)
+  ✓  152 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /contact exposes keyboard-first navigation (3.6s)
+  ✓  151 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /contact has no detectable WCAG 2.2 A/AA violations (6.7s)
+  ✓  153 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /contact reflows at the WCAG-equivalent 320px / 400% viewport (3.7s)
+  ✓  155 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /privacy exposes keyboard-first navigation (3.8s)
+  ✓  154 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /privacy has no detectable WCAG 2.2 A/AA violations (7.7s)
+  ✓  156 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /privacy reflows at the WCAG-equivalent 320px / 400% viewport (3.2s)
+  ✓  158 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/architecture-as-decision-system exposes keyboard-first navigation (4.5s)
+  ✓  157 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/architecture-as-decision-system has no detectable WCAG 2.2 A/AA violations (9.7s)
+  ✓  159 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport (4.2s)
+  ✓  161 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/portfolio-as-strategy-in-motion exposes keyboard-first navigation (8.1s)
+  ✓  160 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/portfolio-as-strategy-in-motion has no detectable WCAG 2.2 A/AA violations (12.2s)
+  ✓  162 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/portfolio-as-strategy-in-motion reflows at the WCAG-equivalent 320px / 400% viewport (2.9s)
+  ✓  164 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/ai-governance-without-theatre exposes keyboard-first navigation (18.2s)
+  ✓  163 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/ai-governance-without-theatre has no detectable WCAG 2.2 A/AA violations (23.3s)
+  ✓  165 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/ai-governance-without-theatre reflows at the WCAG-equivalent 320px / 400% viewport (5.6s)
+  ✓  167 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/transformation-operating-model exposes keyboard-first navigation (13.1s)
+  ✓  166 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/transformation-operating-model has no detectable WCAG 2.2 A/AA violations (16.7s)
+  ✓  168 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/transformation-operating-model reflows at the WCAG-equivalent 320px / 400% viewport (4.2s)
+  ✓  170 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /perspektywa/delivery-beyond-deployment exposes keyboard-first navigation (3.8s)
+  ✓  169 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /perspektywa/delivery-beyond-deployment has no detectable WCAG 2.2 A/AA violations (7.7s)
+  ✓  171 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/delivery-beyond-deployment reflows at the WCAG-equivalent 320px / 400% viewport (4.1s)
+  ✓  173 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en exposes keyboard-first navigation (6.7s)
+  ✓  172 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en has no detectable WCAG 2.2 A/AA violations (11.0s)
+  ✓  174 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en reflows at the WCAG-equivalent 320px / 400% viewport (3.8s)
+  ✓  175 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/about has no detectable WCAG 2.2 A/AA violations (6.0s)
+  ✓  176 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/about exposes keyboard-first navigation (3.0s)
+  ✓  177 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/about reflows at the WCAG-equivalent 320px / 400% viewport (3.1s)
+  ✓  178 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/oaf has no detectable WCAG 2.2 A/AA violations (5.5s)
+  ✓  179 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/oaf exposes keyboard-first navigation (3.0s)
+  ✓  180 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/oaf reflows at the WCAG-equivalent 320px / 400% viewport (2.6s)
+  ✓  182 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/advisory exposes keyboard-first navigation (3.3s)
+  ✓  181 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/advisory has no detectable WCAG 2.2 A/AA violations (5.7s)
+  ✓  183 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/advisory reflows at the WCAG-equivalent 320px / 400% viewport (3.4s)
+  ✓  184 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective has no detectable WCAG 2.2 A/AA violations (6.9s)
+  ✓  185 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective exposes keyboard-first navigation (3.9s)
+  ✓  186 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective reflows at the WCAG-equivalent 320px / 400% viewport (3.1s)
+  ✓  188 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/contact exposes keyboard-first navigation (3.8s)
+  ✓  187 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/contact has no detectable WCAG 2.2 A/AA violations (7.9s)
+  ✓  189 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/contact reflows at the WCAG-equivalent 320px / 400% viewport (2.5s)
+  ✓  191 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/privacy exposes keyboard-first navigation (6.4s)
+  ✓  190 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/privacy has no detectable WCAG 2.2 A/AA violations (8.7s)
+  ✓  192 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/privacy reflows at the WCAG-equivalent 320px / 400% viewport (2.0s)
+  ✓  194 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/architecture-as-decision-system exposes keyboard-first navigation (3.8s)
+  ✓  193 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/architecture-as-decision-system has no detectable WCAG 2.2 A/AA violations (6.5s)
+  ✓  195 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport (3.1s)
+  ✓  197 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/portfolio-as-strategy-in-motion exposes keyboard-first navigation (7.7s)
+  ✓  196 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/portfolio-as-strategy-in-motion has no detectable WCAG 2.2 A/AA violations (10.7s)
+  ✓  198 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/portfolio-as-strategy-in-motion reflows at the WCAG-equivalent 320px / 400% viewport (9.2s)
+  ✓  199 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/ai-governance-without-theatre has no detectable WCAG 2.2 A/AA violations (13.0s)
+  ✓  200 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/ai-governance-without-theatre exposes keyboard-first navigation (11.5s)
+  ✓  201 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/ai-governance-without-theatre reflows at the WCAG-equivalent 320px / 400% viewport (8.2s)
+  ✓  203 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/transformation-operating-model exposes keyboard-first navigation (6.6s)
+  ✓  202 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/transformation-operating-model has no detectable WCAG 2.2 A/AA violations (11.0s)
+  ✓  204 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/transformation-operating-model reflows at the WCAG-equivalent 320px / 400% viewport (7.0s)
+  ✓  206 [mobile-chromium] › tests/accessibility.spec.ts:24:3 › /en/perspective/delivery-beyond-deployment exposes keyboard-first navigation (7.1s)
+  ✓  205 [mobile-chromium] › tests/accessibility.spec.ts:15:3 › /en/perspective/delivery-beyond-deployment has no detectable WCAG 2.2 A/AA violations (12.5s)
+  ✓  207 [mobile-chromium] › tests/accessibility.spec.ts:34:3 › /en/perspective/delivery-beyond-deployment reflows at the WCAG-equivalent 320px / 400% viewport (8.4s)
+  ✓  208 [mobile-chromium] › tests/accessibility.spec.ts:42:1 › home honors prefers-reduced-motion (8.6s)
+  ✓  209 [mobile-chromium] › tests/browser-smoke.spec.ts:14:1 › social preview decodes at its declared dimensions (5.1s)
+  ✓  210 [mobile-chromium] › tests/browser-smoke.spec.ts:25:3 › pl contact guidance precedes input at narrow widths (6.2s)
+  ✓  212 [mobile-chromium] › tests/browser-smoke.spec.ts:25:3 › en contact guidance precedes input at narrow widths (5.8s)
+  ✓  211 [mobile-chromium] › tests/browser-smoke.spec.ts:36:3 › pl contact timeout restores retry, focus and Turnstile without leaking content (14.0s)
+  ✓  214 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › / renders core experience without browser-specific breakage (17.5s)
+  ✓  213 [mobile-chromium] › tests/browser-smoke.spec.ts:36:3 › en contact timeout restores retry, focus and Turnstile without leaking content (27.0s)
+  ✓  215 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /perspektywa renders core experience without browser-specific breakage (11.0s)
+  ✓  216 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /oaf renders core experience without browser-specific breakage (8.2s)
+  ✓  217 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /wspolpraca renders core experience without browser-specific breakage (6.4s)
+  ✓  218 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /about renders core experience without browser-specific breakage (6.3s)
+  ✓  219 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /contact renders core experience without browser-specific breakage (6.0s)
+  ✓  220 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /privacy renders core experience without browser-specific breakage (5.9s)
+  ✓  222 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/perspective renders core experience without browser-specific breakage (3.4s)
+  ✓  221 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en renders core experience without browser-specific breakage (3.5s)
+  ✓  223 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/oaf renders core experience without browser-specific breakage (1.8s)
+  ✓  224 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/advisory renders core experience without browser-specific breakage (2.0s)
+  ✓  225 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/about renders core experience without browser-specific breakage (2.5s)
+  ✓  226 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/contact renders core experience without browser-specific breakage (2.6s)
+  ✓  228 [mobile-chromium] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (2.2s)
+  ✓  227 [mobile-chromium] › tests/browser-smoke.spec.ts:95:3 › /en/privacy renders core experience without browser-specific breakage (2.9s)
+  ✓  229 [mobile-chromium] › tests/browser-smoke.spec.ts:119:1 › Perspective begins with essays and offers relevant next paths (2.7s)
+  ✓  230 [mobile-chromium] › tests/browser-smoke.spec.ts:126:1 › OAF preserves four questions and discloses method boundaries (2.3s)
+  ✓  231 [mobile-chromium] › tests/browser-smoke.spec.ts:132:1 › advisory explains decision, process, participation and outputs (1.6s)
+  ✓  232 [mobile-chromium] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (4.9s)
+  ✓  233 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › home critical surface can be visually audited (4.6s)
+  ✓  234 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › perspective critical surface can be visually audited (3.6s)
+  ✓  235 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › oaf critical surface can be visually audited (2.7s)
+  ✓  236 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › advisory critical surface can be visually audited (3.3s)
+  ✓  237 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › about critical surface can be visually audited (5.2s)
+  ✓  238 [mobile-chromium] › tests/browser-smoke.spec.ts:156:3 › contact critical surface can be visually audited (3.5s)
+  ✓  239 [mobile-chromium] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes (1.3s)
+  ✓  240 [mobile-chromium] › tests/browser-smoke.spec.ts:178:1 › advisory gives a short scan and reveals the working mechanics by keyboard (1.9s)
+  ✓  242 [mobile-chromium] › tests/browser-smoke.spec.ts:220:3 › measurement honours doNotTrack without using browser storage (1.6s)
+  ✓  241 [mobile-chromium] › tests/browser-smoke.spec.ts:190:1 › measurement observes intent and form outcomes without contact content or URL parameters (3.7s)
+  ✓  243 [mobile-chromium] › tests/browser-smoke.spec.ts:220:3 › measurement honours globalPrivacyControl without using browser storage (2.0s)
+  ✓  244 [mobile-chromium] › tests/decision-theatre.spec.ts:34:3 › /lab/decision-theatre-v2 has accessible narrative, localised copy and a functional CTA (6.0s)
+  ✓  245 [mobile-chromium] › tests/decision-theatre.spec.ts:34:3 › /en/lab/decision-theatre-v2 has accessible narrative, localised copy and a functional CTA (5.6s)
+  ✓  246 [mobile-chromium] › tests/decision-theatre.spec.ts:46:1 › copy travels with native scroll; adjacent sections coexist without replacement (11.1s)
+  ✓  248 [mobile-chromium] › tests/decision-theatre.spec.ts:96:1 › anchors remeasure when editorial content changes instead of using a synthetic scroll quota (2.7s)
+  ✓  249 [mobile-chromium] › tests/decision-theatre.spec.ts:106:1 › keyboard anchors and pause affect the world without freezing the editorial document (4.2s)
+  ✓  250 [mobile-chromium] › tests/decision-theatre.spec.ts:123:1 › responsive composition retains readable copy, bounded scene and fewer mobile modules (4.2s)
+  ✓  251 [mobile-chromium] › tests/decision-theatre.spec.ts:137:1 › reduced motion preserves normal-flow content and skips the graphics runtime (2.1s)
+  ✓  252 [mobile-chromium] › tests/decision-theatre.spec.ts:153:1 › WebGL denial and context loss preserve every editorial section (2.8s)
+  ✓  253 [mobile-chromium] › tests/decision-theatre.spec.ts:169:1 › JavaScript unavailable still exposes the entire narrative and contact path (1.5s)
+  ✓  254 [mobile-chromium] › tests/decision-theatre.spec.ts:177:1 › lab scripts and pages stay isolated from public routes and sitemap (2.9s)
+  ✘  247 [mobile-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (13.9s)
+  ✓  255 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system (4.6s)
+(node:13172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  256 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model (2.7s)
+  ✓  258 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/ai-governance-without-theatre (3.3s)
+  ✓  259 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment (2.7s)
+  ✓  260 [mobile-chromium] › tests/editorial-figures.spec.ts:36:3 › delivery essay pl preserves the three measurement levels alongside the new artwork (1.8s)
+  ✓  257 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/portfolio-as-strategy-in-motion (6.8s)
+  ✓  261 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/architecture-as-decision-system (4.3s)
+  ✓  262 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/portfolio-as-strategy-in-motion (4.0s)
+  ✓  263 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/transformation-operating-model (3.0s)
+  ✓  264 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/ai-governance-without-theatre (2.8s)
+  ✓  265 [mobile-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/delivery-beyond-deployment (2.1s)
+  ✓  266 [mobile-chromium] › tests/editorial-figures.spec.ts:36:3 › delivery essay en preserves the three measurement levels alongside the new artwork (2.2s)
+  ✓  267 [mobile-chromium] › tests/privacy.spec.ts:7:3 › pl privacy notice offers accessible email and explains required data (6.8s)
+  ✓  268 [mobile-chromium] › tests/privacy.spec.ts:7:3 › en privacy notice offers accessible email and explains required data (6.2s)
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:22:34.583Z"}
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:22:34.624Z"}
+  ✓  269 [mobile-chromium] › tests/privacy.spec.ts:37:3 › pl form, payload, Worker and notice share the data contract (4.3s)
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:22:35.534Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:22:35.571Z"}
+  ✓  270 [mobile-chromium] › tests/privacy.spec.ts:37:3 › en form, payload, Worker and notice share the data contract (3.3s)
+
+
+  1) [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /oaf has no detectable WCAG 2.2 A/AA violations
+
+    Test timeout of 30000ms exceeded.
+
+    Error: ENOENT: no such file or directory, open '<workspace>/test-results/.playwright-artifacts-1/d176b331d575478a658973e7e4a22cb0.zip'
+
+    Error Context: test-results/accessibility--oaf-has-no--ecf0d-le-WCAG-2-2-A-AA-violations-desktop-chromium/error-context.md
+
+  2) [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /contact exposes keyboard-first navigation
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator(':focus')
+    Expected: "#main"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator(':focus')
+
+
+      26 |     await page.keyboard.press('Tab');
+      27 |     const first = page.locator(':focus');
+    > 28 |     await expect(first).toHaveAttribute('href', '#main');
+         |                         ^
+      29 |     await expect(first).toBeVisible();
+      30 |     await page.keyboard.press('Enter');
+      31 |     await expect(page.locator('#main')).toBeFocused();
+        at <workspace>/tests/accessibility.spec.ts:28:25
+
+    Error Context: test-results/accessibility--contact-exposes-keyboard-first-navigation-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/accessibility--contact-exposes-keyboard-first-navigation-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/accessibility--contact-exposes-keyboard-first-navigation-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 321
+    Received:    403
+
+      36 |     await page.goto(path);
+      37 |     const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+    > 38 |     expect(sizes.scroll).toBeLessThanOrEqual(sizes.client + 1);
+         |                          ^
+      39 |   });
+      40 | }
+      41 |
+        at <workspace>/tests/accessibility.spec.ts:38:26
+
+    Error Context: test-results/accessibility--perspektywa-9e79b-uivalent-320px-400-viewport-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/accessibility--perspektywa-9e79b-uivalent-320px-400-viewport-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/accessibility--perspektywa-9e79b-uivalent-320px-400-viewport-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForTimeout: Test timeout of 30000ms exceeded.
+
+       7 |     const d=(el as HTMLElement).dataset;return Math.abs(Number(d['progress'])-Number(d['targetProgress']));
+       8 |   })).toBeLessThan(.0001);
+    >  9 |   await page.waitForTimeout(320);
+         |              ^
+      10 | }
+      11 | async function ready(page:Page,route=routes[1]!){
+      12 |   await page.goto(route,{waitUntil:'networkidle'});
+        at settled (<workspace>/tests/decision-theatre.spec.ts:9:14)
+        at seek (<workspace>/tests/decision-theatre.spec.ts:23:3)
+        at <workspace>/tests/decision-theatre.spec.ts:77:5
+
+    Error Context: test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [desktop-chromium] › tests/decision-theatre.spec.ts:153:1 › WebGL denial and context loss preserve every editorial section
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-theatre]')
+    Expected: "webgl"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('[data-theatre]')
+
+
+      11 | async function ready(page:Page,route=routes[1]!){
+      12 |   await page.goto(route,{waitUntil:'networkidle'});
+    > 13 |   await expect(page.locator('[data-theatre]')).toHaveAttribute('data-render-mode','webgl');
+         |                                                ^
+      14 |   await settled(page);
+      15 | }
+      16 | async function seek(page:Page,index:number,fraction=0){
+        at ready (<workspace>/tests/decision-theatre.spec.ts:13:48)
+        at <workspace>/tests/decision-theatre.spec.ts:154:3
+
+    Error Context: test-results/decision-theatre-WebGL-den-5e017-rve-every-editorial-section-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/decision-theatre-WebGL-den-5e017-rve-every-editorial-section-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/decision-theatre-WebGL-den-5e017-rve-every-editorial-section-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.editorial-figure')
+
+
+       7 |       await page.goto(`/${locale === 'pl' ? 'perspektywa' : 'en/perspective'}/${slug}`);
+       8 |       const figure = page.locator(slug === 'delivery-beyond-deployment' ? '.editorial-figure--delivery' : '.editorial-figure');
+    >  9 |       await figure.scrollIntoViewIfNeeded();
+         |                    ^
+      10 |       await expect(figure).toBeVisible();
+      11 |       await figure.locator('img').evaluate(async (img: HTMLImageElement) => {
+      12 |         await img.decode();
+        at <workspace>/tests/editorial-figures.spec.ts:9:20
+
+    Error Context: test-results/editorial-figures-editoria-37b29-itecture-as-decision-system-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/editorial-figures-editoria-37b29-itecture-as-decision-system-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/editorial-figures-editoria-37b29-itecture-as-decision-system-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.evaluate: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.editorial-figure').locator('img')
+
+
+       9 |       await figure.scrollIntoViewIfNeeded();
+      10 |       await expect(figure).toBeVisible();
+    > 11 |       await figure.locator('img').evaluate(async (img: HTMLImageElement) => {
+         |                                   ^
+      12 |         await img.decode();
+      13 |         if (!img.naturalWidth) throw new Error('Empty artwork');
+      14 |       });
+        at <workspace>/tests/editorial-figures.spec.ts:11:35
+
+    Error Context: test-results/editorial-figures-editoria-a11d6-nsformation-operating-model-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/editorial-figures-editoria-a11d6-nsformation-operating-model-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/editorial-figures-editoria-a11d6-nsformation-operating-model-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.evaluate: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.editorial-figure--delivery').locator('img')
+
+
+      18 |       await figure.screenshot({ style: '.skip-link:not(:focus) { visibility: hidden; }', path: `artifacts/visual/editorial-${locale}-${slug}-${testInfo.project.name}.png` });
+      19 |       // Exercise the fallback separately: a valid AVIF must not hide a broken WebP.
+    > 20 |       await figure.locator('img').evaluate((img: HTMLImageElement) => {
+         |                                   ^
+      21 |         img.parentElement?.querySelector('source')?.remove();
+      22 |         img.removeAttribute('srcset');
+      23 |       });
+        at <workspace>/tests/editorial-figures.spec.ts:20:35
+
+    Error Context: test-results/editorial-figures-editoria-df3bd--delivery-beyond-deployment-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/editorial-figures-editoria-df3bd--delivery-beyond-deployment-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/editorial-figures-editoria-df3bd--delivery-beyond-deployment-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) [mobile-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors
+
+    Error: expect(received).toBeTruthy()
+
+    Received: false
+
+      85 |   for(const index of [3,2,1]){
+      86 |     await seek(page,index,.3);
+    > 87 |     expect((await page.locator('canvas').screenshot()).equals(images.get(index)!)).toBeTruthy();
+         |                                                                                    ^
+      88 |   }
+      89 |   await page.mouse.wheel(0,250);await settled(page);
+      90 |   const forward=Number(await page.locator('[data-theatre]').getAttribute('data-progress'));
+        at <workspace>/tests/decision-theatre.spec.ts:87:84
+
+    Error Context: test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/decision-theatre-section-g-511bb-idle-loop-or-console-errors-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9 failed
+    [desktop-chromium] › tests/accessibility.spec.ts:15:3 › /oaf has no detectable WCAG 2.2 A/AA violations
+    [desktop-chromium] › tests/accessibility.spec.ts:24:3 › /contact exposes keyboard-first navigation
+    [desktop-chromium] › tests/accessibility.spec.ts:34:3 › /perspektywa/architecture-as-decision-system reflows at the WCAG-equivalent 320px / 400% viewport
+    [desktop-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors
+    [desktop-chromium] › tests/decision-theatre.spec.ts:153:1 › WebGL denial and context loss preserve every editorial section
+    [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system
+    [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model
+    [desktop-chromium] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment
+    [mobile-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors
+  1 skipped
+  260 passed (21.4m)

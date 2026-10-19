@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-19T17:28:24.946Z",
+  "method": "360 native rAF scroll requests, two forward/reverse sweeps per emulated viewport; software rendering is functional evidence only.",
+  "results": [
+    {
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "requestedDpr": 2,
+      "errors": [],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+      "scrollCoverage": {
+        "minProgress": 0,
+        "maxProgress": 4.48524,
+        "sceneRenders": 356
+      },
+      "rafFrameIntervalsMs": {
+        "samples": 359,
+        "median": 16.699999999999818,
+        "p95": 33.30000000000018,
+        "max": 100,
+        "over32": 24,
+        "over50": 2
+      },
+      "longTasks": [],
+      "heapBytes": {
+        "before": 8893948,
+        "after": 8139894,
+        "note": "Unforced GC; Chromium-only diagnostic, not retained memory or a leak proof."
+      },
+      "idleRenders": 0,
+      "scene": {
+        "study": {
+          "frame": "complexity",
+          "candidate": "incision",
+          "quality": "studio",
+          "detail": false
+        },
+        "progress": 0,
+        "initializationCpuMs": 518.5,
+        "canvas": [
+          2400,
+          1500
+        ],
+        "framesMs": [
+          1.699999988079071,
+          0.699999988079071,
+          0.6000000238418579,
+          1.399999976158142
+        ],
+        "environmentSetupCpuMs": 101.30000001192093,
+        "renderInfo": {
+          "geometries": 19,
+          "textures": 6,
+          "calls": 40,
+          "triangles": 19530
+        },
+        "environment": {
+          "width": 768,
+          "height": 1024,
+          "type": "half-float"
+        },
+        "reflectionTarget": [
+          768,
+          768
+        ],
+        "nativeGPUPerformance": "NOT VERIFIED"
+      }
+    },
+    {
+      "device": "mobile-emulation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "requestedDpr": 3,
+      "errors": [],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+      "scrollCoverage": {
+        "minProgress": 0,
+        "maxProgress": 4.48568,
+        "sceneRenders": 356
+      },
+      "rafFrameIntervalsMs": {
+        "samples": 359,
+        "median": 16.699999999999818,
+        "p95": 16.700000000000728,
+        "max": 16.800000000000182,
+        "over32": 0,
+        "over50": 0
+      },
+      "longTasks": [],
+      "heapBytes": {
+        "before": 7274753,
+        "after": 8827226,
+        "note": "Unforced GC; Chromium-only diagnostic, not retained memory or a leak proof."
+      },
+      "idleRenders": 0,
+      "scene": {
+        "study": {
+          "frame": "complexity",
+          "candidate": "incision",
+          "quality": "studio",
+          "detail": false
+        },
+        "progress": 0,
+        "initializationCpuMs": 458.60000002384186,
+        "canvas": [
+          487,
+          1055
+        ],
+        "framesMs": [
+          1.2000000476837158,
+          0.800000011920929,
+          2,
+          0.699999988079071
+        ],
+        "environmentSetupCpuMs": 125.90000003576279,
+        "renderInfo": {
+          "geometries": 19,
+          "textures": 6,
+          "calls": 40,
+          "triangles": 19530
+        },
+        "environment": {
+          "width": 768,
+          "height": 1024,
+          "type": "half-float"
+        },
+        "reflectionTarget": [
+          384,
+          384
+        ],
+        "nativeGPUPerformance": "NOT VERIFIED"
+      }
+    }
+  ]
+}

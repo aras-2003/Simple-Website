@@ -1,0 +1,109 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:static
+> npm run check && npm run build:astro && node tests/static.mjs && npm run test:editorial && npm run test:worker && npm run test:contact && npm run test:predeploy && node --check scripts/production-smoke.mjs
+
+
+> arkadiusz-kamrowski-site@2.0.0 check
+> astro check
+
+18:38:45 [content] Syncing content
+18:38:47 [content] Synced content
+18:38:47 [types] Generated 27.97s
+18:38:47 [check] Getting diagnostics for Astro files in <workspace>...
+Result (61 files):
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> arkadiusz-kamrowski-site@2.0.0 build:astro
+> astro build
+
+18:40:35 [content] Syncing content
+18:40:35 [content] Synced content
+18:40:35 [types] Generated 6.88s
+18:40:35 [build] output: "static"
+18:40:35 [build] mode: "static"
+18:40:35 [build] directory: <workspace>/dist/
+18:40:35 [build] Collecting build info...
+18:40:35 [build] ✓ Completed in 7.04s.
+18:40:35 [build] Building static entrypoints...
+18:40:41 [vite] ✓ built in 5.50s
+18:40:42 [WARN] [vite] [plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+18:40:42 [vite] ✓ built in 916ms
+18:40:42 [build] Rearranging server assets...
+
+ generating static routes
+18:40:42   ├─ /.well-known/security.txt (+45ms)
+18:40:42   ├─ /404.html (+21ms)
+18:40:42   ├─ /about/index.html (+16ms)
+18:40:42   ├─ /contact/index.html (+26ms)
+18:40:42   ├─ /en/404/index.html (+13ms)
+18:40:42   ├─ /en/about/index.html (+20ms)
+18:40:42   ├─ /en/advisory/index.html (+26ms)
+18:40:42   ├─ /en/contact/index.html (+10ms)
+18:40:42   ├─ /en/lab/decision-theatre-v2/index.html (+22ms)
+18:40:42   ├─ /en/oaf/index.html (+64ms)
+18:40:42   ├─ /en/perspective/architecture-as-decision-system/index.html (+26ms)
+18:40:42   ├─ /en/perspective/portfolio-as-strategy-in-motion/index.html (+5ms)
+18:40:42   ├─ /en/perspective/ai-governance-without-theatre/index.html (+8ms)
+18:40:42   ├─ /en/perspective/transformation-operating-model/index.html (+17ms)
+18:40:42   ├─ /en/perspective/delivery-beyond-deployment/index.html (+10ms)
+18:40:42   ├─ /en/perspective/index.html (+15ms)
+18:40:42   ├─ /en/privacy/index.html (+23ms)
+18:40:42   ├─ /en/index.html (+23ms)
+18:40:43   ├─ /lab/decision-theatre-v2/index.html (+13ms)
+18:40:43   ├─ /lab/decision-theatre-v4/index.html (+16ms)
+18:40:43   ├─ /oaf/index.html (+19ms)
+18:40:43   ├─ /perspektywa/architecture-as-decision-system/index.html (+21ms)
+18:40:43   ├─ /perspektywa/portfolio-as-strategy-in-motion/index.html (+9ms)
+18:40:43   ├─ /perspektywa/ai-governance-without-theatre/index.html (+17ms)
+18:40:43   ├─ /perspektywa/transformation-operating-model/index.html (+19ms)
+18:40:43   ├─ /perspektywa/delivery-beyond-deployment/index.html (+11ms)
+18:40:43   ├─ /perspektywa/index.html (+120ms)
+18:40:43   ├─ /privacy/index.html (+43ms)
+18:40:43   ├─ /robots.txt (+15ms)
+18:40:43   ├─ /wspolpraca/index.html (+9ms)
+18:40:43   ├─ /index.html (+9ms)
+18:40:43 ✓ Completed in 797ms.
+
+18:40:43 [build] ✓ Completed in 7.71s.
+18:40:43 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+18:40:43 [build] 29 page(s) built in 14.95s
+18:40:43 [build] Complete!
+STATIC VALIDATION PASS · 22 translated routes + executive narrative/visual/SEO/privacy/internal-link/robots/sitemap gates · https://arkadiuszkamrowski.com
+
+> arkadiusz-kamrowski-site@2.0.0 test:editorial
+> node tests/editorial-assets.mjs && node tests/editorial-language.mjs
+
+PASS: all 20 editorial derivatives fully decode, have exact dimensions and meet transfer budgets.
+Editorial punctuation checked in 20 sources; English 404 generated.
+
+> arkadiusz-kamrowski-site@2.0.0 test:worker
+> node tests/worker-contact.mjs && node tests/404-worker.mjs && node tests/measurement.mjs && node tests/privacy-logging.mjs
+
+{"event":"contact_sent","topic":"diagnostic","locale":"en","at":"2026-10-19T16:40:55.043Z"}
+{"event":"contact_sent","topic":"diagnostic","locale":"en","at":"2026-10-19T16:40:55.091Z"}
+{"event":"contact_sent","topic":"diagnostic","locale":"en","at":"2026-10-19T16:40:55.094Z"}
+{"event":"contact_sent","topic":"design","locale":"en","at":"2026-10-19T16:40:55.103Z"}
+{"event":"contact_sent","topic":"execution","locale":"en","at":"2026-10-19T16:40:55.104Z"}
+{"event":"contact_sent","topic":"speaking","locale":"en","at":"2026-10-19T16:40:55.105Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T16:40:55.109Z"}
+WORKER CONTACT TEST PASS · validation, Turnstile, rate limit, Resend, canonical + legacy redirects and staging noindex
+PL and EN 404 worker routing: PASS
+MEASUREMENT PASS · strict schema, no PII logging, opt-outs, body limits, origin and separate rate limits
+PRIVACY LOGGING PASS · Worker and local server, both providers, success/error/exception/real timeout, no synthetic data or token leakage
+
+> arkadiusz-kamrowski-site@2.0.0 test:contact
+> node tests/contact-api.mjs
+
+CONTACT API TEST PASS · validation, origin, size, timing, rate-limit identity, Turnstile and delivery failure
+
+> arkadiusz-kamrowski-site@2.0.0 test:predeploy
+> python3 tests/predeploy_check.py
+
+Production Worker predeploy contract tests: PASS

@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-19T16:39:44.850Z",
+  "errors": [],
+  "measurements": [
+    {
+      "device": "desktop",
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "studio",
+        "detail": false
+      },
+      "framesMs": [
+        26.599999964237213,
+        2.5,
+        6.600000023841858,
+        1.100000023841858
+      ],
+      "environmentSetupCpuMs": 1852.5999999642372,
+      "renderInfo": {
+        "geometries": 18,
+        "textures": 6,
+        "calls": 41,
+        "triangles": 20118
+      },
+      "environment": {
+        "width": 768,
+        "height": 1024,
+        "type": "half-float"
+      },
+      "reflectionTarget": [
+        768,
+        768
+      ],
+      "nativeGPUPerformance": "NOT VERIFIED"
+    },
+    {
+      "device": "mobile",
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "studio",
+        "detail": false
+      },
+      "framesMs": [
+        7.900000035762787,
+        2.5,
+        2.099999964237213,
+        7.200000047683716
+      ],
+      "environmentSetupCpuMs": 263.0999999642372,
+      "renderInfo": {
+        "geometries": 18,
+        "textures": 6,
+        "calls": 41,
+        "triangles": 20118
+      },
+      "environment": {
+        "width": 768,
+        "height": 1024,
+        "type": "half-float"
+      },
+      "reflectionTarget": [
+        384,
+        384
+      ],
+      "nativeGPUPerformance": "NOT VERIFIED"
+    }
+  ],
+  "captures": [
+    "hero",
+    "hero-exit",
+    "complexity-entry",
+    "complexity-midpoint",
+    "decision-entry",
+    "transformation-25",
+    "transformation-50",
+    "transformation-75",
+    "coherence",
+    "execution",
+    "final-cta",
+    "reverse-decision",
+    "reverse-hero",
+    "material-detail",
+    "mobile-hero",
+    "mobile-complexity",
+    "mobile-decision",
+    "mobile-transformation",
+    "mobile-coherence",
+    "mobile-execution",
+    "mobile-cta",
+    "narrow-hero",
+    "reduced-motion"
+  ]
+}

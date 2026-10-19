@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-19T17:22:33.000Z",
+  "errors": [],
+  "measurements": [
+    {
+      "device": "desktop",
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "studio",
+        "detail": false
+      },
+      "progress": 0,
+      "initializationCpuMs": 1771.800000011921,
+      "canvas": [
+        1600,
+        1000
+      ],
+      "framesMs": [
+        4.600000023841858,
+        1.0999999642372131,
+        1.100000023841858,
+        1
+      ],
+      "environmentSetupCpuMs": 317.60000002384186,
+      "renderInfo": {
+        "geometries": 19,
+        "textures": 6,
+        "calls": 40,
+        "triangles": 19530
+      },
+      "environment": {
+        "width": 768,
+        "height": 1024,
+        "type": "half-float"
+      },
+      "reflectionTarget": [
+        768,
+        768
+      ],
+      "nativeGPUPerformance": "NOT VERIFIED"
+    },
+    {
+      "device": "mobile",
+      "study": {
+        "frame": "complexity",
+        "candidate": "incision",
+        "quality": "studio",
+        "detail": false
+      },
+      "progress": 4.5,
+      "initializationCpuMs": 331.30000001192093,
+      "canvas": [
+        390,
+        844
+      ],
+      "framesMs": [
+        1.800000011920929,
+        1.2000000476837158,
+        1.2999999523162842,
+        0.9000000357627869
+      ],
+      "environmentSetupCpuMs": 70.20000004768372,
+      "renderInfo": {
+        "geometries": 19,
+        "textures": 6,
+        "calls": 41,
+        "triangles": 20118
+      },
+      "environment": {
+        "width": 768,
+        "height": 1024,
+        "type": "half-float"
+      },
+      "reflectionTarget": [
+        384,
+        384
+      ],
+      "nativeGPUPerformance": "NOT VERIFIED"
+    }
+  ],
+  "captures": [
+    "hero",
+    "hero-exit",
+    "complexity-entry",
+    "complexity-midpoint",
+    "decision-entry",
+    "transformation-25",
+    "transformation-50",
+    "transformation-75",
+    "coherence",
+    "execution",
+    "final-cta",
+    "reverse-decision",
+    "reverse-hero",
+    "material-detail",
+    "mobile-hero",
+    "mobile-complexity",
+    "mobile-decision",
+    "mobile-transformation",
+    "mobile-coherence",
+    "mobile-execution",
+    "mobile-cta",
+    "narrow-hero",
+    "reduced-motion"
+  ]
+}

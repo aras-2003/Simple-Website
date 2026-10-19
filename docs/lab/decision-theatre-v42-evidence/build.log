@@ -1,0 +1,58 @@
+19:17:39 [content] Syncing content
+19:17:39 [content] Astro config changed
+19:17:39 [content] Clearing content store
+19:17:41 [content] Synced content
+19:17:41 [types] Generated 23.15s
+19:17:41 [build] output: "static"
+19:17:41 [build] mode: "static"
+19:17:41 [build] directory: /private/tmp/v42-next-dist/
+19:17:41 [build] Collecting build info...
+19:17:41 [build] ✓ Completed in 24.48s.
+19:17:41 [build] Building static entrypoints...
+19:17:51 [vite] ✓ built in 10.31s
+19:17:54 [WARN] [vite] [plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+19:17:54 [vite] ✓ built in 3.04s
+19:17:55 [build] Rearranging server assets...
+
+ generating static routes
+19:17:55   ├─ /.well-known/security.txt (+243ms)
+19:17:55   ├─ /404.html (+33ms)
+19:17:55   ├─ /about/index.html (+31ms)
+19:17:55   ├─ /contact/index.html (+34ms)
+19:17:56   ├─ /en/404/index.html (+44ms)
+19:17:56   ├─ /en/about/index.html (+43ms)
+19:17:56   ├─ /en/advisory/index.html (+90ms)
+19:17:56   ├─ /en/contact/index.html (+19ms)
+19:17:56   ├─ /en/lab/decision-theatre-v2/index.html (+52ms)
+19:17:56   ├─ /en/oaf/index.html (+70ms)
+19:17:56   ├─ /en/perspective/architecture-as-decision-system/index.html (+82ms)
+19:17:56   ├─ /en/perspective/portfolio-as-strategy-in-motion/index.html (+15ms)
+19:17:56   ├─ /en/perspective/ai-governance-without-theatre/index.html (+15ms)
+19:17:56   ├─ /en/perspective/transformation-operating-model/index.html (+20ms)
+19:17:56   ├─ /en/perspective/delivery-beyond-deployment/index.html (+34ms)
+19:17:56   ├─ /en/perspective/index.html (+36ms)
+19:17:56   ├─ /en/privacy/index.html (+37ms)
+19:17:56   ├─ /en/index.html (+34ms)
+19:17:56   ├─ /lab/decision-theatre-v2/index.html (+32ms)
+19:17:56   ├─ /lab/decision-theatre-v4/index.html (+27ms)
+19:17:56   ├─ /oaf/index.html (+21ms)
+19:17:56   ├─ /perspektywa/architecture-as-decision-system/index.html (+22ms)
+19:17:56   ├─ /perspektywa/portfolio-as-strategy-in-motion/index.html (+12ms)
+19:17:56   ├─ /perspektywa/ai-governance-without-theatre/index.html (+21ms)
+19:17:56   ├─ /perspektywa/transformation-operating-model/index.html (+23ms)
+19:17:56   ├─ /perspektywa/delivery-beyond-deployment/index.html (+36ms)
+19:17:56   ├─ /perspektywa/index.html (+23ms)
+19:17:56   ├─ /privacy/index.html (+50ms)
+19:17:56   ├─ /robots.txt (+13ms)
+19:17:56   ├─ /wspolpraca/index.html (+21ms)
+19:17:56   ├─ /index.html (+12ms)
+19:17:56 ✓ Completed in 1.87s.
+
+19:17:56 [build] ✓ Completed in 15.73s.
+19:17:57 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../private/tmp/v42-next-dist`
+19:17:57 [build] 29 page(s) built in 40.43s
+19:17:57 [build] Complete!

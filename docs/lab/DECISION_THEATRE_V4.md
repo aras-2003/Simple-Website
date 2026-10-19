@@ -1,5 +1,7 @@
 # Decision Theatre V4 — Black Architecture
 
+> Historical static-study record, preserved with its original evidence. The owner subsequently approved the black-metallic foundation and authorized motion in the V4.2 mission. Current implementation, validation and remaining acceptance gates: [DECISION_THEATRE_V42.md](DECISION_THEATRE_V42.md). Statements below describe the 2026-10-15 study, not the current route.
+
 Static art-direction spike, 2026-10-15. Route: `/lab/decision-theatre-v4`.
 Branch: `feature/decision-theatre-v4-visual-spike`, based on V3 `68cb883f145834b0486c9c66d6248d8948995dbe`.
 

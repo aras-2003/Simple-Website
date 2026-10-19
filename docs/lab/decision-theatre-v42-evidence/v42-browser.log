@@ -1,0 +1,27 @@
+
+Running 18 tests using 1 worker
+
+(node:14027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:16:1 › native editorial flow, persistent identities, exact reverse poses and idle demand rendering (10.1s)
+  ✓   2 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:35:1 › slow and fast scroll, section boundaries, navigation and resize remain deterministic (8.6s)
+  ✓   3 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:53:1 › semantic narrative passes axe, keyboard navigation and the final contact link (3.0s)
+  ✓   4 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:61:1 › reduced motion preserves a stable hero environment across the whole narrative and preference changes (3.3s)
+  ✓   5 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:68:1 › context loss keeps all editorial content, illustration and contact navigation available (1.7s)
+  ✓   6 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:75:1 › without JavaScript the complete narrative and illustration remain available (1.1s)
+  ✓   7 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:82:1 › WebGL initialization denial exposes the fallback without breaking the document (1.7s)
+  ✓   8 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:96:1 › debug tools are explicit and resume document state without a competing scene timeline (1.6s)
+  ✓   9 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:101:1 › intermediate scene states stay continuous across all narrative boundaries and allocations stay bounded (2.5s)
+(node:14260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:16:1 › native editorial flow, persistent identities, exact reverse poses and idle demand rendering (6.9s)
+  ✓  11 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:35:1 › slow and fast scroll, section boundaries, navigation and resize remain deterministic (7.8s)
+  ✓  12 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:53:1 › semantic narrative passes axe, keyboard navigation and the final contact link (3.1s)
+  ✓  13 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:61:1 › reduced motion preserves a stable hero environment across the whole narrative and preference changes (2.3s)
+  ✓  14 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:68:1 › context loss keeps all editorial content, illustration and contact navigation available (1.8s)
+  ✓  15 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:75:1 › without JavaScript the complete narrative and illustration remain available (1.1s)
+  ✓  16 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:82:1 › WebGL initialization denial exposes the fallback without breaking the document (1.6s)
+  ✓  17 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:96:1 › debug tools are explicit and resume document state without a competing scene timeline (1.6s)
+  ✓  18 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:101:1 › intermediate scene states stay continuous across all narrative boundaries and allocations stay bounded (2.3s)
+
+  18 passed (1.3m)
