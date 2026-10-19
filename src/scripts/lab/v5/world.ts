@@ -48,7 +48,7 @@ export function createWorld(host:HTMLElement){
       renderer.getSize(frameSize);
       if(frameSize.x!==width||frameSize.y!==height||renderer.getPixelRatio()!==dpr){renderer.setPixelRatio(dpr);renderer.setSize(width,height);}
       camera.aspect=width/height;camera.clearViewOffset();camera.fov=detail?(phone?26:22):(phone?39:34);
-      const shifts=[-.20,.20,-.25,.20,-.18];
+      const shifts=[-.20,.22,-.25,.22,-.18];
       const phase=Math.min(3,Math.floor(progress*4)),t=smooth(progress*4-phase);
       const baseShift=shifts[phase]!+(shifts[phase+1]!-shifts[phase]!)*t;
       const shift=baseShift+(.22-baseShift)*smooth(tail);
