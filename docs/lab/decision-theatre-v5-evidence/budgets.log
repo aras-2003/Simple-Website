@@ -1,0 +1,30 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:performance
+> node --test tests/artifact-scope.test.mjs && node tests/performance-budget.mjs
+
+✔ lab allowance includes dynamic dependencies but never shared or orphan assets (9.198834ms)
+✔ shared experimental chunks are charged to both V3 and V4, while public use wins (5.092375ms)
+✔ V5 is separately charged and its shared dependencies stay chargeable to public use (7.012291ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 168.550583
+Production performance budget
+PASS  total production artifact: 1702.2 KiB / 1800.0 KiB
+PASS  all responsive editorial derivatives: 1277.6 KiB / 1400.0 KiB
+PASS  largest non-editorial file: 24.5 KiB / 96.0 KiB
+PASS  compiled CSS (raw): 25.9 KiB / 96.0 KiB
+PASS  compiled CSS (gzip): 6.5 KiB / 20.0 KiB
+PASS  client JavaScript: 7.0 KiB / 8.0 KiB
+PASS  home HTML: 9.4 KiB / 20.0 KiB
+PASS  largest single file (images/writing/ai-1536.webp): 135.4 KiB / 160.0 KiB
+PASS  no source maps shipped in production
+PASS  isolated Decision Theatre JS (gzip): 182.8 KiB / 240.0 KiB
+PASS  isolated Decision Theatre artifact: 692.3 KiB / 1000.0 KiB
+PASS  isolated V4 spike JS (gzip): 186.6 KiB / 240.0 KiB
+PASS  isolated V4 scene assets: 0.0 KiB / 3072.0 KiB
+PASS  isolated V5 morph JS (gzip): 183.1 KiB / 240.0 KiB

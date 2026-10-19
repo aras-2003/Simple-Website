@@ -1,0 +1,15 @@
+
+> arkadiusz-kamrowski-site@2.0.0 check
+> astro check
+
+23:35:30 [content] Syncing content
+23:35:30 [content] Astro config changed
+23:35:30 [content] Clearing content store
+23:35:31 [content] Synced content
+23:35:31 [types] Generated 4.47s
+23:35:31 [check] Getting diagnostics for Astro files in /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website...
+Result (68 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
