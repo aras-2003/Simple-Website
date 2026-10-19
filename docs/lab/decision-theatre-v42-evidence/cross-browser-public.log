@@ -1,0 +1,124 @@
+
+Running 102 tests using 2 workers
+
+(node:14531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14532) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    2 [desktop-firefox] › tests/browser-smoke.spec.ts:25:3 › pl contact guidance precedes input at narrow widths (5.8s)
+  ✓    1 [desktop-firefox] › tests/browser-smoke.spec.ts:14:1 › social preview decodes at its declared dimensions (4.3s)
+  ✓    4 [desktop-firefox] › tests/browser-smoke.spec.ts:25:3 › en contact guidance precedes input at narrow widths (5.7s)
+  ✓    3 [desktop-firefox] › tests/browser-smoke.spec.ts:36:3 › pl contact timeout restores retry, focus and Turnstile without leaking content (13.5s)
+  ✓    5 [desktop-firefox] › tests/browser-smoke.spec.ts:36:3 › en contact timeout restores retry, focus and Turnstile without leaking content (9.0s)
+  ✓    7 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /perspektywa renders core experience without browser-specific breakage (3.1s)
+  ✓    6 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › / renders core experience without browser-specific breakage (4.4s)
+  ✓    8 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /oaf renders core experience without browser-specific breakage (2.0s)
+  ✓    9 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /wspolpraca renders core experience without browser-specific breakage (2.0s)
+  ✓   10 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /about renders core experience without browser-specific breakage (2.3s)
+  ✓   11 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /contact renders core experience without browser-specific breakage (2.9s)
+  ✓   12 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /privacy renders core experience without browser-specific breakage (2.7s)
+  ✓   13 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en renders core experience without browser-specific breakage (2.5s)
+  ✓   14 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/perspective renders core experience without browser-specific breakage (1.7s)
+  ✓   15 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/oaf renders core experience without browser-specific breakage (2.0s)
+  ✓   16 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/advisory renders core experience without browser-specific breakage (1.8s)
+  ✓   17 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/about renders core experience without browser-specific breakage (1.8s)
+  ✓   19 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/privacy renders core experience without browser-specific breakage (2.0s)
+  ✓   18 [desktop-firefox] › tests/browser-smoke.spec.ts:95:3 › /en/contact renders core experience without browser-specific breakage (4.5s)
+  ✓   21 [desktop-firefox] › tests/browser-smoke.spec.ts:119:1 › Perspective begins with essays and offers relevant next paths (2.3s)
+  ✓   20 [desktop-firefox] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (5.0s)
+  ✓   22 [desktop-firefox] › tests/browser-smoke.spec.ts:126:1 › OAF preserves four questions and discloses method boundaries (1.9s)
+  ✓   23 [desktop-firefox] › tests/browser-smoke.spec.ts:132:1 › advisory explains decision, process, participation and outputs (1.9s)
+  -   25 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › home critical surface can be visually audited
+  ✓   24 [desktop-firefox] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (3.1s)
+  -   26 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › perspective critical surface can be visually audited
+  -   27 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › oaf critical surface can be visually audited
+  -   28 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › advisory critical surface can be visually audited
+  -   29 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › about critical surface can be visually audited
+  -   30 [desktop-firefox] › tests/browser-smoke.spec.ts:156:3 › contact critical surface can be visually audited
+  -   31 [desktop-firefox] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes
+  ✓   32 [desktop-firefox] › tests/browser-smoke.spec.ts:178:1 › advisory gives a short scan and reveals the working mechanics by keyboard (2.1s)
+  ✓   34 [desktop-firefox] › tests/browser-smoke.spec.ts:220:3 › measurement honours doNotTrack without using browser storage (2.8s)
+  ✓   33 [desktop-firefox] › tests/browser-smoke.spec.ts:190:1 › measurement observes intent and form outcomes without contact content or URL parameters (4.3s)
+  ✓   35 [desktop-firefox] › tests/browser-smoke.spec.ts:220:3 › measurement honours globalPrivacyControl without using browser storage (3.8s)
+  ✓   36 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system (4.0s)
+  ✓   37 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/portfolio-as-strategy-in-motion (2.5s)
+  ✓   38 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model (2.9s)
+  ✓   39 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/ai-governance-without-theatre (7.2s)
+  ✓   40 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment (6.6s)
+  ✓   41 [desktop-firefox] › tests/editorial-figures.spec.ts:36:3 › delivery essay pl preserves the three measurement levels alongside the new artwork (2.4s)
+  ✓   42 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/architecture-as-decision-system (2.5s)
+  ✓   43 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/portfolio-as-strategy-in-motion (2.7s)
+  ✓   44 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/transformation-operating-model (2.8s)
+  ✓   45 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/ai-governance-without-theatre (2.5s)
+  ✓   46 [desktop-firefox] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/delivery-beyond-deployment (2.4s)
+  ✓   47 [desktop-firefox] › tests/editorial-figures.spec.ts:36:3 › delivery essay en preserves the three measurement levels alongside the new artwork (2.8s)
+  ✓   48 [desktop-firefox] › tests/privacy.spec.ts:7:3 › pl privacy notice offers accessible email and explains required data (3.1s)
+  ✓   49 [desktop-firefox] › tests/privacy.spec.ts:7:3 › en privacy notice offers accessible email and explains required data (2.6s)
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:27:30.213Z"}
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:27:30.244Z"}
+  ✓   50 [desktop-firefox] › tests/privacy.spec.ts:37:3 › pl form, payload, Worker and notice share the data contract (6.1s)
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:27:31.279Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:27:31.315Z"}
+  ✓   51 [desktop-firefox] › tests/privacy.spec.ts:37:3 › en form, payload, Worker and notice share the data contract (4.9s)
+(node:14875) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   52 [desktop-webkit] › tests/browser-smoke.spec.ts:14:1 › social preview decodes at its declared dimensions (4.5s)
+  ✓   53 [desktop-webkit] › tests/browser-smoke.spec.ts:25:3 › pl contact guidance precedes input at narrow widths (4.7s)
+  ✓   55 [desktop-webkit] › tests/browser-smoke.spec.ts:25:3 › en contact guidance precedes input at narrow widths (893ms)
+  ✓   54 [desktop-webkit] › tests/browser-smoke.spec.ts:36:3 › pl contact timeout restores retry, focus and Turnstile without leaking content (2.5s)
+  ✓   56 [desktop-webkit] › tests/browser-smoke.spec.ts:36:3 › en contact timeout restores retry, focus and Turnstile without leaking content (2.7s)
+  ✓   57 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › / renders core experience without browser-specific breakage (1.6s)
+  ✓   58 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /perspektywa renders core experience without browser-specific breakage (1.4s)
+  ✓   59 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /oaf renders core experience without browser-specific breakage (1.5s)
+  ✓   60 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /wspolpraca renders core experience without browser-specific breakage (1.5s)
+  ✓   61 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /about renders core experience without browser-specific breakage (1.3s)
+  ✓   62 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /contact renders core experience without browser-specific breakage (1.6s)
+  ✓   63 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /privacy renders core experience without browser-specific breakage (1.5s)
+  ✓   64 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en renders core experience without browser-specific breakage (1.6s)
+  ✓   65 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/perspective renders core experience without browser-specific breakage (1.7s)
+  ✓   66 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/oaf renders core experience without browser-specific breakage (2.0s)
+  ✓   67 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/advisory renders core experience without browser-specific breakage (2.0s)
+  ✓   68 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/about renders core experience without browser-specific breakage (5.6s)
+  ✓   69 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/contact renders core experience without browser-specific breakage (5.9s)
+  ✓   71 [desktop-webkit] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (1.2s)
+  ✓   70 [desktop-webkit] › tests/browser-smoke.spec.ts:95:3 › /en/privacy renders core experience without browser-specific breakage (2.2s)
+  ✓   72 [desktop-webkit] › tests/browser-smoke.spec.ts:119:1 › Perspective begins with essays and offers relevant next paths (1.3s)
+  ✓   73 [desktop-webkit] › tests/browser-smoke.spec.ts:126:1 › OAF preserves four questions and discloses method boundaries (1.3s)
+  ✓   74 [desktop-webkit] › tests/browser-smoke.spec.ts:132:1 › advisory explains decision, process, participation and outputs (1.4s)
+  -   76 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › home critical surface can be visually audited
+  ✓   75 [desktop-webkit] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (2.0s)
+  -   77 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › perspective critical surface can be visually audited
+  -   78 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › oaf critical surface can be visually audited
+  -   79 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › advisory critical surface can be visually audited
+  -   80 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › about critical surface can be visually audited
+  -   81 [desktop-webkit] › tests/browser-smoke.spec.ts:156:3 › contact critical surface can be visually audited
+  -   82 [desktop-webkit] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes
+  ✓   83 [desktop-webkit] › tests/browser-smoke.spec.ts:178:1 › advisory gives a short scan and reveals the working mechanics by keyboard (1.8s)
+  ✓   84 [desktop-webkit] › tests/browser-smoke.spec.ts:190:1 › measurement observes intent and form outcomes without contact content or URL parameters (2.2s)
+  ✓   85 [desktop-webkit] › tests/browser-smoke.spec.ts:220:3 › measurement honours doNotTrack without using browser storage (1.4s)
+  ✓   86 [desktop-webkit] › tests/browser-smoke.spec.ts:220:3 › measurement honours globalPrivacyControl without using browser storage (1.3s)
+  ✓   87 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/architecture-as-decision-system (1.8s)
+  ✓   88 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/portfolio-as-strategy-in-motion (1.8s)
+  ✓   89 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/transformation-operating-model (1.7s)
+  ✓   90 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/ai-governance-without-theatre (1.8s)
+  ✓   91 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork pl/delivery-beyond-deployment (1.9s)
+  ✓   92 [desktop-webkit] › tests/editorial-figures.spec.ts:36:3 › delivery essay pl preserves the three measurement levels alongside the new artwork (1.5s)
+  ✓   93 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/architecture-as-decision-system (1.7s)
+  ✓   94 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/portfolio-as-strategy-in-motion (1.7s)
+  ✓   95 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/transformation-operating-model (1.6s)
+  ✓   96 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/ai-governance-without-theatre (1.6s)
+  ✓   98 [desktop-webkit] › tests/editorial-figures.spec.ts:36:3 › delivery essay en preserves the three measurement levels alongside the new artwork (1.6s)
+  ✓   97 [desktop-webkit] › tests/editorial-figures.spec.ts:6:5 › editorial artwork en/delivery-beyond-deployment (2.0s)
+  ✓   99 [desktop-webkit] › tests/privacy.spec.ts:7:3 › pl privacy notice offers accessible email and explains required data (1.0s)
+  ✓  100 [desktop-webkit] › tests/privacy.spec.ts:7:3 › en privacy notice offers accessible email and explains required data (963ms)
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:28:36.486Z"}
+{"event":"contact_sent","topic":"other","locale":"pl","at":"2026-10-19T17:28:36.511Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:28:36.573Z"}
+{"event":"contact_sent","topic":"other","locale":"en","at":"2026-10-19T17:28:36.618Z"}
+  ✓  101 [desktop-webkit] › tests/privacy.spec.ts:37:3 › pl form, payload, Worker and notice share the data contract (1.9s)
+  ✓  102 [desktop-webkit] › tests/privacy.spec.ts:37:3 › en form, payload, Worker and notice share the data contract (1.9s)
+
+  14 skipped
+  88 passed (2.7m)

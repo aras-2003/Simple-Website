@@ -1,0 +1,14 @@
+Production performance budget
+PASS  total production artifact: 1702.2 KiB / 1800.0 KiB
+PASS  all responsive editorial derivatives: 1277.6 KiB / 1400.0 KiB
+PASS  largest non-editorial file: 24.5 KiB / 96.0 KiB
+PASS  compiled CSS (raw): 25.9 KiB / 96.0 KiB
+PASS  compiled CSS (gzip): 6.5 KiB / 20.0 KiB
+PASS  client JavaScript: 7.0 KiB / 8.0 KiB
+PASS  home HTML: 9.4 KiB / 20.0 KiB
+PASS  largest single file (images/writing/ai-1536.webp): 135.4 KiB / 160.0 KiB
+PASS  no source maps shipped in production
+PASS  isolated Decision Theatre JS (gzip): 182.6 KiB / 240.0 KiB
+PASS  isolated Decision Theatre artifact: 692.2 KiB / 1000.0 KiB
+PASS  isolated V4 spike JS (gzip): 186.4 KiB / 240.0 KiB
+PASS  isolated V4 scene assets: 0.0 KiB / 3072.0 KiB

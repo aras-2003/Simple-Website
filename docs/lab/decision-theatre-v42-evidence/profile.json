@@ -1,0 +1,624 @@
+{
+  "date": "2026-10-19T17:34:38.835Z",
+  "method": "360 native rAF scroll requests, two forward/reverse sweeps per emulated viewport; software rendering is functional evidence only.",
+  "results": [
+    {
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "requestedDpr": 2,
+      "errors": [],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+      "scrollCoverage": {
+        "minProgress": 0,
+        "maxProgress": 4.48524,
+        "sceneRenders": 356
+      },
+      "rafFrameIntervalsMs": {
+        "samples": 359,
+        "median": 16.699999999999818,
+        "p95": 16.800000000000182,
+        "max": 50.100000000000364,
+        "over32": 17,
+        "over50": 1
+      },
+      "longTasks": [],
+      "heapBytes": {
+        "before": 8720664,
+        "after": 10645957,
+        "note": "Unforced GC; Chromium-only diagnostic, not retained memory or a leak proof."
+      },
+      "idleRenders": 0,
+      "scene": {
+        "study": {
+          "frame": "complexity",
+          "candidate": "incision",
+          "quality": "studio",
+          "detail": false
+        },
+        "progress": 0,
+        "initializationCpuMs": 380.0999999642372,
+        "canvas": [
+          2400,
+          1500
+        ],
+        "framesMs": [
+          0.6000000238418579,
+          0.30000001192092896,
+          0.2999999523162842,
+          0.30000001192092896
+        ],
+        "environmentSetupCpuMs": 84.09999996423721,
+        "renderInfo": {
+          "geometries": 19,
+          "textures": 6,
+          "calls": 40,
+          "triangles": 19530
+        },
+        "environment": {
+          "width": 768,
+          "height": 1024,
+          "type": "half-float"
+        },
+        "reflectionTarget": [
+          768,
+          768
+        ],
+        "nativeGPUPerformance": "NOT VERIFIED"
+      },
+      "timingsByScene": [
+        {
+          "progress": 1,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 1,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.699999988079071,
+              0.3999999761581421,
+              0.30000001192092896,
+              0.3999999761581421
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 37,
+              "triangles": 18342
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 1.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 1.500511,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.800000011920929,
+              0.30000001192092896,
+              0.2999999523162842,
+              0.30000001192092896
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 39,
+              "triangles": 18942
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 2,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 1.999967,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.5,
+              0.30000001192092896,
+              0.3999999761581421,
+              0.5
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 38,
+              "triangles": 18354
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 2.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 2.499967,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.7999999523162842,
+              0.6000000238418579,
+              0.3999999761581421,
+              0.5
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 39,
+              "triangles": 18942
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 3,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 2.999967,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.8999999761581421,
+              0.5,
+              0.2999999523162842,
+              0.40000003576278687
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 41,
+              "triangles": 20118
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 4.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 4.5,
+            "initializationCpuMs": 380.0999999642372,
+            "canvas": [
+              2400,
+              1500
+            ],
+            "framesMs": [
+              0.800000011920929,
+              0.5,
+              0.3999999761581421,
+              0.3999999761581421
+            ],
+            "environmentSetupCpuMs": 84.09999996423721,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 41,
+              "triangles": 20118
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              768,
+              768
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        }
+      ]
+    },
+    {
+      "device": "mobile-emulation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "requestedDpr": 3,
+      "errors": [],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+      "scrollCoverage": {
+        "minProgress": 0,
+        "maxProgress": 4.48568,
+        "sceneRenders": 356
+      },
+      "rafFrameIntervalsMs": {
+        "samples": 359,
+        "median": 16.699999999999818,
+        "p95": 16.799999999999727,
+        "max": 16.800000000000182,
+        "over32": 0,
+        "over50": 0
+      },
+      "longTasks": [],
+      "heapBytes": {
+        "before": 7205925,
+        "after": 10391108,
+        "note": "Unforced GC; Chromium-only diagnostic, not retained memory or a leak proof."
+      },
+      "idleRenders": 0,
+      "scene": {
+        "study": {
+          "frame": "complexity",
+          "candidate": "incision",
+          "quality": "studio",
+          "detail": false
+        },
+        "progress": 0,
+        "initializationCpuMs": 320.0999999642372,
+        "canvas": [
+          487,
+          1055
+        ],
+        "framesMs": [
+          0.9000000357627869,
+          0.5999999642372131,
+          0.699999988079071,
+          1
+        ],
+        "environmentSetupCpuMs": 56.80000001192093,
+        "renderInfo": {
+          "geometries": 19,
+          "textures": 6,
+          "calls": 40,
+          "triangles": 19530
+        },
+        "environment": {
+          "width": 768,
+          "height": 1024,
+          "type": "half-float"
+        },
+        "reflectionTarget": [
+          384,
+          384
+        ],
+        "nativeGPUPerformance": "NOT VERIFIED"
+      },
+      "timingsByScene": [
+        {
+          "progress": 1,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 0.999971,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              0.800000011920929,
+              0.6000000238418579,
+              0.5,
+              0.5
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 29,
+              "triangles": 13422
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 1.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 1.500082,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              0.9000000357627869,
+              0.3999999761581421,
+              0.30000001192092896,
+              0.5
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 28,
+              "triangles": 12834
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 2,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 2.000191,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              0.8999999761581421,
+              0.40000003576278687,
+              0.2999999523162842,
+              0.40000003576278687
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 28,
+              "triangles": 12834
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 2.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 2.500209,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              1,
+              0.3999999761581421,
+              0.3999999761581421,
+              0.6000000238418579
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 29,
+              "triangles": 13422
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 3,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 3.000235,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              1.100000023841858,
+              0.6000000238418579,
+              0.5999999642372131,
+              1.2000000476837158
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 40,
+              "triangles": 19530
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        },
+        {
+          "progress": 4.5,
+          "measurement": {
+            "study": {
+              "frame": "complexity",
+              "candidate": "incision",
+              "quality": "studio",
+              "detail": false
+            },
+            "progress": 4.5,
+            "initializationCpuMs": 320.0999999642372,
+            "canvas": [
+              487,
+              1055
+            ],
+            "framesMs": [
+              1.300000011920929,
+              0.7999999523162842,
+              0.800000011920929,
+              0.5
+            ],
+            "environmentSetupCpuMs": 56.80000001192093,
+            "renderInfo": {
+              "geometries": 19,
+              "textures": 6,
+              "calls": 41,
+              "triangles": 20118
+            },
+            "environment": {
+              "width": 768,
+              "height": 1024,
+              "type": "half-float"
+            },
+            "reflectionTarget": [
+              384,
+              384
+            ],
+            "nativeGPUPerformance": "NOT VERIFIED"
+          }
+        }
+      ]
+    }
+  ]
+}

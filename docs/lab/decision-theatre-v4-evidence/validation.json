@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-15T10:31:31.413Z",
+  "baseCommit": "68cb883f145834b0486c9c66d6248d8948995dbe",
+  "branch": "feature/decision-theatre-v4-visual-spike",
+  "route": "/lab/decision-theatre-v4",
+  "versions": {
+    "node": "v24.19.0",
+    "astro": "7.3.1",
+    "three": "0.186.1",
+    "gsap": "3.15.0",
+    "playwright": "1.62.1"
+  },
+  "checks": [
+    {
+      "command": "npm run build",
+      "status": "PASS",
+      "scope": "Astro check/build, static, editorial, performance, Worker/contact, measurement and privacy contracts"
+    },
+    {
+      "command": "npm run test:contact",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:predeploy",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run check && npm run build:astro",
+      "status": "PASS",
+      "scope": "final source"
+    },
+    {
+      "command": "node tests/static.mjs && npm run test:performance",
+      "status": "PASS",
+      "artifactScopeTests": 2
+    },
+    {
+      "command": "npm run test:decision-theatre-v4",
+      "status": "PASS",
+      "passed": 12,
+      "projects": [
+        "desktop-chromium",
+        "mobile-chromium"
+      ]
+    },
+    {
+      "command": "playwright test accessibility browser-smoke editorial-figures privacy decision-theatre (explicit spec paths)",
+      "status": "PASS",
+      "passed": 269,
+      "skipped": 1,
+      "skipReason": "Existing desktop skip of mobile-navigation-only smoke",
+      "projects": [
+        "desktop-chromium",
+        "mobile-chromium"
+      ]
+    },
+    {
+      "command": "playwright test tests/decision-theatre-v4.spec.ts --grep context loss",
+      "status": "PASS",
+      "passed": 2,
+      "scope": "final rebuilt source"
+    },
+    {
+      "command": "git diff --check; node --check scripts/decision-theatre-v4-capture.mjs",
+      "status": "PASS"
+    }
+  ],
+  "visualAcceptance": "PENDING OWNER REVIEW",
+  "animation": "NOT IMPLEMENTED — owner static acceptance gate",
+  "nativeGpuPerformance": "NOT VERIFIED",
+  "firefoxWebkit": "NOT RUN in local V4 spike",
+  "deployment": "NONE"
+}

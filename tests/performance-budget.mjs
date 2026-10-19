@@ -19,7 +19,7 @@ const walk = (dir) => {
   }
 };
 walk(root);
-const { mainFiles: files, labFiles } = artifactScopes(root, allFiles);
+const { mainFiles: files, labFiles, spikeFiles } = artifactScopes(root, allFiles);
 
 const rel = (file) => path.relative(root, file).replaceAll(path.sep, '/');
 const bytes = (file) => fs.statSync(file).size;
@@ -80,6 +80,21 @@ if (labFiles.length) {
   for (const budget of [
     {label:'isolated Decision Theatre JS (gzip)', actual:labGzip, max:240 * KiB},
     {label:'isolated Decision Theatre artifact', actual:labRaw, max:1000 * KiB},
+  ]) {
+    const pass = budget.actual <= budget.max;
+    failed ||= !pass;
+    console.log(`${pass ? 'PASS' : 'FAIL'}  ${budget.label}: ${format(budget.actual)} / ${format(budget.max)}`);
+  }
+}
+if (spikeFiles.length) {
+  const js = spikeFiles.filter(file => file.endsWith('.js'));
+  const assets = spikeFiles.filter(file => !/\.(js|css|html)$/.test(file));
+  const compressed = js.reduce((sum, file) => sum + gzipSync(fs.readFileSync(file), {level:9}).length, 0);
+  const assetBytes = assets.reduce((sum, file) => sum + bytes(file), 0);
+  for (const budget of [
+    // Retain a tighter JS cap than the owner's provisional 500 KiB ceiling.
+    {label:'isolated V4 spike JS (gzip)', actual:compressed, max:240 * KiB},
+    {label:'isolated V4 scene assets', actual:assetBytes, max:3 * 1024 * KiB},
   ]) {
     const pass = budget.actual <= budget.max;
     failed ||= !pass;
