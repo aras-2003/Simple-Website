@@ -1,0 +1,28 @@
+
+Running 18 tests using 1 worker
+
+(node:62861) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:7:1 › native bilingual editorial document, semantic content, keyboard and accessibility (6.5s)
+  ✓   2 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:20:1 › fixed camera exposes non-rigid reversible geometry at arbitrary normalized values and idles (3.4s)
+  ✓   3 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:31:1 › natural scrolling reverses and restores after resize, anchor navigation and reload (2.8s)
+  ✓   4 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:42:1 › reduced motion stays static and responds to a live preference change (1.9s)
+  ✓   5 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:47:1 › WebGL initialization failure retains fallback, content and contact (991ms)
+  ✓   6 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:52:1 › context loss releases scene and restores static illustration (2.0s)
+  ✓   7 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:56:1 › no JavaScript and 320px reflow preserve full reading and contact (1.4s)
+  -   8 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:60:1 › touch input advances the native mobile document
+  ✓   9 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:65:1 › failure after renderer and environment allocation releases the partial world (1.1s)
+(node:63017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:7:1 › native bilingual editorial document, semantic content, keyboard and accessibility (5.3s)
+  ✓  11 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:20:1 › fixed camera exposes non-rigid reversible geometry at arbitrary normalized values and idles (2.6s)
+  ✓  12 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:31:1 › natural scrolling reverses and restores after resize, anchor navigation and reload (2.4s)
+  ✓  13 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:42:1 › reduced motion stays static and responds to a live preference change (1.8s)
+  ✓  14 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:47:1 › WebGL initialization failure retains fallback, content and contact (929ms)
+  ✓  15 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:52:1 › context loss releases scene and restores static illustration (1.1s)
+  ✓  16 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:56:1 › no JavaScript and 320px reflow preserve full reading and contact (947ms)
+  ✓  17 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:60:1 › touch input advances the native mobile document (2.6s)
+  ✓  18 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:65:1 › failure after renderer and environment allocation releases the partial world (983ms)
+
+  1 skipped
+  17 passed (51.3s)
