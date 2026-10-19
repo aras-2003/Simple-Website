@@ -1,5 +1,5 @@
 import {
-  ACESFilmicToneMapping, AmbientLight, BoxGeometry, Color, DataTexture,
+  ACESFilmicToneMapping, AmbientLight, BoxGeometry, CatmullRomCurve3, Color, DataTexture,
   DirectionalLight, DoubleSide, ExtrudeGeometry, Fog, Group, HalfFloatType,
   Mesh, MeshBasicMaterial, MeshStandardMaterial, Path, PCFShadowMap,
   PerspectiveCamera, PlaneGeometry, PMREMGenerator, RGBAFormat, RepeatWrapping,
@@ -28,6 +28,7 @@ const poses: Record<Candidate, Record<Frame, Pose[]>> = {
 
 /** Original geometry and procedural studio: no reference image or external asset ships. */
 export function createWorld(host: HTMLElement) {
+  const initializationStart=performance.now();
   const renderer = new WebGLRenderer({antialias:true,powerPreference:'low-power'});
   renderer.outputColorSpace=SRGBColorSpace;
   renderer.toneMapping=ACESFilmicToneMapping;
@@ -58,10 +59,10 @@ export function createWorld(host: HTMLElement) {
     const material=new MeshStandardMaterial({color,metalness:1,roughness:rough,roughnessMap:roughness,envMapIntensity:1.2});
     materials.push(material);return material;
   }
-  const graphite=metal(0x45494e,.28);
-  const cutMetal=metal(0x9da3a8,.17);
-  const satin=metal(0x6a6d70,.26);
-  const polished=metal(0xb8bec2,.15);
+  const graphite=metal(0x383e43,.33);
+  const cutMetal=metal(0x9da3a8,.23);
+  const satin=metal(0x53595f,.31);
+  const polished=metal(0xb8bec2,.21);
   const floorMaterial=new MeshStandardMaterial({color:0x0d1218,metalness:.35,roughness:.48,envMapIntensity:.12});
   const wallMaterial=new MeshStandardMaterial({color:0x040609,metalness:.10,roughness:.90,envMapIntensity:.06});
   materials.push(floorMaterial,wallMaterial);
@@ -101,7 +102,7 @@ export function createWorld(host: HTMLElement) {
   plinth.position.set(.2,.12,0);plinth.castShadow=true;plinth.receiveShadow=true;scene.add(plinth);
   const key=new DirectionalLight(0xf2e5d3,3.5);
   key.position.set(-9,10,12);key.target.position.set(.5,4.4,0);key.castShadow=true;
-  key.shadow.mapSize.set(1536,1536);
+  key.shadow.mapSize.set(window.innerWidth<=650?1024:1536,window.innerWidth<=650?1024:1536);
   Object.assign(key.shadow.camera,{left:-11,right:11,top:12,bottom:-9,near:.5,far:40});
   key.shadow.normalBias=.035;key.shadow.bias=-.0002;key.shadow.radius=3;
   scene.add(key,key.target);
@@ -116,11 +117,13 @@ export function createWorld(host: HTMLElement) {
     studioGeometry.push(g);studioMaterials.push(m);
     const mesh=new Mesh(g,m);mesh.position.copy(position);mesh.lookAt(0,3,0);studio.add(mesh);
   }
-  card(5,10,new Vector3(-7,6,5),5.8,0xe4ebf3);
-  card(1.2,12,new Vector3(7,5,1),8.0,0xf2e0c7);
+  card(9,13,new Vector3(-7,6,5),3.8,0xe4ebf3);
+  card(3.2,12,new Vector3(7,5,1),4.6,0xf2e0c7);
   card(12,5,new Vector3(0,12,1),3.2);
   card(2.2,9,new Vector3(-2,5,-8),4.0,0xcdddeb);
-  card(7,10,new Vector3(-5,5,12),4.5,0xf3f0eb);
+  card(10,12,new Vector3(-5,5,12),3.4,0xf3f0eb);
+  card(6,9,new Vector3(9,6,-6),2.5,0xcdddeb);
+  card(10,10,new Vector3(9,5,10),1.25,0xdce2e5);
   let environment:WebGLRenderTarget|undefined;
   let mirror:Reflector|undefined;
   let environmentMs=0;
@@ -132,7 +135,7 @@ export function createWorld(host: HTMLElement) {
     environmentMs=performance.now()-start;
     pmrem.dispose();
     // Low-opacity planar reflection: one extra render, no bloom or screen-space effects.
-    mirror=new Reflector(keep(new PlaneGeometry(70,70)),{textureWidth:768,textureHeight:768,color:0x586068,clipBias:.003,multisample:0});
+    mirror=new Reflector(keep(new PlaneGeometry(70,70)),{textureWidth:window.innerWidth<=650?384:768,textureHeight:window.innerWidth<=650?384:768,color:0x586068,clipBias:.003,multisample:0});
     const material=mirror.material as ShaderMaterial;
     material.uniforms['uOpacity']={value:.22};
     material.fragmentShader=material.fragmentShader
@@ -143,6 +146,61 @@ export function createWorld(host: HTMLElement) {
   }
   let current:Study={frame:'complexity',candidate:'incision',quality:'studio',detail:false};
   let disposed=false;let renders=0;
+  let cinematic:number|undefined;
+  // Same six bodies, staged clearance before alignment. No added/removed subjects.
+  const choreography:{at:number;pose:Pose[]}[]=[
+    {at:0,pose:poses.incision.complexity.map((pose,i)=>i===5?[.65,4.3,.5,0,0,0]:pose) as Pose[]},
+    {at:1,pose:[[-2,0,-1.1,0,-.20,0],[.65,0,.6,0,.23,0],[2.8,0,-1.6,0,-.12,0],[.6,0,2.2,0,.05,0],[3.65,0,1.1,0,-.18,0],[.65,4.3,4.5,0,0,0]]},
+    // Keys clear the portal path; the plane slides out through the aperture first.
+    {at:1.75,pose:[[-2,0,-1.1,0,-.20,0],[.65,0,.6,0,.23,0],[4.8,0,-1.6,0,-.12,0],[-6.2,0,2.6,0,.04,0],[4.6,0,2.6,0,-.08,0],[.65,3.9,4.5,0,0,0]]},
+    {at:2.25,pose:[[-1.8,0,-1.1,0,-.12,0],[.65,0,.5,0,.1,0],[4.8,0,1.35,0,0,0],[-6.2,0,2.6,0,.02,0],[4.6,0,2.6,0,-.04,0],[.1,3.9,4.5,0,0,0]]},
+    {at:2.75,pose:[[0,0,-1.1,0,0,0],[.05,0,0,0,0,0],[.1,0,1.35,0,0,0],[-6.2,0,2.6,0,0,0],[4.6,0,2.6,0,0,0],[0,3.9,4.5,0,0,0]]},
+    // Set the keys outside the shared opening. Plane enters the empty aperture.
+    {at:3,pose:[[0,0,-1.1,0,0,0],[.05,0,0,0,0,0],[.1,0,1.35,0,0,0],[-1.95,0,2.6,0,0,0],[2.25,0,2.6,0,0,0],[0,3.3,.15,0,0,0]]},
+    {at:4.5,pose:[[0,0,-1.1,0,0,0],[.05,0,0,0,0,0],[.1,0,1.35,0,0,0],[-1.95,0,2.6,0,0,0],[2.25,0,2.6,0,0,0],[0,3.3,.15,0,0,0]]},
+  ];
+  const cameraPath=new CatmullRomCurve3([
+    new Vector3(9,4,13.4),new Vector3(6.5,3.6,10.2),
+    new Vector3(4.5,3.5,9.8),new Vector3(6,4,13.5),
+    new Vector3(9,5.2,18),new Vector3(11,5.8,23),
+  ],false,'centripetal');
+  const smoother=(t:number)=>t*t*t*(t*(t*6-15)+10);
+  const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
+  const framing=[-.18,.45,-.25,.40,-.23,.20];
+  function cinematicPose(phone:boolean,width:number,height:number){
+    const progress=Math.max(0,Math.min(4.5,cinematic!));
+    plinth.scale.set(2.8,1,2.2);
+    const index=Math.min(choreography.length-2,choreography.findIndex((_,i)=>i<choreography.length-1 && progress<=choreography[i+1]!.at));
+    const a=choreography[Math.max(0,index)]!,b=choreography[Math.max(0,index)+1]!;
+    const t=smoother((progress-a.at)/(b.at-a.at));
+    bodies.forEach((body,i)=>{
+      const pose=a.pose[i]!.map((v,j)=>mix(v,b.pose[i]![j]!,t));
+      body.position.set(pose[0]!,pose[1]!,pose[2]!);body.rotation.set(pose[3]!,pose[4]!,pose[5]!);
+      body.scale.x=i===5?.5:1;
+    });
+    camera.position.copy(cameraPath.getPoint(progress/4.5));
+    target.set(.35,3.1,0);
+    camera.fov=34;
+    const stage=Math.min(4,Math.floor(progress));const blend=smoother(Math.min(1,(progress-stage)/(stage===4?.5:1)));
+    const shift=mix(framing[stage]!,framing[stage+1]!,blend);
+    if(phone){
+      // Portrait camera moves back, places architecture in the lower visual field.
+      const retreat=smoother(Math.max(0,Math.min(1,(progress-3)/1.5)));
+      camera.position.sub(target).multiplyScalar(mix(1.62,1.2,retreat)).add(target);
+      camera.fov=39;
+      // Keep the luminous portal edges below the body/decision questions in portrait.
+      const descent=smoother(Math.max(0,Math.min(1,progress/.85)));
+      const release=smoother(Math.max(0,Math.min(1,(progress-2.2)/.8)));
+      camera.setViewOffset(width,height,0,-height*(.28+.26*descent*(1-release)),width,height);
+    }else camera.setViewOffset(width,height,width*shift,0,width,height);
+    camera.lookAt(target);camera.updateProjectionMatrix();
+    const calm=smoother(Math.max(0,Math.min(1,(progress-2.5)/1.5)));
+    key.intensity=mix(3.5,2.7,calm);rim.intensity=mix(2.7,2.2,calm);
+    ambient.intensity=mix(.13,.23,calm);renderer.toneMappingExposure=mix(1.25,1.14,calm);
+    host.dataset['progress']=progress.toFixed(5);
+    host.dataset['pose']=JSON.stringify(bodies.map(body=>[...body.position.toArray(),...body.rotation.toArray().slice(0,3)]));
+    host.dataset['camera']=JSON.stringify(camera.position.toArray());
+  }
   const target=new Vector3();
   function compose(){
     if(disposed)return;
@@ -169,8 +227,12 @@ export function createWorld(host: HTMLElement) {
     scene.environment=current.quality==='studio'?environment!.texture:null;
     if(mirror)mirror.visible=current.quality==='studio';
     ambient.intensity=current.quality==='studio' ? .13 : .55;
-    renderer.setPixelRatio(Math.min(devicePixelRatio,phone?1.25:1.5));
-    renderer.setSize(width,height,false);
+    if(cinematic!==undefined)cinematicPose(phone,width,height);
+    const ratio=Math.min(devicePixelRatio,phone?1.25:1.5);
+    // Reallocate drawing buffers only on resize, never per scroll update.
+    if(renderer.getPixelRatio()!==ratio)renderer.setPixelRatio(ratio);
+    const canvas=renderer.domElement;
+    if(canvas.width!==Math.floor(width*ratio)||canvas.height!==Math.floor(height*ratio))renderer.setSize(width,height,false);
   }
   function render(){
     if(disposed||document.hidden)return;
@@ -178,12 +240,19 @@ export function createWorld(host: HTMLElement) {
     const elapsed=performance.now()-start;renders++;host.dataset['renders']=String(renders);
     return {cpuSubmitMs:elapsed,renders,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};
   }
-  function setStudy(value:Study){current=value;compose();return render();}
+  function setStudy(value:Study){cinematic=undefined;plinth.scale.set(1,1,1);bodies.forEach(body=>body.scale.set(1,1,1));current=value;compose();return render();}
+  let initializationMs=0;
+  function setProgress(value:number){
+    cinematic=value;compose();const result=render();
+    // Include environment generation and the first render submission, not only construction.
+    if(!initializationMs)initializationMs=performance.now()-initializationStart;
+    return result;
+  }
   function measure(){
     const times:number[]=[];const gl=renderer.getContext();
     for(let i=0;i<4;i++){const start=performance.now();renderer.info.reset();renderer.render(scene,camera);gl.finish();times.push(performance.now()-start);}
     const image=environment?.texture.image as {width?:number;height?:number}|undefined;
-    return {study:current,framesMs:times,environmentSetupCpuMs:environmentMs,renderInfo:{geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles},environment:environment?{width:image?.width,height:image?.height,type:environment.texture.type===HalfFloatType?'half-float':'other'}:null,reflectionTarget:current.quality==='studio'?[768,768]:null,nativeGPUPerformance:'NOT VERIFIED'};
+    return {study:current,progress:cinematic,initializationCpuMs:initializationMs,canvas:[renderer.domElement.width,renderer.domElement.height],framesMs:times,environmentSetupCpuMs:environmentMs,renderInfo:{geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles},environment:environment?{width:image?.width,height:image?.height,type:environment.texture.type===HalfFloatType?'half-float':'other'}:null,reflectionTarget:mirror?[mirror.getRenderTarget().width,mirror.getRenderTarget().height]:null,nativeGPUPerformance:'NOT VERIFIED'};
   }
   const observer=new ResizeObserver(()=>{compose();render();});observer.observe(host);
   const onVisibility=()=>{if(!document.hidden){compose();render();}};document.addEventListener('visibilitychange',onVisibility);
@@ -194,5 +263,5 @@ export function createWorld(host: HTMLElement) {
     renderer.domElement.removeEventListener('webglcontextlost',onLost);geometry.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
     roughness.dispose();environment?.dispose();mirror?.dispose();studioGeometry.forEach(g=>g.dispose());studioMaterials.forEach(m=>m.dispose());renderer.dispose();renderer.domElement.remove();renderer.forceContextLoss();
   }
-  return {setStudy,measure,dispose,objectIds:bodies.map(body=>body.name),get renders(){return renders;}};
+  return {setStudy,setProgress,measure,dispose,objectIds:bodies.map(body=>body.name),get renders(){return renders;}};
 }
