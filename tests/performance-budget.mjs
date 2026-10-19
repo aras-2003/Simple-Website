@@ -19,7 +19,7 @@ const walk = (dir) => {
   }
 };
 walk(root);
-const { mainFiles: files, labFiles, spikeFiles } = artifactScopes(root, allFiles);
+const { mainFiles: files, labFiles, spikeFiles, morphFiles } = artifactScopes(root, allFiles);
 
 const rel = (file) => path.relative(root, file).replaceAll(path.sep, '/');
 const bytes = (file) => fs.statSync(file).size;
@@ -100,5 +100,12 @@ if (spikeFiles.length) {
     failed ||= !pass;
     console.log(`${pass ? 'PASS' : 'FAIL'}  ${budget.label}: ${format(budget.actual)} / ${format(budget.max)}`);
   }
+}
+if (morphFiles.length) {
+  const js=morphFiles.filter(file=>file.endsWith('.js'));
+  const compressed=js.reduce((sum,file)=>sum+gzipSync(fs.readFileSync(file),{level:9}).length,0);
+  // Same existing lab cap, independently charged including all shared dependencies.
+  const pass=compressed<=240*KiB;failed ||= !pass;
+  console.log(`${pass?'PASS':'FAIL'}  isolated V5 morph JS (gzip): ${format(compressed)} / ${format(240*KiB)}`);
 }
 if (failed) process.exit(1);

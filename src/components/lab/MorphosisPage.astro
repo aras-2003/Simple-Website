@@ -1,0 +1,24 @@
+---
+import '../../styles/lab/v5/morphosis.css';
+import {morphosis} from '../../content/lab/morphosis';
+interface Props {lang:'pl'|'en'}
+const {lang}=Astro.props,c=morphosis[lang],prefix=lang==='en'?'/en':'';
+const other=lang==='en'?'/lab/decision-theatre-v5':'/en/lab/decision-theatre-v5';
+---
+<!doctype html><html lang={lang}><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#090d12"/>
+<meta name="description" content={c.lead}/><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<title>{c.hero.join(' ')} · Arkadiusz Kamrowski</title>
+</head><body class="v5-page">
+<a class="v5-skip" href="#narrative">{c.skip}</a>
+<header class="v5-header"><a class="v5-brand" href="#hero" aria-label="Arkadiusz Kamrowski"><span>ak<span>·</span></span><span>Arkadiusz<br/>Kamrowski</span></a><nav aria-label={c.nav}><a class="v5-nav-perspective" href="#dependencies">{c.perspective}</a><a href={other} lang={lang==='en'?'pl':'en'} aria-label={lang==='en'?'Wersja polska':'English version'}>{lang==='en'?'PL':'EN'}</a><a href={`${prefix}/contact`}>{c.talk} <span aria-hidden="true">↗</span></a></nav></header>
+<main data-v5 id="narrative" tabindex="-1">
+<div class="v5-environment" aria-hidden="true"><div class="v5-fallback"><svg viewBox="0 0 1200 900" fill="none"><defs><linearGradient id="v5-metal"><stop stop-color="#333d47"/><stop offset=".48" stop-color="#c1c7c9"/><stop offset=".6" stop-color="#323b45"/><stop offset="1" stop-color="#7d8b98"/></linearGradient></defs><g stroke="url(#v5-metal)" stroke-width="13"><path d="M580 650V390Q580 300 670 300H920Q990 300 990 390V650"/><path d="M600 660V400Q600 310 690 310H940Q1010 310 1010 400V660"/><path d="M620 670V410Q620 320 710 320H960Q1030 320 1030 410V670"/></g></svg></div><div class="v5-canvas" data-canvas></div></div>
+<section class="v5-act v5-hero" data-act id="hero" aria-labelledby="hero-title"><div class="v5-copy"><p class="v5-eyebrow">Arkadiusz Kamrowski · {c.role}</p><h1 id="hero-title">{c.hero.map((line,i)=><span>{i===c.hero.length-1?<em>{line}</em>:line}</span>)}</h1><p class="v5-lead">{c.lead}</p><a class="v5-link" href={`${prefix}/contact`}>{c.action} <span aria-hidden="true">↗</span></a><p class="v5-hero-note">{c.intro}</p></div></section>
+{c.sections.map((section,index)=><section class:list={['v5-act',{'v5-right':index%2===0}]} data-act id={section.id} aria-labelledby={`${section.id}-title`}><div class="v5-copy"><p class="v5-eyebrow">{section.label}</p><h2 id={`${section.id}-title`}>{section.title.map((line,i)=><span>{i===section.title.length-1?<em>{line}</em>:line}</span>)}</h2><p class="v5-lead">{section.lead}</p><p class="v5-body">{section.body}</p>{section.id==='decision'&&<div class="v5-decisions" aria-label={section.note}><span>{c.yes}</span><span>{c.no}</span><span>{c.who}</span></div>}{section.id==='execution'&&<><a class="v5-person" href={`${prefix}/about`}><img src="/assets/arkadiusz-kamrowski-square-v2.webp" width="72" height="72" loading="lazy" alt="Arkadiusz Kamrowski"/><span>{c.meet} ↗</span></a><div class="v5-credentials"><p><strong>{c.years}</strong><span>{c.credentials}</span></p><p><strong>MBA</strong><span>{c.mba}</span></p></div></>}<p class="v5-note">{section.note}</p></div></section>)}
+<section class="v5-contact" id="conversation" aria-labelledby="contact-title"><div><p class="v5-eyebrow">{c.ctaLabel}</p><h2 id="contact-title">{c.cta.map((line,i)=><span>{i?<em>{line}</em>:line}</span>)}</h2><a class="v5-link" href={`${prefix}/contact`}>{c.ctaAction} <span aria-hidden="true">↗</span></a><p class="v5-body">{c.ctaBody}</p></div></section>
+<aside class="v5-debug" data-debug hidden aria-label="Development controls"><p>V5 · Structural morph diagnostics</p><label>Morph progress <input data-seek type="range" min="0" max="1" step=".001" value="0"/></label><label><input data-lock type="checkbox"/> Lock camera</label><label><input data-isolate type="checkbox"/> Isolate geometry</label><button data-detail>Toggle material detail</button><button data-resume>Resume document scrolling</button><p data-status role="status">{c.fallback}</p></aside>
+</main><footer class="v5-footer"><span>Arkadiusz Kamrowski</span><a href={`${prefix}/privacy`}>{c.privacy}</a><a href="#hero">{c.top} ↑</a></footer>
+<script>import '../../scripts/lab/v5/morphosis';</script>
+</body></html>

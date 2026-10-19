@@ -41,3 +41,14 @@ test('shared experimental chunks are charged to both V3 and V4, while public use
   fs.appendFileSync(path.join(root,'_astro/public.js'),'import "./three.js"');result=artifactScopes(root,files);assert.ok(result.mainFiles.includes(shared));assert.ok(!result.spikeFiles.includes(shared));assert.ok(!result.labFiles.includes(shared));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
+
+test('V5 is separately charged and its shared dependencies stay chargeable to public use',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'decision-v5-scope-'));
+ try{
+  const sources={'index.html':'<script src="/_astro/public.js"></script>','lab/decision-theatre-v4/index.html':'<script src="/_astro/v4.js"></script>','lab/decision-theatre-v5/index.html':'<script src="/_astro/v5.js"></script>','en/lab/decision-theatre-v5/index.html':'<script src="/_astro/v5.js"></script>','_astro/v4.js':'import "./three.js"','_astro/v5.js':'import "./three.js"','_astro/three.js':'export const three=true','_astro/public.js':'export const publicSite=true'};
+  for(const [name,source] of Object.entries(sources)){const file=path.join(root,name);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,source);}
+  const files=Object.keys(sources).map(file=>path.join(root,file)),shared=path.join(root,'_astro/three.js');
+  let result=artifactScopes(root,files);assert.ok(result.morphFiles.includes(shared));assert.ok(result.spikeFiles.includes(shared));assert.ok(!result.mainFiles.includes(shared));
+  fs.appendFileSync(path.join(root,'_astro/public.js'),'import "./three.js"');result=artifactScopes(root,files);assert.ok(result.mainFiles.includes(shared));assert.ok(!result.morphFiles.includes(shared));
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});

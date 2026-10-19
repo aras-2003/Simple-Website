@@ -26,7 +26,9 @@
     "test:decision-theatre": "playwright test tests/decision-theatre.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2",
     "capture:decision-theatre": "node scripts/decision-theatre-capture.mjs",
     "test:decision-theatre-v4": "playwright test tests/decision-theatre-v4.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2",
-    "capture:decision-theatre-v4": "node scripts/decision-theatre-v4-capture.mjs"
+    "capture:decision-theatre-v4": "node scripts/decision-theatre-v4-capture.mjs",
+    "test:decision-theatre-v5": "node --experimental-strip-types --test tests/decision-theatre-v5-geometry.test.mjs && playwright test tests/decision-theatre-v5.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2",
+    "capture:decision-theatre-v5": "node scripts/decision-theatre-v5-capture.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
