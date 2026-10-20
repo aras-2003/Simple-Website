@@ -1,0 +1,44 @@
+
+Running 1 test using 1 worker
+
+(node:10066) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop-chromium] › tests/living-architecture-v6.spec.ts:81:1 › back-forward cache restoration recreates the disposed WebGL world (9.0s)
+
+
+  1) [desktop-chromium] › tests/living-architecture-v6.spec.ts:81:1 › back-forward cache restoration recreates the disposed WebGL world 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('canvas')
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" with timeout 5000ms
+      - waiting for locator('canvas')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      84 |  await expect(page.locator('canvas')).toHaveCount(0);
+      85 |  await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pageshow',{persisted:true})));
+    > 86 |  await expect(page.locator('canvas')).toHaveCount(1);await ready(page);
+         |                                       ^
+      87 | });
+      88 |
+        at /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:86:39
+
+    Error Context: test-results/living-architecture-v6-bac-6e5dc-es-the-disposed-WebGL-world-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-bac-6e5dc-es-the-disposed-WebGL-world-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-bac-6e5dc-es-the-disposed-WebGL-world-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop-chromium] › tests/living-architecture-v6.spec.ts:81:1 › back-forward cache restoration recreates the disposed WebGL world 

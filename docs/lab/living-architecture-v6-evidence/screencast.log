@@ -1,0 +1,74 @@
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: ffmpeg -y -f concat -safe 0 -i /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/artifacts/living-architecture-v6/recorded/frames.txt -an -c:v libx264 -preset fast -crf 24 -threads 2 -pix_fmt yuv420p -movflags +faststart /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/artifacts/living-architecture-v6/recorded/morph-life-native-scroll.mp4
+ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers
+  built with Apple clang version 21.0.0 (clang-2100.3.34.2)
+  configuration: --prefix=/opt/homebrew/Cellar/ffmpeg/9.0.2_1 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon
+  libavutil      61.  1.102 / 61.  1.102
+  libavcodec     63.  1.102 / 63.  1.102
+  libavformat    63.  1.102 / 63.  1.102
+  libavdevice    63.  1.102 / 63.  1.102
+  libavfilter    12.  1.102 / 12.  1.102
+  libswscale     10.  1.102 / 10.  1.102
+  libswresample   7.  1.102 /  7.  1.102
+Input #0, concat, from '/Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/artifacts/living-architecture-v6/recorded/frames.txt':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/unknown/unknown), 1280x713 [SAR 1:1 DAR 1280:713], 25 fps, 25 tbr, 25 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (mjpeg (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[swscaler @ 0x8ed920000] deprecated pixel format used, make sure you did set range correctly
+[libx264 @ 0x8ed061180] height not divisible by 2 (1280x713)
+[vost#0:0/libx264 @ 0x8eccd4000] [enc:libx264 @ 0x8ed010380] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0x8eccdc000] Error sending frames to consumers: Generic error in an external library
+[vf#0:0 @ 0x8eccdc000] Task finished with error code: -542398533 (Generic error in an external library)
+[vf#0:0 @ 0x8eccdc000] Terminating thread with return code -542398533 (Generic error in an external library)
+[vost#0:0/libx264 @ 0x8eccd4000] [enc:libx264 @ 0x8ed010380] Could not open encoder before EOF
+[vost#0:0/libx264 @ 0x8eccd4000] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/libx264 @ 0x8eccd4000] Terminating thread with return code -22 (Invalid argument)
+[out#0/mp4 @ 0x8ecca0180] Nothing was written into output file, because at least one of its streams received no packets.
+frame=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.01    
+Conversion failed!
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at file:///Users/arkadiuszkamrowski/Documents/ChatGPT/Dev%20_%20Simple%20website/scripts/living-architecture-v6-motion.mjs:32:1 {
+  status: 187,
+  signal: null,
+  output: [
+    null,
+    Buffer(0) [Uint8Array] [],
+    Buffer(2379) [Uint8Array] [
+      102, 102, 109, 112, 101, 103,  32, 118, 101, 114, 115, 105,
+      111, 110,  32,  57,  46,  48,  46,  50,  32,  67, 111, 112,
+      121, 114, 105, 103, 104, 116,  32,  40,  99,  41,  32,  50,
+       48,  48,  48,  45,  50,  48,  50,  54,  32, 116, 104, 101,
+       32,  70,  70, 109, 112, 101, 103,  32, 100, 101, 118, 101,
+      108, 111, 112, 101, 114, 115,  10,  32,  32,  98, 117, 105,
+      108, 116,  32, 119, 105, 116, 104,  32,  65, 112, 112, 108,
+      101,  32,  99, 108,  97, 110, 103,  32, 118, 101, 114, 115,
+      105, 111, 110,  32,
+      ... 2279 more items
+    ]
+  ],
+  pid: 11231,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(2379) [Uint8Array] [
+    102, 102, 109, 112, 101, 103,  32, 118, 101, 114, 115, 105,
+    111, 110,  32,  57,  46,  48,  46,  50,  32,  67, 111, 112,
+    121, 114, 105, 103, 104, 116,  32,  40,  99,  41,  32,  50,
+     48,  48,  48,  45,  50,  48,  50,  54,  32, 116, 104, 101,
+     32,  70,  70, 109, 112, 101, 103,  32, 100, 101, 118, 101,
+    108, 111, 112, 101, 114, 115,  10,  32,  32,  98, 117, 105,
+    108, 116,  32, 119, 105, 116, 104,  32,  65, 112, 112, 108,
+    101,  32,  99, 108,  97, 110, 103,  32, 118, 101, 114, 115,
+    105, 111, 110,  32,
+    ... 2279 more items
+  ]
+}
+
+Node.js v26.9.0

@@ -1,0 +1,24 @@
+
+Running 14 tests using 1 worker
+
+(node:8543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-chromium] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (2.3s)
+  ✓   2 [desktop-chromium] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (4.2s)
+  -   3 [desktop-chromium] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes
+  ✓   4 [desktop-chromium] › tests/decision-theatre-v4.spec.ts:16:1 › native editorial flow, persistent identities, exact reverse poses and idle demand rendering (7.3s)
+  ✓   5 [desktop-chromium] › tests/decision-theatre-v5.spec.ts:20:1 › fixed camera exposes non-rigid reversible geometry at arbitrary normalized values and idles (4.3s)
+  ✓   6 [desktop-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (15.8s)
+  ✓   7 [desktop-chromium] › tests/decision-theatre.spec.ts:177:1 › lab scripts and pages stay isolated from public routes and sitemap (2.2s)
+(node:8772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [mobile-chromium] › tests/browser-smoke.spec.ts:111:1 › home exposes a direct executive conversation and three choices (1.7s)
+  ✓   9 [mobile-chromium] › tests/browser-smoke.spec.ts:138:1 › contact succeeds through mocked delivery and keeps payload out of URL (2.0s)
+  ✓  10 [mobile-chromium] › tests/browser-smoke.spec.ts:167:1 › mobile navigation can be opened and contains the primary routes (1.2s)
+  ✓  11 [mobile-chromium] › tests/decision-theatre-v4.spec.ts:16:1 › native editorial flow, persistent identities, exact reverse poses and idle demand rendering (7.2s)
+  ✓  12 [mobile-chromium] › tests/decision-theatre-v5.spec.ts:20:1 › fixed camera exposes non-rigid reversible geometry at arbitrary normalized values and idles (4.2s)
+  ✓  13 [mobile-chromium] › tests/decision-theatre.spec.ts:70:1 › section geometry drives continuous reversible rendering, with no idle loop or console errors (53.7s)
+  ✓  14 [mobile-chromium] › tests/decision-theatre.spec.ts:177:1 › lab scripts and pages stay isolated from public routes and sitemap (3.1s)
+
+  1 skipped
+  13 passed (2.1m)

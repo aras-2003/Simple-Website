@@ -1,0 +1,5 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:contact
+> node tests/contact-api.mjs
+
+CONTACT API TEST PASS · validation, origin, size, timing, rate-limit identity, Turnstile and delivery failure

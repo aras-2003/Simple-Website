@@ -1,6 +1,6 @@
 # Living Architecture V6.2 — The Emergent Group
 
-Status: implementation in progress, isolated experiment; no merge or release authorization.
+Status: working isolated prototype, final verification recorded below; owner visual acceptance pending. No merge or release authorization.
 
 ## Creative direction
 
@@ -38,13 +38,13 @@ Normal document scroll controls a paused GSAP timeline through ScrollTrigger. No
 |---|---|---|---|
 | 1 | Dark metal front faces; disconnected toy-like tiles; late states too similar; phone copy intersects structure | High: material credibility, dependency legibility and reading fail | Add frontal studio reflections, author shared local frame members, center each authored pose, distinguish departmental/organizational growth |
 | 2 | Common backbone and negative space readable, but repeated portal grammar; phone transitions remain unsafe | High reading / Medium form: visual language too repetitive | Unequal authored extents, dense central panels, low terraces, depth ribs and incomplete peripheral frames; local reading windows; larger phone legend; contrast correction |
-| 3 | Richer open spine with unequal limbs; debug confirms continuous geometry. Screenshot review caught an ineffective alpha-based mask | High correctness defect in intended reading protection | Set explicit luminance mode; pixel-compare copy with geometry visible/hidden; hide/relocate legend/annotation/pause control during copy crossings. Recheck the same third-cycle checkpoints, without a fourth form redesign |
+| 3 | Richer open spine with unequal limbs; debug confirms continuous geometry. Screenshot review caught an ineffective alpha-based mask | High correctness defect in intended reading protection | Set explicit luminance mode; pixel-compare copy with geometry visible/hidden; hide/relocate legend/annotation/pause control during copy crossings. Recheck the same third-cycle checkpoints, without a fourth form redesign. Final screenshot review additionally found a mobile annotation/note collision: use actual rectangles for annotation/legend/control placement, and extend pixel/UI checks to all 11 checkpoints |
 
 This is an author-run screenshot-only critique performed separately from source review. An external independent creative reviewer has **not** signed off; no independent-review claim or owner visual acceptance is implied. Residual visual risk: studio highlights can read as flat silver at small scale, and the rectangular module grammar remains intentionally visible. The mobile composition reserves a large quiet upper interval between some chapters; temporal masks may reduce visible assembly during transitions. These are owner-review considerations, not evidence of full premium art-direction acceptance.
 
 ## References actually inspected
 
-All six supplied PNGs were opened as pixels. They remain outside the tracked website and are not redistributed. Live Morphos was observed in a browser at the face, dispersed field, skull ending and reverse skeletal state; continuous reconfiguration and editorial integration were visible. Étude was observed at its pedestal hero and floating-object editorial section. This establishes observed behavior, not knowledge of either implementation. The optional Sci-fi Cube link failed retrieval (cache miss); it is not essential to the selected form because all six original references were accessible. No source code or assets from these external sites were copied.
+All six supplied PNGs were opened as pixels. They remain outside the tracked website and are not redistributed. Live Morphos was rechecked in this completion session at the face and dispersed-field transition; its persistent subject and scroll-linked reconfiguration were visible. Earlier local notes also recorded later skeletal states, which were not rechecked in this session. Étude was observed at its pedestal hero and floating-object editorial section. This establishes observed behavior, not knowledge of either implementation. The optional Sci-fi Cube link was not reverified in this completion session; earlier local notes report a cache miss. It is not essential to the selected form because all six original references were accessible. No source code or assets from these external sites were copied.
 
 ## Reproduction / preview
 
@@ -57,13 +57,30 @@ npm run preview
 Open http://127.0.0.1:4173/lab/living-architecture-v6 or /en/lab/living-architecture-v6. Diagnostic route: /en/lab/living-architecture-v6?debug=1&freeze=1&isolate=1. Controls include normalized progress, three topology candidates, explicit micro-time offset, freeze/resume, groups/dependencies, signals, bounds/centroid and render diagnostics. Camera/global transform are always fixed. Resume document scroll restores native progress. For candidate evidence, select the final progress and each topology. For local life, hold 100% and sample time 0,2,5,8 seconds.
 
 ```sh
-npm run test:living-architecture-v6
+PLAYWRIGHT_CHROMIUM_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' npm run test:living-architecture-v6
 V6_CAPTURE_OUTPUT=artifacts/living-architecture-v6/final npm run capture:living-architecture-v6
 node scripts/living-architecture-v6-alpha-proof.mjs
 node scripts/living-architecture-v6-profile.mjs
 node scripts/living-architecture-v6-motion.mjs
 ```
 
-Capture/profile scripts use installed system Chrome on macOS; set PLAYWRIGHT_CHROMIUM_EXECUTABLE for another Chromium. Profiling must run separately from browser suites and recordings. The lab is noindex in both languages and excluded from the existing sitemap filter. V6 uses an independently charged reachability scope and the existing 240 KiB gzip experimental JS cap; every public threshold remains unchanged. Unreferenced or publicly shared assets remain charged to public budgets.
+The motion recorder also requires local `ffmpeg` (or `FFMPEG_PATH`). It records actual Chrome CDP frames with timestamps, not reconstructed animation. Capture/profile scripts use installed system Chrome on macOS; set PLAYWRIGHT_CHROMIUM_EXECUTABLE for another Chromium. Profiling must run separately from browser suites and recordings. The lab is noindex in both languages and excluded from the existing sitemap filter. V6 uses an independently charged reachability scope and the existing 240 KiB gzip experimental JS cap; every public threshold remains unchanged. Unreferenced or publicly shared assets remain charged to public budgets.
 
 The repository's existing draft stack is V4 #81 → V5 #86. V6 is stacked on V5 for an isolated review diff. This does not authorize merging any prototype or bypassing the feature→main→staging→production release path. No staging/production/preview deployment is performed; the demo is the real local browser preview. A hosted preview would require a separate deployment action.
+
+
+## Final verification, 2026-10-20
+
+Full checkpoint sweep, profiles and 37 browser passes use `30e2a38f3e4b94f3bb6b26f3674f5737dd015346`. A later application fix (`0596471`) restores a disposed WebGL scene after a persisted back/forward-cache return; four targeted browser checks passed after reproducing the failure. Renderer, model, materials, styles and content are unchanged. Final desktop/mobile renders and the validated recording use `2d01439f3192299d1b29816ce4989f88b174b46c`; intervening commits repair recording tooling. See [acceptance checklist and limitations](LIVING_ARCHITECTURE_V6_QA.md) and [evidence directory](living-architecture-v6-evidence/).
+
+- Production-canonical full build: PASS; 75 Astro files, no diagnostics; static/SEO/editorial, unchanged public budgets and Worker/privacy gates passed. Local API and predeploy contracts passed separately.
+- V6 model: 5 PASS. Chromium desktop/mobile: 19 PASS, one expected desktop touch skip. Installed Firefox/WebKit: 18 PASS, two expected touch skips. Both languages audited with axe; this does not certify manual assistive-technology use.
+- Initial parallel browser run: 14 PASS, five timeouts, one skip while other live scenes were open. Recheck used one worker and a 90-second test ceiling; all applicable assertions passed. Initial sandbox build could not complete a child-process privacy check; the authorized local recheck completed successfully. Original logs remain in evidence.
+- Final native ANGLE Metal / Apple M1 profile: desktop frame-interval median 17.2 ms, P95 33.8 ms; update P95 2.1 ms, submission P95 1.4 ms. Phone emulation median 16.7 ms, P95 18.0 ms. An earlier isolated run measured desktop median 16.6 ms / P95 17.8 ms; both raw runs are retained to expose variability. Four render calls including shadows, 246,000 reported triangles, 31,160 instance-buffer bytes, 28,800 shared geometry bytes. Two desktop long tasks were observed in the final run, none in phone emulation; there were no extra idle draws. This is a remaining frame-pacing risk to inspect on additional hardware. Counts exclude unreported driver/environment/shadow allocation and submission timing is not GPU completion timing.
+- Final V6 JavaScript: 188.0 KiB gzip / 240 KiB cap. Public client JS remains 7.0 / 8.0 KiB gzip. No new dependencies or production assets.
+
+[Three final silhouettes](living-architecture-v6-evidence/candidates.webp) · [fixed-camera morph](living-architecture-v6-evidence/fixed-camera-sheet.webp) · [local life](living-architecture-v6-evidence/micro-life-sheet.webp) · [desktop checkpoints](living-architecture-v6-evidence/desktop-sheet.webp) · [mobile checkpoints](living-architecture-v6-evidence/mobile-sheet.webp).
+
+Selected Chromium regression checks on public Home/contact/navigation and V3/V4/V5: **13 PASS, one expected desktop-navigation skip**. These are scoped regression checks, not the entire release matrix. V6 totals: **41 browser PASS, three expected touch skips**, comprising the full 37-case run and four targeted back/forward-cache checks. Reading/UI checks cover all 11 checkpoints. The final production-canonical rebuild after the lifecycle fix also passed (`build-lifecycle.log`).
+
+[Final desktop](living-architecture-v6-evidence/final-desktop.webp) · [final phone](living-architecture-v6-evidence/final-mobile.webp) · [actual morph / local-life / native-scroll recording](living-architecture-v6-evidence/morph-life-native-scroll.mp4). Recording: 1,387 captured frames, 26.48 seconds, H.264 1280×800; full decode passed, no runtime or frame errors. This instrumented capture is not a performance benchmark. See `manifest.json` for source provenance and evidence checksums.

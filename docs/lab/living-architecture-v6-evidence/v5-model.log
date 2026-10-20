@@ -1,0 +1,12 @@
+✔ arbitrary progress is deterministic in both directions and has bounded local displacement (1748.270625ms)
+✔ morph changes internal shape and relationships rather than applying rigid transforms (74.525084ms)
+✔ one immutable valid closed topology covers every persistent band (250.803791ms)
+✔ deformation normals stay finite and unit length at intermediate progress (186.425334ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3133.52525
