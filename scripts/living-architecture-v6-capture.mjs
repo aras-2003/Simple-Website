@@ -19,6 +19,12 @@ await sheet(['candidate-spine','candidate-mesh','candidate-cantilever'],'candida
 const fixed=[];for(let i=0;i<=10;i++){await seek(i/10);await time(0);await shot(`fixed-${i*10}`);fixed.push(await measure());}
 await sheet(Array.from({length:11},(_,i)=>`fixed-${i*10}`),'fixed-camera-sheet',480,300,3);
 const micro=[];await seek(1);for(const t of [0,2,5,8]){await time(t);await shot(`life-${t}`);micro.push(await measure());}await sheet([0,2,5,8].map(t=>`life-${t}`),'micro-life-sheet',640,400,2);
+const signalsProof=[];
+for(const [name,t] of [['initiative',1.5],['collaboration',7.5],['decision',13.5]]){
+ await time(t);
+ for(const enabled of [false,true]){await page.locator('[data-signals]').setChecked(enabled);await shot(`signal-${name}-${enabled?'on':'off'}`);signalsProof.push({name,enabled,report:await measure()});}
+}
+await sheet(['initiative','collaboration','decision'].flatMap(name=>[`signal-${name}-off`,`signal-${name}-on`]),'signals-sheet',640,400,2);await page.locator('[data-signals]').check();
 // Native progress at all eleven checkpoints; no debug composition overrides.
 const editorial={};for(const [device,width,height] of [['desktop',1600,1000],['mobile',390,844]]){
  await page.setViewportSize({width,height});await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6?debug=1&freeze=1');await ready();
@@ -34,4 +40,4 @@ const editorial={};for(const [device,width,height] of [['desktop',1600,1000],['m
 await page.setViewportSize({width:320,height:740});await page.goto('http://127.0.0.1:4173/lab/living-architecture-v6?debug=1&freeze=1');await ready();await shot('narrow-polish');
 await page.emulateMedia({reducedMotion:'reduce'});await shot('reduced-motion');
 const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}}),staticPage=await staticContext.newPage();await staticPage.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6');await sharp(await staticPage.screenshot()).webp().toFile(`${output}/fallback.webp`);await staticContext.close();
-await fs.writeFile(`${output}/results.json`,JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),worktree:execFileSync('git',['status','--porcelain','--','src','scripts','tests','package.json','package-lock.json'],{encoding:'utf8'}).trim()||'clean source',errors,candidates,fixed,micro,editorial},null,2));await browser.close();console.log(`Captured ${output}; runtime errors: ${errors.length}`);
+await fs.writeFile(`${output}/results.json`,JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),worktree:execFileSync('git',['status','--porcelain','--','src','scripts','tests','package.json','package-lock.json'],{encoding:'utf8'}).trim()||'clean source',errors,candidates,fixed,micro,signalsProof,editorial},null,2));await browser.close();console.log(`Captured ${output}; runtime errors: ${errors.length}`);
