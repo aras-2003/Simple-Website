@@ -10,3 +10,5 @@
 .v6-work-title{z-index:2}.v6-isolated .v6-header,.v6-isolated .v6-work-title{visibility:hidden}.v6-legend{padding:8px 0;background:#090c10dd}.v6-annotation[hidden]{display:none}
 
 @media(max-width:700px){.v6-legend{font-size:8px;align-items:flex-start;line-height:1.5;gap:10px;bottom:12px}.v6-legend span{width:31%;align-items:baseline}.v6-legend i{flex-shrink:0}.v6-motion{bottom:42px;min-height:44px}.v6-annotation{bottom:100px}}
+
+.v6-canvas{mask-mode:luminance}

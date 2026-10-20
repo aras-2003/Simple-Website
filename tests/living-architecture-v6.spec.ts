@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import sharp from 'sharp';
 const route='/en/lab/living-architecture-v6';
 const ready=async page=>page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
 const seek=async(page,p)=>page.locator('[data-seek]').evaluate((el,p)=>{el.value=String(p);el.dispatchEvent(new Event('input',{bubbles:true}));},p);
@@ -53,4 +54,18 @@ test('320px without JavaScript retains reading, language and contact paths',asyn
 });
 test('mobile touch advances normal document scrolling',async({page,isMobile,browserName})=>{
  test.skip(!isMobile||browserName!=='chromium','Touch only applies to mobile Chromium');await page.goto(route);await ready(page);const cdp=await page.context().newCDPSession(page);await cdp.send('Input.synthesizeScrollGesture',{x:180,y:620,yDistance:-850,speed:700,gestureSourceType:'touch'});await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(100);await expect.poll(async()=>Number(await page.locator('[data-v6]').getAttribute('data-progress'))).toBeGreaterThan(0);await cdp.detach();
+});
+
+
+test('reading windows actually remove architecture beneath visible copy',async({page})=>{
+ await page.goto(`${route}?debug=1&freeze=1`);await ready(page);await page.locator('[data-debug]').evaluate(el=>el.style.visibility='hidden');
+ expect(await page.locator('[data-canvas]').evaluate(el=>getComputedStyle(el).maskMode)).toBe('luminance');
+ for(const p of [.2,.4,.7,.9]){
+  await native(page,p);
+  const clips=await page.locator('.v6-copy').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:Math.max(0,r.x+8),y:Math.max(0,r.y+8),width:Math.min(innerWidth,r.right-8)-Math.max(0,r.x+8),height:Math.min(innerHeight,r.bottom-8)-Math.max(0,r.y+8)};}).filter(r=>r.width>0&&r.height>20));
+  for(const clip of clips){
+   const visible=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='hidden');const hidden=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='');
+   expect(visible.length).toBe(hidden.length);const delta=visible.reduce((sum,v,i)=>sum+Math.abs(v-hidden[i]),0)/visible.length;expect(delta).toBeLessThan(1.2);
+  }
+ }
 });

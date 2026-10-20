@@ -35,6 +35,8 @@ if(root){
   root!.dataset['readingWindows']=JSON.stringify(boxes.map(r=>[r.x-pad,r.y-pad,r.right+pad,r.bottom+pad]));
   const obstructed=boxes.some(r=>r.bottom>innerHeight-90&&r.top<innerHeight-45);
   annotation.hidden=obstructed;
+  root!.querySelector<HTMLElement>('.v6-legend')!.style.visibility=obstructed?'hidden':'';
+  motion.style.top=obstructed?'12px':'';motion.style.bottom=obstructed?'auto':'';
  }
  function draw(){
  if(!world||!visible||document.hidden)return;
