@@ -1,0 +1,2 @@
+import base from '../../playwright.config';
+export default {...base,testDir:'../../tests',workers:1,timeout:90000,projects:base.projects!.filter(p=>['desktop-chromium','mobile-chromium'].includes(p.name!)).map(p=>({...p,use:{...p.use,launchOptions:{executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']}}}))};

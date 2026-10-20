@@ -1,6 +1,6 @@
 # Living Architecture V6.2 — The Emergent Group
 
-Status: working isolated prototype, final verification recorded below; owner visual acceptance pending. No merge or release authorization.
+Historical V6.2 record. The current refinement and verification are in [Living Architecture V6.3](LIVING_ARCHITECTURE_V6_3.md). All V6.2 media and measurements below remain preserved as earlier evidence. No merge or release authorization.
 
 ## Creative direction
 

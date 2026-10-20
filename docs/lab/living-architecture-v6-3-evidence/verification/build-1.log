@@ -1,0 +1,28 @@
+
+> arkadiusz-kamrowski-site@2.0.0 build
+> npm run check && npm run build:astro && node tests/static.mjs && npm run test:editorial && npm run test:performance && npm run test:worker
+
+
+> arkadiusz-kamrowski-site@2.0.0 check
+> astro check
+
+13:07:15 [content] Syncing content
+13:07:15 [content] Synced content
+13:07:15 [types] Generated 413ms
+13:07:15 [check] Getting diagnostics for Astro files in /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website...
+[96msrc/components/lab/LivingArchitecturePage.astro[0m:[93m18[0m:[93m315[0m - [91merror[0m[90m ts(2322): [0mType '{ children: any[]; class: string; "data-tracker": true; "aria-hidden": "true"; hidden: true; }' is not assignable to type 'SVGAttributes'.
+  Property 'hidden' does not exist on type 'SVGAttributes'.
+
+[7m18[0m <p class="v6-work-title">{c.title}<span>{c.intro}</span></p><div class="v6-scene-ui"><div class="v6-legend" aria-label={lang==='en'?'Signal legend':'Legenda sygnałów'}>{c.legend.map((s,i)=><span><i class={`signal-${i}`} aria-hidden="true"/>{s}</span>)}</div><svg class="v6-tracker" data-tracker aria-hidden="true" hidden><path data-leader fill="none"/><circle data-endpoint r="2.5"/></svg><p data-annotation class="v6-annotation" hidden>{c.annotations[0]}</p><button class="v6-motion" data-motion aria-pressed="false" hidden>{c.pause}</button></div>
+[7m  [0m [91m                                                                                                                                                                                                                                                                                                                          ~~~~~~[0m
+
+[96msrc/scripts/lab/v6/world.ts[0m:[93m96[0m:[93m46[0m - [91merror[0m[90m ts(2345): [0mArgument of type 'Vector3' is not assignable to parameter of type 'Vector2'.
+  Type 'Vector3' is missing the following properties from type 'Vector2': width, height, isVector2, angle, rotateAround
+
+[7m96[0m  const ray=new Raycaster();ray.setFromCamera(projectedAnchor,camera);scene.updateMatrixWorld(true);
+[7m  [0m [91m                                             ~~~~~~~~~~~~~~~[0m
+
+Result (75 files):
+- 2 errors
+- 0 warnings
+- 0 hints

@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:21228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop-chromium] › tests/living-architecture-v6.spec.ts:90:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (3.2s)
+(node:21289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [mobile-chromium] › tests/living-architecture-v6.spec.ts:90:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (3.5s)
+
+  2 passed (11.2s)
