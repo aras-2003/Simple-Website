@@ -19,7 +19,7 @@ const walk = (dir) => {
   }
 };
 walk(root);
-const { mainFiles: files, labFiles, spikeFiles, morphFiles } = artifactScopes(root, allFiles);
+const { mainFiles: files, labFiles, spikeFiles, morphFiles, livingFiles, volumeFiles } = artifactScopes(root, allFiles);
 
 const rel = (file) => path.relative(root, file).replaceAll(path.sep, '/');
 const bytes = (file) => fs.statSync(file).size;
@@ -107,5 +107,16 @@ if (morphFiles.length) {
   // Same existing lab cap, independently charged including all shared dependencies.
   const pass=compressed<=240*KiB;failed ||= !pass;
   console.log(`${pass?'PASS':'FAIL'}  isolated V5 morph JS (gzip): ${format(compressed)} / ${format(240*KiB)}`);
+}
+if (livingFiles.length) {
+  const js = livingFiles.filter(file => file.endsWith('.js'));
+  const compressed = js.reduce((sum,file) => sum + gzipSync(fs.readFileSync(file), {level:9}).length, 0);
+  const pass = compressed <= 240 * KiB; failed ||= !pass;
+  console.log(`${pass?'PASS':'FAIL'}  isolated V6 JS (gzip): ${format(compressed)} / ${format(240 * KiB)}`);
+}
+if (volumeFiles.length) {
+ const compressed=volumeFiles.filter(f=>f.endsWith('.js')).reduce((n,f)=>n+gzipSync(fs.readFileSync(f),{level:9}).length,0);
+ const pass=compressed<=240*KiB;failed ||= !pass;
+ console.log(`${pass?'PASS':'FAIL'}  isolated V6.4 JS (gzip): ${format(compressed)} / ${format(240*KiB)}`);
 }
 if (failed) process.exit(1);

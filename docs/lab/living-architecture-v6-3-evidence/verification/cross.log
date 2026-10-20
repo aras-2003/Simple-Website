@@ -1,0 +1,38 @@
+
+Running 28 tests using 1 worker
+
+(node:22472) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-firefox] › tests/living-architecture-v6.spec.ts:12:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (6.5s)
+  ✓   2 [desktop-firefox] › tests/living-architecture-v6.spec.ts:22:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (2.2s)
+  ✓   3 [desktop-firefox] › tests/living-architecture-v6.spec.ts:29:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (2.1s)
+  ✓   4 [desktop-firefox] › tests/living-architecture-v6.spec.ts:38:1 › native forward/reverse scroll, reload, resize and anchor navigation (1.8s)
+  ✓   5 [desktop-firefox] › tests/living-architecture-v6.spec.ts:43:1 › reduced motion is a static complete architecture, including live preference changes (1.5s)
+  ✓   6 [desktop-firefox] › tests/living-architecture-v6.spec.ts:47:1 › WebGL denied and context loss preserve static illustration and the complete document (961ms)
+  ✓   7 [desktop-firefox] › tests/living-architecture-v6.spec.ts:51:1 › partial construction failure releases its canvas and GPU resources (575ms)
+  ✓   8 [desktop-firefox] › tests/living-architecture-v6.spec.ts:54:1 › 320px without JavaScript retains reading, language and contact paths (464ms)
+  -   9 [desktop-firefox] › tests/living-architecture-v6.spec.ts:57:1 › mobile touch advances normal document scrolling
+  ✓  10 [desktop-firefox] › tests/living-architecture-v6.spec.ts:62:1 › reading windows actually remove architecture beneath visible copy (4.3s)
+  ✓  11 [desktop-firefox] › tests/living-architecture-v6.spec.ts:83:1 › back-forward cache restoration recreates the disposed WebGL world (1.1s)
+  ✓  12 [desktop-firefox] › tests/living-architecture-v6.spec.ts:91:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (2.3s)
+  ✓  13 [desktop-firefox] › tests/living-architecture-v6.spec.ts:118:1 › V6.3 hidden/occluded targets suppress pointers; reduced motion never reveals one (2.4s)
+  ✓  14 [desktop-firefox] › tests/living-architecture-v6.spec.ts:129:1 › V6.3 active overlay updates past the final landmark and disappears on isolate or context loss (1.2s)
+(node:22621) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [desktop-webkit] › tests/living-architecture-v6.spec.ts:12:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (5.8s)
+  ✓  16 [desktop-webkit] › tests/living-architecture-v6.spec.ts:22:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (2.0s)
+  ✓  17 [desktop-webkit] › tests/living-architecture-v6.spec.ts:29:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (2.3s)
+  ✓  18 [desktop-webkit] › tests/living-architecture-v6.spec.ts:38:1 › native forward/reverse scroll, reload, resize and anchor navigation (2.4s)
+  ✓  19 [desktop-webkit] › tests/living-architecture-v6.spec.ts:43:1 › reduced motion is a static complete architecture, including live preference changes (1.6s)
+  ✓  20 [desktop-webkit] › tests/living-architecture-v6.spec.ts:47:1 › WebGL denied and context loss preserve static illustration and the complete document (1.0s)
+  ✓  21 [desktop-webkit] › tests/living-architecture-v6.spec.ts:51:1 › partial construction failure releases its canvas and GPU resources (775ms)
+  ✓  22 [desktop-webkit] › tests/living-architecture-v6.spec.ts:54:1 › 320px without JavaScript retains reading, language and contact paths (393ms)
+  -  23 [desktop-webkit] › tests/living-architecture-v6.spec.ts:57:1 › mobile touch advances normal document scrolling
+  ✓  24 [desktop-webkit] › tests/living-architecture-v6.spec.ts:62:1 › reading windows actually remove architecture beneath visible copy (7.5s)
+  ✓  25 [desktop-webkit] › tests/living-architecture-v6.spec.ts:83:1 › back-forward cache restoration recreates the disposed WebGL world (1.1s)
+  ✓  26 [desktop-webkit] › tests/living-architecture-v6.spec.ts:91:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (2.9s)
+  ✓  27 [desktop-webkit] › tests/living-architecture-v6.spec.ts:118:1 › V6.3 hidden/occluded targets suppress pointers; reduced motion never reveals one (2.2s)
+  ✓  28 [desktop-webkit] › tests/living-architecture-v6.spec.ts:129:1 › V6.3 active overlay updates past the final landmark and disappears on isolate or context loss (1.3s)
+
+  2 skipped
+  26 passed (1.1m)

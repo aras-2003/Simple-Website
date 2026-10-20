@@ -76,6 +76,11 @@ jobs:
       - name: Decision Theatre V5 structural morph
         run: npm run test:decision-theatre-v5
 
+      - name: Living Architecture V6 identity graph and browser gates
+        run: npm run test:living-architecture-v6
+      - name: Living Architecture V6.4 volume and causal events
+        run: npm run test:living-architecture-v6-4
+
       - name: Upload static artifact
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

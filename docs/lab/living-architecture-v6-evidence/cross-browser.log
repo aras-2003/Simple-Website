@@ -1,0 +1,30 @@
+
+Running 20 tests using 1 worker
+
+(node:5674) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-firefox] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (21.2s)
+  ✓   2 [desktop-firefox] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (5.8s)
+  ✓   3 [desktop-firefox] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (3.8s)
+  ✓   4 [desktop-firefox] › tests/living-architecture-v6.spec.ts:36:1 › native forward/reverse scroll, reload, resize and anchor navigation (4.6s)
+  ✓   5 [desktop-firefox] › tests/living-architecture-v6.spec.ts:41:1 › reduced motion is a static complete architecture, including live preference changes (3.8s)
+  ✓   6 [desktop-firefox] › tests/living-architecture-v6.spec.ts:45:1 › WebGL denied and context loss preserve static illustration and the complete document (3.9s)
+  ✓   7 [desktop-firefox] › tests/living-architecture-v6.spec.ts:49:1 › partial construction failure releases its canvas and GPU resources (2.6s)
+  ✓   8 [desktop-firefox] › tests/living-architecture-v6.spec.ts:52:1 › 320px without JavaScript retains reading, language and contact paths (2.2s)
+  -   9 [desktop-firefox] › tests/living-architecture-v6.spec.ts:55:1 › mobile touch advances normal document scrolling
+  ✓  10 [desktop-firefox] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy (6.8s)
+(node:5956) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [desktop-webkit] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (15.3s)
+  ✓  12 [desktop-webkit] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (4.9s)
+  ✓  13 [desktop-webkit] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (3.6s)
+  ✓  14 [desktop-webkit] › tests/living-architecture-v6.spec.ts:36:1 › native forward/reverse scroll, reload, resize and anchor navigation (3.8s)
+  ✓  15 [desktop-webkit] › tests/living-architecture-v6.spec.ts:41:1 › reduced motion is a static complete architecture, including live preference changes (2.3s)
+  ✓  16 [desktop-webkit] › tests/living-architecture-v6.spec.ts:45:1 › WebGL denied and context loss preserve static illustration and the complete document (1.8s)
+  ✓  17 [desktop-webkit] › tests/living-architecture-v6.spec.ts:49:1 › partial construction failure releases its canvas and GPU resources (1.2s)
+  ✓  18 [desktop-webkit] › tests/living-architecture-v6.spec.ts:52:1 › 320px without JavaScript retains reading, language and contact paths (885ms)
+  -  19 [desktop-webkit] › tests/living-architecture-v6.spec.ts:55:1 › mobile touch advances normal document scrolling
+  ✓  20 [desktop-webkit] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy (5.2s)
+
+  2 skipped
+  18 passed (1.9m)

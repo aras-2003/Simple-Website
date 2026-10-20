@@ -1,0 +1,102 @@
+{
+  "applicationCommit": "903119698c1ccbb3b327abc0daf333d757d393a5",
+  "applicationUnchangedSinceCapture": true,
+  "capturedAt": "2026-10-20",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2106,
+      "sha256": "0cad9fa1fdcb86067c0531d650d878493502424ff3b3fb042f61f8d7b9682686"
+    },
+    {
+      "path": "assembly.webp",
+      "bytes": 101954,
+      "sha256": "2ef7077a40c2b93fb097218b07a5de71c160a6ed6bfeeb2c487ff77f942d7284"
+    },
+    {
+      "path": "build.log",
+      "bytes": 7217,
+      "sha256": "b9be4e957f23362ce4cf454b12aa247e0ffa32883906c06c6ebc46d2f64b3114"
+    },
+    {
+      "path": "captures.json",
+      "bytes": 110312,
+      "sha256": "b12342e3d91374af7e1de6021d2b64e02157da298c8425f86f605fd7f03ca2cc"
+    },
+    {
+      "path": "demo.mp4",
+      "bytes": 3705308,
+      "sha256": "e77726a5d5a50a95004eafe64dd46ae5a489322c0b0b65e3822b65e9f868d4f7"
+    },
+    {
+      "path": "desktop-0.webp",
+      "bytes": 121436,
+      "sha256": "be2997d99b76fd5d0ddb79cbc7eb11076295edc52427dd62e739d000fd5cb436"
+    },
+    {
+      "path": "desktop-100.webp",
+      "bytes": 67664,
+      "sha256": "5dec282b9b74373a83954f6f15fbafb5673438b6a53d9b1624a082470c69e7ae"
+    },
+    {
+      "path": "desktop-50.webp",
+      "bytes": 106638,
+      "sha256": "bf026a522f3d2f9e2da70f795d6ed4969737c578ab608dc1af15cef8196b8ff4"
+    },
+    {
+      "path": "desktop-sheet.webp",
+      "bytes": 139238,
+      "sha256": "7f075d25ed2a582a3ab55bc7d4f6965157adc344684e841c1a7a95775c624b3f"
+    },
+    {
+      "path": "four-sides.webp",
+      "bytes": 45522,
+      "sha256": "7169c7af2f1c5753a14a644721d8fc3a54ccde85943447fd7b6123cbed0f4448"
+    },
+    {
+      "path": "mobile-100.webp",
+      "bytes": 30388,
+      "sha256": "d7d2ebc51a5d5bd20034a4ab8fbb5d28e5d7014082f97f571acae1cf5a6e9199"
+    },
+    {
+      "path": "mobile-sheet.webp",
+      "bytes": 170944,
+      "sha256": "c3dee6052df920de74f7fa690880c2f6bd108a9f4ec41a1cc4a3de5832348bfd"
+    },
+    {
+      "path": "motion.json",
+      "bytes": 262,
+      "sha256": "d22e798329d7928f62611d93e37afefad9b69efbd90e65c939c911f6b7eebea1"
+    },
+    {
+      "path": "narrow.webp",
+      "bytes": 32942,
+      "sha256": "a01077e9ad8e26cb1b84ec28c2a6ba5269fd102f5f1c0abc52431289ae16bc53"
+    },
+    {
+      "path": "profile.json",
+      "bytes": 144691,
+      "sha256": "ab7e7e0c0f7b17567dd9925f8183ce1e58740b5294ce6aa53ed89f99c9b58f27"
+    },
+    {
+      "path": "recording-strip.jpg",
+      "bytes": 69488,
+      "sha256": "de3838a5bdb9477294c4f6c8f670ead7769a0b1bcb658028ca59fc5301a70414"
+    },
+    {
+      "path": "reduced.webp",
+      "bytes": 26230,
+      "sha256": "d12cb0a0e2cb8233d3778fce0145bf96d7bd40aa04ac67e62d16695b5eca5ef2"
+    },
+    {
+      "path": "regression.log",
+      "bytes": 6153,
+      "sha256": "4ea98dccee1a52821b8e4d30fd25d5597349b341db2f797e5a1d7a5081600a3d"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 4598,
+      "sha256": "1894212c8ad1cae4ea1d4c21b656c79d01ed70be8626cd63672d111711656977"
+    }
+  ]
+}

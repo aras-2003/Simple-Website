@@ -1,0 +1,105 @@
+2026-10-20T16:59:49.8142430Z ##[group]Run npm run test:living-architecture-v6
+2026-10-20T16:59:49.8142737Z [36;1mnpm run test:living-architecture-v6[0m
+2026-10-20T16:59:49.8199898Z shell: /usr/bin/bash -e {0}
+2026-10-20T16:59:49.8200109Z env:
+2026-10-20T16:59:49.8200319Z   SITE_BASE_URL: https://arkadiuszkamrowski.com
+2026-10-20T16:59:49.8200595Z   SITE_PRODUCTION_HOST: arkadiuszkamrowski.com
+2026-10-20T16:59:49.8200868Z   REQUIRE_PRODUCTION_SITE: 1
+2026-10-20T16:59:49.8201058Z ##[endgroup]
+2026-10-20T16:59:49.9037632Z
+2026-10-20T16:59:49.9038389Z > arkadiusz-kamrowski-site@2.0.0 test:living-architecture-v6
+2026-10-20T16:59:49.9040093Z > node --experimental-strip-types --test tests/living-architecture-v6-model.test.mjs && playwright test tests/living-architecture-v6.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=1 --timeout=90000
+2026-10-20T16:59:49.9041199Z
+2026-10-20T16:59:49.9401998Z TAP version 13
+2026-10-20T16:59:50.0999212Z # Subtest: persistent identities, heterogeneous membership and cross-department graph
+2026-10-20T16:59:50.1004546Z ok 1 - persistent identities, heterogeneous membership and cross-department graph
+2026-10-20T16:59:50.1005037Z   ---
+2026-10-20T16:59:50.1005274Z   duration_ms: 1.436631
+2026-10-20T16:59:50.1005543Z   type: 'test'
+2026-10-20T16:59:50.1005779Z   ...
+2026-10-20T16:59:50.1015865Z # Subtest: frozen-time forward/reverse seek reproduces actual poses with continuous structural change
+2026-10-20T16:59:50.1016893Z ok 2 - frozen-time forward/reverse seek reproduces actual poses with continuous structural change
+2026-10-20T16:59:50.1017471Z   ---
+2026-10-20T16:59:50.1017722Z   duration_ms: 58.979726
+2026-10-20T16:59:50.1018006Z   type: 'test'
+2026-10-20T16:59:50.1018742Z   ...
+2026-10-20T16:59:50.1019358Z # Subtest: strength affects physical interfaces; all final edges connect and grow continuously
+2026-10-20T16:59:50.1020300Z ok 3 - strength affects physical interfaces; all final edges connect and grow continuously
+2026-10-20T16:59:50.1020838Z   ---
+2026-10-20T16:59:50.1021088Z   duration_ms: 1.183701
+2026-10-20T16:59:50.1021358Z   type: 'test'
+2026-10-20T16:59:50.1021586Z   ...
+2026-10-20T16:59:50.1022219Z # Subtest: final internal and peripheral agency; bounded motion, fixed seams, real signal consequences
+2026-10-20T16:59:50.1023192Z ok 4 - final internal and peripheral agency; bounded motion, fixed seams, real signal consequences
+2026-10-20T16:59:50.1023753Z   ---
+2026-10-20T16:59:50.1023992Z   duration_ms: 1.045502
+2026-10-20T16:59:50.1024287Z   type: 'test'
+2026-10-20T16:59:50.1024675Z   ...
+2026-10-20T16:59:50.1025245Z # Subtest: three genuinely different final spatial candidates retain an open unequal extent
+2026-10-20T16:59:50.1052433Z ok 5 - three genuinely different final spatial candidates retain an open unequal extent
+2026-10-20T16:59:50.1053024Z   ---
+2026-10-20T16:59:50.1053280Z   duration_ms: 0.300712
+2026-10-20T16:59:50.1053550Z   type: 'test'
+2026-10-20T16:59:50.1053761Z   ...
+2026-10-20T16:59:50.1054323Z # Subtest: V6.3 local paths attach to stable module positions throughout morph and micro motion
+2026-10-20T16:59:50.1055308Z ok 6 - V6.3 local paths attach to stable module positions throughout morph and micro motion
+2026-10-20T16:59:50.1055837Z   ---
+2026-10-20T16:59:50.1056080Z   duration_ms: 17.925591
+2026-10-20T16:59:50.1056354Z   type: 'test'
+2026-10-20T16:59:50.1056564Z   ...
+2026-10-20T16:59:50.1057187Z # Subtest: V6.3 persistent bridges meet their actual structural modules, with progressive local formation
+2026-10-20T16:59:50.1058098Z ok 7 - V6.3 persistent bridges meet their actual structural modules, with progressive local formation
+2026-10-20T16:59:50.1058641Z   ---
+2026-10-20T16:59:50.1058859Z   duration_ms: 2.634342
+2026-10-20T16:59:50.1059110Z   type: 'test'
+2026-10-20T16:59:50.1059320Z   ...
+2026-10-20T16:59:50.1059905Z # Subtest: V6.3 semantic events propagate over explicit dependency paths and affect receiving geometry
+2026-10-20T16:59:50.1061015Z ok 8 - V6.3 semantic events propagate over explicit dependency paths and affect receiving geometry
+2026-10-20T16:59:50.1061383Z   ---
+2026-10-20T16:59:50.1061549Z   duration_ms: 0.735386
+2026-10-20T16:59:50.1061725Z   type: 'test'
+2026-10-20T16:59:50.1061880Z   ...
+2026-10-20T16:59:50.1180726Z 1..8
+2026-10-20T16:59:50.1181008Z # tests 8
+2026-10-20T16:59:50.1181241Z # suites 0
+2026-10-20T16:59:50.1181467Z # pass 8
+2026-10-20T16:59:50.1181681Z # fail 0
+2026-10-20T16:59:50.1181896Z # cancelled 0
+2026-10-20T16:59:50.1182143Z # skipped 0
+2026-10-20T16:59:50.1182368Z # todo 0
+2026-10-20T16:59:50.1182618Z # duration_ms 187.420695
+2026-10-20T16:59:52.1622673Z
+2026-10-20T16:59:52.1623230Z Running 28 tests using 1 worker
+2026-10-20T16:59:52.1623437Z
+2026-10-20T17:00:43.3097569Z   ✓   1 [desktop-chromium] › tests/living-architecture-v6.spec.ts:12:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (50.6s)
+2026-10-20T17:01:00.1100402Z   ✓   2 [desktop-chromium] › tests/living-architecture-v6.spec.ts:22:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (16.8s)
+2026-10-20T17:01:20.7585222Z   ✓   3 [desktop-chromium] › tests/living-architecture-v6.spec.ts:29:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (20.6s)
+2026-10-20T17:01:33.2377623Z   ✓   4 [desktop-chromium] › tests/living-architecture-v6.spec.ts:38:1 › native forward/reverse scroll, reload, resize and anchor navigation (12.5s)
+2026-10-20T17:01:41.6738771Z   ✓   5 [desktop-chromium] › tests/living-architecture-v6.spec.ts:43:1 › reduced motion is a static complete architecture, including live preference changes (8.4s)
+2026-10-20T17:01:49.5003371Z   ✓   6 [desktop-chromium] › tests/living-architecture-v6.spec.ts:47:1 › WebGL denied and context loss preserve static illustration and the complete document (7.8s)
+2026-10-20T17:01:52.3466531Z   ✓   7 [desktop-chromium] › tests/living-architecture-v6.spec.ts:51:1 › partial construction failure releases its canvas and GPU resources (2.8s)
+2026-10-20T17:01:52.4776661Z   ✓   8 [desktop-chromium] › tests/living-architecture-v6.spec.ts:54:1 › 320px without JavaScript retains reading, language and contact paths (123ms)
+2026-10-20T17:01:52.5297478Z   -   9 [desktop-chromium] › tests/living-architecture-v6.spec.ts:57:1 › mobile touch advances normal document scrolling
+2026-10-20T17:02:04.9070946Z   ✓  10 [desktop-chromium] › tests/living-architecture-v6.spec.ts:62:1 › reading windows actually remove architecture beneath visible copy (12.4s)
+2026-10-20T17:02:12.1912415Z   ✓  11 [desktop-chromium] › tests/living-architecture-v6.spec.ts:83:1 › back-forward cache restoration recreates the disposed WebGL world (7.3s)
+2026-10-20T17:02:27.7026808Z   ✓  12 [desktop-chromium] › tests/living-architecture-v6.spec.ts:91:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (15.5s)
+2026-10-20T17:02:45.5047810Z   ✓  13 [desktop-chromium] › tests/living-architecture-v6.spec.ts:118:1 › V6.3 hidden/occluded targets suppress pointers; reduced motion never reveals one (17.8s)
+2026-10-20T17:02:52.2204221Z   ✓  14 [desktop-chromium] › tests/living-architecture-v6.spec.ts:129:1 › V6.3 active overlay updates past the final landmark and disappears on isolate or context loss (6.7s)
+2026-10-20T17:03:30.2420447Z   ✓  15 [mobile-chromium] › tests/living-architecture-v6.spec.ts:12:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (37.4s)
+2026-10-20T17:03:41.6295311Z   ✓  16 [mobile-chromium] › tests/living-architecture-v6.spec.ts:22:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (11.4s)
+2026-10-20T17:03:55.3986896Z   ✓  17 [mobile-chromium] › tests/living-architecture-v6.spec.ts:29:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (13.8s)
+2026-10-20T17:04:05.8134682Z   ✓  18 [mobile-chromium] › tests/living-architecture-v6.spec.ts:38:1 › native forward/reverse scroll, reload, resize and anchor navigation (10.4s)
+2026-10-20T17:04:12.9928924Z   ✓  19 [mobile-chromium] › tests/living-architecture-v6.spec.ts:43:1 › reduced motion is a static complete architecture, including live preference changes (7.2s)
+2026-10-20T17:04:17.1978905Z   ✓  20 [mobile-chromium] › tests/living-architecture-v6.spec.ts:47:1 › WebGL denied and context loss preserve static illustration and the complete document (4.2s)
+2026-10-20T17:04:20.0328262Z   ✓  21 [mobile-chromium] › tests/living-architecture-v6.spec.ts:51:1 › partial construction failure releases its canvas and GPU resources (2.8s)
+2026-10-20T17:04:20.1587069Z   ✓  22 [mobile-chromium] › tests/living-architecture-v6.spec.ts:54:1 › 320px without JavaScript retains reading, language and contact paths (117ms)
+2026-10-20T17:04:43.4397613Z   ✓  23 [mobile-chromium] › tests/living-architecture-v6.spec.ts:57:1 › mobile touch advances normal document scrolling (23.3s)
+2026-10-20T17:04:54.8387779Z   ✓  24 [mobile-chromium] › tests/living-architecture-v6.spec.ts:62:1 › reading windows actually remove architecture beneath visible copy (11.4s)
+2026-10-20T17:05:01.7000598Z   ✓  25 [mobile-chromium] › tests/living-architecture-v6.spec.ts:83:1 › back-forward cache restoration recreates the disposed WebGL world (6.9s)
+2026-10-20T17:05:12.5232314Z   ✓  26 [mobile-chromium] › tests/living-architecture-v6.spec.ts:91:1 › V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize (10.8s)
+2026-10-20T17:05:24.8097393Z   ✓  27 [mobile-chromium] › tests/living-architecture-v6.spec.ts:118:1 › V6.3 hidden/occluded targets suppress pointers; reduced motion never reveals one (12.3s)
+2026-10-20T17:05:30.1471659Z   ✓  28 [mobile-chromium] › tests/living-architecture-v6.spec.ts:129:1 › V6.3 active overlay updates past the final landmark and disappears on isolate or context loss (5.3s)
+2026-10-20T17:05:30.2379499Z
+2026-10-20T17:05:30.2383153Z   1 skipped
+2026-10-20T17:05:30.2383479Z   27 passed (5.7m)
+2026-10-20T17:05:30.3267643Z

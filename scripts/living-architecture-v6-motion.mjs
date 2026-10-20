@@ -1,0 +1,46 @@
+import {chromium} from '@playwright/test';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {execFileSync} from 'node:child_process';
+const output=process.env.V6_MOTION_OUTPUT||'artifacts/living-architecture-v6';await fs.mkdir(output,{recursive:true});
+const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const context=await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor:1}),page=await context.newPage();
+const framesDir=`${output}/screencast-frames`;await fs.mkdir(framesDir,{recursive:true});
+const cdp=await context.newCDPSession(page),frames=[],pending=new Set(),errors=[],frameErrors=[];
+page.on('pageerror',error=>errors.push(error.message));
+const onFrame=frame=>{
+ const name=`frame-${String(frames.length).padStart(5,'0')}.jpg`;
+ frames.push({name,timestamp:frame.metadata.timestamp});
+ const write=fs.writeFile(`${framesDir}/${name}`,Buffer.from(frame.data,'base64')).then(()=>cdp.send('Page.screencastFrameAck',{sessionId:frame.sessionId})).catch(error=>frameErrors.push(error.message));
+ pending.add(write);void write.then(()=>pending.delete(write));
+};
+cdp.on('Page.screencastFrame',onFrame);
+await cdp.send('Page.startScreencast',{format:'jpeg',quality:88,maxWidth:1280,maxHeight:800,everyNthFrame:1});
+await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6?debug=1&freeze=1&isolate=1');await page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});await page.locator('[data-debug]').evaluate(el=>el.style.visibility='hidden');
+await page.evaluate(async()=>{
+ const input=document.querySelector('[data-seek]'),time=document.querySelector('[data-time]');
+ const run=async(duration,fn)=>{const start=performance.now();while(performance.now()-start<duration){await new Promise(requestAnimationFrame);fn(Math.min(1,(performance.now()-start)/duration));}};
+ await run(5000,p=>{input.value=String(p);input.dispatchEvent(new Event('input'));});
+ await run(8000,p=>{time.value=String(p*8);time.dispatchEvent(new Event('change'));});
+ await run(3500,p=>{input.value=String(1-p);input.dispatchEvent(new Event('input'));});
+});
+await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6');await page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
+await page.evaluate(async()=>{const end=document.querySelector('#conversation').offsetTop;const run=async(reverse)=>{const start=performance.now();while(performance.now()-start<4500){await new Promise(requestAnimationFrame);const p=Math.min(1,(performance.now()-start)/4500);scrollTo(0,end*(reverse?1-p:p));}};await run(false);await run(true);});
+// Optional V6.3 editorial tracking proof; the original V6.2 recording path stays reproducible.
+if(process.env.V6_TRACKING_RECORDING==='1'){
+ await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6?debug=1&freeze=1');await page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
+ await page.locator('[data-debug]').evaluate(el=>el.style.visibility='hidden');
+ await page.evaluate(async()=>{
+  scrollTo(0,document.querySelector('#group').offsetTop);
+  const input=document.querySelector('[data-time]'),start=performance.now();
+  while(performance.now()-start<6500){await new Promise(requestAnimationFrame);input.value=String(Math.min(3.5,(performance.now()-start)/6500*3.5));input.dispatchEvent(new Event('change'));}
+ });
+}
+await cdp.send('Page.stopScreencast');cdp.off('Page.screencastFrame',onFrame);await Promise.all(pending);await context.close();await browser.close();
+if(frames.length<10)throw new Error('Screencast produced insufficient frames');
+const concat=frames.map((frame,i)=>`file 'screencast-frames/${frame.name}'\nduration ${Math.max(.001,(frames[i+1]?.timestamp??frame.timestamp+1/30)-frame.timestamp)}`).join('\n')+`\nfile 'screencast-frames/${frames.at(-1).name}'\n`;
+await fs.writeFile(`${output}/frames.txt`,concat);
+execFileSync(process.env.FFMPEG_PATH||'ffmpeg',['-y','-f','concat','-safe','0','-i',path.resolve(output,'frames.txt'),'-an','-vf','scale=1280:800:force_original_aspect_ratio=decrease,pad=1280:800:(ow-iw)/2:(oh-ih)/2','-c:v','libx264','-preset','fast','-crf','24','-threads','2','-pix_fmt','yuv420p','-movflags','+faststart',path.resolve(output,'morph-life-native-scroll.mp4')],{stdio:'pipe'});
+const bytes=(await fs.stat(`${output}/morph-life-native-scroll.mp4`)).size;if(bytes<1000)throw new Error('Encoded recording is empty');
+await fs.writeFile(`${output}/motion.json`,JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),method:'Actual Chrome CDP screencast frames with captured timestamps; instrumented recording, not a performance benchmark.',frames:frames.length,bytes,errors,frameErrors},null,2));
+console.log(`Saved ${frames.length} screencast frames and ${bytes} encoded bytes to ${output}`);

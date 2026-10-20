@@ -1,3 +1,4 @@
+import {swipeDocument} from './native-touch';
 import {test,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const route='/en/lab/decision-theatre-v5';
@@ -59,7 +60,7 @@ test('no JavaScript and 320px reflow preserve full reading and contact',async({b
 
 test('touch input advances the native mobile document',async({page,browserName,isMobile})=>{
  test.skip(!isMobile||browserName!=='chromium','Native touch gesture targets the mobile Chromium project');
- await page.goto(route);await ready(page);const cdp=await page.context().newCDPSession(page);await cdp.send('Input.synthesizeScrollGesture',{x:180,y:620,yDistance:-850,speed:700,gestureSourceType:'touch'});await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(100);await expect.poll(async()=>Number(await page.locator('[data-v5]').getAttribute('data-progress'))).toBeGreaterThan(0);await cdp.detach();
+ await page.goto(route);await ready(page);await swipeDocument(page);await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(100);await expect.poll(async()=>Number(await page.locator('[data-v5]').getAttribute('data-progress'))).toBeGreaterThan(0);
 });
 
 test('failure after renderer and environment allocation releases the partial world',async({page})=>{

@@ -1,0 +1,36 @@
+{
+  "headRevision": "04be9097cbc0223969cdc700bf4e0fa4a0425de3",
+  "job": {
+    "id": 118759900115,
+    "head_sha": "04be9097cbc0223969cdc700bf4e0fa4a0425de3",
+    "name": "quality",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "runUrl": "https://github.com/aras-2003/Simple-Website/actions/runs/39460934785",
+  "annotations": [
+    {
+      "path": ".github",
+      "start_line": 1,
+      "end_line": 1,
+      "annotation_level": "notice",
+      "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+      "title": "",
+      "raw_details": ""
+    }
+  ],
+  "counts": [
+    "2026-10-20T16:53:22.4849052Z   146 passed (32.9s)",
+    "2026-10-20T16:54:56.0951170Z   15 skipped",
+    "2026-10-20T16:54:56.0951486Z   189 passed (1.5m)",
+    "2026-10-20T16:55:33.7660091Z   22 passed (37.0s)",
+    "2026-10-20T16:58:32.5862670Z   18 passed (3.0m)",
+    "2026-10-20T16:58:33.4150300Z # skipped 0",
+    "2026-10-20T16:59:49.7651012Z   1 flaky",
+    "2026-10-20T16:59:49.7652149Z   1 skipped",
+    "2026-10-20T16:59:49.7652311Z   16 passed (1.3m)",
+    "2026-10-20T16:59:50.1182143Z # skipped 0",
+    "2026-10-20T17:05:30.2383153Z   1 skipped",
+    "2026-10-20T17:05:30.2383479Z   27 passed (5.7m)"
+  ]
+}

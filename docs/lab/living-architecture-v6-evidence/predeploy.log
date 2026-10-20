@@ -1,0 +1,5 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:predeploy
+> python3 tests/predeploy_check.py
+
+Production Worker predeploy contract tests: PASS

@@ -1,0 +1,181 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:living-architecture-v6
+> node --experimental-strip-types --test tests/living-architecture-v6-model.test.mjs && playwright test tests/living-architecture-v6.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=2
+
+✔ persistent identities, heterogeneous membership and cross-department graph (5.682ms)
+✔ frozen-time forward/reverse seek reproduces actual poses with continuous structural change (79.506042ms)
+✔ strength affects physical interfaces; all final edges connect and grow continuously (1.699292ms)
+✔ final internal and peripheral agency; bounded motion, fixed seams, real signal consequences (1.563666ms)
+✔ three genuinely different final spatial candidates retain an open unequal extent (1.020166ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 651.390708
+
+Running 20 tests using 2 workers
+
+(node:3294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3293) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-chromium] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (29.4s)
+  ✓   3 [desktop-chromium] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (20.8s)
+  ✓   4 [desktop-chromium] › tests/living-architecture-v6.spec.ts:36:1 › native forward/reverse scroll, reload, resize and anchor navigation (9.6s)
+  ✓   5 [desktop-chromium] › tests/living-architecture-v6.spec.ts:41:1 › reduced motion is a static complete architecture, including live preference changes (8.8s)
+  ✓   6 [desktop-chromium] › tests/living-architecture-v6.spec.ts:45:1 › WebGL denied and context loss preserve static illustration and the complete document (5.9s)
+  ✓   7 [desktop-chromium] › tests/living-architecture-v6.spec.ts:49:1 › partial construction failure releases its canvas and GPU resources (3.9s)
+  ✓   8 [desktop-chromium] › tests/living-architecture-v6.spec.ts:52:1 › 320px without JavaScript retains reading, language and contact paths (3.6s)
+  ✘   2 [desktop-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (50.0s)
+  -   9 [desktop-chromium] › tests/living-architecture-v6.spec.ts:55:1 › mobile touch advances normal document scrolling
+(node:3697) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [desktop-chromium] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy (26.0s)
+(node:3908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 [mobile-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG (41.8s)
+(node:3971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  12 [mobile-chromium] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor (41.0s)
+(node:4210) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  13 [mobile-chromium] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation (35.9s)
+(node:4242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [mobile-chromium] › tests/living-architecture-v6.spec.ts:36:1 › native forward/reverse scroll, reload, resize and anchor navigation (19.2s)
+  ✓  15 [mobile-chromium] › tests/living-architecture-v6.spec.ts:41:1 › reduced motion is a static complete architecture, including live preference changes (18.7s)
+  ✓  16 [mobile-chromium] › tests/living-architecture-v6.spec.ts:45:1 › WebGL denied and context loss preserve static illustration and the complete document (16.6s)
+  ✓  18 [mobile-chromium] › tests/living-architecture-v6.spec.ts:52:1 › 320px without JavaScript retains reading, language and contact paths (12.4s)
+  ✓  17 [mobile-chromium] › tests/living-architecture-v6.spec.ts:49:1 › partial construction failure releases its canvas and GPU resources (13.5s)
+  ✓  19 [mobile-chromium] › tests/living-architecture-v6.spec.ts:55:1 › mobile touch advances normal document scrolling (16.8s)
+  ✘  20 [mobile-chromium] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy (33.8s)
+
+
+  1) [desktop-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG 
+
+    Test timeout of 30000ms exceeded.
+
+    Error Context: test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-desktop-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-desktop-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-desktop-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG 
+
+    Test timeout of 30000ms exceeded.
+
+    Error Context: test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-bil-37d79-x-contact-keyboard-and-WCAG-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [mobile-chromium] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.evaluate: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-seek]')
+        - locator resolved to visible <input min="0" max="1" value="0" step=".001" data-seek="" type="range"/>
+
+
+      4 | const route='/en/lab/living-architecture-v6';
+      5 | const ready=async page=>page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
+    > 6 | const seek=async(page,p)=>page.locator('[data-seek]').evaluate((el,p)=>{el.value=String(p);el.dispatchEvent(new Event('input',{bubbles:true}));},p);
+        |                                                       ^
+      7 | const measure=async page=>{await page.dispatchEvent('[data-v6]','v6-measure');return JSON.parse(await page.locator('[data-v6]').getAttribute('data-measurement'));};
+      8 | const native=async(page,p)=>{await page.evaluate(p=>{const a=JSON.parse(document.querySelector('[data-v6]').dataset.landmarks),i=Math.min(3,Math.floor(p*4));scrollTo(0,a[i]+(a[i+1]-a[i])*(p*4-i));},p);await expect.poll(async()=>Number(await page.locator('[data-v6]').getAttribute('data-progress'))).toBeCloseTo(p,2);};
+      9 |
+        at seek (/Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:6:55)
+        at /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:22:31
+
+    Error Context: test-results/living-architecture-v6-11--9a505-and-stable-projected-anchor-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-11--9a505-and-stable-projected-anchor-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-11--9a505-and-stable-projected-anchor-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [mobile-chromium] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.getAttribute: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-v6]')
+
+
+       5 | const ready=async page=>page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
+       6 | const seek=async(page,p)=>page.locator('[data-seek]').evaluate((el,p)=>{el.value=String(p);el.dispatchEvent(new Event('input',{bubbles:true}));},p);
+    >  7 | const measure=async page=>{await page.dispatchEvent('[data-v6]','v6-measure');return JSON.parse(await page.locator('[data-v6]').getAttribute('data-measurement'));};
+         |                                                                                                                                 ^
+       8 | const native=async(page,p)=>{await page.evaluate(p=>{const a=JSON.parse(document.querySelector('[data-v6]').dataset.landmarks),i=Math.min(3,Math.floor(p*4));scrollTo(0,a[i]+(a[i+1]-a[i])*(p*4-i));},p);await expect.poll(async()=>Number(await page.locator('[data-v6]').getAttribute('data-progress'))).toBeCloseTo(p,2);};
+       9 |
+      10 | test('bilingual semantic editorial, noindex, contact, keyboard and WCAG',async({page,browserName})=>{
+        at measure (/Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:7:129)
+        at /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:32:82
+
+    Error Context: test-results/living-architecture-v6-fin-da5f5--and-bounded-GPU-allocation-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-fin-da5f5--and-bounded-GPU-allocation-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-fin-da5f5--and-bounded-GPU-allocation-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [mobile-chromium] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.evaluate: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-canvas]')
+
+
+      65 |   const clips=await page.locator('.v6-copy').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:Math.max(0,r.x+8),y:Math.max(0,r.y+8),width:Math.min(innerWidth,r.right-8)-Math.max(0,r.x+8),height:Math.min(innerHeight,r.bottom-8)-Math.max(0,r.y+8)};}).filter(r=>r.width>0&&r.height>20));
+      66 |   for(const clip of clips){
+    > 67 |    const visible=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='hidden');const hidden=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='');
+         |                                                                                                                                ^
+      68 |    expect(visible.length).toBe(hidden.length);const delta=visible.reduce((sum,v,i)=>sum+Math.abs(v-hidden[i]),0)/visible.length;expect(delta).toBeLessThan(1.2);
+      69 |   }
+      70 |  }
+        at /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/tests/living-architecture-v6.spec.ts:67:128
+
+    Error Context: test-results/living-architecture-v6-rea-f4f7a-ecture-beneath-visible-copy-mobile-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/living-architecture-v6-rea-f4f7a-ecture-beneath-visible-copy-mobile-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/living-architecture-v6-rea-f4f7a-ecture-beneath-visible-copy-mobile-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5 failed
+    [desktop-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG 
+    [mobile-chromium] › tests/living-architecture-v6.spec.ts:10:1 › bilingual semantic editorial, noindex, contact, keyboard and WCAG 
+    [mobile-chromium] › tests/living-architecture-v6.spec.ts:20:1 › 11 frozen actual poses reverse with a fixed camera and stable projected anchor 
+    [mobile-chromium] › tests/living-architecture-v6.spec.ts:27:1 › final life changes at rest, deterministic time control, real signals, pause and bounded GPU allocation 
+    [mobile-chromium] › tests/living-architecture-v6.spec.ts:60:1 › reading windows actually remove architecture beneath visible copy 
+  1 skipped
+  14 passed (6.5m)

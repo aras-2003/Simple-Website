@@ -1,0 +1,47 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-time]')[22m
+[2m    - locator resolved to <input min="0" step=".1" value="0" max="3600" data-time="" type="number"/>[22m
+[2m    - fill("1.5")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m      - waiting 100ms[22m
+[2m    60 × waiting for element to be visible, enabled and editable[22m
+[2m       - element is not visible[22m
+[2m     - retrying fill action[22m
+[2m       - waiting 500ms[22m
+
+    at time (/Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/scripts/living-architecture-v6-3-capture.mjs:11:56)
+    at /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website/scripts/living-architecture-v6-3-capture.mjs:18:55 {
+  log: [
+    "  - waiting for locator('[data-time]')",
+    '    - locator resolved to <input min="0" step=".1" value="0" max="3600" data-time="" type="number"/>',
+    '    - fill("1.5")',
+    '  - attempting fill action',
+    '    2 × waiting for element to be visible, enabled and editable',
+    '      - element is not visible',
+    '    - retrying fill action',
+    '    - waiting 20ms',
+    '    2 × waiting for element to be visible, enabled and editable',
+    '      - element is not visible',
+    '    - retrying fill action',
+    '      - waiting 100ms',
+    '    60 × waiting for element to be visible, enabled and editable',
+    '       - element is not visible',
+    '     - retrying fill action',
+    '       - waiting 500ms'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.9.0

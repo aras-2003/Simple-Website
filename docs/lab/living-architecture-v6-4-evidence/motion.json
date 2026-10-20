@@ -1,0 +1,8 @@
+{
+  "commit": "903119698c1ccbb3b327abc0daf333d757d393a5",
+  "method": "Actual Chrome CDP screencast frames with captured timestamps; instrumented recording, not a performance benchmark.",
+  "frames": 911,
+  "bytes": 3705308,
+  "errors": [],
+  "frameErrors": []
+}
