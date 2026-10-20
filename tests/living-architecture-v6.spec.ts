@@ -85,7 +85,7 @@ test('back-forward cache restoration recreates the disposed WebGL world',async({
  await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide',{persisted:true})));
  await expect(page.locator('canvas')).toHaveCount(0);
  await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pageshow',{persisted:true})));
- await expect(page.locator('canvas')).toHaveCount(1);await ready(page);
+ await ready(page);await expect(page.locator('canvas')).toHaveCount(1);
 });
 
 test('V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize',async({page})=>{

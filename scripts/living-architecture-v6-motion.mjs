@@ -26,6 +26,16 @@ await page.evaluate(async()=>{
 });
 await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6');await page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
 await page.evaluate(async()=>{const end=document.querySelector('#conversation').offsetTop;const run=async(reverse)=>{const start=performance.now();while(performance.now()-start<4500){await new Promise(requestAnimationFrame);const p=Math.min(1,(performance.now()-start)/4500);scrollTo(0,end*(reverse?1-p:p));}};await run(false);await run(true);});
+// Optional V6.3 editorial tracking proof; the original V6.2 recording path stays reproducible.
+if(process.env.V6_TRACKING_RECORDING==='1'){
+ await page.goto('http://127.0.0.1:4173/en/lab/living-architecture-v6?debug=1&freeze=1');await page.waitForSelector('[data-v6][data-mode="webgl"]',{state:'attached'});
+ await page.locator('[data-debug]').evaluate(el=>el.style.visibility='hidden');
+ await page.evaluate(async()=>{
+  scrollTo(0,document.querySelector('#group').offsetTop);
+  const input=document.querySelector('[data-time]'),start=performance.now();
+  while(performance.now()-start<6500){await new Promise(requestAnimationFrame);input.value=String(Math.min(3.5,(performance.now()-start)/6500*3.5));input.dispatchEvent(new Event('change'));}
+ });
+}
 await cdp.send('Page.stopScreencast');cdp.off('Page.screencastFrame',onFrame);await Promise.all(pending);await context.close();await browser.close();
 if(frames.length<10)throw new Error('Screencast produced insufficient frames');
 const concat=frames.map((frame,i)=>`file 'screencast-frames/${frame.name}'\nduration ${Math.max(.001,(frames[i+1]?.timestamp??frame.timestamp+1/30)-frame.timestamp)}`).join('\n')+`\nfile 'screencast-frames/${frames.at(-1).name}'\n`;
