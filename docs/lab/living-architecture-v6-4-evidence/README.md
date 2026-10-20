@@ -9,6 +9,8 @@ Application commit: `903119698c1ccbb3b327abc0daf333d757d393a5`. Captured from th
 - [Final desktop](desktop-100.webp), [final phone](mobile-100.webp), [initial chaos](desktop-0.webp), [middle phase](desktop-50.webp).
 - [Captured measurements](captures.json): 11 frozen assembly poses, four yaw views, 11 native scroll points per viewport; no runtime errors.
 - [Separate native profile](profile.json): Chrome / ANGLE Metal / M1. CPU update p95 6.0ms desktop, 3.2ms phone emulation; zero draws after pause. Emulation is not a phone hardware measurement. Profiling ran without concurrent browser tests/capture/recording.
+Log content is preserved; trailing line whitespace is normalized for repository hygiene.
+
 - [Full build log](build.log), [new model/browser checks](tests.log), [preserved V6.3 regression](regression.log).
 - [SHA-256 evidence manifest](manifest.json).
 

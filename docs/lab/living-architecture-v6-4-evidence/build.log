@@ -10,7 +10,7 @@
 20:33:23 [content] Synced content
 20:33:23 [types] Generated 529ms
 20:33:23 [check] Getting diagnostics for Astro files in /Users/arkadiuszkamrowski/Documents/ChatGPT/Dev _ Simple website...
-Result (82 files): 
+Result (82 files):
 - 0 errors
 - 0 warnings
 - 0 hints
@@ -29,7 +29,7 @@ Result (82 files):
 20:33:33 [build] ✓ Completed in 468ms.
 20:33:33 [build] Building static entrypoints...
 20:33:34 [vite] ✓ built in 537ms
-20:33:34 [WARN] [vite] [plugin builtin:vite-reporter] 
+20:33:34 [WARN] [vite] [plugin builtin:vite-reporter]
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
 - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
@@ -37,44 +37,44 @@ Result (82 files):
 20:33:34 [vite] ✓ built in 442ms
 20:33:34 [build] Rearranging server assets...
 
- generating static routes 
-20:33:34   ├─ /.well-known/security.txt (+25ms) 
-20:33:34   ├─ /404.html (+19ms) 
-20:33:34   ├─ /about/index.html (+13ms) 
-20:33:34   ├─ /contact/index.html (+10ms) 
-20:33:34   ├─ /en/404/index.html (+8ms) 
-20:33:34   ├─ /en/about/index.html (+9ms) 
-20:33:34   ├─ /en/advisory/index.html (+14ms) 
-20:33:34   ├─ /en/contact/index.html (+7ms) 
-20:33:34   ├─ /en/lab/decision-theatre-v2/index.html (+12ms) 
-20:33:34   ├─ /en/lab/decision-theatre-v5/index.html (+10ms) 
-20:33:34   ├─ /en/lab/living-architecture-v6/index.html (+11ms) 
-20:33:34   ├─ /en/lab/living-architecture-v6-4/index.html (+11ms) 
-20:33:34   ├─ /en/oaf/index.html (+8ms) 
-20:33:34   ├─ /en/perspective/architecture-as-decision-system/index.html (+22ms) 
-20:33:35   ├─ /en/perspective/portfolio-as-strategy-in-motion/index.html (+9ms) 
-20:33:35   ├─ /en/perspective/ai-governance-without-theatre/index.html (+13ms) 
-20:33:35   ├─ /en/perspective/transformation-operating-model/index.html (+4ms) 
-20:33:35   ├─ /en/perspective/delivery-beyond-deployment/index.html (+10ms) 
-20:33:35   ├─ /en/perspective/index.html (+12ms) 
-20:33:35   ├─ /en/privacy/index.html (+17ms) 
-20:33:35   ├─ /en/index.html (+10ms) 
-20:33:35   ├─ /lab/decision-theatre-v2/index.html (+5ms) 
-20:33:35   ├─ /lab/decision-theatre-v4/index.html (+10ms) 
-20:33:35   ├─ /lab/decision-theatre-v5/index.html (+10ms) 
-20:33:35   ├─ /lab/living-architecture-v6/index.html (+7ms) 
-20:33:35   ├─ /lab/living-architecture-v6-4/index.html (+6ms) 
-20:33:35   ├─ /oaf/index.html (+12ms) 
-20:33:35   ├─ /perspektywa/architecture-as-decision-system/index.html (+6ms) 
-20:33:35   ├─ /perspektywa/portfolio-as-strategy-in-motion/index.html (+7ms) 
-20:33:35   ├─ /perspektywa/ai-governance-without-theatre/index.html (+13ms) 
-20:33:35   ├─ /perspektywa/transformation-operating-model/index.html (+5ms) 
-20:33:35   ├─ /perspektywa/delivery-beyond-deployment/index.html (+13ms) 
-20:33:35   ├─ /perspektywa/index.html (+14ms) 
-20:33:35   ├─ /privacy/index.html (+24ms) 
-20:33:35   ├─ /robots.txt (+13ms) 
-20:33:35   ├─ /wspolpraca/index.html (+10ms) 
-20:33:35   ├─ /index.html (+8ms) 
+ generating static routes
+20:33:34   ├─ /.well-known/security.txt (+25ms)
+20:33:34   ├─ /404.html (+19ms)
+20:33:34   ├─ /about/index.html (+13ms)
+20:33:34   ├─ /contact/index.html (+10ms)
+20:33:34   ├─ /en/404/index.html (+8ms)
+20:33:34   ├─ /en/about/index.html (+9ms)
+20:33:34   ├─ /en/advisory/index.html (+14ms)
+20:33:34   ├─ /en/contact/index.html (+7ms)
+20:33:34   ├─ /en/lab/decision-theatre-v2/index.html (+12ms)
+20:33:34   ├─ /en/lab/decision-theatre-v5/index.html (+10ms)
+20:33:34   ├─ /en/lab/living-architecture-v6/index.html (+11ms)
+20:33:34   ├─ /en/lab/living-architecture-v6-4/index.html (+11ms)
+20:33:34   ├─ /en/oaf/index.html (+8ms)
+20:33:34   ├─ /en/perspective/architecture-as-decision-system/index.html (+22ms)
+20:33:35   ├─ /en/perspective/portfolio-as-strategy-in-motion/index.html (+9ms)
+20:33:35   ├─ /en/perspective/ai-governance-without-theatre/index.html (+13ms)
+20:33:35   ├─ /en/perspective/transformation-operating-model/index.html (+4ms)
+20:33:35   ├─ /en/perspective/delivery-beyond-deployment/index.html (+10ms)
+20:33:35   ├─ /en/perspective/index.html (+12ms)
+20:33:35   ├─ /en/privacy/index.html (+17ms)
+20:33:35   ├─ /en/index.html (+10ms)
+20:33:35   ├─ /lab/decision-theatre-v2/index.html (+5ms)
+20:33:35   ├─ /lab/decision-theatre-v4/index.html (+10ms)
+20:33:35   ├─ /lab/decision-theatre-v5/index.html (+10ms)
+20:33:35   ├─ /lab/living-architecture-v6/index.html (+7ms)
+20:33:35   ├─ /lab/living-architecture-v6-4/index.html (+6ms)
+20:33:35   ├─ /oaf/index.html (+12ms)
+20:33:35   ├─ /perspektywa/architecture-as-decision-system/index.html (+6ms)
+20:33:35   ├─ /perspektywa/portfolio-as-strategy-in-motion/index.html (+7ms)
+20:33:35   ├─ /perspektywa/ai-governance-without-theatre/index.html (+13ms)
+20:33:35   ├─ /perspektywa/transformation-operating-model/index.html (+5ms)
+20:33:35   ├─ /perspektywa/delivery-beyond-deployment/index.html (+13ms)
+20:33:35   ├─ /perspektywa/index.html (+14ms)
+20:33:35   ├─ /privacy/index.html (+24ms)
+20:33:35   ├─ /robots.txt (+13ms)
+20:33:35   ├─ /wspolpraca/index.html (+10ms)
+20:33:35   ├─ /index.html (+8ms)
 20:33:35 ✓ Completed in 471ms.
 
 20:33:35 [build] ✓ Completed in 1.51s.

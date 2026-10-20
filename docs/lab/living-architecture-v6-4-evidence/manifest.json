@@ -5,8 +5,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 2016,
-      "sha256": "e724111783527792e45c64e7a0fe780ddb48c3c3259f8d283b0d9cebb4bfd620"
+      "bytes": 2106,
+      "sha256": "0cad9fa1fdcb86067c0531d650d878493502424ff3b3fb042f61f8d7b9682686"
     },
     {
       "path": "assembly.webp",
@@ -15,8 +15,8 @@
     },
     {
       "path": "build.log",
-      "bytes": 7257,
-      "sha256": "262070f9ab8609292898bf84e8817e7c823ff9d2fe95b452b6f74f352d89b64d"
+      "bytes": 7217,
+      "sha256": "b9be4e957f23362ce4cf454b12aa247e0ffa32883906c06c6ebc46d2f64b3114"
     },
     {
       "path": "captures.json",
