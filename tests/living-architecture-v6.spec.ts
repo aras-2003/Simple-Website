@@ -60,8 +60,16 @@ test('mobile touch advances normal document scrolling',async({page,isMobile,brow
 test('reading windows actually remove architecture beneath visible copy',async({page})=>{
  await page.goto(`${route}?debug=1&freeze=1`);await ready(page);await page.locator('[data-debug]').evaluate(el=>el.style.visibility='hidden');
  expect(await page.locator('[data-canvas]').evaluate(el=>getComputedStyle(el).maskMode)).toBe('luminance');
- for(const p of [.2,.4,.7,.9]){
+ for(const p of Array.from({length:11},(_,i)=>i/10)){
   await native(page,p);
+  const collisions=await page.evaluate(()=>{
+   const copies=Array.from(document.querySelectorAll('.v6-copy')).map(el=>el.getBoundingClientRect()).filter(r=>r.bottom>0&&r.top<innerHeight);
+   return Array.from(document.querySelectorAll('.v6-annotation,.v6-legend,.v6-motion')).filter(el=>{
+    const style=getComputedStyle(el),r=el.getBoundingClientRect();
+    return style.display!=='none'&&style.visibility!=='hidden'&&r.width>0&&r.height>0&&copies.some(c=>c.left<r.right&&c.right>r.left&&c.top<r.bottom&&c.bottom>r.top);
+   }).map(el=>el.className);
+  });
+  expect(collisions,`Copy/UI collision at ${p}`).toEqual([]);
   const clips=await page.locator('.v6-copy').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:Math.max(0,r.x+8),y:Math.max(0,r.y+8),width:Math.min(innerWidth,r.right-8)-Math.max(0,r.x+8),height:Math.min(innerHeight,r.bottom-8)-Math.max(0,r.y+8)};}).filter(r=>r.width>0&&r.height>20));
   for(const clip of clips){
    const visible=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='hidden');const hidden=await sharp(await page.screenshot({clip})).removeAlpha().raw().toBuffer();await page.locator('[data-canvas]').evaluate(el=>el.style.visibility='');

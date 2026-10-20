@@ -33,11 +33,19 @@ if(root){
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${innerWidth}" height="${innerHeight}"><defs><filter id="soft"><feGaussianBlur stdDeviation="8"/></filter></defs><rect width="100%" height="100%" fill="white"/><g filter="url(#soft)">${holes}</g></svg>`;
   host.style.maskImage=holes?`url("data:image/svg+xml,${encodeURIComponent(svg)}")`:'';
   root!.dataset['readingWindows']=JSON.stringify(boxes.map(r=>[r.x-pad,r.y-pad,r.right+pad,r.bottom+pad]));
-  const obstructed=boxes.some(r=>r.bottom>innerHeight-90&&r.top<innerHeight-45);
-  annotation.hidden=obstructed;
-  root!.querySelector<HTMLElement>('.v6-legend')!.style.visibility=obstructed?'hidden':'';
-  const headerBottom=document.querySelector('.v6-header')?.getBoundingClientRect().bottom??0;
-  motion.style.top=obstructed?`${Math.max(12,headerBottom+12)}px`:'';motion.style.bottom=obstructed?'auto':'';
+  const collides=(rect:{left:number;right:number;top:number;bottom:number})=>boxes.some(r=>r.left<rect.right+8&&r.right>rect.left-8&&r.top<rect.bottom+8&&r.bottom>rect.top-8);
+  annotation.hidden=false;
+  annotation.hidden=collides(annotation.getBoundingClientRect());
+  const legend=root!.querySelector<HTMLElement>('.v6-legend')!;
+  legend.style.visibility=collides(legend.getBoundingClientRect())?'hidden':'';
+  motion.style.top='';motion.style.bottom='';
+  const button=motion.getBoundingClientRect();
+  if(collides(button)){
+   const headerBottom=document.querySelector('.v6-header')?.getBoundingClientRect().bottom??0;
+   const candidates=[Math.max(12,headerBottom+12),...boxes.flatMap(r=>[r.bottom+12,r.top-button.height-12])];
+   const top=candidates.find(y=>y>=12&&y+button.height<=innerHeight-12&&!collides({left:button.left,right:button.right,top:y,bottom:y+button.height}));
+   if(top!==undefined){motion.style.top=`${top}px`;motion.style.bottom='auto';}
+  }
  }
  function draw(){
  if(!world||!visible||document.hidden)return;
