@@ -36,7 +36,8 @@ if(root){
   const obstructed=boxes.some(r=>r.bottom>innerHeight-90&&r.top<innerHeight-45);
   annotation.hidden=obstructed;
   root!.querySelector<HTMLElement>('.v6-legend')!.style.visibility=obstructed?'hidden':'';
-  motion.style.top=obstructed?'12px':'';motion.style.bottom=obstructed?'auto':'';
+  const headerBottom=document.querySelector('.v6-header')?.getBoundingClientRect().bottom??0;
+  motion.style.top=obstructed?`${Math.max(12,headerBottom+12)}px`:'';motion.style.bottom=obstructed?'auto':'';
  }
  function draw(){
  if(!world||!visible||document.hidden)return;
