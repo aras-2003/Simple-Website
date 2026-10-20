@@ -29,7 +29,7 @@ await cdp.send('Page.stopScreencast');await Promise.all(pending);await context.c
 if(frames.length<10)throw new Error('Screencast produced insufficient frames');
 const concat=frames.map((frame,i)=>`file 'screencast-frames/${frame.name}'\nduration ${Math.max(.001,(frames[i+1]?.timestamp??frame.timestamp+1/30)-frame.timestamp)}`).join('\n')+`\nfile 'screencast-frames/${frames.at(-1).name}'\n`;
 await fs.writeFile(`${output}/frames.txt`,concat);
-execFileSync(process.env.FFMPEG_PATH||'ffmpeg',['-y','-f','concat','-safe','0','-i',path.resolve(output,'frames.txt'),'-an','-c:v','libx264','-preset','fast','-crf','24','-threads','2','-pix_fmt','yuv420p','-movflags','+faststart',path.resolve(output,'morph-life-native-scroll.mp4')],{stdio:'pipe'});
+execFileSync(process.env.FFMPEG_PATH||'ffmpeg',['-y','-f','concat','-safe','0','-i',path.resolve(output,'frames.txt'),'-an','-vf','scale=1280:800:force_original_aspect_ratio=decrease,pad=1280:800:(ow-iw)/2:(oh-ih)/2','-c:v','libx264','-preset','fast','-crf','24','-threads','2','-pix_fmt','yuv420p','-movflags','+faststart',path.resolve(output,'morph-life-native-scroll.mp4')],{stdio:'pipe'});
 const bytes=(await fs.stat(`${output}/morph-life-native-scroll.mp4`)).size;if(bytes<1000)throw new Error('Encoded recording is empty');
 await fs.writeFile(`${output}/motion.json`,JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),method:'Actual Chrome CDP screencast frames with captured timestamps; instrumented recording, not a performance benchmark.',frames:frames.length,bytes,errors},null,2));
 console.log(`Saved ${frames.length} screencast frames and ${bytes} encoded bytes to ${output}`);
