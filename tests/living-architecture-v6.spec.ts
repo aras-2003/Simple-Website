@@ -1,3 +1,5 @@
+import {Matrix4,Vector3} from 'three';
+import {swipeDocument} from './native-touch';
 import {test,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import sharp from 'sharp';
@@ -53,7 +55,7 @@ test('320px without JavaScript retains reading, language and contact paths',asyn
  const ctx=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:740}}),page=await ctx.newPage();await page.goto(`http://127.0.0.1:4173${route}`);await expect(page.locator('.v6-fallback')).toBeVisible();expect(await page.locator('h2').count()).toBe(5);expect(await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)).toBe(0);await expect(page.locator('[data-debug]')).toBeHidden();await ctx.close();
 });
 test('mobile touch advances normal document scrolling',async({page,isMobile,browserName})=>{
- test.skip(!isMobile||browserName!=='chromium','Touch only applies to mobile Chromium');await page.goto(route);await ready(page);const cdp=await page.context().newCDPSession(page);await cdp.send('Input.synthesizeScrollGesture',{x:180,y:620,yDistance:-850,speed:700,gestureSourceType:'touch'});await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(100);await expect.poll(async()=>Number(await page.locator('[data-v6]').getAttribute('data-progress'))).toBeGreaterThan(0);await cdp.detach();
+ test.skip(!isMobile||browserName!=='chromium','Touch only applies to mobile Chromium');await page.goto(route);await ready(page);await swipeDocument(page);await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(100);await expect.poll(async()=>Number(await page.locator('[data-v6]').getAttribute('data-progress'))).toBeGreaterThan(0);
 });
 
 
@@ -84,4 +86,53 @@ test('back-forward cache restoration recreates the disposed WebGL world',async({
  await expect(page.locator('canvas')).toHaveCount(0);
  await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pageshow',{persisted:true})));
  await expect(page.locator('canvas')).toHaveCount(1);await ready(page);
+});
+
+test('V6.3 tracked event endpoints attach to real visible surfaces through time, camera and resize',async({page})=>{
+ await page.goto(`${route}?debug=1&freeze=1`);await ready(page);await native(page,1);
+ const reports=[];
+ for(const yaw of [0,-25,25]){
+  await page.locator('[data-camera]').fill(String(yaw));await page.locator('[data-camera]').dispatchEvent('change');
+  for(const t of [.2,1.5,2.8]){
+   await page.locator('[data-time]').fill(String(t));await page.locator('[data-time]').dispatchEvent('change');const r=await measure(page);
+   const tracking=JSON.parse(await page.locator('[data-v6]').getAttribute('data-tracking'));
+   expect(r.anchor.screen.every(Number.isFinite)).toBeTruthy();
+   if(tracking.visible){
+    await expect(page.locator('[data-tracker]')).toBeVisible();
+    expect(Number(await page.locator('[data-endpoint]').getAttribute('cx'))).toBeCloseTo(r.anchor.screen[0],5);
+    expect(Number(await page.locator('[data-endpoint]').getAttribute('cy'))).toBeCloseTo(r.anchor.screen[1],5);
+    const projected=new Vector3().fromArray(r.anchor.world).applyMatrix4(new Matrix4().fromArray(r.view)).applyMatrix4(new Matrix4().fromArray(r.projection));
+    expect(Number(await page.locator('[data-endpoint]').getAttribute('cx'))).toBeCloseTo((projected.x+1)*r.viewport[0]/2,4);
+    expect(Number(await page.locator('[data-endpoint]').getAttribute('cy'))).toBeCloseTo((1-projected.y)*r.viewport[1]/2,4);
+    expect(r.anchor.reason).toBe('visible');reports.push({yaw,t,point:r.anchor.screen});
+   }else await expect(page.locator('[data-tracker]')).toBeHidden();
+  }
+ }
+ expect(reports.length).toBeGreaterThan(0);expect(new Set(reports.map(r=>JSON.stringify(r.point))).size).toBeGreaterThan(1);
+ const size=page.viewportSize();await page.setViewportSize({width:size.width+80,height:size.height+40});await page.waitForTimeout(200);
+ await page.locator('[data-time]').fill('1.5');await page.locator('[data-time]').dispatchEvent('change');const resized=await measure(page);
+ const tracked=JSON.parse(await page.locator('[data-v6]').getAttribute('data-tracking'));if(tracked.visible)expect(Number(await page.locator('[data-endpoint]').getAttribute('cx'))).toBeCloseTo(resized.anchor.screen[0],5);
+ await page.locator('[data-signals]').uncheck();await expect(page.locator('[data-tracker]')).toBeHidden();await expect(page.locator('[data-annotation]')).toBeHidden();
+});
+
+test('V6.3 hidden/occluded targets suppress pointers; reduced motion never reveals one',async({page})=>{
+ await page.goto(`${route}?debug=1&freeze=1`);await ready(page);await seek(page,1);
+ let suppressed=0;
+ for(const p of [0,.25,.5,.75,1])for(const t of [1.5,7.5,13.5]){
+  await seek(page,p);await page.locator('[data-time]').fill(String(t));await page.locator('[data-time]').dispatchEvent('change');const r=await measure(page);
+  if(!r.anchor.visible){suppressed++;await expect(page.locator('[data-tracker]')).toBeHidden();}
+ }
+ expect(suppressed).toBeGreaterThan(0);
+ await page.emulateMedia({reducedMotion:'reduce'});await expect(page.locator('[data-tracker]')).toBeHidden();
+});
+
+test('V6.3 active overlay updates past the final landmark and disappears on isolate or context loss',async({page})=>{
+ await page.goto(`${route}?debug=1&freeze=1`);await ready(page);await native(page,1);
+ await page.locator('[data-time]').fill('1.5');await page.locator('[data-time]').dispatchEvent('change');await expect(page.locator('[data-tracker]')).toBeVisible();
+ await page.locator('[data-isolate]').check();await expect(page.locator('[data-tracker]')).toBeHidden();
+ await page.locator('[data-isolate]').uncheck();await expect(page.locator('[data-tracker]')).toBeVisible();
+ await page.locator('#conversation').scrollIntoViewIfNeeded();
+ const collisions=await page.evaluate(()=>{const r=document.querySelector('[data-annotation]').getBoundingClientRect();return Array.from(document.querySelectorAll('.v6-copy')).some(el=>{const c=el.getBoundingClientRect();return c.left<r.right&&c.right>r.left&&c.top<r.bottom&&c.bottom>r.top;});});
+ if(collisions)await expect(page.locator('[data-tracker]')).toBeHidden();
+ await page.locator('canvas').evaluate(c=>c.dispatchEvent(new Event('webglcontextlost',{cancelable:true})));await expect(page.locator('[data-tracker]')).toBeHidden();await expect(page.locator('[data-annotation]')).toBeHidden();
 });

@@ -30,3 +30,24 @@ test('three genuinely different final spatial candidates retain an open unequal 
  const shapes=['spine','mesh','cantilever'].map(c=>teams.map(t=>target(t,c)));assert.equal(new Set(shapes.map(JSON.stringify)).size,3);
  for(const shape of shapes){const widths=[0,1,2].map(a=>Math.max(...shape.map(v=>v[a]))-Math.min(...shape.map(v=>v[a])));assert.ok(widths[0]>5);assert.ok(widths[1]>3);assert.ok(widths[2]>1);}
 });
+
+test('V6.3 local paths attach to stable module positions throughout morph and micro motion',async()=>{
+ const {localLinks,localLinkPose}=await import('../src/scripts/lab/v6/model.ts');
+ assert.equal(localLinks.length,teams.length*3);
+ for(const p of [0,.12,.38,.61,1])for(const time of [0,1.5,7.5,13.5])for(const link of localLinks){
+  const pose=localLinkPose(link,p,time);assert.equal(modules[link.from].team,link.team);assert.equal(modules[link.to].team,link.team);
+  assert.deepEqual(pose.a,modulePose(modules[link.from],p,time).position);assert.deepEqual(pose.b,modulePose(modules[link.to],p,time).position);
+ }
+});
+test('V6.3 persistent bridges meet their actual structural modules, with progressive local formation',()=>{
+ for(const p of [.15,.4,.7,1])for(const e of edges){const pose=edgePose(e,p,2);assert.deepEqual(pose.a,modulePose(modules.find(m=>m.team===e.from),p,2).position);assert.deepEqual(pose.b,modulePose(modules.find(m=>m.team===e.to),p,2).position);}
+ assert.ok(edgePose(edges.find(e=>e.strength==='strong'),.4,0).growth>edgePose(edges.find(e=>e.strength==='loose'),.4,0).growth);
+});
+test('V6.3 semantic events propagate over explicit dependency paths and affect receiving geometry',async()=>{
+ const {semanticEvents}=await import('../src/scripts/lab/v6/model.ts');
+ for(const def of semanticEvents){
+  assert.ok(def.path.every(id=>edges.some(e=>e.id===id)));
+  const time=def.kind===1?1.5:def.kind===2?7.5:13.5;
+  for(const team of def.affected){const m=modules.find(m=>m.team===team&&m.kind==='panel');assert.notDeepEqual(modulePose(m,1,time,'spine',true).position,modulePose(m,1,time,'spine',false).position);}
+ }
+});
