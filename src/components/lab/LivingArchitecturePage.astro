@@ -1,0 +1,25 @@
+---
+import '../../styles/lab/v6/living-architecture.css';
+import {livingArchitecture} from '../../content/lab/living-architecture';
+interface Props {lang:'pl'|'en'}
+const {lang}=Astro.props,c=livingArchitecture[lang],prefix=lang==='en'?'/en':'';
+const other=lang==='en'?'/lab/living-architecture-v6':'/en/lab/living-architecture-v6';
+---
+<!doctype html><html lang={lang}><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#090c10"/>
+<meta name="description" content={c.intro}/><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<title>{c.title} · Arkadiusz Kamrowski</title>
+</head><body class="v6-page">
+<a class="v6-skip" href="#narrative">{c.skip}</a>
+<header class="v6-header"><a class="v6-brand" href="#people" aria-label="Arkadiusz Kamrowski"><span>ak·</span><span>Arkadiusz<br/>Kamrowski</span></a><span class="v6-edition">{c.label}</span><nav aria-label={c.nav}><a href={other} lang={lang==='en'?'pl':'en'}>{lang==='en'?'PL':'EN'}</a><a href={`${prefix}/contact`}>{c.talk} ↗</a></nav></header>
+<main id="narrative" tabindex="-1" data-v6>
+<div class="v6-environment" aria-hidden="true"><div class="v6-fallback"><svg viewBox="0 0 1200 900" fill="none"><defs><linearGradient id="v6-metal"><stop stop-color="#3b444e"/><stop offset=".45" stop-color="#c5cbd0"/><stop offset=".58" stop-color="#515e6b"/><stop offset="1" stop-color="#202a35"/></linearGradient></defs><g stroke="url(#v6-metal)" stroke-width="18"><path d="M680 700V250H800V440H990V580H770V700H680ZM680 350H530V490H390V600H550V490H680M800 300H930V210M770 580H900V730"/><path d="M708 680V280H775V466H964V550H745V680H708ZM655 374H555V516H420V574" stroke-width="7"/></g></svg></div><div data-canvas class="v6-canvas"></div></div>
+<p class="v6-work-title">{c.title}<span>{c.intro}</span></p><div class="v6-scene-ui"><div class="v6-legend" aria-label={lang==='en'?'Signal legend':'Legenda sygnałów'}>{c.legend.map((s,i)=><span><i class={`signal-${i}`} aria-hidden="true"/>{s}</span>)}</div><p data-annotation class="v6-annotation">{c.annotations[0]}</p><button class="v6-motion" data-motion aria-pressed="false" hidden>{c.pause}</button></div>
+{c.phases.map((phase,i)=><section class="v6-act" data-act id={phase.id} aria-labelledby={`${phase.id}-title`}><div class="v6-copy"><p class="v6-eyebrow"><span>0{i+1} / 05</span> {phase.scale}</p>{i===0?<h1 id={`${phase.id}-title`}>{phase.title.map((s,j)=><span>{j?<em>{s}</em>:s}</span>)}</h1>:<h2 id={`${phase.id}-title`}>{phase.title.map((s,j)=><span>{j?<em>{s}</em>:s}</span>)}</h2>}<p class="v6-body">{phase.body}</p><p class="v6-note">{phase.note}</p>{i===0&&<a class="v6-explore" href="#teams">{c.scroll} ↓</a>}</div><a class="v6-scale" href={i===4?'#conversation':`#${c.phases[i+1]!.id}`} aria-label={i===4?c.talk:c.phases[i+1]!.scale}>{phase.scale}<span aria-hidden="true">{String(i+1).padStart(2,'0')}</span></a></section>)}
+<section class="v6-contact" id="conversation" aria-labelledby="contact-title"><div class="v6-copy"><p class="v6-eyebrow">{c.label}</p><h2 id="contact-title">{c.contact}</h2><p class="v6-body">{c.contactBody}</p><a class="v6-cta" href={`${prefix}/contact`}>{c.contactAction} ↗</a><p class="v6-note">{c.illustrative}</p></div></section>
+<aside class="v6-debug" data-debug hidden aria-label="Development controls"><details open><summary>V6.2 · Geometry laboratory</summary><label>Progress <input data-seek type="range" min="0" max="1" step=".001" value="0"/></label><label>Topology <select data-candidate><option value="spine">Strong spine</option><option value="mesh">Open mesh</option><option value="cantilever">Asymmetric cantilever</option></select></label><label><input type="checkbox" data-freeze/> Freeze micro time</label><label>Time offset (seconds) <input data-time type="number" min="0" max="3600" step=".1" value="0"/></label><label><input type="checkbox" data-isolate/> Isolate sculpture</label><label><input type="checkbox" data-groups/> Dependency / group study</label><label><input type="checkbox" data-signals checked/> Semantic signals</label><label><input type="checkbox" data-bounds/> Optical center / bounds</label><p>Camera + global transform: fixed</p><button data-resume>Resume document scroll</button><output data-stats></output></details></aside>
+<div data-bounds-box class="v6-bounds" hidden aria-hidden="true"></div><div data-center class="v6-center" hidden aria-hidden="true">+</div><p class="v6-sr" data-fallback-status>{c.fallback}</p>
+</main><footer class="v6-footer"><span>Arkadiusz Kamrowski</span><a href={`${prefix}/privacy`}>{c.privacy}</a><a href="#people">{c.top} ↑</a></footer>
+<script>import '../../scripts/lab/v6/living-architecture';</script>
+</body></html>
