@@ -77,3 +77,11 @@ test('reading windows actually remove architecture beneath visible copy',async({
   }
  }
 });
+
+test('back-forward cache restoration recreates the disposed WebGL world',async({page})=>{
+ await page.goto(`${route}?freeze=1`);await ready(page);
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide',{persisted:true})));
+ await expect(page.locator('canvas')).toHaveCount(0);
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pageshow',{persisted:true})));
+ await expect(page.locator('canvas')).toHaveCount(1);await ready(page);
+});

@@ -97,5 +97,6 @@ if(root){
  const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??true;dirty=true;lastStamp=0;schedule();});observer.observe(root);disposers.push(()=>observer.disconnect());
  void import('./world').then(({createWorld})=>{if(!alive)return;world=createWorld(host);root!.classList.add('v6-ready');root!.dataset['mode']='webgl';root!.querySelector<HTMLElement>('[data-fallback-status]')!.hidden=true;motion.hidden=reduced.matches;layout();schedule();void document.fonts.ready.then(()=>{if(alive)layout();});}).catch(fallback);
  on(window,'pagehide',()=>{alive=false;cancelAnimationFrame(raf);clearTimeout(resizeTimer);trigger?.kill();timeline?.kill();world?.dispose();disposers.splice(0).forEach(fn=>fn());});
- on(window,'pageshow',event=>{if((event as PageTransitionEvent).persisted)location.reload();});
+ // This listener must survive pagehide cleanup so a cached page recreates its disposed world.
+ window.addEventListener('pageshow',event=>{if((event as PageTransitionEvent).persisted)location.reload();});
 }
