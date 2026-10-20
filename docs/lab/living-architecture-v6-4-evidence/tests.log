@@ -1,0 +1,48 @@
+
+> arkadiusz-kamrowski-site@2.0.0 test:living-architecture-v6-4
+> node --experimental-strip-types --test tests/living-architecture-v6-4-model.test.mjs && playwright test tests/living-architecture-v6-4.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=1 --timeout=90000
+
+✔ all original identities preserve their actual chaotic pose (7.154875ms)
+✔ four inhabited elevations and internal cores form a near-cubic volume (1.173416ms)
+✔ every member exactly occupies its vision and is reversible independently of event time (9.120792ms)
+✔ different dependencies yield shared floors, defined thresholds and larger separation (0.195542ms)
+✔ causal receivers activate only after arrival; merger has simultaneous origins (0.183666ms)
+✔ phase clocks select events independently of scroll inside each phase (0.139916ms)
+✔ only arrived capability panels respond; structural mass does not drift (7.296542ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 282.27
+
+Running 20 tests using 1 worker
+
+(node:4627) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:10:1 › PL/EN semantic narrative, keyboard, noindex and WCAG (9.4s)
+  ✓   2 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:18:1 › 11 poses reverse deterministically with a fixed camera and no opaque reading mask (4.2s)
+  ✓   3 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:25:1 › phase-local clock runs at rest and survives scrolling within its phase (4.6s)
+  ✓   4 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:31:1 › causal traveling tails, quiet interval and bounded local physical response (2.4s)
+  ✓   5 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:36:1 › full rear and interior, explicit rear view and small model-adjacent annotation (3.0s)
+  ✓   6 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:42:1 › native scroll reverses, resizes and touch scroll remains native (3.0s)
+  ✓   7 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:46:1 › reduced motion draws a complete static volume and live preference changes resume life (2.3s)
+  ✓   8 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:49:1 › context loss and denied WebGL retain illustration and full reading (1.9s)
+  ✓   9 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:53:1 › partial construction and cached page restoration release and recreate resources (2.5s)
+  ✓  10 [desktop-chromium] › tests/living-architecture-v6-4.spec.ts:57:1 › 320px without JS preserves language, reading and contact (1.0s)
+(node:4831) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:10:1 › PL/EN semantic narrative, keyboard, noindex and WCAG (7.7s)
+  ✓  12 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:18:1 › 11 poses reverse deterministically with a fixed camera and no opaque reading mask (3.9s)
+  ✓  13 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:25:1 › phase-local clock runs at rest and survives scrolling within its phase (2.9s)
+  ✓  14 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:31:1 › causal traveling tails, quiet interval and bounded local physical response (1.8s)
+  ✓  15 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:36:1 › full rear and interior, explicit rear view and small model-adjacent annotation (2.6s)
+  ✓  16 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:42:1 › native scroll reverses, resizes and touch scroll remains native (2.5s)
+  ✓  17 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:46:1 › reduced motion draws a complete static volume and live preference changes resume life (2.0s)
+  ✓  18 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:49:1 › context loss and denied WebGL retain illustration and full reading (1.9s)
+  ✓  19 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:53:1 › partial construction and cached page restoration release and recreate resources (2.2s)
+  ✓  20 [mobile-chromium] › tests/living-architecture-v6-4.spec.ts:57:1 › 320px without JS preserves language, reading and contact (1.2s)
+
+  20 passed (1.4m)
