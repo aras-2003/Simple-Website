@@ -74,3 +74,14 @@ test('V6.4 includes bilingual roots and shared GPU chunks; public imports remain
   fs.appendFileSync(path.join(root,'_astro/public.js'),'import "./three.js"');scope=artifactScopes(root,files);assert.ok(scope.mainFiles.includes(shared));assert.ok(!scope.volumeFiles.includes(shared));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
+
+test('V7 includes bilingual roots and shared GPU chunks; public imports remain charged',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'living-v7-scope-'));
+ try{
+  const sources={'index.html':'<script src="/_astro/public.js"></script>','lab/living-architecture-v7/index.html':'<script src="/_astro/v7.js"></script>','en/lab/living-architecture-v7/index.html':'<script src="/_astro/v7.js"></script>','lab/decision-theatre-v5/index.html':'<script src="/_astro/v5.js"></script>','_astro/v7.js':'import "./three.js"','_astro/v5.js':'import "./three.js"','_astro/three.js':'export const three=true','_astro/public.js':'export const publicSite=true'};
+  for(const [name,source] of Object.entries(sources)){const file=path.join(root,name);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,source);}
+  const files=Object.keys(sources).map(file=>path.join(root,file)),shared=path.join(root,'_astro/three.js');let scope=artifactScopes(root,files);
+  assert.ok(scope.sculptureFiles.includes(shared));assert.ok(scope.morphFiles.includes(shared));assert.ok(scope.sculptureFiles.includes(path.join(root,'en/lab/living-architecture-v7/index.html')));assert.ok(!scope.mainFiles.includes(shared));
+  fs.appendFileSync(path.join(root,'_astro/public.js'),'import "./three.js"');scope=artifactScopes(root,files);assert.ok(scope.mainFiles.includes(shared));assert.ok(!scope.sculptureFiles.includes(shared));
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});

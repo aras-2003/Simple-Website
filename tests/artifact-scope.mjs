@@ -9,7 +9,8 @@ export function artifactScopes(root, files) {
   const v5 = files.filter(file => /(?:^|\/)lab\/decision-theatre-v5\/index\.html$/.test(file));
   const v6 = files.filter(file => /(?:^|\/)lab\/living-architecture-v6\/index\.html$/.test(file));
   const v64 = files.filter(file => /(?:^|\/)lab\/living-architecture-v6-4\/index\.html$/.test(file));
-  const labs = [...v3, ...v4, ...v5, ...v6, ...v64];
+  const v7 = files.filter(file => /(?:^|\/)lab\/living-architecture-v7\/index\.html$/.test(file));
+  const labs = [...v3, ...v4, ...v5, ...v6, ...v64, ...v7];
   const resolve = (from, reference) => reference.startsWith('/')
     ? path.join(root, reference)
     : path.resolve(path.dirname(from), reference);
@@ -36,7 +37,9 @@ export function artifactScopes(root, files) {
   const v5Graph = graph(v5);
   const v6Graph = graph(v6);
   const v64Graph = graph(v64);
+  const v7Graph = graph(v7);
   return { labOnly, mainFiles: files.filter(file => !labOnly.has(file)),
+    sculptureFiles: files.filter(file => v7Graph.has(file) && !publicGraph.has(file)),
     labFiles: files.filter(file => v3Graph.has(file) && !publicGraph.has(file)),
     volumeFiles: files.filter(file => v64Graph.has(file) && !publicGraph.has(file)),
     livingFiles: files.filter(file => v6Graph.has(file) && !publicGraph.has(file)),
