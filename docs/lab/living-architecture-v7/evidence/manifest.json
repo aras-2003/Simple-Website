@@ -1,0 +1,28 @@
+{
+  "created": "2026-10-21T10:09:22.911Z",
+  "source": "Real headless Chrome / local Astro preview",
+  "viewport": [
+    1600,
+    1000
+  ],
+  "mobileViewport": [
+    390,
+    844
+  ],
+  "treatment": "Screenshots encoded as WebP. Contact sheets use additional captures with UI hidden (same canvas/camera), crop and resize uniformly; no model retouch, relighting or generated image.",
+  "sources": {
+    "src/scripts/lab/v7/model.ts": "54832d62ba493d2665ec1d09c423e305a54999ee88cefe33e61d3edb538fcc6f",
+    "src/scripts/lab/v7/world.ts": "445653388a0cd63806e6de23cce4ceafb06356d841daaf9385edd6957841933b",
+    "src/scripts/lab/v7/study.ts": "45c0aa6d718b83205af4dbb5e10b4919a5efd0e6d9aac4c111cb0146fde08cad",
+    "src/styles/lab/v7/living-architecture.css": "b621a97420acb156a364a6a78910e53e9ac7d21ac3349202ba7c16968c108b7e",
+    "src/components/lab/LivingArchitectureV7Page.astro": "c409522d9bd94fb8bdc5e3e7a3324e4a302ea179387e61d55e5d94f18dcef257"
+  },
+  "evidence": {
+    "mobile.webp": "56b611d826f6254083def0cbda03d950944f4adb52a2ee50b3e229d3271760ae",
+    "old-new.webp": "4b39cd74abd31cdc1f359c7ea3954820753597a1d86cbd879a1129c16418b2a0",
+    "primary.webp": "47f49eab048dabc63490f1b14d91b64d0562ec59d06eea7bec13449f8aefb581",
+    "reverse.webp": "b05f3ddeb955f77eeeff2fa6d22542f71191a0649e6e8fd82142d4e26f7ce4f5",
+    "side.webp": "a446d18ba668f0c03912f80c0c8fbba39411f42c81246fdbf59266d73421ac2c",
+    "three-views.webp": "42fcf89170c24f3446c544357c359de6f48b9524c8b4b589285b4b260a4321bc"
+  }
+}

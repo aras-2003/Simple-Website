@@ -32,7 +32,9 @@
     "test:living-architecture-v6": "node --experimental-strip-types --test tests/living-architecture-v6-model.test.mjs && playwright test tests/living-architecture-v6.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=1 --timeout=90000",
     "capture:living-architecture-v6": "node scripts/living-architecture-v6-capture.mjs",
     "test:living-architecture-v6-4": "node --experimental-strip-types --test tests/living-architecture-v6-4-model.test.mjs && playwright test tests/living-architecture-v6-4.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=1 --timeout=90000",
-    "capture:living-architecture-v6-4": "node scripts/living-architecture-v6-4-capture.mjs"
+    "capture:living-architecture-v6-4": "node scripts/living-architecture-v6-4-capture.mjs",
+    "test:living-architecture-v7": "node --experimental-strip-types --test tests/living-architecture-v7-model.test.mjs && playwright test tests/living-architecture-v7.spec.ts --project=desktop-chromium --project=mobile-chromium --workers=1 --timeout=90000",
+    "capture:living-architecture-v7": "node scripts/living-architecture-v7-capture.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",

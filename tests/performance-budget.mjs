@@ -19,7 +19,7 @@ const walk = (dir) => {
   }
 };
 walk(root);
-const { mainFiles: files, labFiles, spikeFiles, morphFiles, livingFiles, volumeFiles } = artifactScopes(root, allFiles);
+const { mainFiles: files, labFiles, spikeFiles, morphFiles, livingFiles, volumeFiles, sculptureFiles } = artifactScopes(root, allFiles);
 
 const rel = (file) => path.relative(root, file).replaceAll(path.sep, '/');
 const bytes = (file) => fs.statSync(file).size;
@@ -118,5 +118,10 @@ if (volumeFiles.length) {
  const compressed=volumeFiles.filter(f=>f.endsWith('.js')).reduce((n,f)=>n+gzipSync(fs.readFileSync(f),{level:9}).length,0);
  const pass=compressed<=240*KiB;failed ||= !pass;
  console.log(`${pass?'PASS':'FAIL'}  isolated V6.4 JS (gzip): ${format(compressed)} / ${format(240*KiB)}`);
+}
+if (sculptureFiles.length) {
+ const compressed=sculptureFiles.filter(f=>f.endsWith('.js')).reduce((n,f)=>n+gzipSync(fs.readFileSync(f),{level:9}).length,0);
+ const pass=compressed<=240*KiB;failed ||= !pass;
+ console.log(`${pass?'PASS':'FAIL'}  isolated V7 JS (gzip): ${format(compressed)} / ${format(240*KiB)}`);
 }
 if (failed) process.exit(1);

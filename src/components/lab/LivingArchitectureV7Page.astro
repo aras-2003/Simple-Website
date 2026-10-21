@@ -1,0 +1,17 @@
+---
+import '../../styles/lab/v7/living-architecture.css';
+interface Props {lang:'pl'|'en'}
+const {lang}=Astro.props,en=lang==='en';
+const c=en?{label:'Form study · Gate 1',headline:['One structure.','Many perspectives.'],body:'Shared foundations. Distinct capabilities. Space for relationships.',note:'A static study of the final architecture. Transformation and events await approval of this form.',views:['Primary','Reverse','Side'],nav:'Sculpture viewpoints',status:'Loading the spatial study…',fallback:'The 3D study could not be loaded. WebGL is required. Reload to retry.',legend:'Graphite / petrol / warm interfaces',old:'Compare V6.4',detail:'14 continuous masses · 4 strata · 1 canonical target',skip:'Skip to sculpture controls'}:{label:'Studium bryły · Gate 1',headline:['Jedna struktura.','Wiele perspektyw.'],body:'Wspólne podstawy. Odrębne kompetencje. Przestrzeń dla relacji.',note:'Statyczne studium architektury docelowej. Transformacja i zdarzenia czekają na akceptację tej bryły.',views:['Główny kadr','Od tyłu','Z boku'],nav:'Ujęcia rzeźby',status:'Ładowanie studium przestrzennego…',fallback:'Nie udało się uruchomić studium 3D. Wymagany jest WebGL. Odśwież stronę, aby spróbować ponownie.',legend:'Grafit / petrol / ciepłe interfejsy',old:'Porównaj V6.4',detail:'14 ciągłych mas · 4 poziomy · 1 docelowy model',skip:'Przejdź do wyboru ujęcia'};
+---
+<!doctype html><html lang={lang}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#0a1013"/><meta name="description" content={c.body}/><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/><title>ASTRA · Living Architecture V7 · Gate 1</title></head>
+<body><a class="v7-skip" href="#views">{c.skip}</a>
+<header class="v7-header"><a href={en?'/en/':'/'} class="v7-brand">ak<span>·</span></a><span>ASTRA <i>/</i> LIVING ARCHITECTURE <b>V7</b></span><a href={en?'/lab/living-architecture-v7':'/en/lab/living-architecture-v7'} lang={en?'pl':'en'}>{en?'PL':'EN'}</a></header>
+<main data-v7>
+ <div class="v7-scene" data-canvas role="img" aria-label={en?'A spatial sculpture of interlocking graphite and petrol masses, with deep openings and warm recessed interfaces. Three viewpoints available below.':'Przestrzenna rzeźba z przenikających się mas grafitowych i petrol, głębokimi otworami oraz ciepłymi, cofniętymi interfejsami. Poniżej trzy ujęcia.'}></div>
+ <div class="v7-copy"><p class="v7-kicker">01 <span>—</span> {c.label}</p><h1>{c.headline[0]}<br/><em>{c.headline[1]}</em></h1><p class="v7-body">{c.body}</p><p class="v7-note">{c.note}</p><a class="v7-compare" href={en?'/en/lab/living-architecture-v6-4':'/lab/living-architecture-v6-4'}>{c.old} ↗</a></div>
+ <p class="v7-status" data-status role="status" data-fallback={c.fallback} data-loading={c.status}>{en?'This spatial study requires JavaScript and WebGL.':'To studium przestrzenne wymaga JavaScript i WebGL.'}</p>
+ <div class="v7-tools"><p class="v7-detail">{c.detail}</p><nav id="views" aria-label={c.nav}>{(['primary','reverse','side'] as const).map((view,i)=><button data-view={view} aria-pressed={i===0?'true':'false'} disabled><span>0{i+1}</span>{c.views[i]}</button>)}</nav></div>
+</main><footer><span>{c.legend}</span><span>GATE 0 / 1 <i>·</i> {en?'Owner review':'Ocena autorska'}</span></footer>
+<script>import '../../scripts/lab/v7/study';</script>
+</body></html>
